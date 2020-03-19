@@ -3,12 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@corpsmap/corpsmap-bundles": "^1.9.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "internal-nav-helper": "^3.1.0",
+    "money-clip": "^3.0.1",
+    "node-sass": "^4.13.1",
+    "ol": "^6.2.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "redux-bundler": "^27.0.1",
+    "redux-bundler-react": "^1.2.0",
+    "xhr": "^2.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
