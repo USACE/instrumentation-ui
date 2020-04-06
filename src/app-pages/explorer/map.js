@@ -5,7 +5,6 @@ export default connect("doMapInitialize", ({ doMapInitialize, height }) => {
   let mapEl = null;
 
   useEffect(() => {
-    console.log("should mount the map");
     doMapInitialize(mapEl);
   }, [doMapInitialize, mapEl]);
 

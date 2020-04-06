@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "blackops";
+  src: url("fonts/blackops.ttf") format("truetype");
+  font-weight: normal;
+  font-style: cursive;
+}
+
+.blackops {
+  font: normal normal normal 14px/1 blackops;
+  font-size: inherit;
+  text-rendering: auto;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

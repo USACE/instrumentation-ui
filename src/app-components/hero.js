@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./navbar";
+import UploadButton from "./upload-button";
 
 function App() {
   return (
@@ -25,9 +26,7 @@ function App() {
               <div className="level-left"></div>
               <div className="level-right">
                 <div className="level-item">
-                  <button className="button is-success">
-                    <i className="mdi mdi-cloud-upload pr-2"></i> Bulk Upload
-                  </button>
+                  <UploadButton />
                 </div>
               </div>
             </div>

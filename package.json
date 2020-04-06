@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@corpsmap/corpsmap-bundles": "^1.9.6",
+    "@corpsmap/corpsmap-bundles": "^1.9.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "ag-grid-community": "^23.0.1",
+    "ag-grid-react": "^23.0.0",
     "internal-nav-helper": "^3.1.0",
     "money-clip": "^3.0.1",
+    "neat-csv": "^5.2.0",
     "node-sass": "^4.13.1",
     "ol": "^6.2.1",
+    "plotly.js": "^1.52.3",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-plotly.js": "^2.4.0",
     "react-scripts": "3.4.0",
     "redux-bundler": "^27.0.1",
     "redux-bundler-react": "^1.2.0",
@@ -22,7 +27,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 rm s3://corpsmap-apps/hhd --recursive && aws s3 cp ./build/ s3://corpsmap-apps/hhd --recursive --acl public-read",
+    "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
+    "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to https://dnss3ogcwh6i.cloudfront.net"
   },
   "eslintConfig": {
     "extends": "react-app"

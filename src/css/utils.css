@@ -429,3 +429,13 @@
 .mx-auto {
   margin-left: auto !important;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
