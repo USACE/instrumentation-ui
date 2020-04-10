@@ -2,14 +2,14 @@ import React from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 // import Chart from "../../app-components/chart";
-import TimeSeries from "../../app-components/timeSeries";
+import TimeSeries from "../../app-components/timeseries";
 
 export default connect(
-  "selectTimeSeriesX",
-  "selectTimeSeriesY",
+  "selectTimeseriesX",
+  "selectTimeseriesY",
   "selectQueryObject",
   "selectPathname",
-  ({ queryObject: q, pathname, timeSeriesX: x, timeSeriesY: y }) => {
+  ({ queryObject: q, pathname, timeseriesX: x, timeseriesY: y }) => {
     return (
       <div>
         <Navbar theme="primary" />
