@@ -17,6 +17,7 @@ import routesBundle from "./routes-bundle";
 import uploadBundle from "./upload-bundle";
 import instrumentBundle from "./instrument-bundle";
 import mapInteractionBundle from "./map-interaction-bundle";
+import timeSeriesBundle from "./time-series-bundle";
 
 export default composeBundles(
   createAuthBundle({
@@ -41,5 +42,6 @@ export default composeBundles(
   routesBundle,
   uploadBundle,
   instrumentBundle,
-  mapInteractionBundle
+  mapInteractionBundle,
+  timeSeriesBundle
 );
