@@ -25,7 +25,7 @@ const decorateUrlWithItem = (urlTemplate, item) => {
  */
 function checkTokenPart(tokenRoles, val, idx) {
   let match = false;
-  tokenRoles.forEach(tokenRole => {
+  tokenRoles.forEach((tokenRole) => {
     const tokenPart = tokenRole.split(".")[idx];
     if (tokenPart === val) match = true;
   });
@@ -88,7 +88,7 @@ function checkRoles(roles, tokenRolesJoined, orgsActiveSlug) {
 /**
  * Main Bundle Creator export
  */
-export default opts => {
+export default (opts) => {
   const defaults = {
     name: null,
     uid: "id",
@@ -107,7 +107,8 @@ export default opts => {
     allowRoles: ["*.*"],
     disallowRoles: [],
     addons: {},
-    reduceFurther: null
+    reduceFurther: null,
+    pageSize: 25,
   };
 
   const config = Object.assign({}, defaults, opts);
@@ -126,13 +127,15 @@ export default opts => {
     DELETE_STARTED: `${baseType}_DELETE_STARTED`,
     DELETE_FINISHED: `${baseType}_DELETE_FINISHED`,
     UPDATED_ITEM: `${baseType}_UPDATED_ITEM`,
-    ERROR: `${baseType}_ERROR`
+    PAGE_SIZE_UPDATED: `${baseType}_PAGE_SIZE_UPDATED`,
+    ERROR: `${baseType}_ERROR`,
   };
 
   // action creators
   const doFetch = `do${uCaseName}Fetch`;
   const doSave = `do${uCaseName}Save`;
   const doDelete = `do${uCaseName}Delete`;
+  const doUpdatePageSize = `do${uCaseName}UpdatePageSize`;
 
   // selectors
   const selectState = `select${uCaseName}State`;
@@ -145,6 +148,7 @@ export default opts => {
   const selectPutUrl = `select${uCaseName}PutUrl`;
   const selectPostUrl = `select${uCaseName}PostUrl`;
   const selectDeleteUrl = `select${uCaseName}DeleteUrl`;
+  const selectItemsPaged = `select${uCaseName}ItemsPaged`;
   const selectItemsObject = `select${uCaseName}ItemsObject`;
   const selectItemsArray = `select${uCaseName}ItemsArray`;
   const selectItems = `select${uCaseName}Items`;
@@ -161,6 +165,7 @@ export default opts => {
   const selectIsAllowedRole = `select${uCaseName}IsAllowedRole`;
   const selectDisallowRoles = `select${uCaseName}DisallowRoles`;
   const selectIsDisallowedRole = `select${uCaseName}IsDisallowedRole`;
+  const selectPageSize = `select${uCaseName}PageSize`;
 
   // reactors
   const reactShouldFetch = `react${uCaseName}ShouldFetch`;
@@ -185,14 +190,15 @@ export default opts => {
           _lastResource: null,
           _abortReason: null,
           _allowRoles: config.allowRoles,
-          _disallowRoles: config.disallowRoles
+          _disallowRoles: config.disallowRoles,
+          _pageSize: config.pageSize,
         };
 
         return (state = initialData, { type, payload }) => {
           if (config.fetchActions.indexOf(type) !== -1) {
             return Object.assign({}, state, {
               _shouldFetch: true,
-              _forceFetch: false
+              _forceFetch: false,
             });
           }
 
@@ -200,7 +206,7 @@ export default opts => {
             if (config.forceFetchActions.indexOf(type) !== -1) {
               return Object.assign({}, state, {
                 _shouldFetch: true,
-                _forceFetch: true
+                _forceFetch: true,
               });
             }
           }
@@ -213,6 +219,7 @@ export default opts => {
             case actions.FETCH_ABORT:
             case actions.DELETE_STARTED:
             case actions.DELETE_FINISHED:
+            case actions.PAGE_SIZE_UPDATED:
             case actions.ERROR:
               return Object.assign({}, state, payload);
             case actions.FETCH_FINISHED:
@@ -232,13 +239,12 @@ export default opts => {
       },
 
       [doFetch]: () => ({ dispatch, store, apiGet }) => {
-        console.log("starting the fetch");
         dispatch({
           type: actions.FETCH_STARTED,
           payload: {
             _shouldFetch: false,
-            _isLoading: true
-          }
+            _isLoading: true,
+          },
         });
 
         const isAllowed = store[selectIsAllowedRole]();
@@ -248,8 +254,8 @@ export default opts => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
-              _abortReason: `User is not allowed to run this query`
-            }
+              _abortReason: `User is not allowed to run this query`,
+            },
           });
           return;
         }
@@ -267,8 +273,8 @@ export default opts => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
-              _abortReason: `don't have all the params we need`
-            }
+              _abortReason: `don't have all the params we need`,
+            },
           });
 
           // if this is a new request, but the url isnt up to date, clear the items,
@@ -276,8 +282,8 @@ export default opts => {
           dispatch({
             type: actions.UPDATED_ITEM,
             payload: {
-              ...flags
-            }
+              ...flags,
+            },
           });
           return;
         } else if (!isStale && url === lastResource && !forceFetch) {
@@ -287,35 +293,33 @@ export default opts => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
-              _abortReason: `we're not stale enough`
-            }
+              _abortReason: `we're not stale enough`,
+            },
           });
           return;
         } else {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;
-          console.log("firing the request");
           fetchReq = apiGet(url, (err, response, body) => {
-            console.log("fetch returned", body);
             if (err || response.statusCode !== 200) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
                   _err: { err: err, response: response },
                   notification: {
-                    statusCode: response.statusCode
+                    statusCode: response.statusCode,
                   },
                   _isLoading: false,
                   _isSaving: false,
                   _fetchCount: ++fetchCount,
                   _lastResource: url,
-                  _abortReason: null
-                }
+                  _abortReason: null,
+                },
               });
             } else {
               const data = JSON.parse(body);
               const itemsById = {};
-              data.forEach(item => {
+              data.forEach((item) => {
                 itemsById[item[config.uid]] = item;
               });
               dispatch({
@@ -329,9 +333,9 @@ export default opts => {
                     _fetchCount: ++fetchCount,
                     _lastFetch: new Date(),
                     _lastResource: url,
-                    _abortReason: null
-                  }
-                }
+                    _abortReason: null,
+                  },
+                },
               });
             }
           });
@@ -342,13 +346,13 @@ export default opts => {
         dispatch,
         store,
         apiPut,
-        apiPost
+        apiPost,
       }) => {
         dispatch({
           type: actions.SAVE_STARTED,
           payload: {
-            _isSaving: true
-          }
+            _isSaving: true,
+          },
         });
 
         // grab the state object
@@ -362,7 +366,7 @@ export default opts => {
           tempState[tempId] = Object.assign({}, item);
           dispatch({
             type: actions.UPDATED_ITEM,
-            payload: tempState
+            payload: tempState,
           });
 
           apiPost(url, item, (err, response, body) => {
@@ -372,10 +376,10 @@ export default opts => {
                 payload: {
                   _err: { err: err, response: response },
                   notification: {
-                    statusCode: response.statusCode
+                    statusCode: response.statusCode,
                   },
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
             } else {
               // remove our temporary record from the state
@@ -390,15 +394,15 @@ export default opts => {
 
               dispatch({
                 type: actions.UPDATED_ITEM,
-                payload: updatedState
+                payload: updatedState,
               });
 
               // Make sure we're sending save_finished when we're done
               dispatch({
                 type: actions.SAVE_FINISHED,
                 payload: {
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
 
               if (deferCallback && callback) callback();
@@ -413,7 +417,7 @@ export default opts => {
           tempState[item[config.uid]] = Object.assign({}, item);
           dispatch({
             type: actions.UPDATED_ITEM,
-            payload: tempState
+            payload: tempState,
           });
 
           // save changes to the server
@@ -424,18 +428,18 @@ export default opts => {
                 payload: {
                   _err: { err: err, response: response },
                   notification: {
-                    statusCode: response.statusCode
+                    statusCode: response.statusCode,
                   },
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
             } else {
               // if successful we shouldn't have to do anything else
               dispatch({
                 type: actions.SAVE_FINISHED,
                 payload: {
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
               if (deferCallback && callback) callback();
             }
@@ -448,13 +452,13 @@ export default opts => {
       [doDelete]: (item, callback, deferCallback) => ({
         dispatch,
         store,
-        apiDelete
+        apiDelete,
       }) => {
         dispatch({
           type: actions.DELETE_STARTED,
           payload: {
-            _isSaving: true
-          }
+            _isSaving: true,
+          },
         });
 
         const url = decorateUrlWithItem(store[selectDeleteUrl](), item);
@@ -468,7 +472,7 @@ export default opts => {
           delete updatedState[item[config.uid]];
           dispatch({
             type: actions.UPDATED_ITEM,
-            payload: updatedState
+            payload: updatedState,
           });
 
           // update the state on the server now
@@ -479,17 +483,17 @@ export default opts => {
                 payload: {
                   _err: { err: err, response: response },
                   notification: {
-                    statusCode: response.statusCode
+                    statusCode: response.statusCode,
                   },
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
             } else {
               dispatch({
                 type: actions.DELETE_FINISHED,
                 payload: {
-                  _isSaving: false
-                }
+                  _isSaving: false,
+                },
               });
               if (deferCallback && callback) callback();
             }
@@ -500,36 +504,48 @@ export default opts => {
         }
       },
 
-      [selectAbortReason]: state => {
+      [doUpdatePageSize]: (ps) => ({ dispatch }) => {
+        if (typeof ps === "number")
+          dispatch({
+            type: actions.PAGE_SIZE_UPDATED,
+            payload: { _pageSize: ps },
+          });
+      },
+
+      [selectAbortReason]: (state) => {
         return state[config.name]._abortReason;
       },
 
-      [selectForceFetch]: state => {
+      [selectForceFetch]: (state) => {
         return state[config.name]._forceFetch;
       },
 
-      [selectFetchCount]: state => {
+      [selectFetchCount]: (state) => {
         return state[config.name]._fetchCount;
       },
 
-      [selectLastFetch]: state => {
+      [selectLastFetch]: (state) => {
         return state[config.name]._lastFetch;
       },
 
-      [selectLastResource]: state => {
+      [selectLastResource]: (state) => {
         return state[config.name]._lastResource;
       },
 
-      [selectState]: state => {
+      [selectState]: (state) => {
         return state[config.name];
       },
 
-      [selectIsLoading]: state => {
+      [selectIsLoading]: (state) => {
         return state[config.name]._isLoading;
       },
 
-      [selectIsSaving]: state => {
+      [selectIsSaving]: (state) => {
         return state[config.name]._isSaving;
+      },
+
+      [selectPageSize]: (state) => {
+        return state[config.name]._pageSize;
       },
 
       [selectIsStale]: createSelector(
@@ -540,31 +556,43 @@ export default opts => {
         }
       ),
 
-      [selectFlags]: createSelector(selectState, state => {
+      [selectFlags]: createSelector(selectState, (state) => {
         const flags = {};
-        Object.keys(state).forEach(key => {
+        Object.keys(state).forEach((key) => {
           if (key[0] === "_") flags[key] = state[key];
         });
         return flags;
       }),
 
-      [selectItemsObject]: createSelector(selectState, state => {
+      [selectItemsPaged]: createSelector(
+        selectItems,
+        selectPageSize,
+        (items, pageSize) => {
+          const pages = [];
+          for (let i = 0; i < Math.ceil(items.length / pageSize); i++) {
+            pages.push(items.slice(pageSize * i, pageSize * i + pageSize));
+          }
+          return pages;
+        }
+      ),
+
+      [selectItemsObject]: createSelector(selectState, (state) => {
         const items = {};
-        Object.keys(state).forEach(key => {
+        Object.keys(state).forEach((key) => {
           if (key[0] !== "_") items[key] = state[key];
         });
         return items;
       }),
 
-      [selectItemsArray]: createSelector(selectState, state => {
+      [selectItemsArray]: createSelector(selectState, (state) => {
         const items = [];
-        Object.keys(state).forEach(key => {
+        Object.keys(state).forEach((key) => {
           if (key[0] !== "_") items.push(state[key]);
         });
         return items;
       }),
 
-      [selectItems]: createSelector(selectItemsArray, items => {
+      [selectItems]: createSelector(selectItemsArray, (items) => {
         return items;
       }),
 
@@ -607,7 +635,7 @@ export default opts => {
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
           let url = template;
-          Object.keys(availableParams).forEach(key => {
+          Object.keys(availableParams).forEach((key) => {
             url = url.replace(`:${key}`, availableParams[key]);
           });
           return url;
@@ -621,7 +649,7 @@ export default opts => {
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
           let url = template;
-          Object.keys(availableParams).forEach(key => {
+          Object.keys(availableParams).forEach((key) => {
             url = url.replace(`:${key}`, availableParams[key]);
           });
           return url;
@@ -635,7 +663,7 @@ export default opts => {
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
           let url = template;
-          Object.keys(availableParams).forEach(key => {
+          Object.keys(availableParams).forEach((key) => {
             url = url.replace(`:${key}`, availableParams[key]);
           });
           return url;
@@ -649,14 +677,14 @@ export default opts => {
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
           let url = template;
-          Object.keys(availableParams).forEach(key => {
+          Object.keys(availableParams).forEach((key) => {
             url = url.replace(`:${key}`, availableParams[key]);
           });
           return url;
         }
       ),
 
-      [selectAllowRoles]: state => {
+      [selectAllowRoles]: (state) => {
         return state[config.name]._allowRoles;
       },
 
@@ -666,7 +694,7 @@ export default opts => {
         checkRoles
       ),
 
-      [selectDisallowRoles]: state => {
+      [selectDisallowRoles]: (state) => {
         return state[config.name]._disallowRoles;
       },
 
@@ -676,9 +704,9 @@ export default opts => {
         checkRoles
       ),
 
-      [reactShouldFetch]: state => {
+      [reactShouldFetch]: (state) => {
         if (state[config.name]._shouldFetch) return { actionCreator: doFetch };
-      }
+      },
     },
     config.addons
   );
@@ -693,7 +721,7 @@ export default opts => {
       actions.DELETE_STARTED,
       actions.DELETE_FINISHED,
       actions.UPDATED_ITEM,
-      actions.ERROR
+      actions.ERROR,
     ];
   }
 

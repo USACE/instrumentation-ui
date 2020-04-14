@@ -13,24 +13,24 @@ const geoJSON = new GeoJSON();
 
 export default createRestBundle({
   name: "instruments",
-  uid: "id",
+  uid: "slug",
   prefetch: true,
-  staleAfter: 10,
+  staleAfter: 10000,
   persist: false,
-  routeParam: "",
+  routeParam: "instrumentSlug",
   getTemplate: "/instruments",
-  putTemplate: "",
-  postTemplate: "",
-  deleteTemplate: "",
+  putTemplate: "/instruments/:item.id",
+  postTemplate: "/instruments",
+  deleteTemplate: "/instruments/:item.id",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
-  forceFetchActions: [],
+  forceFetchActions: ["INSTRUMENTS_SAVE_FINISHED"],
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {
       dispatch({
         type: "INSTRUMENTS_INITIALIZE_LAYER_START",
         payload: {
-          _shouldInitializeLayer: false
-        }
+          _shouldInitializeLayer: false,
+        },
       });
 
       const map = store.selectMap();
@@ -41,15 +41,15 @@ export default createRestBundle({
           return new Style({
             geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
             fill: new Fill({
-              color: "#000000"
+              color: "#000000",
             }),
             stroke: new Stroke({
               color: "#ffffff",
-              width: 1
+              width: 1,
             }),
             text: new Text({
               fill: new Fill({
-                color: "#000000"
+                color: "#000000",
               }),
               font: "18px blackops",
               offsetX: 12,
@@ -57,13 +57,13 @@ export default createRestBundle({
               padding: [2, 2, 2, 2],
               stroke: new Stroke({
                 color: "#ffffff",
-                width: 2
+                width: 2,
               }),
               text: f.get("name"),
-              textAlign: "left"
-            })
+              textAlign: "left",
+            }),
           });
-        }
+        },
       });
       map.addLayer(lyr);
 
@@ -71,8 +71,8 @@ export default createRestBundle({
         type: "INSTRUMENTS_INITIALIZE_LAYER_FINISH",
         payload: {
           _layer: lyr,
-          _shouldLoadData: true
-        }
+          _shouldLoadData: true,
+        },
       });
     },
 
@@ -80,8 +80,8 @@ export default createRestBundle({
       dispatch({
         type: "INSTRUMENTS_LOAD_DATA_START",
         payload: {
-          _shouldLoadData: false
-        }
+          _shouldLoadData: false,
+        },
       });
 
       const geoProjection = store.selectMapGeoProjection();
@@ -93,46 +93,66 @@ export default createRestBundle({
       src.addFeatures(
         geoJSON.readFeatures(data, {
           featureProjection: webProjection,
-          dataProjection: geoProjection
+          dataProjection: geoProjection,
         })
       );
     },
 
-    selectInstrumentsLayer: state => state.instruments._layer,
+    selectInstrumentsLayer: (state) => state.instruments._layer,
 
     selectInstrumentsItemsGeoJSON: createSelector(
       "selectInstrumentsItems",
-      items => {
+      (items) => {
         return {
           type: "FeatureCollection",
-          features: items.map(item => {
+          features: items.map((item) => {
             const feature = {
               type: "Feature",
               geometry: { ...item.geometry },
-              properties: { ...item }
+              properties: { ...item },
             };
             delete feature.properties.geometry;
             return feature;
-          })
+          }),
         };
       }
     ),
 
-    reactInstrumentsShouldInitializeLayer: state => {
+    selectInstrumentsByRouteGeoJSON: createSelector(
+      "selectInstrumentsByRoute",
+      (item) => {
+        if (!item) return null;
+
+        const feature = {
+          type: "Feature",
+          geometry: { ...item.geometry },
+          properties: { ...item },
+        };
+
+        delete feature.properties.geometry;
+
+        return {
+          type: "FeatureCollection",
+          features: [feature],
+        };
+      }
+    ),
+
+    reactInstrumentsShouldInitializeLayer: (state) => {
       if (state.instruments._shouldInitializeLayer)
         return { actionCreator: "doInstrumentsInitializeLayer" };
     },
 
-    reactInstrumentsShouldLoadData: state => {
+    reactInstrumentsShouldLoadData: (state) => {
       if (state.instruments._shouldLoadData)
         return { actionCreator: "doInstrumentsLoadData" };
-    }
+    },
   },
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
       case "MAP_INITIALIZED":
         return Object.assign({}, state, {
-          _shouldInitializeLayer: true
+          _shouldInitializeLayer: true,
         });
       case "INSTRUMENTS_INITIALIZE_LAYER_START":
       case "INSTRUMENTS_INITIALIZE_LAYER_FINISH":
@@ -142,5 +162,5 @@ export default createRestBundle({
       default:
         return state;
     }
-  }
+  },
 });

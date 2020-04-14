@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
-import Chart from "../../app-components/chart";
+// import Chart from "../../app-components/chart";
+import InstrumentForm from "../manager/instrument-form";
+import Map from "../../app-components/classMap";
 
 export default connect(
+  "doModalOpen",
   "selectQueryObject",
   "selectPathname",
-  ({ queryObject: q, pathname }) => {
+  "selectInstrumentsByRoute",
+  ({
+    doModalOpen,
+    queryObject: q,
+    pathname,
+    instrumentsByRoute: instrument,
+  }) => {
+    if (!instrument) return null;
     return (
       <div>
         <Navbar theme="primary" />
@@ -14,14 +24,32 @@ export default connect(
           <div className="columns">
             <div className="column">
               <div className="panel">
-                <div className="panel-heading">Instrument Name</div>
-                <div className="panel-block">
-                  Lots of good data about the thing
+                <div
+                  className="panel-heading"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {instrument.name}{" "}
+                  <button
+                    onClick={() => {
+                      doModalOpen(InstrumentForm, { item: instrument });
+                    }}
+                    className="button is-info is-small"
+                  >
+                    <i className="mdi mdi-pencil pr-2"></i> Edit
+                  </button>
+                </div>
+                <div className="p-3">
+                  <div>{instrument.type}</div>
+                  <div>{`Height: ${instrument.height}`}</div>
                 </div>
               </div>
             </div>
             <div className="column">
-              <Chart />
+              <Map mapKey="instrumentMap" height={300} />
             </div>
           </div>
         </section>
