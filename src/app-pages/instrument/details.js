@@ -3,13 +3,25 @@ import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 // import Chart from "../../app-components/chart";
 import TimeSeries from "../../app-components/timeseries";
+import InstrumentForm from "../manager/instrument-form";
+import Map from "../../app-components/classMap";
 
 export default connect(
-  "selectTimeseriesX",
-  "selectTimeseriesY",
+  "doModalOpen",
   "selectQueryObject",
   "selectPathname",
-  ({ queryObject: q, pathname, timeseriesX: x, timeseriesY: y }) => {
+  "selectInstrumentsByRoute",
+  "selectTimeseriesX",
+  "selectTimeseriesY",
+  ({
+    doModalOpen,
+    queryObject: q,
+    pathname,
+    instrumentsByRoute: instrument,
+    timeseriesX: x,
+    timeseriesY: y,
+  }) => {
+    if (!instrument) return null;
     return (
       <div>
         <Navbar theme="primary" />
@@ -17,15 +29,33 @@ export default connect(
           <div className="columns">
             <div className="column">
               <div className="panel">
-                <div className="panel-heading">Instrument Name</div>
-                <div className="panel-block">
-                  Lots of good data about the thing
+                <div
+                  className="panel-heading"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {instrument.name}{" "}
+                  <button
+                    onClick={() => {
+                      doModalOpen(InstrumentForm, { item: instrument });
+                    }}
+                    className="button is-info is-small"
+                  >
+                    <i className="mdi mdi-pencil pr-2"></i> Edit
+                  </button>
+                </div>
+                <div className="p-3">
+                  <div>{instrument.type}</div>
+                  <div>{`Height: ${instrument.height}`}</div>
                 </div>
               </div>
             </div>
-            {/* <div className="column">
-              <Chart />
-            </div> */}
+            <div className="column">
+              <Map mapKey="instrumentMap" height={300} />
+            </div>
           </div>
         </section>
         <section className="container mt-3">

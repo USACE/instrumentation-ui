@@ -43,13 +43,13 @@ const ProfileMenu = connect("doAuthLogout", ({ doAuthLogout }) => {
 const NavItem = connect(
   "selectPathname",
   ({ pathname, href, handler, children }) => {
-    const handleClick = e => {
+    const handleClick = (e) => {
       if (handler && typeof handler === "function") handler(e);
     };
     const cls = classnames({
       pointer: true,
       "navbar-item": true,
-      "is-active": pathname === href
+      "is-active": pathname === href,
     });
     if (href) {
       return (
@@ -83,7 +83,7 @@ export default connect(
       "is-white": theme === "white",
       "is-black": theme === "black",
       "is-light": theme === "light",
-      "is-dark": theme === "dark"
+      "is-dark": theme === "dark",
     });
     return (
       <nav className={navClass}>
@@ -91,7 +91,7 @@ export default connect(
           {hideBrand ? null : (
             <div className="navbar-brand">
               <a className="navbar-item" href={"/"}>
-                <strong className="blackops" style={{ fontSize: "2em" }}>
+                <strong style={{ fontSize: "2em" }}>
                   <i className="mdi mdi-water pr-2"></i>HHD Instrumentation
                   Browser
                 </strong>
@@ -109,7 +109,12 @@ export default connect(
           <div className="navbar-menu">
             <div className="navbar-end">
               <NavItem href="/explore">Explorer</NavItem>
-              <NavItem href="/upload">Uploader</NavItem>
+              {authIsLoggedIn ? (
+                <NavItem href="/upload">Uploader</NavItem>
+              ) : null}
+              {authIsLoggedIn ? (
+                <NavItem href="/manager">Instrument Manager</NavItem>
+              ) : null}
               {authIsLoggedIn ? (
                 <ProfileMenu />
               ) : (

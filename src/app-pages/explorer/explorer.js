@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../app-components/navbar";
-import Map from "./map";
+import Map from "../../app-components/map";
 import MapTools from "./map-tools";
 import Chart from "../../app-components/chart";
 
