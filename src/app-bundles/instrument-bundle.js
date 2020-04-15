@@ -51,7 +51,7 @@ export default createRestBundle({
               fill: new Fill({
                 color: "#000000",
               }),
-              font: "18px blackops",
+              font: "16px sans-serif",
               offsetX: 12,
               offsetY: -12,
               padding: [2, 2, 2, 2],
@@ -135,6 +135,14 @@ export default createRestBundle({
           type: "FeatureCollection",
           features: [feature],
         };
+      }
+    ),
+
+    selectInstrumentsIdByRoute: createSelector(
+      "selectInstrumentsByRoute",
+      (instrument) => {
+        if (instrument && instrument.id) return { instrumentId: instrument.id };
+        return null;
       }
     ),
 

@@ -2,43 +2,48 @@ import React from "react";
 import { connect } from "redux-bundler-react";
 import { classnames } from "../utils";
 
-const ProfileMenu = connect("doAuthLogout", ({ doAuthLogout }) => {
-  return (
-    <div className="navbar-item has-dropdown is-hoverable">
-      <div className="navbar-link">My Profile</div>
-      <div id="moreDropdown" className="navbar-dropdown ">
-        <a className="navbar-item" href="/profile">
-          <div className="level is-mobile">
-            <div className="level-left">
+// //<a className="navbar-item" href="/profile">
+// <div className="level is-mobile">
+// <div className="level-left">
+//   <div className="level-item">
+//     <p>
+//       <strong>
+//         <i className="mdi mdi-pencil pr-2"></i>Edit
+//       </strong>
+//       <br />
+//       <small>Edit my profile information</small>
+//     </p>
+//   </div>
+// </div>
+// </div>
+// </a>
+
+const ProfileMenu = connect(
+  "doAuthLogout",
+  "selectAuthTokenPayload",
+  ({ doAuthLogout, authTokenPayload: user }) => {
+    return (
+      <div className="navbar-item has-dropdown is-hoverable">
+        <div className="navbar-link">My Profile</div>
+        <div id="moreDropdown" className="navbar-dropdown ">
+          <a className="navbar-item" href="/logout">
+            <div className="level is-mobile">
               <div className="level-item">
                 <p>
                   <strong>
-                    <i className="mdi mdi-pencil pr-2"></i>Edit
+                    <i className="mdi mdi-logout pr-2"></i>Logout
                   </strong>
                   <br />
-                  <small>Edit my profile information</small>
+                  <small>{`Currently logged in as ${user.name}`}</small>
                 </p>
               </div>
             </div>
-          </div>
-        </a>
-        <a className="navbar-item" href="/logout">
-          <div className="level is-mobile">
-            <div className="level-item">
-              <p>
-                <strong>
-                  <i className="mdi mdi-logout pr-2"></i>Logout
-                </strong>
-                <br />
-                <small>Log out of the HHD Instrumentation Browser</small>
-              </p>
-            </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const NavItem = connect(
   "selectPathname",

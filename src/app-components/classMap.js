@@ -10,6 +10,11 @@ class Map extends React.Component {
     doMapsInitialize(mapKey, this.el, options);
   }
 
+  componentWillUnmount() {
+    const { mapKey, doMapsShutdown } = this.props;
+    doMapsShutdown(mapKey);
+  }
+
   render() {
     const { height } = this.props;
     return (
@@ -23,4 +28,4 @@ class Map extends React.Component {
   }
 }
 
-export default connect("doMapsInitialize", Map);
+export default connect("doMapsInitialize", "doMapsShutdown", Map);

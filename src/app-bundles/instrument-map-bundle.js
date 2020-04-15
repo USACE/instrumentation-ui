@@ -14,7 +14,9 @@ export default {
   name: "instrumentMap",
   getReducer: () => {
     const initialData = {
-      _dataLoaded: false,
+      layer: null,
+      _shouldInitialize: true,
+      _shouldAddData: false,
       _mapLoaded: false,
     };
 
@@ -22,17 +24,29 @@ export default {
       switch (type) {
         case "INSTRUMENTS_FETCH_FINISHED":
           return Object.assign({}, state, {
-            _dataLoaded: true,
+            _shouldAddData: true,
           });
         case "MAPS_INITIALIZED":
           if (payload.hasOwnProperty("instrumentMap")) {
             return Object.assign({}, state, {
               _mapLoaded: true,
+              _shouldAddData: true,
+            });
+          } else {
+            return state;
+          }
+        case "MAPS_SHUTDOWN":
+          if (payload.hasOwnProperty("instrumentMap")) {
+            return Object.assign({}, state, {
+              _mapLoaded: false,
             });
           } else {
             return state;
           }
         case "INSTRUMENTMAP_INITIALIZE_START":
+        case "INSTRUMENTMAP_INITIALIZE_FINISH":
+        case "INSTRUMENTMAP_ADD_DATA_START":
+        case "INSTRUMENTMAP_ADD_DATA_FINISH":
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -43,13 +57,10 @@ export default {
     dispatch({
       type: "INSTRUMENTMAP_INITIALIZE_START",
       payload: {
-        _dataLoaded: false,
-        _mapLoaded: false,
+        _shouldInitialize: false,
       },
     });
-    const geoProjection = store.selectMapGeoProjection();
-    const webProjection = store.selectMapWebProjection();
-    const map = store.selectMapsObject()["instrumentMap"];
+
     const lyr = new Layer({
       source: new Source(),
       declutter: true,
@@ -67,7 +78,7 @@ export default {
             fill: new Fill({
               color: "#000000",
             }),
-            font: "18px blackops",
+            font: "16px sans-serif",
             offsetX: 12,
             offsetY: -12,
             padding: [2, 2, 2, 2],
@@ -82,25 +93,57 @@ export default {
       },
     });
 
+    dispatch({
+      type: "INSTRUMENTMAP_INITIALIZE_FINISH",
+      payload: {
+        layer: lyr,
+      },
+    });
+  },
+
+  doInstrumentMapAddData: () => ({ dispatch, store }) => {
+    dispatch({
+      type: "INSTRUMENTMAP_ADD_DATA_START",
+      payload: {
+        _shouldAddData: false,
+      },
+    });
+    const geoProjection = store.selectMapGeoProjection();
+    const webProjection = store.selectMapWebProjection();
+    const map = store.selectMapsObject()["instrumentMap"];
+    const lyr = store.selectInstrumentMapLayer();
     const src = lyr.getSource();
     const data = store.selectInstrumentsByRouteGeoJSON();
-
+    map.removeLayer(lyr);
+    src.clear();
     src.addFeatures(
       geoJSON.readFeatures(data, {
         featureProjection: webProjection,
         dataProjection: geoProjection,
       })
     );
-
     map.addLayer(lyr);
     const view = map.getView();
     view.fit(src.getExtent(), {
       padding: [50, 50, 50, 50],
       maxZoom: 16,
     });
+    dispatch({
+      type: "INSTRUMENTMAP_ADD_DATA_FINISH",
+    });
   },
+
+  selectInstrumentMapLayer: (state) => {
+    return state.instrumentMap.layer;
+  },
+
   reactInstrumentMapShouldInitialize: (state) => {
-    if (state.instrumentMap._dataLoaded && state.instrumentMap._mapLoaded)
+    if (state.instrumentMap._shouldInitialize)
       return { actionCreator: "doInstrumentMapInitialize" };
+  },
+
+  reactInstrumentMapShouldAddData: (state) => {
+    if (state.instrumentMap._mapLoaded && state.instrumentMap._shouldAddData)
+      return { actionCreator: "doInstrumentMapAddData" };
   },
 };

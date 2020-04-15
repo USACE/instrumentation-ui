@@ -273,16 +273,25 @@ export default (opts) => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
+              _lastResource: url,
               _abortReason: `don't have all the params we need`,
             },
           });
 
           // if this is a new request, but the url isnt up to date, clear the items,
           // this way they can be garbage collected and it prevents leakage
+          // the way this dispatch works it's overriding the payload of the FETCH_ABORT above
+          // so for now we're sending this data twice, once so that the abort can be seen
+          // and once to set the state in the store
           dispatch({
             type: actions.UPDATED_ITEM,
             payload: {
               ...flags,
+              ...{
+                _isLoading: false,
+                _lastResource: url,
+                _abortReason: `don't have all the params we need`,
+              },
             },
           });
           return;

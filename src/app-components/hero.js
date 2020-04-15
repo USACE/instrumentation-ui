@@ -1,8 +1,9 @@
 import React from "react";
+import { connect } from "redux-bundler-react";
 import Navbar from "./navbar";
 import UploadButton from "./upload-button";
 
-function App() {
+function App({ authIsLoggedIn }) {
   return (
     <div className="App">
       <section className="hero is-primary">
@@ -15,9 +16,11 @@ function App() {
               <i className="mdi mdi-water pr-2"></i>HHD Instrumentation Browser
             </h1>
             <h2 className="subtitle">Water data for Herbert Hoover Dike</h2>
-            <a href="/explore">
-              <button className="button is-warning">Explore the data</button>
-            </a>
+            {authIsLoggedIn ? (
+              <a href="/explore">
+                <button className="button is-warning">Explore the data</button>
+              </a>
+            ) : null}
           </div>
         </div>
         <div className="hero-foot">
@@ -26,7 +29,7 @@ function App() {
               <div className="level-left"></div>
               <div className="level-right">
                 <div className="level-item">
-                  <UploadButton />
+                  {authIsLoggedIn ? <UploadButton /> : null}
                 </div>
               </div>
             </div>
@@ -37,4 +40,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect("selectAuthIsLoggedIn", App);

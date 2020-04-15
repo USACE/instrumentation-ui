@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 // import Chart from "../../app-components/chart";
-import TimeSeries from "../../app-components/timeseries";
+import TimeSeries from "../../app-components/timeSeries";
 import InstrumentForm from "../manager/instrument-form";
 import Map from "../../app-components/classMap";
 
@@ -11,15 +11,11 @@ export default connect(
   "selectQueryObject",
   "selectPathname",
   "selectInstrumentsByRoute",
-  "selectTimeseriesX",
-  "selectTimeseriesY",
   ({
     doModalOpen,
     queryObject: q,
     pathname,
     instrumentsByRoute: instrument,
-    timeseriesX: x,
-    timeseriesY: y,
   }) => {
     if (!instrument) return null;
     return (
@@ -84,15 +80,15 @@ export default connect(
                   {q.t === "s1" ? (
                     <TimeSeries
                       title={"My Very First Time Series Plot"}
-                      x={x}
-                      y={y}
+                      x={null}
+                      y={null}
                     />
                   ) : null}
                   {q.t === "s2" ? (
                     <TimeSeries
                       title={"My Second Time Series Plot"}
-                      x={x}
-                      y={y}
+                      x={null}
+                      y={null}
                     />
                   ) : null}
                 </div>

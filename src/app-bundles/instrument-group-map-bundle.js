@@ -14,7 +14,9 @@ export default {
   name: "instrumentGroupMap",
   getReducer: () => {
     const initialData = {
-      _dataLoaded: false,
+      layer: null,
+      _shouldInitialize: true,
+      _shouldAddData: false,
       _mapLoaded: false,
     };
 
@@ -22,7 +24,7 @@ export default {
       switch (type) {
         case "INSTRUMENTGROUPINSTRUMENTS_FETCH_FINISHED":
           return Object.assign({}, state, {
-            _dataLoaded: true,
+            _shouldAddData: true,
           });
         case "MAPS_INITIALIZED":
           if (payload.hasOwnProperty("groupMap")) {
@@ -32,24 +34,33 @@ export default {
           } else {
             return state;
           }
+        case "MAPS_SHUTDOWN":
+          if (payload.hasOwnProperty("groupMap")) {
+            return Object.assign({}, state, {
+              _mapLoaded: false,
+            });
+          } else {
+            return state;
+          }
         case "INSTRUMENTGROUPMAP_INITIALIZE_START":
+        case "INSTRUMENTGROUPMAP_INITIALIZE_FINISH":
+        case "INSTRUMENTGROUPMAP_ADD_DATA_START":
+        case "INSTRUMENTGROUPMAP_ADD_DATA_FINISH":
           return Object.assign({}, state, payload);
         default:
           return state;
       }
     };
   },
+
   doInstrumentGroupMapInitialize: () => ({ dispatch, store }) => {
     dispatch({
       type: "INSTRUMENTGROUPMAP_INITIALIZE_START",
       payload: {
-        _dataLoaded: false,
-        _mapLoaded: false,
+        _shouldInitialize: false,
       },
     });
-    const geoProjection = store.selectMapGeoProjection();
-    const webProjection = store.selectMapWebProjection();
-    const map = store.selectMapsObject()["groupMap"];
+
     const lyr = new Layer({
       source: new Source(),
       declutter: true,
@@ -67,7 +78,7 @@ export default {
             fill: new Fill({
               color: "#000000",
             }),
-            font: "18px blackops",
+            font: "16px sans-serif",
             offsetX: 12,
             offsetY: -12,
             padding: [2, 2, 2, 2],
@@ -82,28 +93,60 @@ export default {
       },
     });
 
+    dispatch({
+      type: "INSTRUMENTGROUPMAP_INITIALIZE_FINISH",
+      payload: {
+        layer: lyr,
+      },
+    });
+  },
+
+  doInstrumentGroupMapAddData: () => ({ dispatch, store }) => {
+    dispatch({
+      type: "INSTRUMENTGROUPMAP_ADD_DATA_START",
+      payload: {
+        _shouldAddData: false,
+      },
+    });
+    const geoProjection = store.selectMapGeoProjection();
+    const webProjection = store.selectMapWebProjection();
+    const map = store.selectMapsObject()["groupMap"];
+    const lyr = store.selectInstrumentGroupMapLayer();
     const src = lyr.getSource();
     const data = store.selectInstrumentGroupInstrumentsItemsGeoJSON();
-
+    map.removeLayer(lyr);
+    src.clear();
     src.addFeatures(
       geoJSON.readFeatures(data, {
         featureProjection: webProjection,
         dataProjection: geoProjection,
       })
     );
-
     map.addLayer(lyr);
     const view = map.getView();
     view.fit(src.getExtent(), {
       padding: [50, 50, 50, 50],
       maxZoom: 16,
     });
+    dispatch({
+      type: "INSTRUMENTGROUPMAP_ADD_DATA_FINISH",
+    });
   },
+
+  selectInstrumentGroupMapLayer: (state) => {
+    return state.instrumentGroupMap.layer;
+  },
+
   reactInstrumentGroupMapShouldInitialize: (state) => {
+    if (state.instrumentGroupMap._shouldInitialize)
+      return { actionCreator: "doInstrumentGroupMapInitialize" };
+  },
+
+  reactInstrumentGroupMapShouldAddData: (state) => {
     if (
-      state.instrumentGroupMap._dataLoaded &&
+      state.instrumentGroupMap._shouldAddData &&
       state.instrumentGroupMap._mapLoaded
     )
-      return { actionCreator: "doInstrumentGroupMapInitialize" };
+      return { actionCreator: "doInstrumentGroupMapAddData" };
   },
 };

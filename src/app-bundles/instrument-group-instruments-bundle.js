@@ -9,11 +9,11 @@ export default createRestBundle({
   persist: false,
   routeParam: "groupId",
   getTemplate: "/instrument_groups/:groupId/instruments",
-  putTemplate: "/instrument_groups/:item.id",
-  postTemplate: "/instrument_groups",
-  deleteTemplate: "/instrument_groups/:item.id",
+  putTemplate: "",
+  postTemplate: "",
+  deleteTemplate: "",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
-  forceFetchActions: [],
+  forceFetchActions: ["INSTRUMENTS_SAVE_FINISHED"],
   urlParamSelectors: ["selectInstrumentGroupsIdByRoute"],
   addons: {
     selectInstrumentGroupInstrumentsItemsGeoJSON: createSelector(

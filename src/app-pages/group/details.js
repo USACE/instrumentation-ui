@@ -57,7 +57,38 @@ export default connect(
         </section>
         <section className="container mt-3">
           <div className="panel">
-            <div className="panel-heading">Instruments</div>
+            <div
+              className="panel-heading"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              Instruments
+              <div className="buttons">
+                <button
+                  onClick={() => {
+                    doModalOpen(InstrumentGroupForm, { item: group });
+                  }}
+                  disabled={true}
+                  className="button is-info is-small"
+                >
+                  <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
+                  Instrument
+                </button>
+                <button
+                  onClick={() => {
+                    doModalOpen(InstrumentGroupForm, { item: group });
+                  }}
+                  disabled={true}
+                  className="button is-info is-small"
+                >
+                  <i className="mdi mdi-map-marker pr-2"></i> Add Existing
+                  Instrument
+                </button>
+              </div>
+            </div>
             <div className="panel-block">
               <InstrumentTable instruments={instruments} />
             </div>

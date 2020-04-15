@@ -10,6 +10,7 @@ import BasemapPicker from "../ol-controls/basemap-picker";
 
 const actions = {
   MAPS_INITIALIZED: `MAPS_INITIALIZED`,
+  MAPS_SHUTDOWN: `MAPS_SHUTDOWN`,
 };
 
 // const geoProjection = get("EPSG=4326");
@@ -24,6 +25,7 @@ export default {
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case actions.MAPS_INITIALIZED:
+        case actions.MAPS_SHUTDOWN:
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -50,6 +52,15 @@ export default {
       type: actions.MAPS_INITIALIZED,
       payload: {
         [key]: map,
+      },
+    });
+  },
+
+  doMapsShutdown: (key) => ({ dispatch }) => {
+    dispatch({
+      type: actions.MAPS_SHUTDOWN,
+      payload: {
+        [key]: null,
       },
     });
   },
