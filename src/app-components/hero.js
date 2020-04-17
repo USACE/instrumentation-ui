@@ -16,11 +16,9 @@ function App({ authIsLoggedIn }) {
               <i className="mdi mdi-water pr-2"></i>HHD Instrumentation Browser
             </h1>
             <h2 className="subtitle">Water data for Herbert Hoover Dike</h2>
-            {authIsLoggedIn ? (
-              <a href="/explore">
-                <button className="button is-warning">Explore the data</button>
-              </a>
-            ) : null}
+            <a href="/explore">
+              <button className="button is-warning">Explore the data</button>
+            </a>
           </div>
         </div>
         <div className="hero-foot">

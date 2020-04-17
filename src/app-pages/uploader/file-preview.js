@@ -4,6 +4,8 @@ import { AgGridReact } from "ag-grid-react";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
+import "ag-grid-community/dist/styles/ag-theme-balham-dark.css";
+import "ag-grid-community/dist/styles/ag-theme-fresh.css";
 
 const Empty = () => {
   return <p>Select a file to preview and upload...</p>;
@@ -17,21 +19,22 @@ export default connect(
       if (!uploadHasFile) return <Empty />;
       if (!uploadJson || !uploadJson.length) return <Empty />;
       const keys = Object.keys(uploadJson[0]);
-      const columnDefs = keys.map(key => {
+      const columnDefs = keys.map((key) => {
         return {
           headerName: key.toUpperCase(),
           field: key,
+          resizable: true,
           sortable: true,
-          filter: true
+          filter: true,
         };
       });
       const firstFifty = uploadJson.slice(0, 50);
       return (
         <div
-          className="ag-theme-balham"
+          className="ag-theme-balham-dark"
           style={{
             height: `${window.innerHeight * 0.75}px`,
-            width: "100%"
+            width: "100%",
           }}
         >
           <AgGridReact

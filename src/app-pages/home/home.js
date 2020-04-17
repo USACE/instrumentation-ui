@@ -12,25 +12,25 @@ export default () => {
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">Piezometers</p>
-              <p className="title">234</p>
+              <p className="title">36</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">Staffgages</p>
-              <p className="title">123</p>
+              <p className="title">7</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">Groups</p>
-              <p className="title">34</p>
+              <p className="title">7</p>
             </div>
           </div>
         </nav>
       </section>
       <section className="section">
-        <div className="container pl-5 pr-5">
+        <div className="is-hidden container pl-5 pr-5">
           <SearchBar />
         </div>
       </section>

@@ -109,6 +109,8 @@ export default (opts) => {
     addons: {},
     reduceFurther: null,
     pageSize: 25,
+    sortBy: null,
+    sortAsc: true,
   };
 
   const config = Object.assign({}, defaults, opts);
@@ -128,6 +130,8 @@ export default (opts) => {
     DELETE_FINISHED: `${baseType}_DELETE_FINISHED`,
     UPDATED_ITEM: `${baseType}_UPDATED_ITEM`,
     PAGE_SIZE_UPDATED: `${baseType}_PAGE_SIZE_UPDATED`,
+    SORT_BY_UPDATED: `${baseType}_SORT_BY_UPDATED`,
+    SORT_ASC_UPDATED: `${baseType}_SORT_ASC_UPDATED`,
     ERROR: `${baseType}_ERROR`,
   };
 
@@ -136,6 +140,8 @@ export default (opts) => {
   const doSave = `do${uCaseName}Save`;
   const doDelete = `do${uCaseName}Delete`;
   const doUpdatePageSize = `do${uCaseName}UpdatePageSize`;
+  const doUpdateSortBy = `do${uCaseName}UpdateSortBy`;
+  const doUpdateSortAsc = `do${uCaseName}UpdateSortAsc`;
 
   // selectors
   const selectState = `select${uCaseName}State`;
@@ -166,6 +172,8 @@ export default (opts) => {
   const selectDisallowRoles = `select${uCaseName}DisallowRoles`;
   const selectIsDisallowedRole = `select${uCaseName}IsDisallowedRole`;
   const selectPageSize = `select${uCaseName}PageSize`;
+  const selectSortBy = `select${uCaseName}SortBy`;
+  const selectSortAsc = `select${uCaseName}SortAsc`;
 
   // reactors
   const reactShouldFetch = `react${uCaseName}ShouldFetch`;
@@ -192,6 +200,8 @@ export default (opts) => {
           _allowRoles: config.allowRoles,
           _disallowRoles: config.disallowRoles,
           _pageSize: config.pageSize,
+          _sortBy: config.sortBy,
+          _sortAsc: config.sortAsc,
         };
 
         return (state = initialData, { type, payload }) => {
@@ -220,6 +230,8 @@ export default (opts) => {
             case actions.DELETE_STARTED:
             case actions.DELETE_FINISHED:
             case actions.PAGE_SIZE_UPDATED:
+            case actions.SORT_BY_UPDATED:
+            case actions.SORT_ASC_UPDATED:
             case actions.ERROR:
               return Object.assign({}, state, payload);
             case actions.FETCH_FINISHED:
@@ -310,7 +322,11 @@ export default (opts) => {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;
           fetchReq = apiGet(url, (err, response, body) => {
-            if (err || response.statusCode !== 200) {
+            if (
+              err ||
+              response.statusCode < 200 ||
+              response.statusCode >= 300
+            ) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
@@ -379,7 +395,11 @@ export default (opts) => {
           });
 
           apiPost(url, item, (err, response, body) => {
-            if (err || response.statusCode !== 200) {
+            if (
+              err ||
+              response.statusCode < 200 ||
+              response.statusCode >= 300
+            ) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
@@ -431,7 +451,11 @@ export default (opts) => {
 
           // save changes to the server
           apiPut(url, item, (err, response, body) => {
-            if (err || response.statusCode !== 200) {
+            if (
+              err ||
+              response.statusCode < 200 ||
+              response.statusCode >= 300
+            ) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
@@ -486,7 +510,11 @@ export default (opts) => {
 
           // update the state on the server now
           apiDelete(url, null, (err, response, body) => {
-            if (err || response.statusCode !== 200) {
+            if (
+              err ||
+              response.statusCode < 200 ||
+              response.statusCode >= 300
+            ) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
@@ -519,6 +547,20 @@ export default (opts) => {
             type: actions.PAGE_SIZE_UPDATED,
             payload: { _pageSize: ps },
           });
+      },
+
+      [doUpdateSortBy]: (sortBy) => ({ dispatch }) => {
+        dispatch({
+          type: actions.SORT_BY_UPDATED,
+          payload: { _sortBy: sortBy },
+        });
+      },
+
+      [doUpdateSortAsc]: (sortAsc) => ({ dispatch }) => {
+        dispatch({
+          type: actions.SORT_ASC_UPDATED,
+          payload: { _sortAsc: !!sortAsc },
+        });
       },
 
       [selectAbortReason]: (state) => {
@@ -601,9 +643,26 @@ export default (opts) => {
         return items;
       }),
 
-      [selectItems]: createSelector(selectItemsArray, (items) => {
-        return items;
-      }),
+      [selectItems]: createSelector(
+        selectItemsArray,
+        selectSortBy,
+        selectSortAsc,
+        (items, sortBy, sortAsc) => {
+          if (sortBy) {
+            const sorted = items.sort((a, b) => {
+              if (!a.hasOwnProperty(sortBy) || !b.hasOwnProperty(sortBy))
+                return 0;
+              if (a[sortBy] > b[sortBy]) return 1;
+              if (a[sortBy] < b[sortBy]) return -1;
+              return 0;
+            });
+            if (!sortAsc) return sorted.reverse();
+            return sorted;
+          } else {
+            return items;
+          }
+        }
+      ),
 
       [selectByRoute]: createSelector(
         selectItemsObject,
@@ -712,6 +771,14 @@ export default (opts) => {
         "selectAuthRoles",
         checkRoles
       ),
+
+      [selectSortBy]: (state) => {
+        return state[config.name]._sortBy;
+      },
+
+      [selectSortAsc]: (state) => {
+        return state[config.name]._sortAsc;
+      },
 
       [reactShouldFetch]: (state) => {
         if (state[config.name]._shouldFetch) return { actionCreator: doFetch };

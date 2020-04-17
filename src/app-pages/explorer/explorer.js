@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../../app-components/navbar";
 import Map from "../../app-components/map";
 import MapTools from "./map-tools";
-import Chart from "../../app-components/chart";
+import TimeSeries from "../../app-components/timeSeries";
 
 export default () => {
   return (
@@ -17,12 +17,7 @@ export default () => {
         </div>
         <div className="column">
           <div className="container mx-3">
-            <a href="/instrument/2323">
-              <button className="button is-secondary">
-                Open an instrument with id of 2323
-              </button>
-            </a>
-            <Chart />
+            <TimeSeries title={"Time Series Data"} x={null} y={null} />
           </div>
         </div>
       </div>

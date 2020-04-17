@@ -32,7 +32,7 @@ export default composeBundles(
     redirectOnLogout: "/",
   }),
   createJwtApiBundle({
-    root: `http://localhost:3030`,
+    root: process.env.NODE_ENV === "development" ? `http://localhost:3030` : ``,
   }),
   createCacheBundle({
     cacheFn: cache.set,

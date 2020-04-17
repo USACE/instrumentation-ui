@@ -53,7 +53,7 @@ export default connect(
         Object.assign({}, item, {
           name,
           type_id,
-          height,
+          height: Number(height),
           geometry: {
             type: "Point",
             coordinates: [lon, lat],

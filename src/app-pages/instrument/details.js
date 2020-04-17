@@ -65,12 +65,6 @@ export default connect(
                   <li className={q.t === "s2" ? "is-active" : ""}>
                     <a href={`${pathname}?t=s2`}>Series 2</a>
                   </li>
-                  <li className={q.t === "s3" ? "is-active" : ""}>
-                    <a href={`${pathname}?t=s3`}>Series 3</a>
-                  </li>
-                  <li className={q.t === "s4" ? "is-active" : ""}>
-                    <a href={`${pathname}?t=s4`}>Series 4</a>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -78,18 +72,10 @@ export default connect(
               <div className="container">
                 <div className="tab is-active">
                   {q.t === "s1" ? (
-                    <TimeSeries
-                      title={"My Very First Time Series Plot"}
-                      x={null}
-                      y={null}
-                    />
+                    <TimeSeries title={"Series 1"} x={null} y={null} />
                   ) : null}
                   {q.t === "s2" ? (
-                    <TimeSeries
-                      title={"My Second Time Series Plot"}
-                      x={null}
-                      y={null}
-                    />
+                    <TimeSeries title={"Series 2"} x={null} y={null} />
                   ) : null}
                 </div>
               </div>
