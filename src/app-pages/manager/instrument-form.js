@@ -9,18 +9,28 @@ export default connect(
   "doInstrumentsSave",
   "doInstrumentDrawUpdateLoc",
   "doInstrumentDrawOnMapClose",
+  "doProjSetDisplayProjection",
+  "doProjTransformFromLonLat",
+  "doProjToLonLat",
   "selectInstrumentDrawLon",
   "selectInstrumentDrawLat",
   "selectInstrumentDrawReady",
+  "selectProjDisplayProjection",
+  "selectProjOptions",
   ({
     doModalClose,
     doInstrumentsSave,
     doInstrumentDrawUpdateLoc,
     doInstrumentDrawOnMapClose,
+    doProjSetDisplayProjection,
+    doProjTransformFromLonLat,
+    doProjToLonLat,
     item,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
+    projDisplayProjection,
+    projOptions,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
@@ -67,6 +77,19 @@ export default connect(
     const handleLocUpdate = () => {
       if (lon && lat) doInstrumentDrawUpdateLoc({ lat: lat, lon: lon });
     };
+
+    const handleSetDisplayProjection = (e) => {
+      doProjSetDisplayProjection(e.target.value);
+    };
+
+    const projected =
+      lon && lat
+        ? doProjTransformFromLonLat(
+            [lon, lat],
+            projOptions[projDisplayProjection]
+          )
+        : ["", ""];
+
     return (
       <div className="modal-card">
         <form id="instrument-form" onSubmit={handleSave}>
@@ -127,11 +150,29 @@ export default connect(
               </p>
             </div>
             <div className="field">
-              <label className="label">Longitude in Decimal Degrees</label>
+              <label className="label">
+                <span style={{ float: "right" }}>
+                  Use Projection:
+                  <select
+                    onChange={handleSetDisplayProjection}
+                    value={projDisplayProjection}
+                    className="ml-2"
+                  >
+                    {Object.keys(projOptions).map((key, i) => {
+                      return (
+                        <option key={i} value={key}>
+                          {key}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </span>
+                X Coordinate
+              </label>
               <p className="control">
                 <input
                   data-key="lon"
-                  value={lon}
+                  value={projected[0]}
                   onChange={(e) => {
                     setLon(e.target.value);
                   }}
@@ -143,11 +184,11 @@ export default connect(
               </p>
             </div>
             <div className="field">
-              <label className="label">Latitude in Decimal Degrees</label>
+              <label className="label">Y Coordinate</label>
               <p className="control">
                 <input
                   data-key="lat"
-                  value={lat}
+                  value={projected[1]}
                   onChange={(e) => {
                     setLat(e.target.value);
                   }}

@@ -2,7 +2,7 @@
 import { createSelector } from "redux-bundler";
 import olMap from "ol/Map.js";
 import View from "ol/View";
-// import { get, transform, fromLonLat, transformExtent } from "ol/proj";
+
 import ScaleBar from "ol/control/ScaleLine";
 // import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 // import { OSM, Vector as VectorSource } from "ol/source";
@@ -12,9 +12,6 @@ const actions = {
   MAPS_INITIALIZED: `MAPS_INITIALIZED`,
   MAPS_SHUTDOWN: `MAPS_SHUTDOWN`,
 };
-
-// const geoProjection = get("EPSG=4326");
-// const webProjection = get("EPSG:3857");
 
 export default {
   name: "maps",

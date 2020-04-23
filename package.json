@@ -1,5 +1,6 @@
 {
   "name": "hhd-ui",
+  "homepage": "https://d1ycfr9v4fzpxx.cloudfront.net/hhd",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +17,7 @@
     "node-sass": "^4.13.1",
     "ol": "^6.2.1",
     "plotly.js": "^1.53.0",
+    "proj4": "^2.6.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-plotly.js": "^2.4.0",
@@ -29,9 +31,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 rm s3://corpsmap-apps/hhd --recursive && aws s3 cp ./build/ s3://corpsmap-apps/hhd --recursive --acl public-read",
+    "deploy": "aws s3 rm s3://corpsmap-appz/hhd --recursive && aws s3 cp ./build/ s3://corpsmap-appz/hhd --recursive",
     "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
-    "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to https://dnss3ogcwh6i.cloudfront.net"
+    "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to $npm_package_homepage"
   },
   "eslintConfig": {
     "extends": "react-app"
