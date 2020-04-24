@@ -9,6 +9,7 @@ import Logout from "../app-pages/logout";
 
 export default createRouteBundle(
   {
+    "": Home,
     "/": Home,
     "/explore": Explorer,
     "/upload": Uploader,
