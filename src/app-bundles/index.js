@@ -25,6 +25,7 @@ import mapsBundle from "./maps-bundle";
 import mapInteractionBundle from "./map-interaction-bundle";
 // import timeSeriesBundle from "./time-series-bundle";
 import modalBundle from "./modal-bundle";
+import nestedUrlBundle from "./nested-url-bundle";
 import projectionBundle from "./projection-bundle";
 
 export default composeBundles(
@@ -64,5 +65,6 @@ export default composeBundles(
   mapsBundle,
   mapInteractionBundle,
   modalBundle,
+  nestedUrlBundle,
   projectionBundle
 );
