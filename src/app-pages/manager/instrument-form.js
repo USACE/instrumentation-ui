@@ -11,7 +11,8 @@ export default connect(
   "doInstrumentDrawOnMapClose",
   "doProjSetDisplayProjection",
   "doProjTransformFromLonLat",
-  "doProjToLonLat",
+  "doProjTransformToLonLat",
+  "doInstrumentGroupInstrumentsSave",
   "selectInstrumentDrawLon",
   "selectInstrumentDrawLat",
   "selectInstrumentDrawReady",
@@ -24,8 +25,10 @@ export default connect(
     doInstrumentDrawOnMapClose,
     doProjSetDisplayProjection,
     doProjTransformFromLonLat,
-    doProjToLonLat,
+    doProjTransformToLonLat,
+    doInstrumentGroupInstrumentsSave,
     item,
+    addToGroup,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
@@ -35,8 +38,19 @@ export default connect(
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
     const [height, setHeight] = useState((item && item.height) || "");
-    const [lat, setLat] = useState(instrumentDrawLat || "");
-    const [lon, setLon] = useState(instrumentDrawLon || "");
+    // const [lat, setLat] = useState(instrumentDrawLat || "");
+    // const [lon, setLon] = useState(instrumentDrawLon || "");
+
+    const projected =
+      instrumentDrawLon && instrumentDrawLat
+        ? doProjTransformFromLonLat(
+            [instrumentDrawLon, instrumentDrawLat],
+            projOptions[projDisplayProjection]
+          )
+        : ["", ""];
+
+    const [x, setX] = useState(projected[0]);
+    const [y, setY] = useState(projected[1]);
 
     useEffect(() => {
       if (!instrumentDrawReady || !item || !item.geometry) return undefined;
@@ -53,42 +67,69 @@ export default connect(
     ]);
 
     useEffect(() => {
-      if (instrumentDrawLat) setLat(instrumentDrawLat);
-      if (instrumentDrawLon) setLon(instrumentDrawLon);
-    }, [instrumentDrawLat, instrumentDrawLon]);
+      if (instrumentDrawLat && instrumentDrawLon) {
+        const projected = doProjTransformFromLonLat(
+          [instrumentDrawLon, instrumentDrawLat],
+          projOptions[projDisplayProjection]
+        );
+        setX(projected[0]);
+        setY(projected[1]);
+      }
+    }, [
+      instrumentDrawLat,
+      instrumentDrawLon,
+      doProjTransformFromLonLat,
+      projOptions,
+      projDisplayProjection,
+    ]);
 
     const handleSave = (e) => {
       e.preventDefault();
-      doInstrumentsSave(
-        Object.assign({}, item, {
-          name,
-          type_id,
-          height: Number(height),
-          geometry: {
-            type: "Point",
-            coordinates: [lon, lat],
+      if (x && y) {
+        const lonLat = doProjTransformToLonLat(
+          [Number(x), Number(y)],
+          projOptions[projDisplayProjection]
+        );
+        doInstrumentsSave(
+          Object.assign({}, item, {
+            name,
+            type_id,
+            height: Number(height),
+            geometry: {
+              type: "Point",
+              coordinates: [lonLat[0], lonLat[1]],
+            },
+          }),
+          (updatedItem) => {
+            if (addToGroup) {
+              doInstrumentGroupInstrumentsSave(
+                updatedItem,
+                doModalClose,
+                true,
+                true
+              );
+            } else {
+              doModalClose();
+            }
           },
-        }),
-        doModalClose,
-        true
-      );
+          true
+        );
+      }
     };
 
     const handleLocUpdate = () => {
-      if (lon && lat) doInstrumentDrawUpdateLoc({ lat: lat, lon: lon });
+      if (x && y) {
+        const lonLat = doProjTransformToLonLat(
+          [Number(x), Number(y)],
+          projOptions[projDisplayProjection]
+        );
+        doInstrumentDrawUpdateLoc({ lon: lonLat[0], lat: lonLat[1] });
+      }
     };
 
     const handleSetDisplayProjection = (e) => {
       doProjSetDisplayProjection(e.target.value);
     };
-
-    const projected =
-      lon && lat
-        ? doProjTransformFromLonLat(
-            [lon, lat],
-            projOptions[projDisplayProjection]
-          )
-        : ["", ""];
 
     return (
       <div className="modal-card">
@@ -171,10 +212,10 @@ export default connect(
               </label>
               <p className="control">
                 <input
-                  data-key="lon"
-                  value={projected[0]}
+                  data-key="x"
+                  value={x}
                   onChange={(e) => {
-                    setLon(e.target.value);
+                    setX(e.target.value);
                   }}
                   onBlur={handleLocUpdate}
                   className="input"
@@ -187,10 +228,10 @@ export default connect(
               <label className="label">Y Coordinate</label>
               <p className="control">
                 <input
-                  data-key="lat"
-                  value={projected[1]}
+                  data-key="y"
+                  value={y}
                   onChange={(e) => {
-                    setLat(e.target.value);
+                    setY(e.target.value);
                   }}
                   onBlur={handleLocUpdate}
                   className="input"

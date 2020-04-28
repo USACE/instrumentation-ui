@@ -3,7 +3,9 @@ import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 import InstrumentTable from "../manager/instrument-table";
 import InstrumentGroupForm from "../manager/instrument-group-form";
-// import Map from "../../app-components/groupMap";
+import InstrumentForm from "../manager/instrument-form";
+import InstrumentPicker from "./instrument-picker";
+import InstrumentRemove from "./instrument-remove";
 import Map from "../../app-components/classMap";
 
 export default connect(
@@ -69,9 +71,8 @@ export default connect(
               <div className="buttons">
                 <button
                   onClick={() => {
-                    doModalOpen(InstrumentGroupForm, { item: group });
+                    doModalOpen(InstrumentForm, { addToGroup: group });
                   }}
-                  disabled={true}
                   className="button is-info is-small"
                 >
                   <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
@@ -79,9 +80,8 @@ export default connect(
                 </button>
                 <button
                   onClick={() => {
-                    doModalOpen(InstrumentGroupForm, { item: group });
+                    doModalOpen(InstrumentPicker);
                   }}
-                  disabled={true}
                   className="button is-info is-small"
                 >
                   <i className="mdi mdi-map-marker pr-2"></i> Add Existing
@@ -90,7 +90,10 @@ export default connect(
               </div>
             </div>
             <div className="panel-block">
-              <InstrumentTable instruments={instruments} />
+              <InstrumentTable
+                instruments={instruments}
+                tools={[InstrumentRemove]}
+              />
             </div>
           </div>
         </section>
