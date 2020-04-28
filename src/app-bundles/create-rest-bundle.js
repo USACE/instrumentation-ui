@@ -367,7 +367,7 @@ export default (opts) => {
         }
       },
 
-      [doSave]: (item, callback, deferCallback) => ({
+      [doSave]: (item, callback, deferCallback, forcePost) => ({
         dispatch,
         store,
         apiPut,
@@ -383,7 +383,7 @@ export default (opts) => {
         // grab the state object
         const tempState = store[selectState]();
 
-        if (!item[config.uid]) {
+        if (!item[config.uid] || forcePost) {
           const url = decorateUrlWithItem(store[selectPostUrl](), item);
 
           // create a temporary id and store it in state using that as the key
@@ -416,8 +416,8 @@ export default (opts) => {
               delete updatedState[tempId];
 
               // add our new id to our item and re-attach to our state
-              const data =
-                typeof body === "string" ? JSON.parse(body)[0] : body[0];
+              let data = typeof body === "string" ? JSON.parse(body) : body;
+              if (data && data.length) data = data[0];
               const updatedItem = Object.assign({}, item, data);
               updatedState[updatedItem[config.uid]] = updatedItem;
 
@@ -434,7 +434,7 @@ export default (opts) => {
                 },
               });
 
-              if (deferCallback && callback) callback();
+              if (deferCallback && callback) callback(updatedItem);
             }
           });
           // if we get a callback, go ahead and fire it
@@ -509,7 +509,7 @@ export default (opts) => {
           });
 
           // update the state on the server now
-          apiDelete(url, null, (err, response, body) => {
+          apiDelete(url, (err, response, body) => {
             if (
               err ||
               response.statusCode < 200 ||
