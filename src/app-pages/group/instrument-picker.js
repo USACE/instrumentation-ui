@@ -21,7 +21,6 @@ export default connect(
     const handleSave = (e) => {
       e.preventDefault();
       const instrument = instruments[instrumentSlug];
-      console.log(instrument);
       doInstrumentGroupInstrumentsSave(instrument, doModalClose, true, true);
     };
 

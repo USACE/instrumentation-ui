@@ -116,18 +116,19 @@ export default {
     const data = store.selectInstrumentsByRouteGeoJSON();
     map.removeLayer(lyr);
     src.clear();
-    src.addFeatures(
-      geoJSON.readFeatures(data, {
-        featureProjection: webProjection,
-        dataProjection: geoProjection,
-      })
-    );
+    const features = geoJSON.readFeatures(data, {
+      featureProjection: webProjection,
+      dataProjection: geoProjection,
+    });
+    src.addFeatures(features);
     map.addLayer(lyr);
     const view = map.getView();
-    view.fit(src.getExtent(), {
-      padding: [50, 50, 50, 50],
-      maxZoom: 16,
-    });
+    if (features && features.length) {
+      view.fit(src.getExtent(), {
+        padding: [50, 50, 50, 50],
+        maxZoom: 16,
+      });
+    }
     dispatch({
       type: "INSTRUMENTMAP_ADD_DATA_FINISH",
     });
