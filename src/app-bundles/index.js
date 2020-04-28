@@ -34,7 +34,10 @@ export default composeBundles(
     redirectOnLogout: "/",
   }),
   createJwtApiBundle({
-    root: process.env.NODE_ENV === "development" ? `http://localhost:3030` : ``,
+    root:
+      process.env.NODE_ENV === "development"
+        ? `http://localhost:3030/instrumentation`
+        : `https://api.rsgis.dev/development/instrumentation`,
   }),
   createCacheBundle({
     cacheFn: cache.set,
