@@ -97,8 +97,7 @@ export default connect(
             <div className="navbar-brand">
               <a className="navbar-item" href={"/"}>
                 <strong style={{ fontSize: "2em" }}>
-                  <i className="mdi mdi-water pr-2"></i>HHD Instrumentation
-                  Browser
+                  <i className="mdi mdi-water pr-2"></i>Instrumentation Browser
                 </strong>
               </a>
               <span

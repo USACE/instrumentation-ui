@@ -8,11 +8,11 @@ export default connect(
   ({ doUploadQueueCsv, doUpdateUrl, size }) => {
     const inputEl = useRef(null);
 
-    const handleClick = e => {
+    const handleClick = (e) => {
       inputEl.current.click();
     };
 
-    const handleInputChange = e => {
+    const handleInputChange = (e) => {
       doUploadQueueCsv(inputEl.current.files[0]);
       doUpdateUrl("/upload");
     };
@@ -22,13 +22,13 @@ export default connect(
       "is-success": true,
       "is-small": size === "sm",
       "is-medium": size === "md",
-      "is-large": size === "lg"
+      "is-large": size === "lg",
     });
 
     return (
       <>
         <button className={btnClass} onClick={handleClick}>
-          <i className="mdi mdi-cloud-upload pr-2"></i> Bulk Upload
+          <i className="mdi mdi-cloud-upload pr-2"></i> Choose File
         </button>
         <input
           accept=".csv"
