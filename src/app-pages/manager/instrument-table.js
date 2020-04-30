@@ -34,9 +34,11 @@ const Table = connect("doModalOpen", ({ doModalOpen, instruments, tools }) => {
                 >
                   <i className="mdi mdi-pencil"></i>
                 </button>
-                {tools.map((Tool, i) => {
-                  return <Tool key={i} item={instrument} />;
-                })}
+                {tools
+                  ? tools.map((Tool, i) => {
+                      return <Tool key={i} item={instrument} />;
+                    })
+                  : null}
               </td>
             </tr>
           );

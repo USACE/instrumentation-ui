@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import { AgGridReact } from "ag-grid-react";
 
@@ -14,70 +14,69 @@ const Empty = () => {
 export default connect(
   "selectUploadJson",
   "selectUploadHasFile",
-  ({ uploadJson, uploadHasFile }) => {
-    const renderContents = () => {
-      if (!uploadHasFile) return <Empty />;
-      if (!uploadJson || !uploadJson.length) return <Empty />;
+  "selectUploadIgnoreRowsList",
+  ({ uploadJson, uploadHasFile, uploadIgnoreRowsList }) => {
+    let grid, columnDefs, firstFifty;
+    if (uploadJson && uploadJson.length && uploadHasFile) {
       const keys = Object.keys(uploadJson[0]);
-      const columnDefs = keys.map((key) => {
-        return {
-          headerName: key.toUpperCase(),
-          field: key,
-          resizable: true,
-          sortable: true,
-          filter: true,
-        };
+      columnDefs = [
+        { headerName: "", valueGetter: "node.rowIndex + 1", width: 40 },
+        ...keys.map((key) => {
+          return {
+            headerName: key.toUpperCase(),
+            field: key,
+            resizable: true,
+            sortable: true,
+            filter: true,
+          };
+        }),
+      ];
+      firstFifty = uploadJson.slice(0, 50).map((row, i) => {
+        row.exclude = false;
+        return row;
       });
-      const firstFifty = uploadJson.slice(0, 50);
-      return (
-        <div
-          className="ag-theme-balham-dark"
-          style={{
-            height: `${window.innerHeight * 0.75}px`,
-            width: "100%",
-          }}
-        >
-          <AgGridReact
-            columnDefs={columnDefs}
-            rowData={firstFifty}
-          ></AgGridReact>
-        </div>
-      );
-      // return (
-      //   <table>
-      //     <thead>
-      //       <tr>
-      //         {keys.map((key, i) => {
-      //           return <th key={i}>{key}</th>;
-      //         })}
-      //       </tr>
-      //     </thead>
-      //     <tbody>
-      //       {firstFifty.map((item, i) => {
-      //         return (
-      //           <tr key={i}>
-      //             {keys.map((key, i2) => {
-      //               return (
-      //                 <td
-      //                   className="overflow-ellipsis"
-      //                   title={item[key]}
-      //                   key={i2}
-      //                 >
-      //                   {item[key]}
-      //                 </td>
-      //               );
-      //             })}
-      //           </tr>
-      //         );
-      //       })}
-      //     </tbody>
-      //   </table>
-      // );
-    };
+    }
+    useEffect(() => {
+      if (!grid) return undefined;
+      grid.api.forEachNode(function (rowNode) {
+        rowNode.setDataValue(
+          "exclude",
+          uploadIgnoreRowsList.indexOf(rowNode.rowIndex + 1) !== -1
+        );
+      });
+    }, [grid, uploadIgnoreRowsList]);
+    const previewMessage =
+      uploadJson && uploadJson.length
+        ? `Preview (first 50 rows of ${uploadJson.length})`
+        : "Preview (first 50 rows)";
     return (
       <div className="panel">
-        <p className="panel-heading">Preview (first 50 rows)</p>
-        <div className="panel-block">{renderContents()}</div>
+        <p className="panel-heading">{previewMessage}</p>
+        <div className="panel-block">
+          {uploadHasFile && uploadJson && uploadJson.length ? (
+            <div
+              className="ag-theme-balham"
+              style={{
+                height: `${window.innerHeight * 0.75}px`,
+                width: "100%",
+              }}
+            >
+              <AgGridReact
+                ref={(el) => {
+                  grid = el;
+                }}
+                rowClassRules={{
+                  "row-excluded": "data.exclude",
+                }}
+                columnDefs={columnDefs}
+                rowData={firstFifty}
+                enableCellChangeFlash={true}
+              ></AgGridReact>
+            </div>
+          ) : (
+            <Empty />
+          )}
+        </div>
       </div>
     );
   }
