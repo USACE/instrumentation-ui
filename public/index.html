@@ -2,13 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/gage_small.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -28,7 +24,7 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="if-ie" class="is-overlay overlay">
+    <div id="if-ie" class="is-overlay overlay is-hidden">
       <div class="overlay-card">
         <article class="message is-warning">
           <div class="message-body">
@@ -65,8 +61,28 @@
     <div id="root"></div>
 
     <script>
+      // just for development, to be able to show the IE warning in demos
+      window.forceIE = false;
+      var search = window.location.search;
+      window.searchObj = {};
+      if (search.length) {
+        var pairs = search.replace("?", "").split("=");
+        for (var i = 0; i < pairs.length; i++) {
+          if (i % 2 === 1) {
+            console.log(pairs[i], pairs[i - 1]);
+            searchObj[pairs[i - 1].toLowerCase()] = !!pairs[i];
+          }
+        }
+        if (searchObj.hasOwnProperty("ie")) {
+          window.forceIE = searchObj.ie;
+        }
+      }
+    </script>
+
+    <script>
       // first check for IE, if not IE, delete the ie warning
       var isIe = !window.Object.hasOwnProperty("assign");
+      isIe = !!window.forceIE;
       var el = document.getElementById("if-ie");
       if (isIe) {
         el.classList.remove("is-hidden");
