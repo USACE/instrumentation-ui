@@ -4,6 +4,70 @@ import { connect } from "redux-bundler-react";
 import Map from "../../app-components/classMap";
 import DomainSelect from "../../app-components/domain-select";
 
+const DeleteButton = connect(
+  "doInstrumentsDelete",
+  "doModalClose",
+  "doUpdateUrlWithHomepage",
+  "selectRouteParams",
+  ({
+    doInstrumentsDelete,
+    doModalClose,
+    doUpdateUrlWithHomepage,
+    routeParams,
+    item,
+  }) => {
+    const [isConfirming, setIsConfirming] = useState(false);
+
+    const handleDelete = () => {
+      setIsConfirming(false);
+      doInstrumentsDelete(
+        item,
+        () => {
+          doModalClose();
+          if (routeParams.hasOwnProperty("instrumentSlug"))
+            doUpdateUrlWithHomepage("/manager");
+        },
+        true
+      );
+    };
+
+    return (
+      <>
+        {isConfirming ? (
+          <>
+            <button
+              title="Confirm"
+              className="button is-danger"
+              onClick={handleDelete}
+            >
+              Confirm
+            </button>
+            <button
+              title="Cancel"
+              className="button is-secondary"
+              onClick={() => {
+                setIsConfirming(false);
+              }}
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          <button
+            title="Remove from Group"
+            onClick={() => {
+              setIsConfirming(true);
+            }}
+            className="button is-danger"
+          >
+            Delete
+          </button>
+        )}
+      </>
+    );
+  }
+);
+
 export default connect(
   "doModalClose",
   "doInstrumentsSave",
@@ -38,8 +102,9 @@ export default connect(
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
     const [height, setHeight] = useState((item && item.height) || "");
-    // const [lat, setLat] = useState(instrumentDrawLat || "");
-    // const [lon, setLon] = useState(instrumentDrawLon || "");
+    const [active, setActive] = useState((item && item.active) || false);
+    const [station, setStation] = useState((item && item.station) || "");
+    const [offset, setOffset] = useState((item && item.offset) || "");
 
     const projected =
       instrumentDrawLon && instrumentDrawLat
@@ -94,6 +159,9 @@ export default connect(
           Object.assign({}, item, {
             name,
             type_id,
+            active,
+            station,
+            offset,
             height: Number(height),
             geometry: {
               type: "Point",
@@ -117,11 +185,14 @@ export default connect(
       }
     };
 
+    const currentProj = projOptions[projDisplayProjection];
+    const units = currentProj.getUnits();
+
     const handleLocUpdate = () => {
       if (x && y) {
         const lonLat = doProjTransformToLonLat(
           [Number(x), Number(y)],
-          projOptions[projDisplayProjection]
+          currentProj
         );
         doInstrumentDrawUpdateLoc({ lon: lonLat[0], lat: lonLat[1] });
       }
@@ -177,6 +248,64 @@ export default connect(
               </p>
             </div>
             <div className="field">
+              <label className="label">Active</label>
+              <p className="control">
+                <label className="radio">
+                  <input
+                    type="radio"
+                    checked={active}
+                    name="is_active"
+                    onChange={() => {
+                      setActive(true);
+                    }}
+                  />{" "}
+                  Yes
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    checked={!active}
+                    name="is_active"
+                    onChange={() => {
+                      setActive(false);
+                    }}
+                  />{" "}
+                  No
+                </label>
+              </p>
+            </div>
+            <div className="field">
+              <label className="label">Station</label>
+              <p className="control">
+                <input
+                  value={station}
+                  onChange={(e) => {
+                    setStation(e.target.value);
+                  }}
+                  className="input"
+                  type="number"
+                  placeholder="Station"
+                />
+              </p>
+            </div>
+            <div className="field">
+              <label className="label">Offset</label>
+              <p className="control">
+                <input
+                  value={offset}
+                  onChange={(e) => {
+                    setOffset(e.target.value);
+                  }}
+                  className="input"
+                  type="number"
+                  placeholder="Offset"
+                />
+              </p>
+              <p className="help">
+                Offset should be positive on land side, negative on water side
+              </p>
+            </div>
+            <div className="field">
               <label className="label">Height</label>
               <p className="control">
                 <input
@@ -208,7 +337,9 @@ export default connect(
                     })}
                   </select>
                 </span>
-                X Coordinate
+                {`${
+                  units === "degrees" ? "Longitude" : "X coordinate"
+                } in ${units}`}
               </label>
               <p className="control">
                 <input
@@ -220,12 +351,16 @@ export default connect(
                   onBlur={handleLocUpdate}
                   className="input"
                   type="number"
-                  placeholder="Longitude in DD"
+                  placeholder={`${
+                    units === "degrees" ? "Longitude" : "X coordinate"
+                  } in ${units}`}
                 />
               </p>
             </div>
             <div className="field">
-              <label className="label">Y Coordinate</label>
+              <label className="label">{`${
+                units === "degrees" ? "Latitude" : "Y coordinate"
+              } in ${units}`}</label>
               <p className="control">
                 <input
                   data-key="y"
@@ -236,25 +371,39 @@ export default connect(
                   onBlur={handleLocUpdate}
                   className="input"
                   type="number"
-                  placeholder="Latitude in DD"
+                  placeholder={`${
+                    units === "degrees" ? "Latitude" : "Y coordinate"
+                  } in ${units}`}
                 />
               </p>
             </div>
           </section>
-          <footer className="modal-card-foot">
-            <button type="submit" className="button is-primary">
-              Save changes
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                doModalClose();
-              }}
-              className="button"
-            >
-              Cancel
-            </button>
+          <footer
+            className="modal-card-foot"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <button type="submit" className="button is-primary">
+                Save changes
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  doModalClose();
+                }}
+                className="button"
+              >
+                Cancel
+              </button>
+            </div>
+            <div>
+              <DeleteButton item={item} />
+            </div>
           </footer>
         </form>
       </div>

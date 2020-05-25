@@ -1,6 +1,70 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
+const DeleteButton = connect(
+  "doInstrumentGroupsDelete",
+  "doModalClose",
+  "doUpdateUrlWithHomepage",
+  "selectRouteParams",
+  ({
+    doInstrumentGroupsDelete,
+    doModalClose,
+    doUpdateUrlWithHomepage,
+    routeParams,
+    item,
+  }) => {
+    const [isConfirming, setIsConfirming] = useState(false);
+
+    const handleDelete = () => {
+      setIsConfirming(false);
+      doInstrumentGroupsDelete(
+        item,
+        () => {
+          doModalClose();
+          if (routeParams.hasOwnProperty("groupSlug"))
+            doUpdateUrlWithHomepage("/manager");
+        },
+        true
+      );
+    };
+
+    return (
+      <>
+        {isConfirming ? (
+          <>
+            <button
+              title="Confirm"
+              className="button is-danger"
+              onClick={handleDelete}
+            >
+              Confirm
+            </button>
+            <button
+              title="Cancel"
+              className="button is-secondary"
+              onClick={() => {
+                setIsConfirming(false);
+              }}
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          <button
+            title="Remove from Group"
+            onClick={() => {
+              setIsConfirming(true);
+            }}
+            className="button is-danger"
+          >
+            Delete
+          </button>
+        )}
+      </>
+    );
+  }
+);
+
 export default connect(
   "doModalClose",
   "doInstrumentGroupsSave",
@@ -59,20 +123,32 @@ export default connect(
               </p>
             </div>
           </section>
-          <footer className="modal-card-foot">
-            <button type="submit" className="button is-primary">
-              Save changes
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                doModalClose();
-              }}
-              className="button"
-            >
-              Cancel
-            </button>
+          <footer
+            className="modal-card-foot"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <button type="submit" className="button is-primary">
+                Save changes
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  doModalClose();
+                }}
+                className="button"
+              >
+                Cancel
+              </button>
+            </div>
+            <div>
+              <DeleteButton item={item} />
+            </div>
           </footer>
         </form>
       </div>
