@@ -11,12 +11,13 @@ export default createRouteBundle(
   {
     "": Home,
     "/": Home,
-    "/explore": Explorer,
-    "/upload": Uploader,
     "/logout": Logout,
-    "/manager": InstrumentManager,
-    "/groups/:groupSlug": Group,
-    "/instruments/:instrumentSlug": Instrument,
+    "/explore": Explorer,
+    "/:projectSlug/upload": Uploader,
+    "/:projectSlug/manager": InstrumentManager,
+    "/:projectSlug/groups/:groupSlug": Group,
+    "/:projectSlug/instruments/:instrumentSlug": Instrument,
+    "*": Home,
   },
   {
     routeInfoSelector: "selectPathnameMinusHomepage",
