@@ -18,12 +18,16 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: "instrumentSlug",
-  getTemplate: "/instruments",
+  getTemplate: "/projects/:projectId/instruments",
   putTemplate: "/instruments/:item.id",
   postTemplate: "/instruments",
   deleteTemplate: "/instruments/:item.id",
-  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
-  forceFetchActions: ["INSTRUMENTS_SAVE_FINISHED"],
+  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "PROJECTS_FETCH_FINISHED"],
+  forceFetchActions: [
+    "INSTRUMENTS_SAVE_FINISHED",
+    "INSTRUMENTS_DELETE_FINISHED",
+  ],
+  urlParamSelectors: ["selectProjectsIdByRoute"],
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {
       dispatch({
