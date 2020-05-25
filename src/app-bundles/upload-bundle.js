@@ -109,7 +109,7 @@ export default {
     });
   },
 
-  doUploadSend: () => async ({ dispatch, store }) => {
+  doUploadSend: () => async ({ dispatch, store, apiPost }) => {
     dispatch({
       type: "UPLOAD_POST_START",
       payload: {
@@ -130,13 +130,36 @@ export default {
       domains
     );
 
-    console.log(parsed);
-
-    dispatch({
-      type: "UPLOAD_POST_FINISH",
-      payload: {
-        _isUploading: true,
-      },
+    apiPost("/instruments", parsed, (err, response, body) => {
+      if (err || response.statusCode < 200 || response.statusCode >= 300) {
+        console.log(err, response);
+        // dispatch({
+        //   type: actions.ERROR,
+        //   payload: {
+        //     _err: { err: err, response: response },
+        //     notification: {
+        //       statusCode: response.statusCode,
+        //     },
+        //     _isSaving: false,
+        //   },
+        // });
+      } else {
+        dispatch({
+          type: "UPLOAD_POST_FINISH",
+          payload: {
+            csv: null,
+            json: null,
+            ignoreRows: "",
+            parsers: [instrumentParser],
+            selectedParser: null,
+            fieldMap: null,
+            _isParsing: false,
+            _shouldParseCsv: false,
+            _isUploading: false,
+          },
+        });
+        store.doUpdateUrlWithHomepage("/manager");
+      }
     });
   },
 

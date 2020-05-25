@@ -4,8 +4,8 @@ import { classnames } from "../utils";
 
 export default connect(
   "doUploadQueueCsv",
-  "doUpdateUrl",
-  ({ doUploadQueueCsv, doUpdateUrl, size }) => {
+  "doUpdateUrlWithHomepage",
+  ({ doUploadQueueCsv, doUpdateUrlWithHomepage, size }) => {
     const inputEl = useRef(null);
 
     const handleClick = (e) => {
@@ -14,7 +14,7 @@ export default connect(
 
     const handleInputChange = (e) => {
       doUploadQueueCsv(inputEl.current.files[0]);
-      doUpdateUrl("/upload");
+      doUpdateUrlWithHomepage("/upload");
     };
 
     const btnClass = classnames({

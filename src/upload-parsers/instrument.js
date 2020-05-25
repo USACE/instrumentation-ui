@@ -22,6 +22,13 @@ const model = {
     type: "string",
     template: "",
   },
+  active: {
+    label: "Active",
+    type: "boolean",
+    template: "",
+    helpText:
+      'Acceptable data values include "true" or "false" and are case-insensitive, all others will be ignored',
+  },
   type_id: {
     label: "Type",
     type: "domain",
@@ -45,6 +52,19 @@ const model = {
     type: "number",
     template: "",
   },
+  station: {
+    label: "Station",
+    type: "number",
+    template: "",
+    helpText: `Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.`,
+  },
+  offset: {
+    label: "Offset",
+    type: "number",
+    template: "",
+    helpText:
+      "Only numeric values will be parsed, positive values are water-side and negative values are land-side",
+  },
 };
 
 const parser = (json, fieldMap, ignoreRows, domains) => {
@@ -58,10 +78,22 @@ const parser = (json, fieldMap, ignoreRows, domains) => {
             geometry: { type: "Point", coordinates: [] },
           };
           fields.forEach((field) => {
+            // regex to see if our values match all-
+            const allTest = /all-(.+)/gi;
+            const isMatch = allTest.exec(fieldMap[field]);
             if (model[field] && model[field].type) {
               switch (model[field].type) {
+                case "boolean":
+                  if (isMatch) {
+                    outRec[field] = isMatch[1] === "true";
+                  } else {
+                    outRec[field] =
+                      rec[fieldMap[field]].toLowerCase() === "true";
+                  }
+                  break;
                 case "number":
-                  outRec[field] = Number(rec[fieldMap[field]]);
+                  outRec[field] = Number(rec[fieldMap[field]].replace("+", ""));
+                  if (isNaN(outRec[field])) outRec[field] = null;
                   break;
                 case "coord":
                   if (isNaN(Number(rec[fieldMap[field]]))) {
@@ -72,7 +104,10 @@ const parser = (json, fieldMap, ignoreRows, domains) => {
                   break;
                 case "domain":
                   const domainGroup = domains[model[field].domainGroup];
-                  const val = rec[fieldMap[field]];
+                  let val = rec[fieldMap[field]];
+                  if (isMatch) {
+                    val = isMatch[1];
+                  }
                   if (val) {
                     const filtered = domainGroup.filter((d) => {
                       return d.value.toUpperCase() === val.toUpperCase();

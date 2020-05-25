@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 
 export default connect(
+  "selectDomainsItemsByGroup",
   "selectUploadFieldMap",
   "doUploadSetFieldmap",
   "selectUploadJsonKeys",
   "selectUploadSelectedParser",
   ({
+    domainsItemsByGroup: domains,
     uploadFieldMap,
     doUploadSetFieldmap,
     uploadJsonKeys,
@@ -54,6 +56,25 @@ export default connect(
                         value={uploadFieldMap[key]}
                       >
                         <option value={""}>Select One...</option>
+                        {model[key].type === "boolean" ? (
+                          <>
+                            <option value={"all-true"}>Set all to True</option>
+                            <option value={"all-false"}>
+                              Set all to False
+                            </option>
+                          </>
+                        ) : null}
+                        {model[key].type === "domain" ? (
+                          <>
+                            {domains[model[key].domainGroup].map((d) => {
+                              return (
+                                <option key={d.id} value={`all-${d.value}`}>
+                                  Set all to {d.value}
+                                </option>
+                              );
+                            })}
+                          </>
+                        ) : null}
                         {uploadJsonKeys.map((jsonKey, i) => {
                           return (
                             <option key={i} value={jsonKey}>
