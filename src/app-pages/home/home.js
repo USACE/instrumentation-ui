@@ -1,40 +1,91 @@
 import React from "react";
+import { connect } from "redux-bundler-react";
 import Hero from "../../app-components/hero";
+import ProjectCard from "../../app-components/project-card";
 import SearchBar from "./search-bar";
 import Footer from "../../app-components/footer";
 
-export default () => {
-  return (
-    <div>
-      <Hero />
-      <section className="section">
-        <nav className="level">
-          <div className="level-item has-text-centered">
-            <div>
-              <p className="heading">Piezometers</p>
-              <p className="title">36</p>
+export default connect(
+  "selectInstrumentsItems",
+  "selectInstrumentGroupsItems",
+  "selectProjectsItemsWithLinks",
+  ({
+    instrumentsItems,
+    instrumentGroupsItems,
+    projectsItemsWithLinks: projects,
+  }) => {
+    const countsByType = {};
+    instrumentsItems.forEach((inst) => {
+      if (!countsByType.hasOwnProperty(inst.type)) countsByType[inst.type] = 0;
+      countsByType[inst.type]++;
+    });
+
+    return (
+      <div>
+        <Hero />
+
+        <section className="section">
+          <nav className="level">
+            {Object.keys(countsByType).map((key, i) => {
+              return (
+                <div className="level-item has-text-centered" key={i}>
+                  <div>
+                    <p className="heading">{key}</p>
+                    <p className="title">{countsByType[key]}</p>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="level-item has-text-centered">
+              <div>
+                <p className="heading">Lines</p>
+                <p className="title">{instrumentGroupsItems.length}</p>
+              </div>
             </div>
+          </nav>
+        </section>
+        <hr />
+        <section className="section">
+          <div className="level">
+            <h4 className="subtitle is-4 level-item has-text-centered">
+              Active Projects
+            </h4>
           </div>
-          <div className="level-item has-text-centered">
-            <div>
-              <p className="heading">Staffgages</p>
-              <p className="title">7</p>
-            </div>
+          <div
+            className="tile is-parent"
+            style={{ flexWrap: "wrap", justifyContent: "center" }}
+          >
+            {projects.map((p, i) => {
+              return (
+                <div
+                  key={i}
+                  className="tile is-child"
+                  style={{
+                    minWidth: "400px",
+                    maxWidth: "450px",
+                    padding: "20px",
+                  }}
+                >
+                  <ProjectCard
+                    img={p.img}
+                    title={p.title}
+                    href={p.href}
+                    subtitle={p.subtitle}
+                    content={p.content}
+                  />
+                </div>
+              );
+            })}
           </div>
-          <div className="level-item has-text-centered">
-            <div>
-              <p className="heading">Groups</p>
-              <p className="title">7</p>
-            </div>
+        </section>
+
+        <section className="section">
+          <div className="is-hidden container pl-5 pr-5">
+            <SearchBar />
           </div>
-        </nav>
-      </section>
-      <section className="section">
-        <div className="is-hidden container pl-5 pr-5">
-          <SearchBar />
-        </div>
-      </section>
-      <Footer />
-    </div>
-  );
-};
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+);

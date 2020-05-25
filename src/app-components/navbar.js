@@ -76,7 +76,14 @@ const NavItem = connect(
 export default connect(
   "doAuthLogin",
   "selectAuthIsLoggedIn",
-  ({ doAuthLogin, authIsLoggedIn, theme, hideBrand }) => {
+  "selectProjectsByRoute",
+  ({
+    doAuthLogin,
+    authIsLoggedIn,
+    theme,
+    hideBrand,
+    projectsByRoute: project,
+  }) => {
     const navClass = classnames({
       navbar: true,
       "is-primary": theme === "primary",
@@ -97,7 +104,9 @@ export default connect(
             <div className="navbar-brand">
               <a className="navbar-item" href={"/"}>
                 <strong style={{ fontSize: "2em" }}>
-                  <i className="mdi mdi-water pr-2"></i>Instrumentation Browser
+                  <i className="mdi mdi-water pr-2"></i>
+                  {project && project.name ? project.name : ""} Instrumentation
+                  Browser
                 </strong>
               </a>
               <span
