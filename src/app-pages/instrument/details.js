@@ -50,7 +50,9 @@ export default connect(
               </div>
             </div>
             <div className="column">
-              <Map mapKey="instrumentMap" height={300} />
+              <div className="panel">
+                <Map mapKey="instrumentMap" height={300} />
+              </div>
             </div>
           </div>
         </section>
