@@ -4,15 +4,6 @@ import Navbar from "./navbar";
 // import UploadButton from "./upload-button";
 
 import bg1 from "../img/bg-1.jpg";
-import bg2 from "../img/bg-2.jpg";
-import bg3 from "../img/bg-3.jpg";
-import bg4 from "../img/bg-4.jpg";
-import bg5 from "../img/bg-5.jpg";
-import bg6 from "../img/bg-6.jpg";
-import bg7 from "../img/bg-7.jpg";
-
-// const images = [bg1, bg2, bg3, bg4, bg5, bg6, bg7];
-// const i = Math.floor(Math.random() * 7);
 
 function App({ authIsLoggedIn }) {
   return (
@@ -31,7 +22,7 @@ function App({ authIsLoggedIn }) {
         <div className="hero-body">
           <div className="container has-text-centered">
             <h1 className="title">
-              <i className="mdi mdi-water pr-2"></i>Instrumentation Browser
+              <i className="mdi mdi-pulse pr-2"></i>Instrumentation Browser
             </h1>
             <h2 className="subtitle">Tools for visulizing water data</h2>
             <a href="/explore">

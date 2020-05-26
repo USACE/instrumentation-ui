@@ -78,7 +78,7 @@ export default connect(
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [description, setDesc] = useState((item && item.description) || "");
-    const [project_id, _] = useState((item && item.project_id) || project.id);
+    const [project_id] = useState((item && item.project_id) || project.id);
     const handleSave = (e) => {
       e.preventDefault();
       doInstrumentGroupsSave(

@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../app-components/navbar";
 import Map from "../../app-components/map";
-import MapTools from "./map-tools";
+// import MapTools from "./map-tools";
 import TimeSeries from "../../app-components/timeSeries";
 import PanelGroup from "react-panelgroup";
 

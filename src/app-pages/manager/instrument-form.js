@@ -107,7 +107,7 @@ export default connect(
     const [active, setActive] = useState((item && item.active) || false);
     const [station, setStation] = useState((item && item.station) || "");
     const [offset, setOffset] = useState((item && item.offset) || "");
-    const [project_id, _] = useState((item && item.project_id) || project.id);
+    const [project_id] = useState((item && item.project_id) || project.id);
 
     const projected =
       instrumentDrawLon && instrumentDrawLat

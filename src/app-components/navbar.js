@@ -105,7 +105,7 @@ export default connect(
             <div className="navbar-brand">
               <a className="navbar-item" href={"/"}>
                 <strong style={{ fontSize: "2em" }}>
-                  <i className="mdi mdi-water pr-2"></i>
+                  <i className="mdi mdi-pulse pr-2"></i>
                   {project && project.name ? project.name : ""} Instrumentation
                   Browser
                 </strong>
