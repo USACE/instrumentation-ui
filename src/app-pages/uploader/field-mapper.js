@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 
 export default connect(
+  "selectProjectsByRoute",
   "selectDomainsItemsByGroup",
   "selectUploadFieldMap",
   "doUploadSetFieldmap",
   "selectUploadJsonKeys",
   "selectUploadSelectedParser",
   ({
+    projectsByRoute: project,
     domainsItemsByGroup: domains,
     uploadFieldMap,
     doUploadSetFieldmap,
@@ -33,14 +35,16 @@ export default connect(
       Object.keys(model).forEach((key) => {
         fieldMap[key] = model[key].template || "";
       });
+      fieldMap.project_id = project.id;
       doUploadSetFieldmap(fieldMap);
-    }, [model, uploadFieldMap, doUploadSetFieldmap]);
+    }, [model, uploadFieldMap, doUploadSetFieldmap, project]);
 
     if (!uploadFieldMap) return null;
 
     return (
       <div>
         {Object.keys(model).map((key, i) => {
+          if (model[key].hidden) return null;
           return (
             <div key={i} className="field is-horizontal">
               <div className="field-label is-normal">

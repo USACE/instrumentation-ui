@@ -801,5 +801,7 @@ export default (opts) => {
     ];
   }
 
+  if (config.persistActions) result.persistActions = config.persistActions;
+
   return result;
 };

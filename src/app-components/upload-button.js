@@ -14,7 +14,6 @@ export default connect(
 
     const handleInputChange = (e) => {
       doUploadQueueCsv(inputEl.current.files[0]);
-      doUpdateUrlWithHomepage("/upload");
     };
 
     const btnClass = classnames({

@@ -6,6 +6,7 @@ const DeleteButton = connect(
   "doModalClose",
   "doUpdateUrlWithHomepage",
   "selectRouteParams",
+
   ({
     doInstrumentGroupsDelete,
     doModalClose,
@@ -68,14 +69,22 @@ const DeleteButton = connect(
 export default connect(
   "doModalClose",
   "doInstrumentGroupsSave",
-  ({ doModalClose, doInstrumentGroupsSave, item }) => {
+  "selectProjectsByRoute",
+  ({
+    doModalClose,
+    doInstrumentGroupsSave,
+    item,
+    projectsByRoute: project,
+  }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [description, setDesc] = useState((item && item.description) || "");
+    const [project_id, _] = useState((item && item.project_id) || project.id);
     const handleSave = (e) => {
       e.preventDefault();
       doInstrumentGroupsSave(
         Object.assign({}, item, {
           name,
+          project_id,
           description,
         }),
         doModalClose,

@@ -117,6 +117,7 @@ export default {
       },
     });
 
+    const project = store.selectProjectsByRoute();
     const domains = store.selectDomainsItemsByGroup();
     const ignoreRows = store.selectUploadIgnoreRowsList();
     const selectedParser = store.selectUploadSelectedParser();
@@ -158,7 +159,7 @@ export default {
             _isUploading: false,
           },
         });
-        store.doUpdateUrlWithHomepage("/manager");
+        store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
       }
     });
   },

@@ -82,6 +82,7 @@ export default connect(
   "selectInstrumentDrawReady",
   "selectProjDisplayProjection",
   "selectProjOptions",
+  "selectProjectsByRoute",
   ({
     doModalClose,
     doInstrumentsSave,
@@ -98,6 +99,7 @@ export default connect(
     instrumentDrawReady,
     projDisplayProjection,
     projOptions,
+    projectsByRoute: project,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
@@ -105,6 +107,7 @@ export default connect(
     const [active, setActive] = useState((item && item.active) || false);
     const [station, setStation] = useState((item && item.station) || "");
     const [offset, setOffset] = useState((item && item.offset) || "");
+    const [project_id, _] = useState((item && item.project_id) || project.id);
 
     const projected =
       instrumentDrawLon && instrumentDrawLat
@@ -155,14 +158,40 @@ export default connect(
           [Number(x), Number(y)],
           projOptions[projDisplayProjection]
         );
+
+        // There's some nasty '', null, and NaN checking going on here for
+        // number types, not sure if there's a better way to do this,
+        // this is because '' and null both evaluate to 0 in Number()... so that's fun
+        // It works for now, it's fast and works.
+        console.log(
+          `${station}, ${Number(station)}, ${station === null}, ${
+            station === null || station === ""
+          }`
+        );
         doInstrumentsSave(
           Object.assign({}, item, {
             name,
+            project_id,
             type_id,
             active,
-            station,
-            offset,
-            height: Number(height),
+            station:
+              station === null || station === ""
+                ? null
+                : isNaN(Number(station))
+                ? null
+                : Number(station),
+            offset:
+              offset === null || offset === ""
+                ? null
+                : isNaN(Number(offset))
+                ? null
+                : Number(offset),
+            height:
+              height === null || height === ""
+                ? null
+                : isNaN(Number(height))
+                ? null
+                : Number(height),
             geometry: {
               type: "Point",
               coordinates: [lonLat[0], lonLat[1]],

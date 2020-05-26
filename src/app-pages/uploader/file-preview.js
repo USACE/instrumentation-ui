@@ -28,6 +28,7 @@ export default connect(
             resizable: true,
             sortable: true,
             filter: true,
+            editable: true,
           };
         }),
       ];

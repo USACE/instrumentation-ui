@@ -7,7 +7,7 @@ export default createRestBundle({
   uid: "slug",
   prefetch: true,
   staleAfter: 10000,
-  persist: false,
+  persist: true,
   routeParam: "projectSlug",
   getTemplate: "/projects",
   putTemplate: "/projects/:item.id",

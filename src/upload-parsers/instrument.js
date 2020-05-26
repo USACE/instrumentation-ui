@@ -17,6 +17,10 @@ const parseStupidCoords = (stupid) => {
 };
 
 const model = {
+  project_id: {
+    type: "project_id",
+    hidden: true,
+  },
   name: {
     label: "Name",
     type: "string",
@@ -60,7 +64,7 @@ const model = {
   },
   offset: {
     label: "Offset",
-    type: "number",
+    type: "number*100",
     template: "",
     helpText:
       "Only numeric values will be parsed, positive values are water-side and negative values are land-side",
@@ -95,6 +99,12 @@ const parser = (json, fieldMap, ignoreRows, domains) => {
                   outRec[field] = Number(rec[fieldMap[field]].replace("+", ""));
                   if (isNaN(outRec[field])) outRec[field] = null;
                   break;
+                case "number*100":
+                  outRec[field] = Math.round(
+                    Number(rec[fieldMap[field]]) * 100
+                  );
+                  if (isNaN(outRec[field])) outRec[field] = null;
+                  break;
                 case "coord":
                   if (isNaN(Number(rec[fieldMap[field]]))) {
                     outRec[field] = parseStupidCoords(rec[fieldMap[field]]);
@@ -121,6 +131,9 @@ const parser = (json, fieldMap, ignoreRows, domains) => {
                   } else {
                     outRec[field] = null;
                   }
+                  break;
+                case "project_id":
+                  outRec[field] = fieldMap[field];
                   break;
                 default:
                   outRec[field] = rec[fieldMap[field]].toString();

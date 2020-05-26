@@ -17,6 +17,7 @@ export default createRestBundle({
   prefetch: true,
   staleAfter: 10000,
   persist: false,
+  sortBy: "name",
   routeParam: "instrumentSlug",
   getTemplate: "/projects/:projectId/instruments",
   putTemplate: "/instruments/:item.id",

@@ -47,7 +47,8 @@ const ProfileMenu = connect(
 
 const NavItem = connect(
   "selectPathname",
-  ({ pathname, href, handler, children }) => {
+  ({ pathname, href, handler, children, hidden }) => {
+    if (hidden) return null;
     const handleClick = (e) => {
       if (handler && typeof handler === "function") handler(e);
     };
@@ -121,12 +122,16 @@ export default connect(
           )}
           <div className="navbar-menu">
             <div className="navbar-end">
-              <NavItem href="/explore">Explorer</NavItem>
-              {authIsLoggedIn ? (
-                <NavItem href="/upload">Uploader</NavItem>
+              <NavItem hidden={true} href="/explore">
+                Explorer
+              </NavItem>
+              {authIsLoggedIn && project ? (
+                <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
               ) : null}
-              {authIsLoggedIn ? (
-                <NavItem href="/manager">Instrument Manager</NavItem>
+              {authIsLoggedIn && project ? (
+                <NavItem href={`/${project.slug}/manager`}>
+                  Instrument Manager
+                </NavItem>
               ) : null}
               {authIsLoggedIn ? (
                 <ProfileMenu />

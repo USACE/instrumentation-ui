@@ -6,6 +6,7 @@ import Group from "../app-pages/group/details";
 import InstrumentManager from "../app-pages/manager/manager";
 import Uploader from "../app-pages/uploader/uploader";
 import Logout from "../app-pages/logout";
+import NotFound from "../app-pages/404";
 
 export default createRouteBundle(
   {
@@ -17,7 +18,7 @@ export default createRouteBundle(
     "/:projectSlug/manager": InstrumentManager,
     "/:projectSlug/groups/:groupSlug": Group,
     "/:projectSlug/instruments/:instrumentSlug": Instrument,
-    "*": Home,
+    "*": NotFound,
   },
   {
     routeInfoSelector: "selectPathnameMinusHomepage",
