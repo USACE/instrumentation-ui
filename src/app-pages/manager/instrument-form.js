@@ -232,7 +232,7 @@ export default connect(
     };
 
     return (
-      <div className="modal-card">
+      <div className="modal-card" style={{ overflowY: "auto" }}>
         <form id="instrument-form" onSubmit={handleSave}>
           <header className="modal-card-head">
             <p className="modal-card-title">Edit Instrument</p>
