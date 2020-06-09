@@ -6,7 +6,9 @@ export default ({ img, title, subtitle, content, href }) => {
       {img ? (
         <div className="card-image">
           <figure className="image is-4by3">
-            <img src={img} alt="Pretty scene associated with the project" />
+            <a href={href}>
+              <img src={img} alt="Pretty scene associated with the project" />
+            </a>
           </figure>
         </div>
       ) : null}
