@@ -111,6 +111,8 @@ export default (opts) => {
     pageSize: 25,
     sortBy: null,
     sortAsc: true,
+    mergeItems: false,
+    clearItemsOnAbort: true,
   };
 
   const config = Object.assign({}, defaults, opts);
@@ -278,6 +280,7 @@ export default (opts) => {
         const lastResource = store[selectLastResource]();
         const forceFetch = store[selectForceFetch]();
         const flags = store[selectFlags]();
+        const items = store[selectItemsObject]();
 
         if (url.indexOf("/:") !== -1) {
           // if we haven't filled in all of our params then bail
@@ -295,17 +298,19 @@ export default (opts) => {
           // the way this dispatch works it's overriding the payload of the FETCH_ABORT above
           // so for now we're sending this data twice, once so that the abort can be seen
           // and once to set the state in the store
-          dispatch({
-            type: actions.UPDATED_ITEM,
-            payload: {
-              ...flags,
-              ...{
-                _isLoading: false,
-                _lastResource: url,
-                _abortReason: `don't have all the params we need`,
+          if (config.clearItemsOnAbort) {
+            dispatch({
+              type: actions.UPDATED_ITEM,
+              payload: {
+                ...flags,
+                ...{
+                  _isLoading: false,
+                  _lastResource: url,
+                  _abortReason: `don't have all the params we need`,
+                },
               },
-            },
-          });
+            });
+          }
           return;
         } else if (!isStale && url === lastResource && !forceFetch) {
           // if we're not stale and we're trying the same resource, then bail
@@ -342,8 +347,12 @@ export default (opts) => {
                 },
               });
             } else {
-              const data = JSON.parse(body);
+              let data = JSON.parse(body);
+              if (!Array.isArray(data)) data = [data];
               const itemsById = {};
+              if (config.mergeItems) {
+                Object.assign(itemsById, items);
+              }
               data.forEach((item) => {
                 itemsById[item[config.uid]] = item;
               });
