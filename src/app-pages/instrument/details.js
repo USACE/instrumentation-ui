@@ -5,19 +5,37 @@ import Navbar from "../../app-components/navbar";
 import TimeSeries from "../../app-components/timeSeries";
 import InstrumentForm from "../manager/instrument-form";
 import Map from "../../app-components/classMap";
+import ChartOptions from "./chartOptions";
 
 export default connect(
   "doModalOpen",
   "selectQueryObject",
   "selectPathname",
   "selectInstrumentsByRoute",
+  "selectChartType",
+  "selectChartLineWidth",
+  "selectChartColor",
+  "selectInstrumentTimeseriesItems",
+  "selectTimeseriesMeasurementsX",
+  "selectTimeseriesMeasurementsY",
+  "doInstrumentTimeseriesSetActiveId",
   ({
     doModalOpen,
     queryObject: q,
     pathname,
     instrumentsByRoute: instrument,
+    chartType,
+    chartLineWidth,
+    chartColor,
+    instrumentTimeseriesItems: timeseries,
+    timeseriesMeasurementsX: xData,
+    timeseriesMeasurementsY: yData,
+    doInstrumentTimeseriesSetActiveId
   }) => {
     if (!instrument) return null;
+    const xTest = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const yTest = [13.10, 13.09, 13.10, 13.08, 13.08, 13.07, 13.068, 13.06, 13.065, 13.05]
+    console.log(xData, yData)
     return (
       <div>
         <Navbar theme="primary" />
@@ -72,19 +90,42 @@ export default connect(
             </div>
             <div className="panel-block">
               <div className="container">
-                <div className="tab is-active">
-                  {q.t === "s1" ? (
-                    <TimeSeries title={"Series 1"} x={null} y={null} />
-                  ) : null}
-                  {q.t === "s2" ? (
-                    <TimeSeries title={"Series 2"} x={null} y={null} />
-                  ) : null}
+                <div className="tab is-active" style={{ height: "475px" }}>
+                  <div className="columns">
+                    <div className="column is-one-quarter">
+                      <div className="control">
+                        {timeseries.map(item => {
+                          return (
+                            <div className="panel-block">
+                              <label className="checkbox">
+                                <input type="checkbox" name="timeseries" value={item.id} onClick={() => { doInstrumentTimeseriesSetActiveId(item.id) }} />
+                                {item.name}{""}
+                              </label>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                    <div className="column">
+                      <TimeSeries
+                        title={`Data from ${instrument.name} from Jan 1, 2020 to Present`}
+                        // data={
+                        //   [{ x: xTest, y: yTest, mode: chartType, marker: { color: chartColor }, line: { width: chartLineWidth } }]
+                        // }
+                        x={xTest}
+                        y={yTest}
+                      />
+                      {q.t === "s2" ? (
+                        <TimeSeries title={"Series 2"} x={null} y={null} />
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-      </div>
+      </div >
     );
   }
 );

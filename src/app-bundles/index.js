@@ -12,6 +12,7 @@ import {
 import cache from "../cache";
 import pkg from "../../package.json";
 
+import chartBundle from "./chart-bundle";
 import domainsBundle from "./domains-bundle";
 import routesBundle from "./routes-bundle";
 import uploadBundle from "./upload-bundle";
@@ -27,6 +28,8 @@ import mapInteractionBundle from "./map-interaction-bundle";
 import modalBundle from "./modal-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
+import timeseriesBundle from "./time-series-bundle";
+import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
 
 export default composeBundles(
   createAuthBundle({
@@ -54,6 +57,7 @@ export default composeBundles(
   createOlMapBundle({
     name: "groupMap",
   }),
+  chartBundle,
   domainsBundle,
   routesBundle,
   uploadBundle,
@@ -68,6 +72,9 @@ export default composeBundles(
   mapsBundle,
   mapInteractionBundle,
   modalBundle,
+  nestedUrlBundle,
+  projectsBundle,
   projectionBundle,
-  projectsBundle
+  timeseriesBundle,
+  timeseriesMeasurementBundle
 );

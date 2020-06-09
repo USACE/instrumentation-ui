@@ -19,6 +19,7 @@
     "plotly.js": "^1.53.0",
     "proj4": "^2.6.1",
     "react": "^16.13.0",
+    "react-color": "^2.18.1",
     "react-dom": "^16.13.0",
     "react-panelgroup": "^1.0.10",
     "react-plotly.js": "^2.4.0",
