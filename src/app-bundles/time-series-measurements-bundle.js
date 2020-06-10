@@ -3,7 +3,7 @@ import { createSelector } from "redux-bundler"
 
 export default createRestBundle({
   name: "timeseriesMeasurements",
-  uid: "id",
+  uid: "timeseries_id",
   prefetch: true,
   staleAfter: 10000,
   persist: false,
@@ -16,20 +16,27 @@ export default createRestBundle({
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
   forceFetchActions: ["INSTRUMENTTIMESERIES_SET_ACTIVE_ID"],
   urlParamSelectors: ["selectInstrumentTimeseriesActiveIdParam"],
+  mergeItems: true,
   addons: {
     selectTimeseriesMeasurementsX: createSelector(
-      "selectTimeseriesMeasurementsItems",
+      "selectTimeseriesMeasurementsItemsObject",
       item => {
         let time = []
-        item.map(x => time.push(x.time))
-        return time
+        Object.keys(item).forEach(function (key) {
+          let val = item[key];
+          val.items.map(x => time.push(x.time))
+        });
+        return time;
       }),
     selectTimeseriesMeasurementsY: createSelector(
-      "selectTimeseriesMeasurementsItems",
+      "selectTimeseriesMeasurementsItemsObject",
       item => {
         let value = []
-        item.map(y => value.push(y.value))
+        Object.keys(item).forEach(function (key) {
+          let val = item[key];
+          val.items.map(y => value.push(y.value))
+        });
         return value
-      }),
+      })
   },
 });

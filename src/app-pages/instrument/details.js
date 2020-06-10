@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 // import Chart from "../../app-components/chart";
 import TimeSeries from "../../app-components/timeSeries";
 import InstrumentForm from "../manager/instrument-form";
 import Map from "../../app-components/classMap";
-import ChartOptions from "./chartOptions";
+import { render } from "@testing-library/react";
+import { isTerminatorless } from "@babel/types";
+// import ChartOptions from "./chartOptions";
 
 export default connect(
   "doModalOpen",
@@ -18,6 +20,7 @@ export default connect(
   "selectInstrumentTimeseriesItems",
   "selectTimeseriesMeasurementsX",
   "selectTimeseriesMeasurementsY",
+  "selectTimeseriesMeasurementsItemsObject",
   "doInstrumentTimeseriesSetActiveId",
   ({
     doModalOpen,
@@ -30,12 +33,67 @@ export default connect(
     instrumentTimeseriesItems: timeseries,
     timeseriesMeasurementsX: xData,
     timeseriesMeasurementsY: yData,
+    timeseriesMeasurementsItemsObject: objectList,
     doInstrumentTimeseriesSetActiveId
   }) => {
+    useEffect(() => {
+      Object.values(timeseries).forEach(i => {
+        if (i.hasOwnProperty('status')) {
+          return null
+        } else {
+          i.status = "no"
+        }
+      })
+    })
+    const renderData = (data) => {
+      let array = Object.values(timeseries)
+      let list = Object.values(data)
+      let yes = array.filter(i => i.status === "yes")
+      let datatry = [];
+      for (let i in yes) {
+        let chosen = (yes[i].id)
+        for (let i in list) {
+          if (chosen === list[i].timeseries_id) {
+            datatry.push(list[i])
+          }
+        }
+        // ids.push(array[i].id)
+      }
+      let dataList = [];
+      // if i could add a status to objectlist and select the objects where status is yes
+      // then this would work
+      // Object.values(data).forEach((key) => {
+      datatry.forEach((key) => {
+        let time = []
+        let value = []
+        // returns single object of items
+        let item = key.items;
+        item.map(x => {
+          time.push(x.time)
+          value.push(x.value)
+        })
+        dataList.push({ x: time, y: value })
+      })
+      return dataList
+    }
+    const changeStatus = (id) => {
+      let array = Object.values(timeseries)
+      for (let i in array) {
+        if (array[i].id === id) {
+          if (array[i].status === 'no') {
+            array[i].status = 'yes'
+          } else {
+            array[i].status = 'no'
+          }
+        }
+      }
+    }
+
+    const handleClick = (id, key) => {
+      changeStatus(id)
+      doInstrumentTimeseriesSetActiveId(id);
+    }
     if (!instrument) return null;
-    const xTest = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const yTest = [13.10, 13.09, 13.10, 13.08, 13.08, 13.07, 13.068, 13.06, 13.065, 13.05]
-    console.log(xData, yData)
     return (
       <div>
         <Navbar theme="primary" />
@@ -94,11 +152,11 @@ export default connect(
                   <div className="columns">
                     <div className="column is-one-quarter">
                       <div className="control">
-                        {timeseries.map(item => {
+                        {timeseries.map((item, key) => {
                           return (
                             <div className="panel-block">
                               <label className="checkbox">
-                                <input type="checkbox" name="timeseries" value={item.id} onClick={() => { doInstrumentTimeseriesSetActiveId(item.id) }} />
+                                <input type="checkbox" name="timeseries" id={key} value={item.id} onClick={() => handleClick(item.id)} />
                                 {item.name}{""}
                               </label>
                             </div>
@@ -108,16 +166,9 @@ export default connect(
                     </div>
                     <div className="column">
                       <TimeSeries
-                        title={`Data from ${instrument.name} from Jan 1, 2020 to Present`}
-                        // data={
-                        //   [{ x: xTest, y: yTest, mode: chartType, marker: { color: chartColor }, line: { width: chartLineWidth } }]
-                        // }
-                        x={xTest}
-                        y={yTest}
+                        title={`Data from ${instrument.name} from Jan 1, 2020 to Jan 10, 2020`}
+                        data={renderData(objectList)}
                       />
-                      {q.t === "s2" ? (
-                        <TimeSeries title={"Series 2"} x={null} y={null} />
-                      ) : null}
                     </div>
                   </div>
                 </div>

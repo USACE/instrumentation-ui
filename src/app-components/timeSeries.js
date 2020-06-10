@@ -6,13 +6,7 @@ export default props => {
     <div className="panel">
       <div className="panel-block">
         <Plot
-          data={[
-            {
-              x: props.x,
-              y: props.y,
-              type: "scatter"
-            }
-          ]}
+          data={props.data}
           layout={{ title: props.title, autosize: true }}
           config={{ responsive: true }}
           style={{ width: "100%", height: "100%" }}
