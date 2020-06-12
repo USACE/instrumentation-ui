@@ -7,6 +7,7 @@ import InstrumentForm from "../manager/instrument-form";
 import InstrumentPicker from "./instrument-picker";
 import InstrumentRemove from "./instrument-remove";
 import Map from "../../app-components/classMap";
+import TimeSeries from "../../app-components/timeSeries";
 
 export default connect(
   "doModalOpen",
@@ -21,6 +22,9 @@ export default connect(
     instrumentGroupsByRoute: group,
     instrumentGroupInstrumentsItems: instruments,
   }) => {
+    const handleClick = (id) => {
+      console.log(`You've clicked ${id}`)
+    }
     if (!group) return null;
     return (
       <div>
@@ -94,6 +98,39 @@ export default connect(
                 instruments={instruments}
                 tools={[InstrumentRemove]}
               />
+            </div>
+          </div>
+          <div className="panel">
+            <div className="panel-heading">
+              Timeseries
+            </div>
+            <div className="panel-block">
+              <div className="container">
+                <div className="columns">
+                  <div className="column is-one-quarter">
+                    <div className="control">
+                      {instruments.map((item, key) => {
+                        return (
+                          <div className="panel-block">
+                            <label className="checkbox">
+                              <input type="checkbox" name="timeseries" id={key} value={item.id} onClick={() => handleClick(item.id)} />
+                              {item.name}{""}
+                            </label>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="column">
+                    <div>
+                      <TimeSeries
+                        title={`Data from ${group.name} from Jan 1, 2020 to Jan 10, 2020`}
+                        data={[{ x: [1, 2, 3], y: [2, 1, 3] }]}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
