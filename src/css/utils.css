@@ -506,3 +506,23 @@
 .timeline-list-item.lost::before {
   border-color: #d08002;
 }
+
+.status-icon-active {
+  color: #43ac6a;
+}
+
+.status-icon-inactive {
+  color: grey;
+}
+
+.status-icon-abandoned {
+  color: grey;
+}
+
+.status-icon-destroyed {
+  color: #f04124;
+}
+
+.status-icon-lost {
+  color: #d08002;
+}
