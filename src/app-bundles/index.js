@@ -24,6 +24,7 @@ import instrumentGroupMapBundle from "./instrument-group-map-bundle";
 import instrumentGroupInstrumentsBundle from "./instrument-group-instruments-bundle";
 import instrumentStatusBundle from "./instrument-status-bundle";
 import instrumentZBundle from "./instrument-z-bundle";
+import keyvalBundle from "./key-value-bundle";
 import mapsBundle from "./maps-bundle";
 import mapInteractionBundle from "./map-interaction-bundle";
 // import timeSeriesBundle from "./time-series-bundle";
@@ -74,6 +75,7 @@ export default composeBundles(
   instrumentGroupInstrumentsBundle,
   instrumentStatusBundle,
   instrumentZBundle,
+  keyvalBundle,
   mapsBundle,
   mapInteractionBundle,
   modalBundle,

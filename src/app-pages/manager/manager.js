@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
 import InstrumentGroupTable from "./instrument-group-table";
@@ -9,20 +9,29 @@ import InstrumentGroupForm from "./instrument-group-form";
 import Pager from "../../app-components/pager";
 
 export default connect(
-  "selectQueryObject",
-  "selectPathname",
   "selectInstrumentGroupsItems",
   "selectInstrumentsItems",
+  "selectKeyValState",
   "doModalOpen",
+  "doKeyValSet",
   ({
-    queryObject: q,
-    pathname,
     instrumentGroupsItems: groups,
     instrumentsItems: instruments,
+    keyValState,
     doModalOpen,
+    doKeyValSet,
   }) => {
-    const [tab, setTab] = useState("grp");
-    const [filter, setFilter] = useState("");
+    let { tab, filter } = keyValState;
+    if (!tab) tab = "grp";
+    if (!filter) filter = "";
+
+    const setTab = (newTab) => {
+      doKeyValSet({ tab: newTab });
+    };
+
+    const setFilter = (newFitler) => {
+      doKeyValSet({ filter: newFitler });
+    };
 
     const handleAdd = () => {
       tab === "grp"
@@ -94,6 +103,7 @@ export default connect(
                 <Pager
                   itemsKey="groups"
                   items={groups.filter((item) => {
+                    if (!filter) return true;
                     return (
                       Object.values(item)
                         .join(" ")
@@ -108,6 +118,7 @@ export default connect(
                 <Pager
                   itemsKey="instruments"
                   items={instruments.filter((item) => {
+                    if (!filter) return true;
                     return (
                       Object.values(item)
                         .join(" ")
