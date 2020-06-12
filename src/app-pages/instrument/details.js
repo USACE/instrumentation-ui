@@ -4,6 +4,7 @@ import Navbar from "../../app-components/navbar";
 // import Chart from "../../app-components/chart";
 import TimeSeries from "../../app-components/timeSeries";
 import InstrumentForm from "../manager/instrument-form";
+import InstrumentDisplay from "./instrument-display";
 import Map from "../../app-components/classMap";
 
 export default connect(
@@ -43,10 +44,7 @@ export default connect(
                     <i className="mdi mdi-pencil pr-2"></i> Edit
                   </button>
                 </div>
-                <div className="p-3">
-                  <div>{instrument.type}</div>
-                  <div>{`Height: ${instrument.height}`}</div>
-                </div>
+                <InstrumentDisplay item={instrument} />
               </div>
             </div>
             <div className="column">
