@@ -8,7 +8,7 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: "",
-  getTemplate: "/instruments/:instrumentId/timeseries",
+  getTemplate: "/timeseries",
   putTemplate: "",
   postTemplate: "",
   deleteTemplate: "",
@@ -41,6 +41,19 @@ export default createRestBundle({
       (id) => {
         if (!id) return null;
         return { timeseriesId: id };
+      }
+    ),
+
+    selectInstrumentTimeseriesByInstrumentId: createSelector(
+      "selectInstrumentTimeseriesItems",
+      (timeseries) => {
+        if (!timeseries || !timeseries.length) return {};
+        const out = {};
+        timeseries.forEach((ts) => {
+          if (!out.hasOwnProperty(ts.instrument_id)) out[ts.instrument_id] = [];
+          out[ts.instrument_id].push(ts);
+        });
+        return out;
       }
     ),
   },
