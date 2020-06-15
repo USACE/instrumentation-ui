@@ -214,12 +214,14 @@ export default connect(
           (updatedItem) => {
             if (statusHasChanged) {
               doInstrumentStatusSave({
+                instrument_id: item.id,
                 status_id: status_id,
                 time: status_time,
               });
             }
             if (zHasChanged) {
               doInstrumentZSave({
+                instrument_id: item.id,
                 zreference: zreference,
                 zreference_datum_id: zreference_datum_id,
                 time: zreference_time,

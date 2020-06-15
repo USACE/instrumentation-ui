@@ -9,7 +9,7 @@ export default createRestBundle({
   routeParam: "zSlug",
   getTemplate: "/instruments/:instrumentId/zreference",
   putTemplate: null,
-  postTemplate: "/instruments/:instrumentId/zreference",
+  postTemplate: "/instruments/:item.instrument_id/zreference",
   deleteTemplate: null,
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
   urlParamSelectors: ["selectInstrumentsIdByRoute"],
