@@ -67,8 +67,6 @@ export default connect(
         chartSeries[id] = measurements[id];
     });
 
-    console.log(measurements, activeTimeseries, chartSeries);
-
     return (
       <div>
         <Navbar theme="primary" />
