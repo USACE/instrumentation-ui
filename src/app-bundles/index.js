@@ -22,6 +22,7 @@ import instrumentDrawBundle from "./instrument-draw-bundle";
 import instrumentGroupBundle from "./instrument-group-bundle";
 import instrumentGroupMapBundle from "./instrument-group-map-bundle";
 import instrumentGroupInstrumentsBundle from "./instrument-group-instruments-bundle";
+import instrumentNotesBundle from "./instrument-notes-bundle";
 import instrumentStatusBundle from "./instrument-status-bundle";
 import instrumentZBundle from "./instrument-z-bundle";
 import keyvalBundle from "./key-value-bundle";
@@ -73,6 +74,7 @@ export default composeBundles(
   instrumentGroupBundle,
   instrumentGroupMapBundle,
   instrumentGroupInstrumentsBundle,
+  instrumentNotesBundle,
   instrumentStatusBundle,
   instrumentZBundle,
   keyvalBundle,
