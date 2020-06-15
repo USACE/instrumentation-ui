@@ -12,22 +12,27 @@ export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
   "selectInstrumentsByRoute",
-  "selectInstrumentTimeseriesItems",
+  "selectInstrumentTimeseriesByInstrumentId",
   "selectTimeseriesMeasurementsItemsObject",
   "selectInstrumentTimeseriesActiveId",
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItems: timeseries,
+    instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     timeseriesMeasurementsItemsObject: measurements,
     instrumentTimeseriesActiveId: activeId,
   }) => {
+    if (!instrument || !timeseriesByInstrumentId) return null;
+
+    const timeseries = timeseriesByInstrumentId[instrument.id] || [];
     const len = timeseries.length;
     let firstTimeseries = null;
     if (len && len > 0) firstTimeseries = timeseries[0];
     useEffect(() => {
-      if (!len || !firstTimeseries) return undefined;
+      if (!len || !firstTimeseries) {
+        doInstrumentTimeseriesSetActiveId(null);
+      }
       if (firstTimeseries && firstTimeseries.id) {
         doInstrumentTimeseriesSetActiveId(firstTimeseries.id);
       }
@@ -37,7 +42,6 @@ export default connect(
       doInstrumentTimeseriesSetActiveId(id);
     };
 
-    if (!instrument) return null;
     // eslint-disable-next-line
     return (
       <div style={{ marginBottom: "200px" }}>
@@ -89,6 +93,13 @@ export default connect(
                     </div>
                   );
                 })}
+                {!len ? (
+                  <div>
+                    <ul>
+                      <li>No Timeseries Available for this Instrument</li>
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="panel-block">
