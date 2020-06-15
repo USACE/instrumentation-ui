@@ -12,6 +12,7 @@ import {
 import cache from "../cache";
 import pkg from "../../package.json";
 
+import chartBundle from "./chart-bundle";
 import domainsBundle from "./domains-bundle";
 import routesBundle from "./routes-bundle";
 import uploadBundle from "./upload-bundle";
@@ -21,12 +22,19 @@ import instrumentDrawBundle from "./instrument-draw-bundle";
 import instrumentGroupBundle from "./instrument-group-bundle";
 import instrumentGroupMapBundle from "./instrument-group-map-bundle";
 import instrumentGroupInstrumentsBundle from "./instrument-group-instruments-bundle";
+import instrumentNotesBundle from "./instrument-notes-bundle";
+import instrumentStatusBundle from "./instrument-status-bundle";
+import instrumentZBundle from "./instrument-z-bundle";
+import keyvalBundle from "./key-value-bundle";
 import mapsBundle from "./maps-bundle";
 import mapInteractionBundle from "./map-interaction-bundle";
 // import timeSeriesBundle from "./time-series-bundle";
 import modalBundle from "./modal-bundle";
+import nestedUrlBundle from "./nested-url-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
+import timeseriesBundle from "./time-series-bundle";
+import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
 
 export default composeBundles(
   createAuthBundle({
@@ -54,6 +62,7 @@ export default composeBundles(
   createOlMapBundle({
     name: "groupMap",
   }),
+  chartBundle,
   domainsBundle,
   routesBundle,
   uploadBundle,
@@ -65,9 +74,16 @@ export default composeBundles(
   instrumentGroupBundle,
   instrumentGroupMapBundle,
   instrumentGroupInstrumentsBundle,
+  instrumentNotesBundle,
+  instrumentStatusBundle,
+  instrumentZBundle,
+  keyvalBundle,
   mapsBundle,
   mapInteractionBundle,
   modalBundle,
+  nestedUrlBundle,
+  projectsBundle,
   projectionBundle,
-  projectsBundle
+  timeseriesBundle,
+  timeseriesMeasurementBundle
 );

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import Map from "../../app-components/classMap";
 import DomainSelect from "../../app-components/domain-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const DeleteButton = connect(
   "doInstrumentsDelete",
@@ -77,6 +79,8 @@ export default connect(
   "doProjTransformFromLonLat",
   "doProjTransformToLonLat",
   "doInstrumentGroupInstrumentsSave",
+  "doInstrumentStatusSave",
+  "doInstrumentZSave",
   "selectInstrumentDrawLon",
   "selectInstrumentDrawLat",
   "selectInstrumentDrawReady",
@@ -92,6 +96,8 @@ export default connect(
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
     doInstrumentGroupInstrumentsSave,
+    doInstrumentStatusSave,
+    doInstrumentZSave,
     item,
     addToGroup,
     instrumentDrawLat,
@@ -103,11 +109,20 @@ export default connect(
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
-    const [height, setHeight] = useState((item && item.height) || "");
-    const [active, setActive] = useState((item && item.active) || false);
     const [station, setStation] = useState((item && item.station) || "");
     const [offset, setOffset] = useState((item && item.offset) || "");
     const [project_id] = useState((item && item.project_id) || project.id);
+
+    const [status_id, setStatusId] = useState((item && item.status_id) || "");
+    const [status_time, setStatusTime] = useState(new Date());
+
+    const [zreference, setZreference] = useState(
+      (item && item.zreference) || ""
+    );
+    const [zreference_time, setZreferenceTime] = useState(new Date());
+    const [zreference_datum_id, setZreferenceDatum] = useState(
+      (item && item.zreference_datum_id) || ""
+    );
 
     const projected =
       instrumentDrawLon && instrumentDrawLat
@@ -151,6 +166,12 @@ export default connect(
       projDisplayProjection,
     ]);
 
+    // look to see if status should be updated
+    const statusHasChanged = status_id !== item.status_id;
+
+    // look to see if zreference should be updated
+    const zHasChanged = zreference !== item.zreference;
+
     const handleSave = (e) => {
       e.preventDefault();
       if (x && y) {
@@ -163,17 +184,16 @@ export default connect(
         // number types, not sure if there's a better way to do this,
         // this is because '' and null both evaluate to 0 in Number()... so that's fun
         // It works for now, it's fast and works.
-        console.log(
-          `${station}, ${Number(station)}, ${station === null}, ${
-            station === null || station === ""
-          }`
-        );
+        // console.log(
+        //   `${station}, ${Number(station)}, ${station === null}, ${
+        //     station === null || station === ""
+        //   }`
+        // );
         doInstrumentsSave(
           Object.assign({}, item, {
             name,
             project_id,
             type_id,
-            active,
             station:
               station === null || station === ""
                 ? null
@@ -186,18 +206,27 @@ export default connect(
                 : isNaN(Number(offset))
                 ? null
                 : Number(offset),
-            height:
-              height === null || height === ""
-                ? null
-                : isNaN(Number(height))
-                ? null
-                : Number(height),
             geometry: {
               type: "Point",
               coordinates: [lonLat[0], lonLat[1]],
             },
           }),
           (updatedItem) => {
+            if (statusHasChanged) {
+              doInstrumentStatusSave({
+                instrument_id: item.id,
+                status_id: status_id,
+                time: status_time,
+              });
+            }
+            if (zHasChanged) {
+              doInstrumentZSave({
+                instrument_id: item.id,
+                zreference: zreference,
+                zreference_datum_id: zreference_datum_id,
+                time: zreference_time,
+              });
+            }
             if (addToGroup) {
               doInstrumentGroupInstrumentsSave(
                 updatedItem,
@@ -277,32 +306,29 @@ export default connect(
               </p>
             </div>
             <div className="field">
-              <label className="label">Active</label>
-              <p className="control">
-                <label className="radio">
-                  <input
-                    type="radio"
-                    checked={active}
-                    name="is_active"
-                    onChange={() => {
-                      setActive(true);
-                    }}
-                  />{" "}
-                  Yes
-                </label>
-                <label className="radio">
-                  <input
-                    type="radio"
-                    checked={!active}
-                    name="is_active"
-                    onChange={() => {
-                      setActive(false);
-                    }}
-                  />{" "}
-                  No
-                </label>
-              </p>
+              <label className="label">Status</label>
+              <DomainSelect
+                value={status_id}
+                onChange={(e) => {
+                  setStatusId(e.target.value);
+                }}
+                domain="status"
+              />
             </div>
+            {statusHasChanged ? (
+              <div className="field">
+                <label className="label">Status current as of</label>
+                <div className="control">
+                  <DatePicker
+                    className="input"
+                    selected={status_time}
+                    onChange={(val) => {
+                      setStatusTime(val);
+                    }}
+                  />
+                </div>
+              </div>
+            ) : null}
             <div className="field">
               <label className="label">Station</label>
               <p className="control">
@@ -335,19 +361,47 @@ export default connect(
               </p>
             </div>
             <div className="field">
-              <label className="label">Height</label>
+              <label className="label">Z-Reference Elevation</label>
               <p className="control">
                 <input
-                  value={height}
+                  value={zreference}
                   onChange={(e) => {
-                    setHeight(e.target.value);
+                    setZreference(Number(e.target.value));
                   }}
                   className="input"
                   type="number"
-                  placeholder="Height"
+                  placeholder="Z-Reference"
                 />
               </p>
             </div>
+            {zHasChanged ? (
+              <>
+                <div className="field">
+                  <label className="label">Z Reference current as of</label>
+                  <div className="control">
+                    <DatePicker
+                      className="input"
+                      selected={zreference_time}
+                      onChange={(val) => {
+                        setZreferenceTime(val);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Z Reference Datum</label>
+                  <div className="control">
+                    <DomainSelect
+                      value={zreference_datum_id}
+                      onChange={(e) => {
+                        setZreferenceDatum(e.target.value);
+                      }}
+                      domain="zreference_datum"
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
             <div className="field">
               <label className="label">
                 <span style={{ float: "right" }}>

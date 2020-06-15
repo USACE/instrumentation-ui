@@ -1,6 +1,7 @@
 import createRestBundle from "./create-rest-bundle";
 import { createSelector } from "redux-bundler";
 import bird from "../img/florida-bird.jpg";
+import dam from "../img/dam.jpg";
 
 export default createRestBundle({
   name: "projects",
@@ -30,7 +31,7 @@ export default createRestBundle({
       (projects) => {
         return projects.map((p) => {
           return {
-            img: bird,
+            img: p.name === "Blue Water Dam" ? dam : bird,
             title: p.name,
             subtitle: "Instrumentation Browser",
             href: `/${p.slug}/manager`,

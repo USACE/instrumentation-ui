@@ -27,6 +27,8 @@ export default createRestBundle({
   forceFetchActions: [
     "INSTRUMENTS_SAVE_FINISHED",
     "INSTRUMENTS_DELETE_FINISHED",
+    "INSTRUMENTSTATUS_SAVE_FINISHED",
+    "INSTRUMENTZ_SAVE_FINISHED",
   ],
   urlParamSelectors: ["selectProjectsIdByRoute"],
   addons: {
