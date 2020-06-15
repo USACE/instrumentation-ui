@@ -18,8 +18,6 @@ export default ({ data, title }) => {
     chartData.push({ x, y });
   });
 
-  console.log(chartData);
-
   return (
     <div>
       <Plot
