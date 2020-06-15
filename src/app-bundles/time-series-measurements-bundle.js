@@ -1,5 +1,4 @@
 import createRestBundle from "./create-rest-bundle";
-import { createSelector } from "redux-bundler";
 
 export default createRestBundle({
   name: "timeseriesMeasurements",
@@ -16,28 +15,5 @@ export default createRestBundle({
   forceFetchActions: ["INSTRUMENTTIMESERIES_SET_ACTIVE_ID"],
   urlParamSelectors: ["selectInstrumentTimeseriesActiveIdParam"],
   mergeItems: true,
-  addons: {
-    selectTimeseriesMeasurementsX: createSelector(
-      "selectTimeseriesMeasurementsItemsObject",
-      (item) => {
-        let time = [];
-        Object.keys(item).forEach(function (key) {
-          let val = item[key];
-          val.items.map((x) => time.push(x.time));
-        });
-        return time;
-      }
-    ),
-    selectTimeseriesMeasurementsY: createSelector(
-      "selectTimeseriesMeasurementsItemsObject",
-      (item) => {
-        let value = [];
-        Object.keys(item).forEach(function (key) {
-          let val = item[key];
-          val.items.map((y) => value.push(y.value));
-        });
-        return value;
-      }
-    ),
-  },
+  addons: {},
 });
