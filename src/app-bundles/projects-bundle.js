@@ -31,7 +31,7 @@ export default createRestBundle({
       (projects) => {
         return projects.map((p) => {
           return {
-            img: p.name === "Blue Water Dam" ? dam : bird,
+            img: p.name.indexOf("Dam") !== -1 ? dam : bird,
             title: p.name,
             subtitle: "Instrumentation Browser",
             href: `/${p.slug}/manager`,
