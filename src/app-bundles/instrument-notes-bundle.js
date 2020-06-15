@@ -13,6 +13,7 @@ export default createRestBundle({
   deleteTemplate: "/instruments/notes/:item.id",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
   forceFetchActions: [
+    "INSTRUMENTS_FETCH_FINISHED",
     "INSTRUMENTNOTES_SAVE_FINISHED",
     "INSTRUMENTNOTES_DELETE_FINISHED",
   ],
