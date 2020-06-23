@@ -8,10 +8,13 @@ import InstrumentPicker from "./instrument-picker";
 import InstrumentRemove from "./instrument-remove";
 import Map from "../../app-components/classMap";
 import TimeSeries from "./group-time-series";
+import RoleFilter from "../../app-components/role-filter";
+import LoginMessage from "../../app-components/login-message";
 
 export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
+  "selectProjectsByRoute",
   "selectInstrumentGroupsByRoute",
   "selectInstrumentGroupInstrumentsItems",
   "selectTimeseriesMeasurementsItemsObject",
@@ -19,6 +22,7 @@ export default connect(
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
+    projectsByRoute: project,
     instrumentGroupsByRoute: group,
     instrumentGroupInstrumentsItems: instruments,
     timeseriesMeasurementsItemsObject: measurements,
@@ -83,14 +87,19 @@ export default connect(
                   }}
                 >
                   {group.name}{" "}
-                  <button
-                    onClick={() => {
-                      doModalOpen(InstrumentGroupForm, { item: group });
-                    }}
-                    className="button is-info is-small"
+                  <RoleFilter
+                    allowRoles={[`${project.slug.toUpperCase()}.*`]}
+                    alt={LoginMessage}
                   >
-                    <i className="mdi mdi-pencil pr-2"></i> Edit
-                  </button>
+                    <button
+                      onClick={() => {
+                        doModalOpen(InstrumentGroupForm, { item: group });
+                      }}
+                      className="button is-info is-small"
+                    >
+                      <i className="mdi mdi-pencil pr-2"></i> Edit
+                    </button>
+                  </RoleFilter>
                 </div>
                 <div className="p-3">{group.description}</div>
               </div>
@@ -113,26 +122,28 @@ export default connect(
               }}
             >
               Instruments
-              <div className="buttons">
-                <button
-                  onClick={() => {
-                    doModalOpen(InstrumentForm, { addToGroup: group });
-                  }}
-                  className="button is-info is-small"
-                >
-                  <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
-                  Instrument
-                </button>
-                <button
-                  onClick={() => {
-                    doModalOpen(InstrumentPicker);
-                  }}
-                  className="button is-info is-small"
-                >
-                  <i className="mdi mdi-map-marker pr-2"></i> Add Existing
-                  Instrument
-                </button>
-              </div>
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <div className="buttons">
+                  <button
+                    onClick={() => {
+                      doModalOpen(InstrumentForm, { addToGroup: group });
+                    }}
+                    className="button is-info is-small"
+                  >
+                    <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
+                    Instrument
+                  </button>
+                  <button
+                    onClick={() => {
+                      doModalOpen(InstrumentPicker);
+                    }}
+                    className="button is-info is-small"
+                  >
+                    <i className="mdi mdi-map-marker pr-2"></i> Add Existing
+                    Instrument
+                  </button>
+                </div>
+              </RoleFilter>
             </div>
             <div className="panel-block">
               <InstrumentTable

@@ -4,11 +4,11 @@ import {
   createUrlBundle,
 } from "redux-bundler";
 import {
-  createJwtApiBundle,
   createNestedUrlBundle,
   createOlMapBundle,
-  createAuthBundle,
 } from "@corpsmap/corpsmap-bundles";
+import createAuthBundle from "@corpsmap/create-auth-bundle";
+import createJwtApiBundle from "@corpsmap/create-jwt-api-bundle";
 import cache from "../cache";
 import pkg from "../../package.json";
 
@@ -38,14 +38,17 @@ import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
 
 export default composeBundles(
   createAuthBundle({
-    appId: "25653bf0-d1c0-4e1c-8cb7-9380c0a83f89",
-    redirectOnLogout: "/",
+    appId: "07f1223f-f208-4b71-aa43-5d5f27cd8ed9",
+    redirectOnLogout: pkg.homepage,
   }),
   createJwtApiBundle({
     root:
       process.env.NODE_ENV === "development"
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
+    unless: {
+      method: "GET",
+    },
   }),
   createCacheBundle({
     cacheFn: cache.set,
