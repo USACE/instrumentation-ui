@@ -326,19 +326,12 @@ export default (opts) => {
         } else {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;
-          fetchReq = apiGet(url, (err, response, body) => {
-            if (
-              err ||
-              response.statusCode < 200 ||
-              response.statusCode >= 300
-            ) {
+          fetchReq = apiGet(url, (err, body) => {
+            if (err) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
-                  _err: { err: err, response: response },
-                  notification: {
-                    statusCode: response.statusCode,
-                  },
+                  _err: { err: err },
                   _isLoading: false,
                   _isSaving: false,
                   _fetchCount: ++fetchCount,
@@ -347,7 +340,7 @@ export default (opts) => {
                 },
               });
             } else {
-              let data = JSON.parse(body);
+              let data = typeof body === "string" ? JSON.parse(body) : body;
               if (!Array.isArray(data)) data = [data];
               const itemsById = {};
               if (config.mergeItems) {
@@ -403,19 +396,12 @@ export default (opts) => {
             payload: tempState,
           });
 
-          apiPost(url, item, (err, response, body) => {
-            if (
-              err ||
-              response.statusCode < 200 ||
-              response.statusCode >= 300
-            ) {
+          apiPost(url, item, (err, body) => {
+            if (err) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
-                  _err: { err: err, response: response },
-                  notification: {
-                    statusCode: response.statusCode,
-                  },
+                  _err: { err: err },
                   _isSaving: false,
                 },
               });
@@ -459,19 +445,12 @@ export default (opts) => {
           });
 
           // save changes to the server
-          apiPut(url, item, (err, response, body) => {
-            if (
-              err ||
-              response.statusCode < 200 ||
-              response.statusCode >= 300
-            ) {
+          apiPut(url, item, (err, body) => {
+            if (err) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
-                  _err: { err: err, response: response },
-                  notification: {
-                    statusCode: response.statusCode,
-                  },
+                  _err: { err: err },
                   _isSaving: false,
                 },
               });
@@ -518,19 +497,12 @@ export default (opts) => {
           });
 
           // update the state on the server now
-          apiDelete(url, (err, response, body) => {
-            if (
-              err ||
-              response.statusCode < 200 ||
-              response.statusCode >= 300
-            ) {
+          apiDelete(url, (err, body) => {
+            if (err) {
               dispatch({
                 type: actions.ERROR,
                 payload: {
-                  _err: { err: err, response: response },
-                  notification: {
-                    statusCode: response.statusCode,
-                  },
+                  _err: { err: err },
                   _isSaving: false,
                 },
               });

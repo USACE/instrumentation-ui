@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+import RoleFilter from "../../app-components/role-filter";
 
 const NoteEditor = connect(
   "selectInstrumentsByRoute",
   ({ instrumentsByRoute: instrument, note, onSave, onCancel }) => {
+    if (!instrument) return null;
     const [title, setTitle] = useState(note.title || "");
     const [body, setBody] = useState(note.body || "");
     const handleSave = () => {
@@ -85,14 +87,17 @@ const NoteItem = ({ note }) => {
 };
 
 export default connect(
+  "selectProjectsByRoute",
   "selectInstrumentNotesItems",
   "doInstrumentNotesSave",
   "doInstrumentNotesDelete",
   ({
+    projectsByRoute: project,
     instrumentNotesItems: notes,
     doInstrumentNotesSave: save,
     doInstrumentNotesDelete: del,
   }) => {
+    if (!project) return null;
     const [isAdding, setAdding] = useState(false);
     const sorted = notes.sort();
     return (
@@ -114,14 +119,16 @@ export default connect(
           />
         ) : (
           <div className="panel-block">
-            <button
-              className="button is-primary"
-              onClick={() => {
-                setAdding(true);
-              }}
-            >
-              Add New
-            </button>
+            <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+              <button
+                className="button is-primary"
+                onClick={() => {
+                  setAdding(true);
+                }}
+              >
+                Add New
+              </button>
+            </RoleFilter>
           </div>
         )}
       </>

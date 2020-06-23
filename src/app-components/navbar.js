@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import { classnames } from "../utils";
+import RoleFilter from "./role-filter";
 
 // //<a className="navbar-item" href="/profile">
 // <div className="level is-mobile">
@@ -19,9 +20,8 @@ import { classnames } from "../utils";
 // </a>
 
 const ProfileMenu = connect(
-  "doAuthLogout",
   "selectAuthTokenPayload",
-  ({ doAuthLogout, authTokenPayload: user }) => {
+  ({ authTokenPayload: user }) => {
     return (
       <div className="navbar-item has-dropdown is-hoverable">
         <div className="navbar-link">My Profile</div>
@@ -125,13 +125,15 @@ export default connect(
               <NavItem hidden={true} href="/explore">
                 Explorer
               </NavItem>
-              {authIsLoggedIn && project ? (
-                <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
-              ) : null}
-              {authIsLoggedIn && project ? (
-                <NavItem href={`/${project.slug}/manager`}>
-                  Instrument Manager
-                </NavItem>
+              {project ? (
+                <>
+                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                    <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
+                  </RoleFilter>
+                  <NavItem href={`/${project.slug}/manager`}>
+                    Instrument Manager
+                  </NavItem>
+                </>
               ) : null}
               {authIsLoggedIn ? (
                 <ProfileMenu />

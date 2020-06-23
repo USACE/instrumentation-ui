@@ -7,20 +7,25 @@ import InstrumentTable from "./instrument-table";
 import InstrumentForm from "./instrument-form";
 import InstrumentGroupForm from "./instrument-group-form";
 import Pager from "../../app-components/pager";
+import RoleFilter from "../../app-components/role-filter";
+import LoginMessage from "../../app-components/login-message";
 
 export default connect(
+  "selectProjectsByRoute",
   "selectInstrumentGroupsItems",
   "selectInstrumentsItems",
   "selectKeyValState",
   "doModalOpen",
   "doKeyValSet",
   ({
+    projectsByRoute: project,
     instrumentGroupsItems: groups,
     instrumentsItems: instruments,
     keyValState,
     doModalOpen,
     doKeyValSet,
   }) => {
+    if (!project) return null;
     let { tab, filter } = keyValState;
     if (!tab) tab = "grp";
     if (!filter) filter = "";
@@ -90,9 +95,17 @@ export default connect(
                   </div>
                   <div className="level-right">
                     <div className="level-item">
-                      <button onClick={handleAdd} className="button is-primary">
-                        Add New
-                      </button>
+                      <RoleFilter
+                        allowRoles={[`${project.slug.toUpperCase()}.*`]}
+                        alt={LoginMessage}
+                      >
+                        <button
+                          onClick={handleAdd}
+                          className="button is-primary"
+                        >
+                          Add New
+                        </button>
+                      </RoleFilter>
                     </div>
                   </div>
                 </div>

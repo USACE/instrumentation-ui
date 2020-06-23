@@ -7,10 +7,13 @@ import InstrumentForm from "../manager/instrument-form";
 import InstrumentDisplay from "./instrument-display";
 import Map from "../../app-components/classMap";
 import Notes from "./notes";
+import RoleFilter from "../../app-components/role-filter";
+import LoginMessage from "../../app-components/login-message";
 
 export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
+  "selectProjectsByRoute",
   "selectInstrumentsByRoute",
   "selectInstrumentTimeseriesByInstrumentId",
   "selectTimeseriesMeasurementsItemsObject",
@@ -18,12 +21,13 @@ export default connect(
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
+    projectsByRoute: project,
     instrumentsByRoute: instrument,
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     timeseriesMeasurementsItemsObject: measurements,
     instrumentTimeseriesActiveId: activeId,
   }) => {
-    if (!instrument || !timeseriesByInstrumentId) return null;
+    if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
     const len = timeseries.length;
@@ -59,21 +63,26 @@ export default connect(
                   }}
                 >
                   {instrument.name}{" "}
-                  <button
-                    onClick={() => {
-                      doModalOpen(InstrumentForm, { item: instrument });
-                    }}
-                    className="button is-info is-small"
+                  <RoleFilter
+                    allowRoles={[`${project.slug.toUpperCase()}.*`]}
+                    alt={LoginMessage}
                   >
-                    <i className="mdi mdi-pencil pr-2"></i> Edit
-                  </button>
+                    <button
+                      onClick={() => {
+                        doModalOpen(InstrumentForm, { item: instrument });
+                      }}
+                      className="button is-info is-small"
+                    >
+                      <i className="mdi mdi-pencil pr-2"></i> Edit
+                    </button>
+                  </RoleFilter>
                 </div>
                 <InstrumentDisplay item={instrument} />
               </div>
             </div>
             <div className="column">
-              <div className="panel">
-                <Map mapKey="instrumentMap" height={300} />
+              <div className="panel" style={{ height: "100%" }}>
+                <Map mapKey="instrumentMap" height={"100%"} />
               </div>
             </div>
           </div>

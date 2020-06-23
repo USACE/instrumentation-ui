@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import InstrumentForm from "./instrument-form";
+import RoleFilter from "../../app-components/role-filter";
 
 const Table = connect(
   "doModalOpen",
@@ -36,20 +37,22 @@ const Table = connect(
                 <td>{instrument.type}</td>
                 <td>{instrument.zreference}</td>
                 <td style={{ width: "200px" }}>
-                  <button
-                    title="Edit"
-                    onClick={() => {
-                      doModalOpen(InstrumentForm, { item: instrument });
-                    }}
-                    className="button is-small is-info is-outlined mr-3"
-                  >
-                    <i className="mdi mdi-pencil"></i>
-                  </button>
-                  {tools
-                    ? tools.map((Tool, i) => {
-                        return <Tool key={i} item={instrument} />;
-                      })
-                    : null}
+                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                    <button
+                      title="Edit"
+                      onClick={() => {
+                        doModalOpen(InstrumentForm, { item: instrument });
+                      }}
+                      className="button is-small is-info is-outlined mr-3"
+                    >
+                      <i className="mdi mdi-pencil"></i>
+                    </button>
+                    {tools
+                      ? tools.map((Tool, i) => {
+                          return <Tool key={i} item={instrument} />;
+                        })
+                      : null}
+                  </RoleFilter>
                 </td>
               </tr>
             );
