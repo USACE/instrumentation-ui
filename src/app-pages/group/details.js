@@ -105,8 +105,11 @@ export default connect(
               </div>
             </div>
             <div className="column">
-              <div className="panel">
-                <Map mapKey="groupMap" height={300} />
+              <div
+                className="panel"
+                style={{ position: "relative", height: "100%" }}
+              >
+                <Map mapKey="groupMap" />
               </div>
             </div>
           </div>

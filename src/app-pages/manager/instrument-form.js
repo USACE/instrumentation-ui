@@ -272,10 +272,9 @@ export default connect(
             ></button>
           </header>
           <section className="modal-card-body">
-            <div className="mb-3">
+            <div className="mb-3" style={{ position: "relative", height: 300 }}>
               <Map
                 mapKey="inst-edit"
-                height={300}
                 options={{ center: [-80.79, 26.94], zoom: 9 }}
               />
             </div>

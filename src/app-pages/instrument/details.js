@@ -81,8 +81,11 @@ export default connect(
               </div>
             </div>
             <div className="column">
-              <div className="panel" style={{ height: "100%" }}>
-                <Map mapKey="instrumentMap" height={"100%"} />
+              <div
+                className="panel"
+                style={{ position: "relative", height: "100%" }}
+              >
+                <Map mapKey="instrumentMap" />
               </div>
             </div>
           </div>

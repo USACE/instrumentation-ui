@@ -108,8 +108,8 @@ export default {
         _shouldAddData: false,
       },
     });
-    const geoProjection = store.selectMapGeoProjection();
-    const webProjection = store.selectMapWebProjection();
+    const geoProjection = store.selectMapsGeoProjection();
+    const webProjection = store.selectMapsWebProjection();
     const map = store.selectMapsObject()["groupMap"];
     const lyr = store.selectInstrumentGroupMapLayer();
     const src = lyr.getSource();

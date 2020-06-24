@@ -3,10 +3,7 @@ import {
   createCacheBundle,
   createUrlBundle,
 } from "redux-bundler";
-import {
-  createNestedUrlBundle,
-  createOlMapBundle,
-} from "@corpsmap/corpsmap-bundles";
+import { createNestedUrlBundle } from "@corpsmap/corpsmap-bundles";
 import createAuthBundle from "@corpsmap/create-auth-bundle";
 import createJwtApiBundle from "@corpsmap/create-jwt-api-bundle";
 import cache from "../cache";
@@ -14,6 +11,8 @@ import pkg from "../../package.json";
 
 import chartBundle from "./chart-bundle";
 import domainsBundle from "./domains-bundle";
+import exploreMapBundle from "./explore-map-bundle";
+import exploreMapInteractionBundle from "./explore-map-interaction-bundle";
 import routesBundle from "./routes-bundle";
 import uploadBundle from "./upload-bundle";
 import instrumentBundle from "./instrument-bundle";
@@ -27,8 +26,6 @@ import instrumentStatusBundle from "./instrument-status-bundle";
 import instrumentZBundle from "./instrument-z-bundle";
 import keyvalBundle from "./key-value-bundle";
 import mapsBundle from "./maps-bundle";
-import mapInteractionBundle from "./map-interaction-bundle";
-// import timeSeriesBundle from "./time-series-bundle";
 import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
 import projectionBundle from "./projection-bundle";
@@ -57,21 +54,13 @@ export default composeBundles(
   createNestedUrlBundle({
     pkg: pkg,
   }),
-  createOlMapBundle({
-    name: "map",
-    center: [-80.79, 26.94],
-    zoom: 10,
-  }),
-  createOlMapBundle({
-    name: "groupMap",
-  }),
   chartBundle,
   domainsBundle,
+  exploreMapBundle,
+  exploreMapInteractionBundle,
   routesBundle,
   uploadBundle,
   instrumentBundle,
-  mapInteractionBundle,
-  // timeSeriesBundle,
   instrumentMapBundle,
   instrumentDrawBundle,
   instrumentGroupBundle,
@@ -82,7 +71,6 @@ export default composeBundles(
   instrumentZBundle,
   keyvalBundle,
   mapsBundle,
-  mapInteractionBundle,
   modalBundle,
   nestedUrlBundle,
   projectsBundle,
