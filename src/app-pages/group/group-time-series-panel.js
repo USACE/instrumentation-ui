@@ -49,7 +49,7 @@ const TimeseriesCheckbox = ({
 };
 
 const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
-  if (!series) return null;
+  if (!series || !timeseries || !instrument) return null;
   return (
     <div className="mb-2 ml-2">
       <div className="control">{instrument.name}</div>
