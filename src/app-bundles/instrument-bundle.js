@@ -91,8 +91,8 @@ export default createRestBundle({
         },
       });
 
-      const geoProjection = store.selectMapGeoProjection();
-      const webProjection = store.selectMapWebProjection();
+      const geoProjection = store.selectMapsGeoProjection();
+      const webProjection = store.selectMapsWebProjection();
       const lyr = store.selectInstrumentsLayer();
       const src = lyr.getSource();
       const data = store.selectInstrumentsItemsGeoJSON();

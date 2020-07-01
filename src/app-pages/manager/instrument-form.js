@@ -98,7 +98,7 @@ export default connect(
     doInstrumentGroupInstrumentsSave,
     doInstrumentStatusSave,
     doInstrumentZSave,
-    item,
+    item = {},
     addToGroup,
     instrumentDrawLat,
     instrumentDrawLon,
@@ -194,6 +194,9 @@ export default connect(
             name,
             project_id,
             type_id,
+            status_id,
+            zreference,
+            zreference_datum_id,
             station:
               station === null || station === ""
                 ? null
@@ -213,19 +216,27 @@ export default connect(
           }),
           (updatedItem) => {
             if (statusHasChanged) {
-              doInstrumentStatusSave({
-                instrument_id: item.id,
-                status_id: status_id,
-                time: status_time,
-              });
+              doInstrumentStatusSave(
+                {
+                  instrument_id: item.id,
+                  status_id: status_id,
+                  time: status_time,
+                },
+                doModalClose,
+                true
+              );
             }
             if (zHasChanged) {
-              doInstrumentZSave({
-                instrument_id: item.id,
-                zreference: zreference,
-                zreference_datum_id: zreference_datum_id,
-                time: zreference_time,
-              });
+              doInstrumentZSave(
+                {
+                  instrument_id: item.id,
+                  zreference: zreference,
+                  zreference_datum_id: zreference_datum_id,
+                  time: zreference_time,
+                },
+                doModalClose,
+                true
+              );
             }
             if (addToGroup) {
               doInstrumentGroupInstrumentsSave(
@@ -272,10 +283,9 @@ export default connect(
             ></button>
           </header>
           <section className="modal-card-body">
-            <div className="mb-3">
+            <div className="mb-3" style={{ position: "relative", height: 300 }}>
               <Map
                 mapKey="inst-edit"
-                height={300}
                 options={{ center: [-80.79, 26.94], zoom: 9 }}
               />
             </div>

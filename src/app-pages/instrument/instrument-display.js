@@ -5,7 +5,15 @@ import TimelineList from "./timeline-list";
 export default connect(
   "selectInstrumentStatusItems",
   "selectInstrumentZItems",
-  ({ instrumentStatusItems: status, instrumentZItems: zs, item }) => {
+  "selectInstrumentGroupsItemsObjectById",
+  "selectProjectsByRoute",
+  ({
+    instrumentStatusItems: status,
+    instrumentZItems: zs,
+    instrumentGroupsItemsObjectById: groups,
+    projectsByRoute: project,
+    item,
+  }) => {
     const statusItems = status
       .map((s) => {
         return {
@@ -102,6 +110,23 @@ export default connect(
             {item.update_date
               ? new Date(item.update_date).toLocaleDateString()
               : "N/A"}
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column is-4 has-text-right has-text-weight-semibold">
+            Belongs to
+          </div>
+          <div className="column">
+            {item.groups.map((groupId, i) => {
+              const group = groups[groupId];
+              if (!group) return null;
+              return (
+                <a href={`/${project.slug}/groups/${group.slug}`}>
+                  {group.name}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -26,5 +26,15 @@ export default createRestBundle({
         return null;
       }
     ),
+    selectInstrumentGroupsItemsObjectById: createSelector(
+      "selectInstrumentGroupsState",
+      (state) => {
+        const items = {};
+        Object.keys(state).forEach((key) => {
+          if (key[0] !== "_") items[state[key].id] = state[key];
+        });
+        return items;
+      }
+    ),
   },
 });

@@ -55,7 +55,7 @@ const NavItem = connect(
     const cls = classnames({
       pointer: true,
       "navbar-item": true,
-      "is-active": pathname === href,
+      "is-active": pathname.indexOf(href) !== -1,
     });
     if (href) {
       return (
@@ -122,11 +122,11 @@ export default connect(
           )}
           <div className="navbar-menu">
             <div className="navbar-end">
-              <NavItem hidden={true} href="/explore">
-                Explorer
-              </NavItem>
               {project ? (
                 <>
+                  <NavItem hidden={false} href={`/${project.slug}/explore`}>
+                    Explorer
+                  </NavItem>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                   </RoleFilter>

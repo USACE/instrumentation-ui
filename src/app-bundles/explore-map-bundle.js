@@ -9,52 +9,69 @@ import Circle from "ol/geom/Circle";
 
 const geoJSON = new GeoJSON();
 
+const statusColors = {
+  active: "#43ac6a",
+  inactive: "grey",
+  abandoned: "grey",
+  destroyed: "#f04124",
+  lost: "#d08002",
+};
+
 export default {
-  name: "instrumentMap",
+  name: "exploreMap",
+
   getReducer: () => {
     const initialData = {
       layer: null,
+      _mapKey: "exploreMap",
       _shouldInitialize: true,
       _shouldAddData: false,
       _mapLoaded: false,
+      _instrumentsLoaded: false,
+      _groupsLoaded: false,
     };
 
     return (state = initialData, { type, payload }) => {
+      if (process.env.NODE_ENV === "development") console.log(type, payload);
       switch (type) {
         case "INSTRUMENTS_FETCH_FINISHED":
           return Object.assign({}, state, {
-            _shouldAddData: true,
+            _instrumentsLoaded: true,
+          });
+        case "INSTRUMENTGROUPS_FETCH_FINISHED":
+          return Object.assign({}, state, {
+            _groupsLoaded: true,
           });
         case "MAPS_INITIALIZED":
-          if (payload.hasOwnProperty("instrumentMap")) {
+          if (payload.hasOwnProperty(initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: true,
-              _shouldAddData: true,
             });
           } else {
             return state;
           }
         case "MAPS_SHUTDOWN":
-          if (payload.hasOwnProperty("instrumentMap")) {
+          if (payload.hasOwnProperty(initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
           } else {
             return state;
           }
-        case "INSTRUMENTMAP_INITIALIZE_START":
-        case "INSTRUMENTMAP_INITIALIZE_FINISH":
-        case "INSTRUMENTMAP_ADD_DATA_START":
-        case "INSTRUMENTMAP_ADD_DATA_FINISH":
+        case "EXPLOREMAP_INITIALIZE_START":
+        case "EXPLOREMAP_INITIALIZE_FINISH":
+        case "EXPLOREMAP_ADD_DATA_START":
+        case "EXPLOREMAP_ADD_DATA_FINISH":
           return Object.assign({}, state, payload);
         default:
           return state;
       }
     };
   },
-  doInstrumentMapInitialize: () => ({ dispatch, store }) => {
+
+  doExploreMapInitialize: () => ({ dispatch, store }) => {
     dispatch({
-      type: "INSTRUMENTMAP_INITIALIZE_START",
+      type: "EXPLOREMAP_INITIALIZE_START",
       payload: {
         _shouldInitialize: false,
       },
@@ -62,22 +79,22 @@ export default {
 
     const lyr = new Layer({
       source: new Source(),
-      declutter: true,
+      declutter: false,
       style: (f, r) => {
         return new Style({
           geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
           fill: new Fill({
-            color: "#000000",
+            color: "#ffffff",
           }),
           stroke: new Stroke({
-            color: "#ffffff",
-            width: 1,
+            color: statusColors[f.getProperties()["status"]],
+            width: 3,
           }),
           text: new Text({
             fill: new Fill({
               color: "#000000",
             }),
-            font: "16px sans-serif",
+            font: "10px sans-serif",
             offsetX: 12,
             offsetY: -12,
             padding: [2, 2, 2, 2],
@@ -93,26 +110,27 @@ export default {
     });
 
     dispatch({
-      type: "INSTRUMENTMAP_INITIALIZE_FINISH",
+      type: "EXPLOREMAP_INITIALIZE_FINISH",
       payload: {
         layer: lyr,
       },
     });
   },
 
-  doInstrumentMapAddData: () => ({ dispatch, store }) => {
+  doExploreMapAddData: () => ({ dispatch, store }) => {
     dispatch({
-      type: "INSTRUMENTMAP_ADD_DATA_START",
+      type: "EXPLOREMAP_ADD_DATA_START",
       payload: {
-        _shouldAddData: false,
+        _mapLoaded: false,
       },
     });
+    const mapKey = store.selectExploreMapKey();
     const geoProjection = store.selectMapsGeoProjection();
     const webProjection = store.selectMapsWebProjection();
-    const map = store.selectMapsObject()["instrumentMap"];
-    const lyr = store.selectInstrumentMapLayer();
+    const map = store.selectMapsObject()[mapKey];
+    const lyr = store.selectExploreMapLayer();
     const src = lyr.getSource();
-    const data = store.selectInstrumentsByRouteGeoJSON();
+    const data = store.selectInstrumentsItemsGeoJSON();
     map.removeLayer(lyr);
     src.clear();
     const features = geoJSON.readFeatures(data, {
@@ -129,21 +147,29 @@ export default {
       });
     }
     dispatch({
-      type: "INSTRUMENTMAP_ADD_DATA_FINISH",
+      type: "EXPLOREMAP_ADD_DATA_FINISH",
     });
   },
 
-  selectInstrumentMapLayer: (state) => {
-    return state.instrumentMap.layer;
+  selectExploreMapKey: (state) => {
+    return state.exploreMap._mapKey;
   },
 
-  reactInstrumentMapShouldInitialize: (state) => {
-    if (state.instrumentMap._shouldInitialize)
-      return { actionCreator: "doInstrumentMapInitialize" };
+  selectExploreMapLayer: (state) => {
+    return state.exploreMap.layer;
   },
 
-  reactInstrumentMapShouldAddData: (state) => {
-    if (state.instrumentMap._mapLoaded && state.instrumentMap._shouldAddData)
-      return { actionCreator: "doInstrumentMapAddData" };
+  reactExploreMapShouldInitialize: (state) => {
+    if (state.exploreMap._shouldInitialize)
+      return { actionCreator: "doExploreMapInitialize" };
+  },
+
+  reactExploreMapShouldAddData: (state) => {
+    if (
+      state.exploreMap._instrumentsLoaded &&
+      state.exploreMap._groupsLoaded &&
+      state.exploreMap._mapLoaded
+    )
+      return { actionCreator: "doExploreMapAddData" };
   },
 };

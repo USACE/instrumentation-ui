@@ -17,7 +17,10 @@ export default {
   name: "maps",
 
   getReducer: () => {
-    const initialData = {};
+    const initialData = {
+      _geoProjection: "EPSG:4326",
+      _webProjection: "EPSG:3857",
+    };
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -81,4 +84,12 @@ export default {
     });
     return flags;
   }),
+
+  selectMapsGeoProjection: (state) => {
+    return state.maps._geoProjection;
+  },
+
+  selectMapsWebProjection: (state) => {
+    return state.maps._webProjection;
+  },
 };
