@@ -26,10 +26,16 @@ export default ({ data, title }) => {
       y: [],
     },
   ];
-  items.forEach((item) => {
-    chartData[0].x.push(new Date(item.time));
-    chartData[0].y.push(item.value);
-  });
+  items
+    .sort((a, b) => {
+      if (a.time > b.time) return 1;
+      if (a.time < b.time) return -1;
+      return 0;
+    })
+    .forEach((item) => {
+      chartData[0].x.push(new Date(item.time));
+      chartData[0].y.push(item.value);
+    });
 
   const keys = Object.keys(items[0]);
   const columnDefs = [
@@ -65,8 +71,34 @@ export default ({ data, title }) => {
         {showPlot ? (
           <Plot
             data={chartData}
-            layout={{ title: title, autosize: true }}
-            config={{ responsive: true }}
+            layout={{
+              autosize: true,
+              showlegend: false,
+              dragmode: "pan",
+              shapes: [
+                {
+                  type: "rect",
+                  xref: "x",
+                  yref: "paper",
+                  x0: new Date(),
+                  y0: 0,
+                  x1: new Date(),
+                  y1: 1,
+                  opacity: 0.7,
+                  line: {
+                    width: 2,
+                    color: "#fc032c",
+                  },
+                },
+              ],
+            }}
+            showLegend={false}
+            config={{
+              responsive: true,
+              displaylogo: false,
+              displayModeBar: true,
+              scrollZoom: true,
+            }}
             style={{ width: "100%", height: "500px" }}
           />
         ) : (

@@ -5,20 +5,13 @@ import Panel from "./panel";
 import Navbar from "../../app-components/navbar";
 import Map from "../../app-components/classMap";
 import MapTools from "./map-tools";
-// import TimeSeries from "../../app-components/timeSeries";
+import Visualizations from "./explorer-visualizations";
 import PanelGroup from "react-panelgroup";
 
 export default connect(
   "selectMapsObject",
   "selectExploreMapKey",
-  "selectExploreMapSelectedInstruments",
-  "selectExploreMapInteractionsVersion",
-  ({
-    mapsObject: maps,
-    exploreMapKey: mapKey,
-    exploreMapSelectedInstruments: instruments,
-    exploreMapInteractionsVersion,
-  }) => {
+  ({ mapsObject: maps, exploreMapKey: mapKey }) => {
     const map = maps[mapKey];
     const [landscapeMode, setLandscapeMode] = useState(false);
 
@@ -66,12 +59,7 @@ export default connect(
               <MapTools />
             </Panel>
             <Panel>
-              <div className="container mx-3">
-                {exploreMapInteractionsVersion}
-                {instruments.map((inst) => {
-                  return <p key={inst.id}>{inst.name}</p>;
-                })}
-              </div>
+              <Visualizations />
             </Panel>
           </PanelGroup>
         </div>

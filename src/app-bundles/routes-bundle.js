@@ -13,7 +13,6 @@ export default createRouteBundle(
     "": Home,
     "/": Home,
     "/logout": Logout,
-    // "/explore": Explorer,
     "/:projectSlug/upload": Uploader,
     "/:projectSlug/manager": InstrumentManager,
     "/:projectSlug/explore": Explorer,

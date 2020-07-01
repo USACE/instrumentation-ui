@@ -32,7 +32,7 @@ export default {
     };
 
     return (state = initialData, { type, payload }) => {
-      console.log(type);
+      if (process.env.NODE_ENV === "development") console.log(type, payload);
       switch (type) {
         case "INSTRUMENTS_FETCH_FINISHED":
           return Object.assign({}, state, {

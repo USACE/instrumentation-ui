@@ -11,6 +11,7 @@ import pkg from "../../package.json";
 
 import chartBundle from "./chart-bundle";
 import domainsBundle from "./domains-bundle";
+import exploreChartSyncBundle from "./explore-chart-sync-bundle";
 import exploreMapBundle from "./explore-map-bundle";
 import exploreMapInteractionBundle from "./explore-map-interaction-bundle";
 import routesBundle from "./routes-bundle";
@@ -56,6 +57,7 @@ export default composeBundles(
   }),
   chartBundle,
   domainsBundle,
+  exploreChartSyncBundle,
   exploreMapBundle,
   exploreMapInteractionBundle,
   routesBundle,
