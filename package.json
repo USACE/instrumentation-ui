@@ -1,7 +1,7 @@
 {
   "name": "hhd-ui",
   "homepage": "https://apps.rsgis.dev/instrumentation",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@corpsmap/corpsmap-bundles": "^2.0.2",
