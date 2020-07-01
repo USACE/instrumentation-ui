@@ -26,22 +26,7 @@ export default connect(
       xaxis: {
         autorange: true,
       },
-      shapes: [
-        {
-          type: "rect",
-          xref: "x",
-          yref: "paper",
-          x0: new Date(),
-          y0: 0,
-          x1: new Date(),
-          y1: 1,
-          opacity: 0.7,
-          line: {
-            width: 2,
-            color: "#fc032c",
-          },
-        },
-      ],
+      shapes: [],
     });
 
     const [config, setConfig] = useState({
