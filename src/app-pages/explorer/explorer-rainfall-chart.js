@@ -16,8 +16,12 @@ export default connect(
     const [data, setData] = useState([]);
     useEffect(() => {
       if (data.length) return undefined;
+      const tsId =
+        process.env.NODE_ENV === "development"
+          ? "05ddb512-b865-433d-b2db-81e75bb69b65"
+          : "9a3864a8-8766-4bfa-bad1-0328b166f6a8";
       fetch(
-        `${apiRoot}/timeseries/05ddb512-b865-433d-b2db-81e75bb69b65/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`
+        `${apiRoot}/timeseries/${tsId}/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`
       )
         .then((response) => {
           return response.json();
