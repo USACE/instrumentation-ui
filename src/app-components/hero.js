@@ -21,10 +21,13 @@ function App({ authIsLoggedIn }) {
         </div>
         <div className="hero-body">
           <div className="container has-text-centered">
-            <h1 className="title">
-              <i className="mdi mdi-pulse pr-2"></i>Instrumentation Browser
+            <h1 className="title"><a className="has-text-white" href="/">
+              <i className="mdi mdi-pulse pr-2"></i>Instrumentation
+                </a>
             </h1>
-            <h2 className="subtitle">Tools for visulizing water data</h2>
+
+            <h2 className="subtitle">Tools for Monitoring Critical Dam Information</h2>
+
             <a href="/explore">
               <button className="is-hidden button is-warning">
                 Explore the data

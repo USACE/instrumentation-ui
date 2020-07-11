@@ -3,6 +3,7 @@ import Home from "../app-pages/home/home";
 import Explorer from "../app-pages/explorer/explorer";
 import Instrument from "../app-pages/instrument/details";
 import Group from "../app-pages/group/details";
+import Help from "../app-pages/help/help"
 import InstrumentManager from "../app-pages/manager/manager";
 import Uploader from "../app-pages/uploader/uploader";
 import Logout from "../app-pages/logout";
@@ -12,6 +13,7 @@ export default createRouteBundle(
   {
     "": Home,
     "/": Home,
+    "/help": Help,
     "/logout": Logout,
     "/:projectSlug/upload": Uploader,
     "/:projectSlug/manager": InstrumentManager,
