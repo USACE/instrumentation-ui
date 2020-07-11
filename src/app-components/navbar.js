@@ -135,11 +135,12 @@ export default connect(
                   </NavItem>
                 </>
               ) : null}
+              <NavItem href="/help">Help</NavItem>
               {authIsLoggedIn ? (
                 <ProfileMenu />
               ) : (
-                <NavItem handler={doAuthLogin}>Login</NavItem>
-              )}
+                  <NavItem handler={doAuthLogin}>Login</NavItem>
+                )}
             </div>
           </div>
         </div>
