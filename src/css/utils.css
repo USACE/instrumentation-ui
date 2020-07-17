@@ -526,3 +526,7 @@
 .status-icon-lost {
   color: #d08002;
 }
+
+.sketch-picker {
+  z-index: 99999;
+}

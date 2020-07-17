@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 import { classnames } from "../utils";
 import RoleFilter from "./role-filter";
@@ -98,6 +98,7 @@ export default connect(
       "is-light": theme === "light",
       "is-dark": theme === "dark",
     });
+    const [expanded, setExpanded] = useState(false);
     return (
       <nav className={navClass}>
         <div className="container">
@@ -106,13 +107,16 @@ export default connect(
               <a className="navbar-item" href={"/"}>
                 <strong style={{ fontSize: "2em" }}>
                   <i className="mdi mdi-pulse pr-2"></i>
-                  {project && project.name ? project.name : ""} Instrumentation
-                  Browser
+                  {project && project.name ? project.name : ""}
                 </strong>
               </a>
               <span
-                className="navbar-burger burger"
-                data-target="navbarMenuHero2"
+                onClick={() => {
+                  setExpanded(!expanded);
+                }}
+                className={`navbar-burger burger${
+                  expanded ? " is-active" : ""
+                }`}
               >
                 <span></span>
                 <span></span>
@@ -120,7 +124,7 @@ export default connect(
               </span>
             </div>
           )}
-          <div className="navbar-menu">
+          <div className={`navbar-menu${expanded ? " is-active" : ""}`}>
             <div className="navbar-end">
               {project ? (
                 <>
@@ -139,8 +143,8 @@ export default connect(
               {authIsLoggedIn ? (
                 <ProfileMenu />
               ) : (
-                  <NavItem handler={doAuthLogin}>Login</NavItem>
-                )}
+                <NavItem handler={doAuthLogin}>Login</NavItem>
+              )}
             </div>
           </div>
         </div>

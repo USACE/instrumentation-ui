@@ -9,9 +9,11 @@ import createJwtApiBundle from "@corpsmap/create-jwt-api-bundle";
 import cache from "../cache";
 import pkg from "../../package.json";
 
-import chartBundle from "./chart-bundle";
+import chartEditorBundle from "./chart-editor-bundle";
+import chartsBundle from "./charts-bundle";
 import domainsBundle from "./domains-bundle";
 import exploreChartSyncBundle from "./explore-chart-sync-bundle";
+import exploreDataBundle from "./explore-data-bundle";
 import exploreMapBundle from "./explore-map-bundle";
 import exploreMapInteractionBundle from "./explore-map-interaction-bundle";
 import routesBundle from "./routes-bundle";
@@ -31,6 +33,7 @@ import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
+import rainfallBundle from "./rainfall-bundle";
 import timeseriesBundle from "./time-series-bundle";
 import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
 
@@ -55,9 +58,11 @@ export default composeBundles(
   createNestedUrlBundle({
     pkg: pkg,
   }),
-  chartBundle,
+  chartEditorBundle,
+  chartsBundle,
   domainsBundle,
   exploreChartSyncBundle,
+  exploreDataBundle,
   exploreMapBundle,
   exploreMapInteractionBundle,
   routesBundle,
@@ -77,6 +82,7 @@ export default composeBundles(
   nestedUrlBundle,
   projectsBundle,
   projectionBundle,
+  rainfallBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle
 );

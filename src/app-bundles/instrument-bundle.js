@@ -105,6 +105,16 @@ export default createRestBundle({
       );
     },
 
+    selectInstrumentsItemsObjectById: createSelector(
+      "selectInstrumentsItems",
+      (items) => {
+        return items.reduce((out, instrument) => {
+          out[instrument.id] = instrument;
+          return out;
+        }, {});
+      }
+    ),
+
     selectInstrumentsLayer: (state) => state.instruments._layer,
 
     selectInstrumentsItemsGeoJSON: createSelector(

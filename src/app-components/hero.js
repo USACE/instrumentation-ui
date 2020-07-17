@@ -21,12 +21,15 @@ function App({ authIsLoggedIn }) {
         </div>
         <div className="hero-body">
           <div className="container has-text-centered">
-            <h1 className="title"><a className="has-text-white" href="/">
-              <i className="mdi mdi-pulse pr-2"></i>Instrumentation
-                </a>
+            <h1 className="title">
+              <a className="has-text-white" href="/">
+                <i className="mdi mdi-pulse pr-2"></i>MIDAS
+              </a>
             </h1>
 
-            <h2 className="subtitle">Tools for Monitoring Critical Dam Information</h2>
+            <h2 className="subtitle">
+              Monitoring Instrumentation Data Acquisition System
+            </h2>
 
             <a href="/explore">
               <button className="is-hidden button is-warning">
@@ -41,17 +44,3 @@ function App({ authIsLoggedIn }) {
 }
 
 export default connect("selectAuthIsLoggedIn", App);
-
-// took the upload button out, but if you want to add buttons on the hero this is the footer
-// <div className="hero-foot">
-// <div className="container mb-2">
-// <div className="level">
-//   <div className="level-left"></div>
-//   <div className="level-right">
-//     <div className="level-item">
-//       {authIsLoggedIn ? <UploadButton /> : null}
-//     </div>
-//   </div>
-// </div>
-// </div>
-// </div>
