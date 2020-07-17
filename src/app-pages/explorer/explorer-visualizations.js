@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import ExplorerTimeSeriesPanel from "./explorer-time-series-panel";
+import Chart from "../../app-components/chart/container";
 
 export default connect(
   "selectExploreMapSelectedInstruments",
@@ -10,12 +11,10 @@ export default connect(
     exploreMapInteractionsVersion,
   }) => {
     return (
-      <div className="mx-3">
-        <ExplorerTimeSeriesPanel
-          version={exploreMapInteractionsVersion}
-          instruments={instruments}
-        />
-      </div>
+      <Chart
+        version={exploreMapInteractionsVersion}
+        instruments={instruments}
+      />
     );
   }
 );

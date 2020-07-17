@@ -126,7 +126,7 @@ export default connect(
     });
 
     return (
-      <div className="panel mt-3">
+      <div className="panel mx-3 mt-3">
         <div className="panel-block">
           <div className="" style={{ width: "100%" }}>
             {instruments.length ? (
