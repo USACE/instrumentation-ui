@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React from "react";
 import { connect } from "redux-bundler-react";
 import DatePicker from "react-datepicker";
 import Settings from "./settings";
