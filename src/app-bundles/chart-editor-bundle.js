@@ -1,6 +1,8 @@
 import { createSelector } from "redux-bundler";
 import { trendline } from "../utils";
+import { subDays } from "date-fns";
 
+const now = new Date();
 const initialData = {
   selectionVersion: null,
   showSettings: false,
@@ -8,8 +10,8 @@ const initialData = {
   series: {},
   correlationSeriesX: "",
   correlationSeriesY: "",
-  correlationMinDate: null,
-  correlationMaxDate: null,
+  correlationMinDate: subDays(now, 60),
+  correlationMaxDate: now,
   showToday: false,
   showRainfall: true,
   exactMatchesOnly: true,
@@ -50,6 +52,7 @@ const initialData = {
     responsive: true,
     displaylogo: false,
     displayModeBar: true,
+    modeBarButtonsToRemove: ["select2d", "lasso2d", "zoomIn2d", "zoomOut2d"],
     scrollZoom: true,
   },
 };
@@ -88,7 +91,6 @@ export default {
   },
 
   doChartEditorSetChartType: (chartType) => ({ dispatch }) => {
-    console.log(initialData.layout);
     dispatch({
       type: "CHART_EDITOR_UPDATE",
       payload: {

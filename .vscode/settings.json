@@ -1,6 +1,3 @@
 {
-  "editor.formatOnSave": true,
-  "extensions.ignoreRecommendations": true,
-  "files.autoSave": "off",
-  "debug.allowBreakpointsEverywhere": true
+  "editor.formatOnSave": true
 }

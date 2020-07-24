@@ -78,9 +78,6 @@ export default connect(
   "doProjSetDisplayProjection",
   "doProjTransformFromLonLat",
   "doProjTransformToLonLat",
-  "doInstrumentGroupInstrumentsSave",
-  "doInstrumentStatusSave",
-  "doInstrumentZSave",
   "selectInstrumentDrawLon",
   "selectInstrumentDrawLat",
   "selectInstrumentDrawReady",
@@ -95,11 +92,7 @@ export default connect(
     doProjSetDisplayProjection,
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
-    doInstrumentGroupInstrumentsSave,
-    doInstrumentStatusSave,
-    doInstrumentZSave,
     item = {},
-    addToGroup,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
@@ -195,8 +188,10 @@ export default connect(
             project_id,
             type_id,
             status_id,
+            status_time,
             zreference,
             zreference_datum_id,
+            zreference_time,
             station:
               station === null || station === ""
                 ? null
@@ -214,41 +209,7 @@ export default connect(
               coordinates: [lonLat[0], lonLat[1]],
             },
           }),
-          (updatedItem) => {
-            if (statusHasChanged) {
-              doInstrumentStatusSave(
-                {
-                  instrument_id: item.id,
-                  status_id: status_id,
-                  time: status_time,
-                },
-                doModalClose,
-                true
-              );
-            }
-            if (zHasChanged) {
-              doInstrumentZSave(
-                {
-                  instrument_id: item.id,
-                  zreference: zreference,
-                  zreference_datum_id: zreference_datum_id,
-                  time: zreference_time,
-                },
-                doModalClose,
-                true
-              );
-            }
-            if (addToGroup) {
-              doInstrumentGroupInstrumentsSave(
-                updatedItem,
-                doModalClose,
-                true,
-                true
-              );
-            } else {
-              doModalClose();
-            }
-          },
+          doModalClose,
           true
         );
       }
@@ -335,6 +296,7 @@ export default connect(
                     onChange={(val) => {
                       setStatusTime(val);
                     }}
+                    showTimeInput
                   />
                 </div>
               </div>
@@ -395,6 +357,7 @@ export default connect(
                       onChange={(val) => {
                         setZreferenceTime(val);
                       }}
+                      showTimeInput
                     />
                   </div>
                 </div>

@@ -6,42 +6,27 @@ import SearchBar from "./search-bar";
 import Footer from "../../app-components/footer";
 
 export default connect(
-  "selectInstrumentsItems",
-  "selectInstrumentGroupsItems",
+  "selectHomeData",
   "selectProjectsItemsWithLinks",
-  ({
-    instrumentsItems,
-    instrumentGroupsItems,
-    projectsItemsWithLinks: projects,
-  }) => {
-    const countsByType = {};
-    instrumentsItems.forEach((inst) => {
-      if (!countsByType.hasOwnProperty(inst.type)) countsByType[inst.type] = 0;
-      countsByType[inst.type]++;
-    });
-
+  ({ homeData, projectsItemsWithLinks: projects }) => {
     return (
       <div>
         <Hero />
 
         <section className="section">
           <nav className="level">
-            {Object.keys(countsByType).map((key, i) => {
-              return (
-                <div className="level-item has-text-centered" key={i}>
-                  <div>
-                    <p className="heading">{key}</p>
-                    <p className="title">{countsByType[key]}</p>
-                  </div>
-                </div>
-              );
-            })}
-            <div className="level-item has-text-centered">
-              <div>
-                <p className="heading">Lines</p>
-                <p className="title">{instrumentGroupsItems.length}</p>
-              </div>
-            </div>
+            {homeData
+              ? Object.keys(homeData).map((key, i) => {
+                  return (
+                    <div className="level-item has-text-centered" key={i}>
+                      <div>
+                        <p className="heading">{key}</p>
+                        <p className="title">{homeData[key]}</p>
+                      </div>
+                    </div>
+                  );
+                })
+              : null}
           </nav>
         </section>
         <hr />

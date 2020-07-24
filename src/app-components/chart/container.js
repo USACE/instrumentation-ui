@@ -25,6 +25,7 @@ export default connect(
     chartEditorCorrelationMinDate: minDate,
     chartEditorCorrelationMaxDate: maxDate,
   }) => {
+    const now = new Date();
     const from =
       chartType === "timeseries"
         ? layout.xaxis.range[0]
@@ -51,6 +52,17 @@ export default connect(
         doChartEditorSetCorrelationDates(f, t);
       }
     };
+
+    // @TODO trying to set initial dates to last 60 days, not sure what
+    // to key off of for this...
+    // useEffect(() => {
+    //   console.log("*************", from, to);
+    //   if (chartType === "timeseries" && from === null && to === null) {
+    //     console.log("setting dates");
+    //     updateChartDates(subDays(now, 60), now);
+    //   }
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [chartType, from, to]);
 
     const setLifetime = () => {
       if (chartType === "timeseries") {
@@ -136,7 +148,6 @@ export default connect(
                   <button
                     className="button is-small"
                     onClick={() => {
-                      const now = new Date();
                       const backDate = subDays(now, 30);
                       updateChartDates(
                         backDate.toISOString(),
@@ -149,7 +160,6 @@ export default connect(
                   <button
                     className="button is-small"
                     onClick={() => {
-                      const now = new Date();
                       const backDate = subDays(now, 60);
                       updateChartDates(
                         backDate.toISOString(),
@@ -162,7 +172,6 @@ export default connect(
                   <button
                     className="button is-small"
                     onClick={() => {
-                      const now = new Date();
                       const backDate = subDays(now, 90);
                       updateChartDates(
                         backDate.toISOString(),

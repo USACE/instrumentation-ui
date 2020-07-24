@@ -4,6 +4,7 @@ import Navbar from "../../app-components/navbar";
 import FileDetails from "./file-details";
 import UploadSettings from "./upload-settings";
 import FilePreview from "./file-preview";
+import Notifications from "../../app-components/notifications";
 
 export default connect("doUploadClear", ({ doUploadClear }) => {
   useEffect(() => {
@@ -12,19 +13,18 @@ export default connect("doUploadClear", ({ doUploadClear }) => {
   return (
     <div>
       <Navbar theme="primary" />
-      <section className="container mt-3">
+      <section className="container is-fluid mt-3">
         <div className="columns">
-          <div className="column">
+          <div className="column is-4">
             <FileDetails />
-          </div>
-          <div className="column">
             <UploadSettings />
+          </div>
+          <div className="column is-8">
+            <FilePreview />
           </div>
         </div>
       </section>
-      <section className="container mt-3">
-        <FilePreview />
-      </section>
+      <Notifications />
     </div>
   );
 });

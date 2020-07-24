@@ -346,8 +346,12 @@ export default (opts) => {
               if (config.mergeItems) {
                 Object.assign(itemsById, items);
               }
-              data.forEach((item) => {
-                itemsById[item[config.uid]] = item;
+              data.forEach((item, i) => {
+                if (config.uid) {
+                  itemsById[item[config.uid]] = item;
+                } else {
+                  itemsById[i] = item;
+                }
               });
               dispatch({
                 type: actions.FETCH_FINISHED,

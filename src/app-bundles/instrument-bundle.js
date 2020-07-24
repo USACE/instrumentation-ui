@@ -163,6 +163,15 @@ export default createRestBundle({
       }
     ),
 
+    selectInstrumentsNames: createSelector(
+      "selectInstrumentsItems",
+      (items) => {
+        return items.map((item) => {
+          return item.name;
+        });
+      }
+    ),
+
     reactInstrumentsShouldInitializeLayer: (state) => {
       if (state.instruments._shouldInitializeLayer)
         return { actionCreator: "doInstrumentsInitializeLayer" };

@@ -13,5 +13,9 @@ export default createRestBundle({
   deleteTemplate: "",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
   urlParamSelectors: ["selectInstrumentsIdByRoute"],
-  forceFetchActions: ["INSTRUMENT_SAVE_FINISHED", "INSTRUMENTZ_SAVE_FINISHED"],
+  forceFetchActions: [
+    "INSTRUMENTS_FETCH_FINISHED",
+    "INSTRUMENTS_SAVE_FINISHED",
+    "INSTRUMENTSTATUS_SAVE_FINISHED",
+  ],
 });
