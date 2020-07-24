@@ -16,8 +16,7 @@ import exploreChartSyncBundle from "./explore-chart-sync-bundle";
 import exploreDataBundle from "./explore-data-bundle";
 import exploreMapBundle from "./explore-map-bundle";
 import exploreMapInteractionBundle from "./explore-map-interaction-bundle";
-import routesBundle from "./routes-bundle";
-import uploadBundle from "./upload-bundle";
+import homeDataBundle from "./home-data-bundle";
 import instrumentBundle from "./instrument-bundle";
 import instrumentMapBundle from "./instrument-map-bundle";
 import instrumentDrawBundle from "./instrument-draw-bundle";
@@ -31,11 +30,14 @@ import keyvalBundle from "./key-value-bundle";
 import mapsBundle from "./maps-bundle";
 import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
+import notificationBundle from "./notification-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
 import rainfallBundle from "./rainfall-bundle";
+import routesBundle from "./routes-bundle";
 import timeseriesBundle from "./time-series-bundle";
 import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
+import uploadBundle from "./upload-bundle";
 
 export default composeBundles(
   createAuthBundle({
@@ -65,8 +67,7 @@ export default composeBundles(
   exploreDataBundle,
   exploreMapBundle,
   exploreMapInteractionBundle,
-  routesBundle,
-  uploadBundle,
+  homeDataBundle,
   instrumentBundle,
   instrumentMapBundle,
   instrumentDrawBundle,
@@ -80,9 +81,12 @@ export default composeBundles(
   mapsBundle,
   modalBundle,
   nestedUrlBundle,
+  notificationBundle,
   projectsBundle,
   projectionBundle,
   rainfallBundle,
+  routesBundle,
   timeseriesBundle,
-  timeseriesMeasurementBundle
+  timeseriesMeasurementBundle,
+  uploadBundle
 );

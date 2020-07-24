@@ -25,6 +25,7 @@ export default connect(
       doUploadSetFieldmap(
         Object.assign({}, uploadFieldMap, {
           [key]: value,
+          [value]: key,
         })
       );
     };
@@ -72,7 +73,7 @@ export default connect(
                           <>
                             {domains[model[key].domainGroup].map((d) => {
                               return (
-                                <option key={d.id} value={`all-${d.value}`}>
+                                <option key={d.id} value={`all-${d.id}`}>
                                   Set all to {d.value}
                                 </option>
                               );

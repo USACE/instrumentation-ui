@@ -47,6 +47,7 @@ export default {
     "selectInstrumentsItemsObjectById",
     "selectInstrumentTimeseriesItemsObject",
     (data, instrumentsById, timeseriesItems) => {
+      if (!data) return {};
       const out = {};
       let styleIter = 0;
       Object.keys(data).forEach((instrumentId) => {

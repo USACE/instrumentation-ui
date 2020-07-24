@@ -1,10 +1,16 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 export default connect(
-  "selectUploadIgnoreRows",
   "doUploadSetIgnoreRows",
+  "doUploadIgnoreErrors",
+  "selectUploadIgnoreRows",
   "selectUploadSelectedParser",
-  ({ uploadIgnoreRows, doUploadSetIgnoreRows, uploadSelectedParser }) => {
+  ({
+    doUploadSetIgnoreRows,
+    doUploadIgnoreErrors,
+    uploadIgnoreRows,
+    uploadSelectedParser,
+  }) => {
     if (!uploadSelectedParser) return null;
     return (
       <div>
@@ -13,8 +19,8 @@ export default connect(
             <label className="label">Ignore Rows</label>
           </div>
           <div className="field-body">
-            <div className="field">
-              <div className="control">
+            <div className="field has-addons">
+              <div className="control is-expanded">
                 <input
                   value={uploadIgnoreRows}
                   onChange={(e) => {
@@ -24,6 +30,14 @@ export default connect(
                   type="text"
                   placeholder="Rows i.e. 1,2,3 or 1-3"
                 />
+              </div>
+              <div className="control">
+                <button
+                  onClick={doUploadIgnoreErrors}
+                  className="button is-secondary"
+                >
+                  Ignore Errors
+                </button>
               </div>
             </div>
           </div>

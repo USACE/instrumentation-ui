@@ -2,6 +2,8 @@ import neat from "neat-csv";
 import { createSelector } from "redux-bundler";
 import { formatBytes } from "../utils";
 import instrumentParser from "../upload-parsers/instrument";
+import timeseriesParser from "../upload-parsers/timeseries";
+import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
 
 export default {
   name: "upload",
@@ -11,9 +13,14 @@ export default {
       csv: null,
       json: null,
       ignoreRows: "",
-      parsers: [instrumentParser],
+      parsers: [
+        instrumentParser,
+        timeseriesParser,
+        timeseriesMeasurementsParser,
+      ],
       selectedParser: null,
       fieldMap: null,
+      _errors: [],
       _isParsing: false,
       _shouldParseCsv: false,
       _isUploading: false,
@@ -28,9 +35,11 @@ export default {
         case "UPLOAD_SET_IGNORE_ROWS":
         case "UPLOAD_SET_PARSER":
         case "UPLOAD_POST_START":
-        case "UPLOAD_POST_FINISH":
+        case "UPLOAD_POST_HAS_ERRORS":
         case "UPLOAD_SET_FIELD_MAP":
           return Object.assign({}, state, payload);
+        case "UPLOAD_POST_FINISH":
+          return Object.assign({}, initialData);
         default:
           return state;
       }
@@ -78,6 +87,7 @@ export default {
         ignoreRows: "",
         selectedParser: null,
         fieldMap: null,
+        _errors: [],
       },
     });
   },
@@ -118,50 +128,80 @@ export default {
     });
 
     const project = store.selectProjectsByRoute();
-    const domains = store.selectDomainsItemsByGroup();
-    const ignoreRows = store.selectUploadIgnoreRowsList();
     const selectedParser = store.selectUploadSelectedParser();
-    const json = store.selectUploadJson();
-    const fieldMap = store.selectUploadFieldMap();
+    let parsed = store.selectUploadDataParsed();
 
-    const parsed = await selectedParser.parser(
-      json,
-      fieldMap,
-      ignoreRows,
-      domains
-    );
+    parsed = parsed
+      .filter((row) => {
+        return !row.ignore;
+      })
+      .map((row) => {
+        delete row.ignore;
+        delete row.errors;
+        row.project_id = project.id;
+        return row;
+      });
 
-    apiPost("/instruments", parsed, (err, response, body) => {
-      if (err || response.statusCode < 200 || response.statusCode >= 300) {
-        console.log(err, response);
-        // dispatch({
-        //   type: actions.ERROR,
-        //   payload: {
-        //     _err: { err: err, response: response },
-        //     notification: {
-        //       statusCode: response.statusCode,
-        //     },
-        //     _isSaving: false,
-        //   },
-        // });
+    const postUrl = selectedParser.url.replace(":projectId", project.id);
+    apiPost(`${postUrl}?dry_run=true`, parsed, (err, body) => {
+      if (err) {
+        // @TODO add better error handling here
+        console.log(err);
       } else {
-        dispatch({
-          type: "UPLOAD_POST_FINISH",
-          payload: {
-            csv: null,
-            json: null,
-            ignoreRows: "",
-            parsers: [instrumentParser],
-            selectedParser: null,
-            fieldMap: null,
-            _isParsing: false,
-            _shouldParseCsv: false,
-            _isUploading: false,
-          },
-        });
-        store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+        const data = body;
+        if (data.is_valid) {
+          apiPost(postUrl, parsed, (err, body) => {
+            if (err) {
+              // @TODO add better error handling here
+              console.log(err);
+            } else {
+              dispatch({
+                type: "UPLOAD_POST_FINISHED",
+              });
+              store.doFireNotification({
+                message: "Data Uploaded Successfully",
+                level: "success",
+                autoDismiss: 10,
+                onRemove: () => {
+                  store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+                },
+              });
+            }
+          });
+        } else {
+          data.errors.forEach((error) => {
+            store.doFireNotification({
+              message: error,
+              level: "error",
+              autoDismiss: 20,
+            });
+          });
+        }
       }
     });
+  },
+
+  doUploadIgnoreErrors: () => ({ dispatch, store }) => {
+    const parsed = store.selectUploadDataParsed();
+    const errRows = parsed
+      .map((row, i) => {
+        if (row.errors.length) return i + 1;
+        return null;
+      })
+      .filter((row) => {
+        return !!row;
+      })
+      .join(",");
+    dispatch({
+      type: "UPLOAD_SET_IGNORE_ROWS",
+      payload: {
+        ignoreRows: errRows,
+      },
+    });
+  },
+
+  selectUploadErrors: (state) => {
+    return state.upload._errors;
   },
 
   selectUploadCsv: (state) => {
@@ -172,9 +212,194 @@ export default {
     return state.upload.json;
   },
 
+  selectUploadColumnDefsOriginal: createSelector("selectUploadJson", (json) => {
+    if (!json || !json.length) return [];
+    const keys = Object.keys(json[Math.round(json.length / 2)]);
+    return [
+      { headerName: "", valueGetter: "node.rowIndex + 1", width: 60 },
+      ...keys.map((key) => {
+        return {
+          headerName: key.toUpperCase(),
+          field: key,
+          resizable: true,
+          sortable: true,
+          filter: false,
+          editable: false,
+          cellStyle: (params) => {
+            const style = {};
+            if (params.data.ignore) {
+              style.color = "grey";
+              style.opacity = 0.5;
+            }
+            if (params.data.errors && params.data.errors.indexOf(key) !== -1) {
+              style.color = "#d22a0e";
+              style.backgroundColor = "#feeeec";
+              style.borderColor = "#ea2f10";
+            }
+            return style;
+          },
+        };
+      }),
+    ];
+  }),
+
+  selectUploadDataOriginal: createSelector(
+    "selectUploadJson",
+    "selectUploadIgnoreRowsList",
+    (json, ignore) => {
+      if (!json || !json.length) return [];
+      return json.map((row, i) => {
+        if (ignore.indexOf(i + 1) !== -1) {
+          row.ignore = true;
+        } else {
+          row.ignore = false;
+        }
+        return row;
+      });
+    }
+  ),
+
+  selectUploadColumnDefsParsed: createSelector(
+    "selectUploadSelectedParser",
+    (parser) => {
+      if (!parser || !parser.model) return [];
+      const keys = Object.keys(parser.model);
+      return [
+        { headerName: "", valueGetter: "node.rowIndex + 1", width: 60 },
+        ...keys.map((key) => {
+          return {
+            headerName: key.toUpperCase(),
+            field: key,
+            resizable: true,
+            sortable: true,
+            filter: false,
+            editable: false,
+            cellStyle: (params) => {
+              const style = {};
+              if (params.data.ignore) {
+                style.color = "grey";
+                style.opacity = 0.5;
+              }
+              if (
+                params.data.errors &&
+                params.data.errors.indexOf(key) !== -1
+              ) {
+                style.color = "#d22a0e";
+                style.backgroundColor = "#feeeec";
+                style.borderColor = "#ea2f10";
+              }
+              return style;
+            },
+          };
+        }),
+      ];
+    }
+  ),
+
+  selectCurrentState: (state) => {
+    return state;
+  },
+
+  selectUploadDataParsed: createSelector(
+    "selectCurrentState",
+    "selectUploadJson",
+    "selectUploadFieldMap",
+    "selectUploadSelectedParser",
+    "selectUploadIgnoreRowsList",
+    "selectDomainsItemsByGroup",
+    (state, json, fieldMap, parser, ignore, domains) => {
+      if (!json || !fieldMap || !parser || !parser.model) return [];
+      let rows = json.map((row, i) => {
+        const parsedRow = { errors: [], ignore: false };
+        Object.keys(parser.model).forEach((key) => {
+          const config = parser.model[key];
+          const sourceKey = fieldMap[key];
+          if (!config.hidden) {
+            // check to see if we should just set all rows to a certain value
+            const allTest = /all-(.+)/gi;
+            const setAllTo = allTest.exec(sourceKey);
+            if (setAllTo) {
+              parsedRow[key] =
+                config.type === "boolean"
+                  ? setAllTo[1] === "true"
+                  : setAllTo[1];
+            } else {
+              const data = row[sourceKey];
+              if (!data) {
+                parsedRow[key] = null;
+                if (config.required) parsedRow.errors.push(key);
+              } else {
+                if (config.type === "domain") {
+                  const foundDomainItem = domains[config.domainGroup].filter(
+                    (d) => {
+                      return d.value.toUpperCase() === data.toUpperCase();
+                    }
+                  );
+                  if (foundDomainItem[0]) {
+                    parsedRow[key] = foundDomainItem[0].id;
+                  } else {
+                    parsedRow[key] = null;
+                    if (config.required) parsedRow.errors.push(key);
+                  }
+                } else {
+                  if (config.parse && typeof config.parse === "function") {
+                    parsedRow[key] = config.parse(data, state, parsedRow);
+                  } else {
+                    parsedRow[key] = data;
+                  }
+                  if (
+                    config.validate &&
+                    typeof config.validate === "function"
+                  ) {
+                    if (!config.validate(parsedRow[key], state, parsedRow)) {
+                      parsedRow.errors.push(key);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        if (ignore.indexOf(i + 1) !== -1) parsedRow.ignore = true;
+        return parsedRow;
+      });
+      if (parser.postProcess && typeof parser.postProcess === "function")
+        rows = parser.postProcess(rows);
+      return rows;
+    }
+  ),
+
+  selectUploadReadyToUpload: createSelector(
+    "selectUploadFieldMap",
+    "selectUploadSelectedParser",
+    (fieldMap, parser) => {
+      let ready = true;
+      if (fieldMap) {
+        const keys = Object.keys(parser.model);
+        for (let i = 0; i < keys.length; i++) {
+          const field = parser.model[keys[i]];
+          if (field.required && fieldMap[keys[i]] === "") {
+            ready = false;
+            break;
+          }
+        }
+      } else {
+        ready = false;
+      }
+      return ready;
+    }
+  ),
+
   selectUploadJsonKeys: createSelector("selectUploadJson", (json) => {
     if (!json || !json.length) return [];
-    return Object.keys(json[0]);
+    const keys = Object.keys(json[0]);
+    const removeTheseKeys = ["ignore"];
+    removeTheseKeys.forEach((removeKey) => {
+      const idx = keys.indexOf(removeKey);
+      if (idx !== -1) keys.splice(idx, 1);
+    });
+    return keys;
   }),
 
   selectUploadIsParsing: (state) => {
