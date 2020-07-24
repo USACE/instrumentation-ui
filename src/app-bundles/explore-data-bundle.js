@@ -17,25 +17,31 @@ export default {
     };
   },
 
-  doExploreDataLoad: (instrumentIds) => ({ dispatch, store }) => {
-    const apiRoot = store.selectApiRoot();
-    fetch(`${apiRoot}/explorer`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(instrumentIds),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        dispatch({
-          type: "EXPLORE_DATA_LOAD",
-          payload: data,
-        });
+  doExploreDataLoad: (instrumentIds) => ({ dispatch, store, apiPost }) => {
+    apiPost("/explorer", (err, data) => {
+      dispatch({
+        type: "EXPLORE_DATA_LOAD",
+        payload: data,
       });
+    });
+    // const apiRoot = store.selectApiRoot();
+    // fetch(`${apiRoot}/explorer`, {
+    //   method: "POST",
+    //   mode: "cors",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(instrumentIds),
+    // })
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     dispatch({
+    //       type: "EXPLORE_DATA_LOAD",
+    //       payload: data,
+    //     });
+    //   });
   },
 
   selectExploreData: (state) => {
