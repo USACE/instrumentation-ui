@@ -17,8 +17,8 @@ export default {
     };
   },
 
-  doExploreDataLoad: (instrumentIds) => ({ dispatch, store, apiPost }) => {
-    apiPost("/explorer", (err, data) => {
+  doExploreDataLoad: (instrumentIds) => ({ dispatch, apiPost }) => {
+    apiPost("/explorer", instrumentIds, (err, data) => {
       dispatch({
         type: "EXPLORE_DATA_LOAD",
         payload: data,
