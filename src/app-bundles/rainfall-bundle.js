@@ -56,7 +56,7 @@ export default {
 
   selectRainfallData: createSelector("selectRainfallItems", (items) => {
     const chartData = [];
-    if (items.length) {
+    if (items && items.length) {
       const series = {
         name: "Precip",
         type: "bar",
