@@ -7,7 +7,7 @@ export default ({ items }) => {
         return (
           <li className={`timeline-list-item ${item.status}`} key={i}>{`${
             item.text
-          } (as of ${item.date.toLocaleDateString()})`}</li>
+          } ${i > 0 ? `(as of ${item.date.toLocaleDateString()})` : ""}`}</li>
         );
       })}
     </ul>
