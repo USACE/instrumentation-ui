@@ -118,6 +118,9 @@ export default connect(
             Belongs to
           </div>
           <div className="column">
+            {!item.groups || !item.groups.length
+              ? "Not a member of any group yet."
+              : null}
             {item.groups.map((groupId, i) => {
               const group = groups[groupId];
               if (!group) return null;
