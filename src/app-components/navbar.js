@@ -90,6 +90,7 @@ export default connect(
   "doAuthLogin",
   "selectAuthIsLoggedIn",
   "selectProjectsByRoute",
+  "selectPathnameMinusHomepage",
   ({
     doAuthLogin,
     authIsLoggedIn,
@@ -97,6 +98,7 @@ export default connect(
     fixed = false,
     hideBrand,
     projectsByRoute: project,
+    pathnameMinusHomepage,
   }) => {
     const [expanded, setExpanded] = useState(false);
     const navClass = classnames({
@@ -113,7 +115,16 @@ export default connect(
     });
     return (
       <nav className={navClass}>
-        {hideBrand ? null : (
+        {hideBrand ? (
+          pathnameMinusHomepage !== "/" ? (
+            <a className="navbar-brand" href={"/"}>
+              <strong>
+                <i className="mdi mdi-pulse pr-2"></i>
+                Home
+              </strong>
+            </a>
+          ) : null
+        ) : (
           <a className="navbar-brand" href={"/"}>
             <strong>
               <i className="mdi mdi-pulse pr-2"></i>

@@ -1,9 +1,8 @@
 import React from "react";
-import { connect } from "redux-bundler-react";
 
 import bg1 from "../img/bg-1.jpg";
 
-function App({ authIsLoggedIn }) {
+export default () => {
   return (
     <div
       style={{
@@ -33,6 +32,4 @@ function App({ authIsLoggedIn }) {
       </div>
     </div>
   );
-}
-
-export default connect("selectAuthIsLoggedIn", App);
+};

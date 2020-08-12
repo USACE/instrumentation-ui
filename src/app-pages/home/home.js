@@ -3,7 +3,6 @@ import { connect } from "redux-bundler-react";
 import Hero from "../../app-components/hero";
 import Navbar from "../../app-components/navbar";
 import ProjectList from "./project-list";
-import SearchBar from "./search-bar";
 import Footer from "../../app-components/footer";
 
 export default connect(
@@ -45,35 +44,3 @@ export default connect(
     );
   }
 );
-
-// //<div className="level">
-// <h4 className="subtitle is-4 level-item has-text-centered">
-// Active Projects
-// </h4>
-// </div>
-// <div
-// className="tile is-parent"
-// style={{ flexWrap: "wrap", justifyContent: "center" }}
-// >
-// {projects.map((p, i) => {
-// return (
-//   <div
-//     key={i}
-//     className="tile is-child"
-//     style={{
-//       minWidth: "400px",
-//       maxWidth: "450px",
-//       padding: "20px",
-//     }}
-//   >
-//     <ProjectCard
-//       img={p.img}
-//       title={p.title}
-//       href={p.href}
-//       subtitle={p.subtitle}
-//       content={p.content}
-//     />
-//   </div>
-// );
-// })}
-// </div>
