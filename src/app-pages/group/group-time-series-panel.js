@@ -114,12 +114,14 @@ export default connect(
     });
 
     return (
-      <div className="panel">
-        <div className="panel-heading">Timeseries</div>
-        <div className="panel-block">
+      <div className="card mt-3 mb-5">
+        <div className="card-header">
+          <strong>Timeseries</strong>
+        </div>
+        <div className="card-body">
           <div className="container">
-            <div className="columns">
-              <div className="column is-one-quarter pt-5">
+            <div className="row">
+              <div className="col-3">
                 {Object.keys(instruments)
                   .sort()
                   .map((instrumentId, i) => {
@@ -139,7 +141,7 @@ export default connect(
                     );
                   })}
               </div>
-              <div className="column">
+              <div className="col-9">
                 <TimeSeries data={chartSeries} />
               </div>
             </div>

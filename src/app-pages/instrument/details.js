@@ -50,20 +50,20 @@ export default connect(
     // eslint-disable-next-line
     return (
       <div style={{ marginBottom: "200px" }}>
-        <Navbar theme="primary" />
-        <section className="container mt-3">
-          <div className="columns">
-            <div className="column">
-              <div className="panel">
+        <Navbar theme="primary" fixed />
+        <section className="container" style={{ marginTop: "6rem" }}>
+          <div className="row">
+            <div className="col">
+              <div className="card">
                 <div
-                  className="panel-heading"
+                  className="card-header"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
-                  {instrument.name}{" "}
+                  <strong>{instrument.name}</strong>{" "}
                   <RoleFilter
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
@@ -72,7 +72,7 @@ export default connect(
                       onClick={() => {
                         doModalOpen(InstrumentForm, { item: instrument });
                       }}
-                      className="button is-info is-small"
+                      className="btn btn-sm btn-outline-info"
                     >
                       <i className="mdi mdi-pencil pr-2"></i> Edit
                     </button>
@@ -81,12 +81,14 @@ export default connect(
                 <InstrumentDisplay item={instrument} />
               </div>
             </div>
-            <div className="column">
+            <div className="col">
               <div
-                className="panel"
+                className="card"
                 style={{ position: "relative", height: "100%" }}
               >
-                <Map mapKey="instrumentMap" />
+                <div className="card-body">
+                  <Map mapKey="instrumentMap" />
+                </div>
               </div>
             </div>
           </div>
@@ -94,11 +96,8 @@ export default connect(
         <section className="container mt-3">
           <Settings />
         </section>
-        <section className="container mt-3 ">
-          <div className="panel">
-            <div className="panel-heading">Notes</div>
-            <Notes />
-          </div>
+        <section className="container mt-3 mb-5">
+          <Notes />
         </section>
       </div>
     );

@@ -57,7 +57,7 @@ export default connect(
                   className="nav-item pointer"
                 >
                   <span className={`nav-link ${tab === "grp" ? "active" : ""}`}>
-                    Instrument Groups
+                    <strong>Instrument Groups</strong>
                   </span>
                 </li>
                 <li
@@ -67,7 +67,7 @@ export default connect(
                   className="nav-item pointer"
                 >
                   <span className={`nav-link ${tab === "all" ? "active" : ""}`}>
-                    All Instruments
+                    <strong>All Instruments</strong>
                   </span>
                 </li>
               </ul>

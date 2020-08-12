@@ -14,10 +14,10 @@ export default connect(
     return (
       <>
         {isConfirming ? (
-          <>
+          <div className="btn-group">
             <button
               title="Cancel"
-              className="button is-small is-secondary"
+              className="btn btn-sm btn-outline-secondary"
               onClick={() => {
                 setIsConfirming(false);
               }}
@@ -26,19 +26,19 @@ export default connect(
             </button>
             <button
               title="Confirm"
-              className="button is-small is-danger is-outlined"
+              className="btn btn-sm btn-outline-danger"
               onClick={handleDelete}
             >
               Confirm
             </button>
-          </>
+          </div>
         ) : (
           <button
             title="Remove from Group"
             onClick={() => {
               setIsConfirming(true);
             }}
-            className="button is-small is-danger is-outlined"
+            className="btn btn-sm btn-outline-danger"
           >
             <i className="mdi mdi-delete"></i>
           </button>

@@ -36,43 +36,37 @@ export default connect(
       });
 
     return (
-      <div className="modal-card">
+      <div className="modal-content">
         <form id="instrument-picker" onSubmit={handleSave}>
-          <header className="modal-card-head">
-            <p className="modal-card-title">Choose Instrument</p>
-            <button
-              type="button"
-              onClick={doModalClose}
-              className="delete"
-            ></button>
+          <header className="modal-header">
+            <h5 className="modal-title">Choose Instrument</h5>
+            <span className="pointer" onClick={doModalClose}>
+              <i className="mdi mdi-close-circle-outline"></i>
+            </span>
           </header>
-          <section className="modal-card-body">
-            <div className="field">
-              <label className="label">Type</label>
-              <p className="control">
-                <span className="select" style={{ width: "100%" }}>
-                  <select
-                    className="input"
-                    value={instrumentSlug}
-                    onChange={handleSelect}
-                  >
-                    {instrumentSlug ? null : (
-                      <option value="">Select one...</option>
-                    )}
-                    {options.map((opt, i) => {
-                      return (
-                        <option key={i} value={opt.slug}>
-                          {opt.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </span>
-              </p>
+          <section className="modal-body">
+            <div className="form-group">
+              <label>Type</label>
+              <select
+                className="form-control"
+                value={instrumentSlug}
+                onChange={handleSelect}
+              >
+                {instrumentSlug ? null : (
+                  <option value="">Select one...</option>
+                )}
+                {options.map((opt, i) => {
+                  return (
+                    <option key={i} value={opt.slug}>
+                      {opt.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </section>
-          <footer className="modal-card-foot">
-            <button type="submit" className="button is-primary">
+          <footer className="modal-footer">
+            <button type="submit" className="btn btn-primary mr-2">
               Save changes
             </button>
             <button
@@ -81,7 +75,7 @@ export default connect(
                 e.preventDefault();
                 doModalClose();
               }}
-              className="button"
+              className="btn btn-secondary"
             >
               Cancel
             </button>

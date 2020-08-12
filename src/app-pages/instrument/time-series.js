@@ -54,9 +54,9 @@ export default ({ data, title }) => {
 
   return (
     <div>
-      <div className="level">
-        <div className="level-left"></div>
-        <div className="level-right">
+      <div className="row">
+        <div className="col"></div>
+        <div className="col">
           <button
             className="button is-info level-item"
             onClick={() => {

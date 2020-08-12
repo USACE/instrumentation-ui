@@ -45,79 +45,69 @@ export default connect(
 
     return (
       <div className="p-3">
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">
             Instrument Type
           </div>
-          <div className="column">{item.type}</div>
+          <div className="col">{item.type}</div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
-            Status
-          </div>
-          <div className="column">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">Status</div>
+          <div className="col">
             <TimelineList items={statusItems} />
           </div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
-            Station
-          </div>
-          <div className="column">{item.station || "N/A"}</div>
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">Station</div>
+          <div className="col">{item.station || "N/A"}</div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
-            Offset
-          </div>
-          <div className="column">{item.offset || "N/A"}</div>
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">Offset</div>
+          <div className="col">{item.offset || "N/A"}</div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">
             Z-Reference Elevation
           </div>
-          <div className="column">
+          <div className="col">
             <TimelineList items={zItems} />
           </div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">
             Z-Reference Datum
           </div>
-          <div className="column">{item.zreference_datum}</div>
+          <div className="col">{item.zreference_datum}</div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
-            Created On
-          </div>
-          <div className="column">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">Created On</div>
+          <div className="col">
             {item.create_date
               ? new Date(item.create_date).toLocaleDateString()
               : "N/A"}
           </div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">
             Last Modified On
           </div>
-          <div className="column">
+          <div className="col">
             {item.update_date
               ? new Date(item.update_date).toLocaleDateString()
               : "N/A"}
           </div>
         </div>
 
-        <div className="columns">
-          <div className="column is-4 has-text-right has-text-weight-semibold">
-            Belongs to
-          </div>
-          <div className="column">
+        <div className="row mb-2">
+          <div className="col-4 text-right font-weight-light">Belongs to</div>
+          <div className="col">
             {!item.groups || !item.groups.length
               ? "Not a member of any group yet."
               : null}
