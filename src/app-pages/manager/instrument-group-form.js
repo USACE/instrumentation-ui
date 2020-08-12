@@ -32,31 +32,31 @@ const DeleteButton = connect(
     return (
       <>
         {isConfirming ? (
-          <>
+          <div className="btn-group">
             <button
               title="Confirm"
-              className="button is-danger"
+              className="btn btn-danger"
               onClick={handleDelete}
             >
               Confirm
             </button>
             <button
               title="Cancel"
-              className="button is-secondary"
+              className="btn btn-secondary"
               onClick={() => {
                 setIsConfirming(false);
               }}
             >
               Cancel
             </button>
-          </>
+          </div>
         ) : (
           <button
             title="Remove from Group"
             onClick={() => {
               setIsConfirming(true);
             }}
-            className="button is-danger"
+            className="btn btn-danger"
           >
             Delete
           </button>
@@ -91,49 +91,44 @@ export default connect(
         true
       );
     };
+
     return (
-      <div className="modal-card" style={{ overflowY: "auto" }}>
-        <form id="instrument-form" onSubmit={handleSave}>
-          <header className="modal-card-head">
-            <p className="modal-card-title">Edit Instrument Group</p>
-            <button
-              type="button"
-              onClick={doModalClose}
-              className="delete"
-            ></button>
+      <div className="modal-content" style={{ overflowY: "auto" }}>
+        <form id="instrument-group-form" onSubmit={handleSave}>
+          <header className="modal-header">
+            <h5 className="modal-title">Edit Instrument Group</h5>
+            <span className="pointer" onClick={doModalClose}>
+              <i className="mdi mdi-close-circle-outline"></i>
+            </span>
           </header>
-          <section className="modal-card-body">
-            <div className="field">
-              <label className="label">Name</label>
-              <p className="control">
-                <input
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  className="input"
-                  type="text"
-                  placeholder="Text input"
-                />
-              </p>
+          <section className="modal-body">
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                className="form-control"
+                type="text"
+                placeholder="Text input"
+              />
             </div>
-            <div className="field">
-              <label className="label">Description</label>
-              <p className="control">
-                <input
-                  value={description}
-                  onChange={(e) => {
-                    setDesc(e.target.value);
-                  }}
-                  className="input"
-                  type="text"
-                  placeholder="Text input"
-                />
-              </p>
+            <div className="form-group">
+              <label>Description</label>
+              <input
+                value={description}
+                onChange={(e) => {
+                  setDesc(e.target.value);
+                }}
+                className="form-control"
+                type="text"
+                placeholder="Text input"
+              />
             </div>
           </section>
           <footer
-            className="modal-card-foot"
+            className="modal-footer"
             style={{
               display: "flex",
               alignItems: "center",
@@ -141,7 +136,7 @@ export default connect(
             }}
           >
             <div>
-              <button type="submit" className="button is-primary">
+              <button type="submit" className="btn btn-primary mr-2">
                 Save changes
               </button>
               <button
@@ -150,7 +145,7 @@ export default connect(
                   e.preventDefault();
                   doModalClose();
                 }}
-                className="button"
+                className="btn btn-secondary"
               >
                 Cancel
               </button>

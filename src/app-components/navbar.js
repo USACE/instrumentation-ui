@@ -115,7 +115,7 @@ export default connect(
       <nav className={navClass}>
         {hideBrand ? null : (
           <a className="navbar-brand" href={"/"}>
-            <strong style={{ fontSize: "2em" }}>
+            <strong>
               <i className="mdi mdi-pulse pr-2"></i>
               {project && project.name ? project.name : ""}
             </strong>
@@ -135,15 +135,15 @@ export default connect(
           <ul className="navbar-nav">
             {project ? (
               <>
+                <NavItem href={`/${project.slug}/manager`}>
+                  Instrument Manager
+                </NavItem>
                 <NavItem hidden={false} href={`/${project.slug}/explore`}>
                   Explorer
                 </NavItem>
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                 </RoleFilter>
-                <NavItem href={`/${project.slug}/manager`}>
-                  Instrument Manager
-                </NavItem>
               </>
             ) : null}
             <NavItem href="/help">Help</NavItem>

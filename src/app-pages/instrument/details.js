@@ -7,6 +7,7 @@ import InstrumentForm from "../manager/instrument-form";
 import InstrumentDisplay from "./instrument-display";
 import Map from "../../app-components/classMap";
 import Notes from "./notes";
+import Settings from "./settings";
 import RoleFilter from "../../app-components/role-filter";
 import LoginMessage from "../../app-components/login-message";
 
@@ -91,37 +92,7 @@ export default connect(
           </div>
         </section>
         <section className="container mt-3">
-          <div className="panel">
-            <div className="panel-heading">
-              <div className="tabs">
-                {timeseries.map((item, i) => {
-                  return (
-                    <div key={item.id}>
-                      <ul>
-                        <li className={activeId === item.id ? "is-active" : ""}>
-                          <a onClick={() => handleTab(item.id)}>{item.name}</a>
-                        </li>
-                      </ul>
-                    </div>
-                  );
-                })}
-                {!len ? (
-                  <div>
-                    <ul>
-                      <li>No Timeseries Available for this Instrument</li>
-                    </ul>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-            <div className="panel-block">
-              <div className="container">
-                <div className="tab is-active">
-                  <TimeSeries data={measurements[activeId]} />
-                </div>
-              </div>
-            </div>
-          </div>
+          <Settings />
         </section>
         <section className="container mt-3 ">
           <div className="panel">

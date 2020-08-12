@@ -32,7 +32,7 @@ const Table = connect(
                       onClick={() => {
                         doModalOpen(InstrumentGroupForm, { item: group });
                       }}
-                      className="button is-small is-info is-outlined"
+                      className="btn btn-sm btn-outline-info"
                     >
                       <i className="mdi mdi-pencil"></i>
                     </button>

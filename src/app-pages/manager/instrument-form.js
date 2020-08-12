@@ -36,31 +36,31 @@ const DeleteButton = connect(
     return (
       <>
         {isConfirming ? (
-          <>
+          <div className="btn-group">
             <button
               title="Confirm"
-              className="button is-danger"
+              className="btn btn-danger"
               onClick={handleDelete}
             >
               Confirm
             </button>
             <button
               title="Cancel"
-              className="button is-secondary"
+              className="btn btn-secondary"
               onClick={() => {
                 setIsConfirming(false);
               }}
             >
               Cancel
             </button>
-          </>
+          </div>
         ) : (
           <button
             title="Remove from Group"
             onClick={() => {
               setIsConfirming(true);
             }}
-            className="button is-danger"
+            className="btn btn-danger"
           >
             Delete
           </button>
@@ -233,51 +233,47 @@ export default connect(
     };
 
     return (
-      <div className="modal-card" style={{ overflowY: "auto" }}>
+      <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="instrument-form" onSubmit={handleSave}>
-          <header className="modal-card-head">
-            <p className="modal-card-title">Edit Instrument</p>
-            <button
-              type="button"
-              onClick={doModalClose}
-              className="delete"
-            ></button>
+          <header className="modal-header">
+            <h5 className="modal-title">Edit Instrument</h5>
+            <span className="pointer" onClick={doModalClose}>
+              <i className="mdi mdi-close-circle-outline"></i>
+            </span>
           </header>
-          <section className="modal-card-body">
+          <section className="modal-body">
             <div className="mb-3" style={{ position: "relative", height: 300 }}>
               <Map
                 mapKey="inst-edit"
                 options={{ center: [-80.79, 26.94], zoom: 9 }}
               />
             </div>
-            <div className="field">
-              <label className="label">Name</label>
-              <p className="control">
-                <input
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  className="input"
-                  type="text"
-                  placeholder="Name"
-                />
-              </p>
+            <div className="form-group">
+              <label>Name</label>
+
+              <input
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                className="form-control"
+                type="text"
+                placeholder="Name"
+              />
             </div>
-            <div className="field">
-              <label className="label">Type</label>
-              <p className="control">
-                <DomainSelect
-                  value={type_id}
-                  onChange={(e) => {
-                    setTypeId(e.target.value);
-                  }}
-                  domain="instrument_type"
-                />
-              </p>
+            <div className="form-group">
+              <label>Type</label>
+
+              <DomainSelect
+                value={type_id}
+                onChange={(e) => {
+                  setTypeId(e.target.value);
+                }}
+                domain="instrument_type"
+              />
             </div>
-            <div className="field">
-              <label className="label">Status</label>
+            <div className="form-group">
+              <label>Status</label>
               <DomainSelect
                 value={status_id}
                 onChange={(e) => {
@@ -287,11 +283,11 @@ export default connect(
               />
             </div>
             {statusHasChanged ? (
-              <div className="field">
-                <label className="label">Status current as of</label>
+              <div className="form-group">
+                <label>Status current as of</label>
                 <div className="control">
                   <DatePicker
-                    className="input"
+                    className="form-control"
                     selected={status_time}
                     onChange={(val) => {
                       setStatusTime(val);
@@ -301,58 +297,56 @@ export default connect(
                 </div>
               </div>
             ) : null}
-            <div className="field">
-              <label className="label">Station</label>
-              <p className="control">
-                <input
-                  value={station}
-                  onChange={(e) => {
-                    setStation(e.target.value);
-                  }}
-                  className="input"
-                  type="number"
-                  placeholder="Station"
-                />
-              </p>
+            <div className="form-group">
+              <label>Station</label>
+
+              <input
+                value={station}
+                onChange={(e) => {
+                  setStation(e.target.value);
+                }}
+                className="form-control"
+                type="number"
+                placeholder="Station"
+              />
             </div>
-            <div className="field">
-              <label className="label">Offset</label>
-              <p className="control">
-                <input
-                  value={offset}
-                  onChange={(e) => {
-                    setOffset(e.target.value);
-                  }}
-                  className="input"
-                  type="number"
-                  placeholder="Offset"
-                />
-              </p>
-              <p className="help">
+            <div className="form-group">
+              <label>Offset</label>
+
+              <input
+                value={offset}
+                onChange={(e) => {
+                  setOffset(e.target.value);
+                }}
+                className="form-control"
+                type="number"
+                placeholder="Offset"
+              />
+
+              <small className="form-text text-muted">
                 Offset should be positive on land side, negative on water side
-              </p>
+              </small>
             </div>
-            <div className="field">
-              <label className="label">Z-Reference Elevation</label>
-              <p className="control">
-                <input
-                  value={zreference}
-                  onChange={(e) => {
-                    setZreference(Number(e.target.value));
-                  }}
-                  className="input"
-                  type="number"
-                  placeholder="Z-Reference"
-                />
-              </p>
+            <div className="form-group">
+              <label>Z-Reference Elevation</label>
+
+              <input
+                value={zreference}
+                onChange={(e) => {
+                  setZreference(Number(e.target.value));
+                }}
+                className="form-control"
+                type="number"
+                placeholder="Z-Reference"
+              />
             </div>
             {zHasChanged ? (
               <>
-                <div className="field">
-                  <label className="label">Z Reference current as of</label>
+                <div className="form-group">
+                  <label>Z Reference current as of</label>
                   <div className="control">
                     <DatePicker
-                      className="input"
+                      className="form-control"
                       selected={zreference_time}
                       onChange={(val) => {
                         setZreferenceTime(val);
@@ -361,8 +355,8 @@ export default connect(
                     />
                   </div>
                 </div>
-                <div className="field">
-                  <label className="label">Z Reference Datum</label>
+                <div className="form-group">
+                  <label>Z Reference Datum</label>
                   <div className="control">
                     <DomainSelect
                       value={zreference_datum_id}
@@ -375,67 +369,65 @@ export default connect(
                 </div>
               </>
             ) : null}
-            <div className="field">
-              <label className="label">
-                <span style={{ float: "right" }}>
-                  Use Projection:
-                  <select
-                    onChange={handleSetDisplayProjection}
-                    value={projDisplayProjection}
-                    className="ml-2"
-                  >
-                    {Object.keys(projOptions).map((key, i) => {
-                      return (
-                        <option key={i} value={key}>
-                          {key}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </span>
+            <div className="form-group">
+              <label>Use Projection</label>
+
+              <select
+                onChange={handleSetDisplayProjection}
+                value={projDisplayProjection}
+                className="form-control"
+              >
+                {Object.keys(projOptions).map((key, i) => {
+                  return (
+                    <option key={i} value={key}>
+                      {key}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="form-group">
+              <label>
                 {`${
                   units === "degrees" ? "Longitude" : "X coordinate"
                 } in ${units}`}
               </label>
-              <p className="control">
-                <input
-                  data-key="x"
-                  value={x}
-                  onChange={(e) => {
-                    setX(e.target.value);
-                  }}
-                  onBlur={handleLocUpdate}
-                  className="input"
-                  type="number"
-                  placeholder={`${
-                    units === "degrees" ? "Longitude" : "X coordinate"
-                  } in ${units}`}
-                />
-              </p>
+              <input
+                data-key="x"
+                value={x}
+                onChange={(e) => {
+                  setX(e.target.value);
+                }}
+                onBlur={handleLocUpdate}
+                className="form-control"
+                type="number"
+                placeholder={`${
+                  units === "degrees" ? "Longitude" : "X coordinate"
+                } in ${units}`}
+              />
             </div>
-            <div className="field">
-              <label className="label">{`${
+            <div className="form-group">
+              <label>{`${
                 units === "degrees" ? "Latitude" : "Y coordinate"
               } in ${units}`}</label>
-              <p className="control">
-                <input
-                  data-key="y"
-                  value={y}
-                  onChange={(e) => {
-                    setY(e.target.value);
-                  }}
-                  onBlur={handleLocUpdate}
-                  className="input"
-                  type="number"
-                  placeholder={`${
-                    units === "degrees" ? "Latitude" : "Y coordinate"
-                  } in ${units}`}
-                />
-              </p>
+
+              <input
+                data-key="y"
+                value={y}
+                onChange={(e) => {
+                  setY(e.target.value);
+                }}
+                onBlur={handleLocUpdate}
+                className="form-control"
+                type="number"
+                placeholder={`${
+                  units === "degrees" ? "Latitude" : "Y coordinate"
+                } in ${units}`}
+              />
             </div>
           </section>
           <footer
-            className="modal-card-foot"
+            className="modal-footer"
             style={{
               display: "flex",
               alignItems: "center",
@@ -443,7 +435,7 @@ export default connect(
             }}
           >
             <div>
-              <button type="submit" className="button is-primary">
+              <button type="submit" className="btn btn-primary mr-2">
                 Save changes
               </button>
               <button
@@ -452,7 +444,7 @@ export default connect(
                   e.preventDefault();
                   doModalClose();
                 }}
-                className="button"
+                className="btn btn-secondary"
               >
                 Cancel
               </button>
