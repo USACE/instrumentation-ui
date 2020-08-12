@@ -7,15 +7,15 @@ export default connect(
   "selectUploadReadyToUpload",
   ({ doUploadClear, doUploadSend, uploadReadyToUpload }) => {
     return (
-      <div className="is-clearfix mt-4">
-        <div className="buttons is-pulled-right">
-          <button onClick={doUploadClear} className="button is-light">
+      <div className="clearfix">
+        <div className="float-right">
+          <button onClick={doUploadClear} className="btn btn-secondary mr-2">
             Clear All
           </button>
           <button
             disabled={!uploadReadyToUpload}
             onClick={doUploadSend}
-            className="button is-success"
+            className="btn btn-success"
           >
             Upload
           </button>

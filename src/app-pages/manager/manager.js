@@ -48,7 +48,7 @@ export default connect(
         <Navbar theme="primary" />
         <section className="container mt-3">
           <div className="card">
-            <div className="card-header pb-0">
+            <div className="card-header pb-0" style={{ borderBottom: "none" }}>
               <ul className="nav nav-tabs">
                 <li
                   onClick={() => {

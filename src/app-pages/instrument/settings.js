@@ -10,7 +10,7 @@ export default connect(
     const [tab, setTab] = useState(0);
     return (
       <div className="card">
-        <div className="card-header pb-0">
+        <div className="card-header pb-0" style={{ borderBottom: "none" }}>
           <ul className="nav nav-tabs">
             <li
               onClick={() => {

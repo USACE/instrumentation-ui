@@ -8,18 +8,31 @@ export default connect(
   ({ uploadFileData, uploadHasFile }) => {
     const { name, size, type, lastModified } = uploadFileData;
     return (
-      <div className="panel">
-        <p className="panel-heading">File Info</p>
-        <div className="panel-block">
-          <div className="container">
+      <div className="card mb-3">
+        <p className="card-header">
+          <strong>File Info</strong>
+        </p>
+        <div className="card-body">
+          <div>
             {uploadHasFile ? (
-              <div className="level is-italic">
-                <span className="level-item">
+              <div className="text-italic">
+                <p>
                   <strong>{name}</strong>
-                </span>
-                <span className="level-item">{size}</span>
-                <span className="level-item">{type}</span>
-                <span className="level-item">{lastModified}</span>
+                </p>
+                <div className="d-flex justify-content-between">
+                  <span>
+                    <small className="text-muted">{`file size: `}</small>
+                    {size}
+                  </span>
+                  <span>
+                    <small className="text-muted">{`type: `}</small>
+                    {type}
+                  </span>
+                  <span>
+                    <small className="text-muted">{`last modified: `}</small>
+                    {lastModified}
+                  </span>
+                </div>
               </div>
             ) : (
               <UploadButton size="sm" />
