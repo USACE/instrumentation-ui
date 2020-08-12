@@ -1,15 +1,30 @@
 import React from "react";
 
-export default () => {
+export default ({ value, onChange }) => {
   return (
-    <div className="field">
-      <label className="label is-medium">Search Instrumentation</label>
-      <p className="control has-icons-left">
-        <input className="input is-medium" type="text" placeholder="Search" />
-        <span className="icon is-small is-left">
-          <i className="mdi mdi-magnify"></i>
-        </span>
-      </p>
+    <div className="form-group">
+      <div className="input-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Filter projects..."
+          value={value}
+          onChange={(e) => {
+            onChange(e.currentTarget.value);
+          }}
+        />
+        <div className="input-group-append">
+          <span
+            title="Clear Filter"
+            className="input-group-text pointer"
+            onClick={() => {
+              onChange("");
+            }}
+          >
+            <i className="mdi mdi-close"></i>
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

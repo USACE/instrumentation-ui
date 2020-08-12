@@ -1,46 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import { classnames } from "../utils";
 import RoleFilter from "./role-filter";
 
-// //<a className="navbar-item" href="/profile">
-// <div className="level is-mobile">
-// <div className="level-left">
-//   <div className="level-item">
-//     <p>
-//       <strong>
-//         <i className="mdi mdi-pencil pr-2"></i>Edit
-//       </strong>
-//       <br />
-//       <small>Edit my profile information</small>
-//     </p>
-//   </div>
-// </div>
-// </div>
-// </a>
-
 const ProfileMenu = connect(
   "selectAuthTokenPayload",
   ({ authTokenPayload: user }) => {
+    const [show, setShow] = useState(false);
+    const expand = () => {
+      if (!show) setShow(true);
+    };
+    const collapse = () => {
+      setShow(false);
+    };
+    useEffect(() => {
+      if (show) {
+        window.addEventListener("click", collapse);
+      }
+      return () => {
+        window.removeEventListener("click", collapse);
+      };
+    }, [show]);
     return (
-      <div className="navbar-item has-dropdown is-hoverable">
-        <div className="navbar-link">My Profile</div>
-        <div id="moreDropdown" className="navbar-dropdown ">
-          <a className="navbar-item" href="/logout">
-            <div className="level is-mobile">
-              <div className="level-item">
-                <p>
-                  <strong>
-                    <i className="mdi mdi-logout pr-2"></i>Logout
-                  </strong>
-                  <br />
-                  <small>{`Currently logged in as ${user.name}`}</small>
-                </p>
-              </div>
+      <li
+        className={`nav-item dropdown ${show ? "show" : ""}`}
+        title={`Currently logged in as ${user.name}`}
+        onClick={expand}
+      >
+        <span
+          className="nav-link dropdown-toggle"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded={show}
+        >
+          My Profile
+        </span>
+        <div
+          className={`dropdown-menu dropdown-menu-right ${show ? "show" : ""} `}
+          aria-labelledby="navbarDropdownMenuLink"
+        >
+          <a className="dropdown-item" href="/logout">
+            <div>
+              <strong>Logout</strong>
+            </div>
+            <div>
+              <small className="text-muted">{`Currently logged in as ${user.name}`}</small>
             </div>
           </a>
         </div>
-      </div>
+      </li>
     );
   }
 );
@@ -54,21 +64,23 @@ const NavItem = connect(
     };
     const cls = classnames({
       pointer: true,
-      "navbar-item": true,
-      "is-active": pathname.indexOf(href) !== -1,
+      "nav-item": true,
+      active: pathname.indexOf(href) !== -1,
     });
     if (href) {
       return (
-        <a className={cls} href={href}>
-          {children}
-        </a>
+        <li className={cls}>
+          <a className="nav-link" href={href}>
+            {children}
+          </a>
+        </li>
       );
     }
     if (handler) {
       return (
-        <div className={cls} onClick={handleClick}>
+        <li className={cls} onClick={handleClick}>
           {children}
-        </div>
+        </li>
       );
     }
   }
@@ -82,71 +94,65 @@ export default connect(
     doAuthLogin,
     authIsLoggedIn,
     theme,
+    fixed = false,
     hideBrand,
     projectsByRoute: project,
   }) => {
+    const [expanded, setExpanded] = useState(false);
     const navClass = classnames({
       navbar: true,
-      "is-primary": theme === "primary",
-      "is-link": theme === "link",
-      "is-info": theme === "info",
-      "is-success": theme === "success",
-      "is-warning": theme === "warning",
-      "is-danger": theme === "danger",
-      "is-white": theme === "white",
-      "is-black": theme === "black",
-      "is-light": theme === "light",
-      "is-dark": theme === "dark",
+      "fixed-top": fixed,
+      "navbar-expand-lg": true,
+      "navbar-dark":
+        theme === "primary" || theme === "dark" || theme === "transparent",
+      "bg-primary": theme === "primary",
+      "bg-dark": theme === "dark",
+      "bg-transparent": theme === "transparent",
+      "navbar-light": theme === "light",
+      "bg-light": theme === "light",
     });
-    const [expanded, setExpanded] = useState(false);
     return (
       <nav className={navClass}>
-        <div className="container">
-          {hideBrand ? null : (
-            <div className="navbar-brand">
-              <a className="navbar-item" href={"/"}>
-                <strong style={{ fontSize: "2em" }}>
-                  <i className="mdi mdi-pulse pr-2"></i>
-                  {project && project.name ? project.name : ""}
-                </strong>
-              </a>
-              <span
-                onClick={() => {
-                  setExpanded(!expanded);
-                }}
-                className={`navbar-burger burger${
-                  expanded ? " is-active" : ""
-                }`}
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-            </div>
-          )}
-          <div className={`navbar-menu${expanded ? " is-active" : ""}`}>
-            <div className="navbar-end">
-              {project ? (
-                <>
-                  <NavItem hidden={false} href={`/${project.slug}/explore`}>
-                    Explorer
-                  </NavItem>
-                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
-                  </RoleFilter>
-                  <NavItem href={`/${project.slug}/manager`}>
-                    Instrument Manager
-                  </NavItem>
-                </>
-              ) : null}
-              <NavItem href="/help">Help</NavItem>
-              {authIsLoggedIn ? (
-                <ProfileMenu />
-              ) : (
-                <NavItem handler={doAuthLogin}>Login</NavItem>
-              )}
-            </div>
-          </div>
+        {hideBrand ? null : (
+          <a className="navbar-brand" href={"/"}>
+            <strong style={{ fontSize: "2em" }}>
+              <i className="mdi mdi-pulse pr-2"></i>
+              {project && project.name ? project.name : ""}
+            </strong>
+          </a>
+        )}
+        <button
+          className="navbar-toggler"
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav mr-auto"></ul>
+          <ul className="navbar-nav">
+            {project ? (
+              <>
+                <NavItem hidden={false} href={`/${project.slug}/explore`}>
+                  Explorer
+                </NavItem>
+                <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                  <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
+                </RoleFilter>
+                <NavItem href={`/${project.slug}/manager`}>
+                  Instrument Manager
+                </NavItem>
+              </>
+            ) : null}
+            <NavItem href="/help">Help</NavItem>
+            {authIsLoggedIn ? (
+              <ProfileMenu />
+            ) : (
+              <NavItem handler={doAuthLogin}>Login</NavItem>
+            )}
+          </ul>
         </div>
       </nav>
     );

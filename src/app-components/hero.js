@@ -1,44 +1,36 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
-import Navbar from "./navbar";
-// import UploadButton from "./upload-button";
 
 import bg1 from "../img/bg-1.jpg";
 
 function App({ authIsLoggedIn }) {
   return (
-    <div className="App">
-      <section
-        className="hero is-primary"
-        style={{
-          backgroundImage: `url(${bg1})`,
-          backgroundSize: "cover",
-          backgroundPosition: "top",
-        }}
+    <div
+      style={{
+        height: "400px",
+        marginTop: "-80px",
+        paddingTop: "90px",
+        backgroundImage: `url(${bg1})`,
+        backgroundSize: "cover",
+        backgroundPosition: "top",
+      }}
+    >
+      <div
+        className="d-flex justify-content-center align-items-center flex-column"
+        style={{ height: "100%" }}
       >
-        <div className="hero-head">
-          <Navbar theme="primary" hideBrand={true} />
+        <div>
+          <h1 className="text-light">
+            <i className="mdi mdi-pulse pr-2"></i>MIDAS
+          </h1>
         </div>
-        <div className="hero-body">
-          <div className="container has-text-centered">
-            <h1 className="title">
-              <a className="has-text-white" href="/">
-                <i className="mdi mdi-pulse pr-2"></i>MIDAS
-              </a>
-            </h1>
 
-            <h2 className="subtitle">
-              Monitoring Instrumentation Data Acquisition System
-            </h2>
-
-            <a href="/explore">
-              <button className="is-hidden button is-warning">
-                Explore the data
-              </button>
-            </a>
-          </div>
+        <div>
+          <h4 className="text-light">
+            Monitoring Instrumentation Data Acquisition System
+          </h4>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
