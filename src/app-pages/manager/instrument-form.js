@@ -19,6 +19,7 @@ const DeleteButton = connect(
     item,
   }) => {
     const [isConfirming, setIsConfirming] = useState(false);
+    if (!item || !item.id) return null;
 
     const handleDelete = () => {
       setIsConfirming(false);
@@ -109,14 +110,6 @@ export default connect(
     const [status_id, setStatusId] = useState((item && item.status_id) || "");
     const [status_time, setStatusTime] = useState(new Date());
 
-    const [zreference, setZreference] = useState(
-      (item && item.zreference) || ""
-    );
-    const [zreference_time, setZreferenceTime] = useState(new Date());
-    const [zreference_datum_id, setZreferenceDatum] = useState(
-      (item && item.zreference_datum_id) || ""
-    );
-
     const projected =
       instrumentDrawLon && instrumentDrawLat
         ? doProjTransformFromLonLat(
@@ -162,9 +155,6 @@ export default connect(
     // look to see if status should be updated
     const statusHasChanged = status_id !== item.status_id;
 
-    // look to see if zreference should be updated
-    const zHasChanged = zreference !== item.zreference;
-
     const handleSave = (e) => {
       e.preventDefault();
       if (x && y) {
@@ -189,9 +179,6 @@ export default connect(
             type_id,
             status_id,
             status_time,
-            zreference,
-            zreference_datum_id,
-            zreference_time,
             station:
               station === null || station === ""
                 ? null
@@ -327,48 +314,7 @@ export default connect(
                 Offset should be positive on land side, negative on water side
               </small>
             </div>
-            <div className="form-group">
-              <label>Z-Reference Elevation</label>
 
-              <input
-                value={zreference}
-                onChange={(e) => {
-                  setZreference(Number(e.target.value));
-                }}
-                className="form-control"
-                type="number"
-                placeholder="Z-Reference"
-              />
-            </div>
-            {zHasChanged ? (
-              <>
-                <div className="form-group">
-                  <label>Z Reference current as of</label>
-                  <div className="control">
-                    <DatePicker
-                      className="form-control"
-                      selected={zreference_time}
-                      onChange={(val) => {
-                        setZreferenceTime(val);
-                      }}
-                      showTimeInput
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Z Reference Datum</label>
-                  <div className="control">
-                    <DomainSelect
-                      value={zreference_datum_id}
-                      onChange={(e) => {
-                        setZreferenceDatum(e.target.value);
-                      }}
-                      domain="zreference_datum"
-                    />
-                  </div>
-                </div>
-              </>
-            ) : null}
             <div className="form-group">
               <label>Use Projection</label>
 

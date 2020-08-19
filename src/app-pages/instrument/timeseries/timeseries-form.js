@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+import DomainSelect from "../../../app-components/domain-select";
 
 const DeleteButton = connect(
-  "doInstrumentGroupsDelete",
+  "doInstrumentConstantsDelete",
   "doModalClose",
   "doUpdateUrlWithHomepage",
   "selectRouteParams",
 
   ({
-    doInstrumentGroupsDelete,
+    doInstrumentConstantsDelete,
     doModalClose,
     doUpdateUrlWithHomepage,
     routeParams,
@@ -19,12 +20,10 @@ const DeleteButton = connect(
 
     const handleDelete = () => {
       setIsConfirming(false);
-      doInstrumentGroupsDelete(
+      doInstrumentConstantsDelete(
         item,
         () => {
           doModalClose();
-          if (routeParams.hasOwnProperty("groupSlug"))
-            doUpdateUrlWithHomepage("/manager");
         },
         true
       );
@@ -69,35 +68,48 @@ const DeleteButton = connect(
 
 export default connect(
   "doModalClose",
-  "doInstrumentGroupsSave",
-  "selectProjectsByRoute",
+  "doInstrumentConstantsSave",
+  "doInstrumentsSave",
+  "selectInstrumentsByRoute",
   ({
     doModalClose,
-    doInstrumentGroupsSave,
+    doInstrumentConstantsSave,
+    doInstrumentsSave,
     item,
-    projectsByRoute: project,
+    instrumentsByRoute: instrument,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
-    const [description, setDesc] = useState((item && item.description) || "");
-    const [project_id] = useState((item && item.project_id) || project.id);
+    const [instrument_id] = useState(instrument.id);
+    const [parameter_id, setParameterId] = useState(
+      (item && item.parameter_id) || ""
+    );
+    const [unit_id, setUnitId] = useState((item && item.unit_id) || "");
+
     const handleSave = (e) => {
       e.preventDefault();
-      doInstrumentGroupsSave(
+      doInstrumentConstantsSave(
         Object.assign({}, item, {
           name,
-          project_id,
-          description,
+          instrument_id,
+          parameter_id,
+          unit_id,
         }),
-        doModalClose,
+        (updatedItem) => {
+          doModalClose();
+          if (instrument.constants.indexOf(updatedItem.id) === -1) {
+            instrument.constants.push(updatedItem.id);
+            doInstrumentsSave(instrument);
+          }
+        },
         true
       );
     };
 
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
-        <form id="instrument-group-form" onSubmit={handleSave}>
+        <form id="instrument-constant-form" onSubmit={handleSave}>
           <header className="modal-header">
-            <h5 className="modal-title">Edit Instrument Group</h5>
+            <h5 className="modal-title">Edit Constant</h5>
             <span className="pointer" onClick={doModalClose}>
               <i className="mdi mdi-close-circle-outline"></i>
             </span>
@@ -116,15 +128,23 @@ export default connect(
               />
             </div>
             <div className="form-group">
-              <label>Description</label>
-              <input
-                value={description}
+              <label>Parameter</label>
+              <DomainSelect
+                value={parameter_id}
                 onChange={(e) => {
-                  setDesc(e.target.value);
+                  setParameterId(e.target.value);
                 }}
-                className="form-control"
-                type="text"
-                placeholder="Text input"
+                domain="parameter"
+              />
+            </div>
+            <div className="form-group">
+              <label>Unit</label>
+              <DomainSelect
+                value={unit_id}
+                onChange={(e) => {
+                  setUnitId(e.target.value);
+                }}
+                domain="unit"
               />
             </div>
           </section>

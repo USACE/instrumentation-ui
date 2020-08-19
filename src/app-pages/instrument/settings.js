@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
-import Constants from "./constants";
-import FormulaEditor from "./formula-editor";
-import Timeseries from "./time-series";
+import Constants from "./constants/constants";
+import FormulaEditor from "./formula/formula";
+import Timeseries from "./timeseries/timeseries";
+import Chart from "./chart/chart";
 
 export default connect(
   "selectTimeseriesMeasurementsItemsObject",
-  ({ timeseriesMeasurementsItemsObject: measurements }) => {
+  "selectInstrumentsByRoute",
+  ({
+    timeseriesMeasurementsItemsObject: measurements,
+    instrumentsByRoute: instrument,
+  }) => {
     const [tab, setTab] = useState(0);
     return (
       <div className="card">
@@ -22,6 +27,7 @@ export default connect(
                 <strong>Constants</strong>
               </span>
             </li>
+
             <li
               onClick={() => {
                 setTab(1);
@@ -29,9 +35,10 @@ export default connect(
               className="nav-item pointer"
             >
               <span className={`nav-link ${tab === 1 ? "active" : ""}`}>
-                <strong>Formula Editor</strong>
+                <strong>Timeseries</strong>
               </span>
             </li>
+
             <li
               onClick={() => {
                 setTab(2);
@@ -39,15 +46,27 @@ export default connect(
               className="nav-item pointer"
             >
               <span className={`nav-link ${tab === 2 ? "active" : ""}`}>
-                <strong>Timeseries</strong>
+                <strong>Formula Editor</strong>
+              </span>
+            </li>
+
+            <li
+              onClick={() => {
+                setTab(3);
+              }}
+              className="nav-item pointer"
+            >
+              <span className={`nav-link ${tab === 3 ? "active" : ""}`}>
+                <strong>Chart</strong>
               </span>
             </li>
           </ul>
         </div>
         <div className="card-body">
           {tab === 0 ? <Constants /> : null}
-          {tab === 1 ? <FormulaEditor /> : null}
-          {tab === 2 ? <Timeseries data={measurements} /> : null}
+          {tab === 1 ? <Timeseries data={measurements[instrument.id]} /> : null}
+          {tab === 2 ? <FormulaEditor /> : null}
+          {tab === 3 ? <Chart /> : null}
         </div>
       </div>
     );
