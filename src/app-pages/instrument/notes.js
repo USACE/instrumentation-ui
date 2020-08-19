@@ -55,7 +55,7 @@ const NoteEditor = connect(
   }
 );
 
-const NoteItem = ({ note, save, del }) => {
+const NoteItem = ({ note, editable, save, del }) => {
   const [isEditing, setEditing] = useState(false);
   const date = new Date(note.time);
   return (
@@ -79,14 +79,16 @@ const NoteItem = ({ note, save, del }) => {
               <small>
                 <em>{`${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`}</em>
               </small>
-              <button
-                onClick={() => {
-                  setEditing(true);
-                }}
-                className="btn btn-sm btn-link ml-2"
-              >
-                <i className="mdi mdi-pencil"></i> Edit
-              </button>
+              {editable ? (
+                <button
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                  className="btn btn-sm btn-link ml-2"
+                >
+                  <i className="mdi mdi-pencil"></i> Edit
+                </button>
+              ) : null}
             </div>
           </div>
           <p style={{ whiteSpace: "pre-wrap" }}>{note.body}</p>
@@ -99,15 +101,18 @@ const NoteItem = ({ note, save, del }) => {
 export default connect(
   "selectProjectsByRoute",
   "selectInstrumentNotesItems",
+  "selectAuthEdipi",
   "doInstrumentNotesSave",
   "doInstrumentNotesDelete",
   ({
     projectsByRoute: project,
     instrumentNotesItems: notes,
+    authEdipi,
     doInstrumentNotesSave: save,
     doInstrumentNotesDelete: del,
   }) => {
     if (!project) return null;
+    const edipi = Number(authEdipi);
     const [isAdding, setAdding] = useState(false);
     const sorted = notes.sort();
     return (
@@ -117,7 +122,15 @@ export default connect(
         </div>
         <ul className="list-group list-group-flush">
           {sorted.map((note, i) => {
-            return <NoteItem key={i} note={note} save={save} del={del} />;
+            return (
+              <NoteItem
+                key={i}
+                note={note}
+                save={save}
+                del={del}
+                editable={edipi === note.creator}
+              />
+            );
           })}
           <li className="list-group-item">
             {isAdding ? (
