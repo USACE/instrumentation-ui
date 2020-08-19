@@ -3,6 +3,14 @@ import { connect } from "redux-bundler-react";
 import { classnames } from "../utils";
 import RoleFilter from "./role-filter";
 
+const getInitials = (name) => {
+  let initials = ["U", "N"];
+  let parts = name.split(".");
+  if (parts[1] && parts[1][0]) initials[0] = parts[1][0];
+  if (parts[0] && parts[0][0]) initials[1] = parts[0][0];
+  return initials.join("");
+};
+
 const ProfileMenu = connect(
   "selectAuthTokenPayload",
   ({ authTokenPayload: user }) => {
@@ -28,14 +36,14 @@ const ProfileMenu = connect(
         onClick={expand}
       >
         <span
-          className="nav-link dropdown-toggle"
+          style={{ border: "2px solid green", borderRadius: "2em" }}
+          className="nav-link ml-2"
           id="navbarDropdownMenuLink"
           role="button"
-          data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded={show}
         >
-          My Profile
+          {`${getInitials(user.name)}`}
         </span>
         <div
           className={`dropdown-menu dropdown-menu-right ${show ? "show" : ""} `}
@@ -79,7 +87,7 @@ const NavItem = connect(
     if (handler) {
       return (
         <li className={cls} onClick={handleClick}>
-          {children}
+          <span className="nav-link">{children}</span>
         </li>
       );
     }
@@ -100,7 +108,6 @@ export default connect(
     projectsByRoute: project,
     pathnameMinusHomepage,
   }) => {
-    const [expanded, setExpanded] = useState(false);
     const navClass = classnames({
       navbar: true,
       "fixed-top": fixed,
@@ -116,7 +123,7 @@ export default connect(
     return (
       <nav className={navClass}>
         {hideBrand ? (
-          pathnameMinusHomepage !== "/" ? (
+          pathnameMinusHomepage.length > 1 ? (
             <a className="navbar-brand" href={"/"}>
               <strong>
                 <i className="mdi mdi-pulse pr-2"></i>
