@@ -13,7 +13,7 @@ export default createRestBundle({
   postTemplate: "",
   deleteTemplate: "",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
-  forceFetchActions: [],
+  forceFetchActions: ["INSTRUMENTCONSTANTS_SAVE_FINISHED"],
   urlParamSelectors: ["selectInstrumentsIdByRoute"],
   reduceFurther: (state, { type, payload }) => {
     if (type === "INSTRUMENTTIMESERIES_SET_ACTIVE_ID") {
