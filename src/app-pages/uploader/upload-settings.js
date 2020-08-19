@@ -14,11 +14,13 @@ export default connect(
   "selectUploadJson",
   ({ uploadHasFile, uploadJson }) => {
     return (
-      <div className="panel">
-        <p className="panel-heading">Upload Settings</p>
-        <div className="panel-block">
+      <div className="card">
+        <p className="card-header">
+          <strong>Upload Settings</strong>
+        </p>
+        <div className="card-body">
           {uploadHasFile && uploadJson && uploadJson.length ? (
-            <div className="container">
+            <div>
               <ParserSelector />
               <FieldMapper />
               <IgnoreRows />

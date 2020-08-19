@@ -47,53 +47,46 @@ export default connect(
         {Object.keys(model).map((key, i) => {
           if (model[key].hidden) return null;
           return (
-            <div key={i} className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">{model[key].label}</label>
-              </div>
-              <div className="field-body">
-                <div className="field">
-                  <div className="control">
-                    <div className="select is-fullwidth">
-                      <select
-                        onChange={updateFieldMap}
-                        data-key={key}
-                        value={uploadFieldMap[key]}
-                      >
-                        <option value={""}>Select One...</option>
-                        {model[key].type === "boolean" ? (
-                          <>
-                            <option value={"all-true"}>Set all to True</option>
-                            <option value={"all-false"}>
-                              Set all to False
-                            </option>
-                          </>
-                        ) : null}
-                        {model[key].type === "domain" ? (
-                          <>
-                            {domains[model[key].domainGroup].map((d) => {
-                              return (
-                                <option key={d.id} value={`all-${d.id}`}>
-                                  Set all to {d.value}
-                                </option>
-                              );
-                            })}
-                          </>
-                        ) : null}
-                        {uploadJsonKeys.map((jsonKey, i) => {
-                          return (
-                            <option key={i} value={jsonKey}>
-                              {jsonKey}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  </div>
-                  {model[key] && model[key].helpText ? (
-                    <p className="help">{model[key].helpText}</p>
+            <div key={i} className="form-group row">
+              <label className="col-3 col-form-label text-right">
+                {model[key].label}
+              </label>
+              <div className="col-9">
+                <select
+                  className="form-control"
+                  onChange={updateFieldMap}
+                  data-key={key}
+                  value={uploadFieldMap[key]}
+                >
+                  <option value={""}>Select One...</option>
+                  {model[key].type === "boolean" ? (
+                    <>
+                      <option value={"all-true"}>Set all to True</option>
+                      <option value={"all-false"}>Set all to False</option>
+                    </>
                   ) : null}
-                </div>
+                  {model[key].type === "domain" ? (
+                    <>
+                      {domains[model[key].domainGroup].map((d) => {
+                        return (
+                          <option key={d.id} value={`all-${d.id}`}>
+                            Set all to {d.value}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
+                  {uploadJsonKeys.map((jsonKey, i) => {
+                    return (
+                      <option key={i} value={jsonKey}>
+                        {jsonKey}
+                      </option>
+                    );
+                  })}
+                </select>
+                {model[key] && model[key].helpText ? (
+                  <small className="text-muted">{model[key].helpText}</small>
+                ) : null}
               </div>
             </div>
           );

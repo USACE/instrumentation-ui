@@ -4,12 +4,12 @@ import { classnames } from "../utils";
 
 const Page = ({ pageNo, isCurrent, onClick }) => {
   const pageClass = classnames({
-    "pagination-link": true,
-    "is-current": isCurrent,
+    "page-item": true,
+    active: isCurrent,
   });
   return (
-    <li onClick={onClick}>
-      <a className={pageClass} aria-label={`Goto page ${pageNo}`}>
+    <li className={pageClass} onClick={onClick}>
+      <a className="page-link" aria-label={`Goto page ${pageNo}`}>
         {pageNo}
       </a>
     </li>
@@ -48,92 +48,82 @@ export default ({ items, pageSize, children, itemsKey }) => {
       {Children.map(children, (C, i) => {
         return cloneElement(C, { key: i, ...props });
       })}
-      <nav
-        className="pagination is-rounded level"
-        role="navigation"
-        aria-label="pagination"
-      >
-        <div className="level-left">
-          <div className="field level-item" title="Page Size">
-            <p className="control">
-              <span className="select">
-                <select
-                  value={currentPageSize}
-                  onChange={(e) => {
-                    setPageSize(Number(e.target.value));
-                    setPage(0);
-                  }}
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={30}>30</option>
-                </select>
-              </span>
-            </p>
-          </div>
+      <div className="d-flex justify-content-between noselect pointer">
+        <div>
+          <select
+            title="Page Size"
+            className="form-control"
+            value={currentPageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+              setPage(0);
+            }}
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+          </select>
         </div>
-
-        <div className="level-item">
-          <ul className="pagination-list" style={{ justifyContent: "center" }}>
-            <Page
-              pageNo={1}
-              isCurrent={currentPage === 0}
-              onClick={() => {
-                setPage(0);
-              }}
-            />
-
-            {currentPage > 2 && pages.length > 5 ? (
-              <li>
-                <span className="pagination-ellipsis">…</span>
-              </li>
-            ) : null}
-
-            {[1, 2, 3].map((_, i) => {
-              let p1 = currentPage - 1;
-              // if current page is 0, or 1 we start the count at idx = 1
-              if (currentPage <= 1) p1 = 1;
-              // if current page is greater than length - 2 we start the idx at length - 4
-              if (currentPage >= pages.length - 2) p1 = pages.length - 4;
-              return (
-                <Page
-                  key={`${i}-${p1}`}
-                  pageNo={p1 + i + 1}
-                  isCurrent={currentPage === p1 + i}
-                  onClick={() => {
-                    setPage(p1 + i);
-                  }}
-                />
-              );
-            })}
-
-            {currentPage < pages.length - 2 && pages.length > 5 ? (
-              <li>
-                <span className="pagination-ellipsis">…</span>
-              </li>
-            ) : null}
-
-            <Page
-              pageNo={pages.length}
-              isCurrent={currentPage === pages.length - 1}
-              onClick={() => {
-                setPage(pages.length - 1);
-              }}
-            />
-          </ul>
-        </div>
-
-        <div className="level-right">
-          <div className="level-item">
-            <a onClick={pageDown} className="pagination-previous">
-              Previous
+        <ul className="pagination">
+          <li className="page-item" onClick={pageDown}>
+            <a className="page-link" aria-label={`Go to previous page`}>
+              «
             </a>
-            <a onClick={pageUp} className="pagination-next">
-              Next page
+          </li>
+
+          <Page
+            pageNo={1}
+            isCurrent={currentPage === 0}
+            onClick={() => {
+              setPage(0);
+            }}
+          />
+
+          {currentPage > 2 && pages.length > 5 ? (
+            <li className="page-item">
+              <span className="page-link">…</span>
+            </li>
+          ) : null}
+
+          {[1, 2, 3].map((_, i) => {
+            let p1 = currentPage - 1;
+            // if current page is 0, or 1 we start the count at idx = 1
+            if (currentPage <= 1) p1 = 1;
+            // if current page is greater than length - 2 we start the idx at length - 4
+            if (currentPage >= pages.length - 2) p1 = pages.length - 4;
+            return (
+              <Page
+                key={`${i}-${p1}`}
+                pageNo={p1 + i + 1}
+                isCurrent={currentPage === p1 + i}
+                onClick={() => {
+                  setPage(p1 + i);
+                }}
+              />
+            );
+          })}
+
+          {currentPage < pages.length - 2 && pages.length > 5 ? (
+            <li className="page-item">
+              <span className="page-link">…</span>
+            </li>
+          ) : null}
+
+          <Page
+            pageNo={pages.length}
+            isCurrent={currentPage === pages.length - 1}
+            onClick={() => {
+              setPage(pages.length - 1);
+            }}
+          />
+
+          <li className="page-item" onClick={pageUp}>
+            <a className="page-link" aria-label={`Go to next page`}>
+              »
             </a>
-          </div>
-        </div>
-      </nav>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

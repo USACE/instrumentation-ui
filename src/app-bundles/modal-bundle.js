@@ -4,6 +4,7 @@ export default {
     const initialData = {
       content: null,
       props: null,
+      size: null,
     };
 
     return (state = initialData, { type, payload }) => {
@@ -13,7 +14,7 @@ export default {
       return state;
     };
   },
-  doModalOpen: (content, props) => ({ dispatch }) => {
+  doModalOpen: (content, props, size) => ({ dispatch }) => {
     dispatch({
       type: "MODAL_UPDATED",
       payload: {
@@ -36,5 +37,8 @@ export default {
   },
   selectModalProps: (state) => {
     return state.modal.props;
+  },
+  selectModalSize: (state) => {
+    return state.modal.size;
   },
 };

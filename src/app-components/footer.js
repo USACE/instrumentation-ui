@@ -2,11 +2,8 @@ import React from "react";
 
 export default () => {
   return (
-    <footer
-      className="footer navbar is-fixed-bottom"
-      style={{ height: "40px", padding: "10px" }}
-    >
-      <div className="content has-text-centered">
+    <footer className="footer mt-auto py-3">
+      <div className="text-center">
         <p>
           <strong>
             <i className="mdi mdi-copyright"></i>

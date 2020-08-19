@@ -23,16 +23,13 @@ export default connect(
     ]);
 
     return (
-      <div
-        className="container"
-        style={{ position: "absolute", left: 10, top: 10, right: 10 }}
-      >
+      <div style={{ position: "absolute", left: 10, top: 10, right: 10 }}>
         <button
           title="Select by box"
           onClick={() => {
             setActive(!active);
           }}
-          className={`button is-primary ${active ? "is-active" : ""}`}
+          className={`btn btn-primary ${active ? "active" : ""} mr-2`}
         >
           <i className="ms ms-select-box"></i>
         </button>

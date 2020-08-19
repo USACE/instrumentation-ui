@@ -16,35 +16,24 @@ export default connect(
     };
     return (
       <div>
-        <div
-          className="field is-horizontal"
-          style={{ marginBottom: "0.75rem" }}
-        >
-          <div className="field-label is-normal">
-            <label className="label">Import As</label>
-          </div>
-          <div className="field-body">
-            <div className="field">
-              <div className="control">
-                <div className="select is-fullwidth">
-                  <select
-                    value={
-                      (uploadSelectedParser && uploadSelectedParser.name) || ""
-                    }
-                    onChange={handleSelectParser}
-                  >
-                    <option value="">Select One...</option>
-                    {uploadParsers.map((parser, i) => {
-                      return (
-                        <option key={i} value={parser.name}>
-                          {parser.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-            </div>
+        <div className="form-group row" style={{ marginBottom: "0.75rem" }}>
+          <label className="col-3 col-form-label text-right">Import As</label>
+
+          <div className="col-9">
+            <select
+              className="form-control"
+              value={(uploadSelectedParser && uploadSelectedParser.name) || ""}
+              onChange={handleSelectParser}
+            >
+              <option value="">Select One...</option>
+              {uploadParsers.map((parser, i) => {
+                return (
+                  <option key={i} value={parser.name}>
+                    {parser.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
       </div>
