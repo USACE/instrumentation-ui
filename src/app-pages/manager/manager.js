@@ -47,71 +47,73 @@ export default connect(
       <div>
         <Navbar theme="primary" />
         <section className="container mt-3">
-          <div className="panel">
-            <div className="panel-heading">
-              <div className="tabs">
-                <ul>
-                  <li
-                    className={tab === "grp" ? "is-active" : ""}
-                    onClick={() => {
-                      setTab("grp");
-                    }}
-                  >
-                    <a>Instrument Groups</a>
-                  </li>
-                  <li
-                    className={tab === "all" ? "is-active" : ""}
-                    onClick={() => {
-                      setTab("all");
-                    }}
-                  >
-                    <a>All Instruments</a>
-                  </li>
-                </ul>
-              </div>
+          <div className="card">
+            <div className="card-header pb-0" style={{ borderBottom: "none" }}>
+              <ul className="nav nav-tabs">
+                <li
+                  onClick={() => {
+                    setTab("grp");
+                  }}
+                  className="nav-item pointer"
+                >
+                  <span className={`nav-link ${tab === "grp" ? "active" : ""}`}>
+                    <strong>Instrument Groups</strong>
+                  </span>
+                </li>
+                <li
+                  onClick={() => {
+                    setTab("all");
+                  }}
+                  className="nav-item pointer"
+                >
+                  <span className={`nav-link ${tab === "all" ? "active" : ""}`}>
+                    <strong>All Instruments</strong>
+                  </span>
+                </li>
+              </ul>
             </div>
-            <div className="panel-block">
-              <div style={{ width: "100%" }}>
-                <div className="level">
-                  <div className="level-left">
-                    <div className="level-item">
-                      <div className="field">
-                        <p className="control has-icons-left">
-                          <input
-                            value={filter}
-                            onChange={(e) => {
-                              setFilter(e.target.value);
-                            }}
-                            className="input"
-                            type="text"
-                            placeholder="Search"
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="mdi mdi-magnify"></i>
-                          </span>
-                        </p>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-10">
+                  <div className="form-group">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Filter list..."
+                        value={filter}
+                        onChange={(e) => {
+                          setFilter(e.target.value);
+                        }}
+                      />
+                      <div className="input-group-append">
+                        <span
+                          title="Clear Filter"
+                          className="input-group-text pointer"
+                          onClick={() => {
+                            setFilter("");
+                          }}
+                        >
+                          <i className="mdi mdi-close"></i>
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="level-right">
-                    <div className="level-item">
-                      <RoleFilter
-                        allowRoles={[`${project.slug.toUpperCase()}.*`]}
-                        alt={LoginMessage}
-                      >
-                        <button
-                          onClick={handleAdd}
-                          className="button is-primary"
-                        >
-                          Add New
-                        </button>
-                      </RoleFilter>
-                    </div>
+                </div>
+
+                <div className="col-2">
+                  <div className="float-right">
+                    <RoleFilter
+                      allowRoles={[`${project.slug.toUpperCase()}.*`]}
+                      alt={LoginMessage}
+                    >
+                      <button onClick={handleAdd} className="btn btn-primary">
+                        Add New
+                      </button>
+                    </RoleFilter>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="panel-block">
               {tab === "grp" ? (
                 <Pager
                   itemsKey="groups"
@@ -146,7 +148,6 @@ export default connect(
             </div>
           </div>
         </section>
-        <section className="container mt-3"></section>
       </div>
     );
   }

@@ -80,9 +80,10 @@ export default connect(
     return (
       <div style={{ height: "100%" }}>
         <span
+          className="pointer"
           style={{
             position: "absolute",
-            top: "-5px",
+            top: "0px",
             left: "5px",
             zIndex: 999,
           }}
@@ -92,7 +93,7 @@ export default connect(
         >
           <i
             style={{
-              fontSize: "1.8em",
+              fontSize: "1.5em",
               color: showSettings
                 ? "rgba(68, 68, 68, 0.6)"
                 : "rgba(68, 68, 68, 0.3)",
@@ -101,7 +102,7 @@ export default connect(
           ></i>
         </span>
         <div
-          className="level"
+          className="d-flex"
           style={{
             position: "absolute",
             top: "26px",
@@ -110,91 +111,79 @@ export default connect(
             padding: "10px",
           }}
         >
-          <div className="level-left">
-            <div className="level-item">
-              <div className="field">
-                <label className="label is-small">Date From</label>
-                <div className="control">
-                  <DatePicker
-                    className="input is-small"
-                    selected={from ? new Date(from) : null}
-                    onChange={(val) => {
-                      updateChartDates(val.toISOString(), to);
-                    }}
-                    maxDate={to ? new Date(to) : null}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="level-item">
-              <div className="field">
-                <label className="label is-small">Date To</label>
-                <div className="control">
-                  <DatePicker
-                    className="input is-small"
-                    selected={to ? new Date(to) : null}
-                    onChange={(val) => {
-                      updateChartDates(from, val.toISOString());
-                    }}
-                    minDate={from ? new Date(from) : null}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="level-item">
-              <div className="field">
-                <label className="label is-small">Presets</label>
-                <div className="buttons are-small">
-                  <button
-                    className="button is-small"
-                    onClick={() => {
-                      const backDate = subDays(now, 30);
-                      updateChartDates(
-                        backDate.toISOString(),
-                        now.toISOString()
-                      );
-                    }}
-                  >
-                    30 day
-                  </button>
-                  <button
-                    className="button is-small"
-                    onClick={() => {
-                      const backDate = subDays(now, 60);
-                      updateChartDates(
-                        backDate.toISOString(),
-                        now.toISOString()
-                      );
-                    }}
-                  >
-                    60 day
-                  </button>
-                  <button
-                    className="button is-small"
-                    onClick={() => {
-                      const backDate = subDays(now, 90);
-                      updateChartDates(
-                        backDate.toISOString(),
-                        now.toISOString()
-                      );
-                    }}
-                  >
-                    90 day
-                  </button>
-                  <button
-                    className="button is-small"
-                    onClick={() => {
-                      setLifetime();
-                    }}
-                  >
-                    Lifetime
-                  </button>
-                </div>
-              </div>
+          <div className="form-group mr-2">
+            <label>
+              <small>Date From</small>
+            </label>
+            <div>
+              <DatePicker
+                className="form-control form-control-sm"
+                selected={from ? new Date(from) : null}
+                onChange={(val) => {
+                  updateChartDates(val.toISOString(), to);
+                }}
+                maxDate={to ? new Date(to) : null}
+              />
             </div>
           </div>
-          <div className="level-right">
-            <div className="level-item"></div>
+          <div className="form-group mr-2">
+            <label>
+              <small>Date To</small>
+            </label>
+            <div>
+              <DatePicker
+                className="form-control form-control-sm"
+                selected={to ? new Date(to) : null}
+                onChange={(val) => {
+                  updateChartDates(from, val.toISOString());
+                }}
+                minDate={from ? new Date(from) : null}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label>
+              <small>Presets</small>
+            </label>
+            <div>
+              <div className="btn-group">
+                <button
+                  className="btn btn-sm btn-outline-info"
+                  onClick={() => {
+                    const backDate = subDays(now, 30);
+                    updateChartDates(backDate.toISOString(), now.toISOString());
+                  }}
+                >
+                  30 day
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-info"
+                  onClick={() => {
+                    const backDate = subDays(now, 60);
+                    updateChartDates(backDate.toISOString(), now.toISOString());
+                  }}
+                >
+                  60 day
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-info"
+                  onClick={() => {
+                    const backDate = subDays(now, 90);
+                    updateChartDates(backDate.toISOString(), now.toISOString());
+                  }}
+                >
+                  90 day
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-info"
+                  onClick={() => {
+                    setLifetime();
+                  }}
+                >
+                  Lifetime
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         {showSettings ? (

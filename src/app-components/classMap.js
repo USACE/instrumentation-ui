@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import { fromLonLat } from "ol/proj";
+import debounce from "lodash.debounce";
 
 class Map extends React.Component {
   componentDidMount() {
@@ -8,12 +9,19 @@ class Map extends React.Component {
     // assume our options.center values are lon lat
     if (options && options.center) options.center = fromLonLat(options.center);
     doMapsInitialize(mapKey, this.el, options);
+    this.ro = new ResizeObserver(this.updateSize);
+    this.ro.observe(this.el);
   }
 
   componentWillUnmount() {
     const { mapKey, doMapsShutdown } = this.props;
     doMapsShutdown(mapKey);
   }
+
+  updateSize = debounce(() => {
+    const { mapKey, mapsObject } = this.props;
+    if (mapsObject[mapKey]) mapsObject[mapKey].updateSize();
+  }, 200);
 
   render() {
     return (
@@ -27,4 +35,9 @@ class Map extends React.Component {
   }
 }
 
-export default connect("doMapsInitialize", "doMapsShutdown", Map);
+export default connect(
+  "doMapsInitialize",
+  "doMapsShutdown",
+  "selectMapsObject",
+  Map
+);

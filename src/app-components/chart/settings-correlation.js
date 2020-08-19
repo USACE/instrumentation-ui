@@ -35,138 +35,128 @@ export default connect(
     });
 
     return (
-      <div className="columns">
-        <div className="column">
+      <div className="row">
+        <div className="col">
           <div>Settings</div>
-          <div className="field">
-            <label className="label is-small">Y Axis Title</label>
-            <p className="control">
-              <input
-                value={layout.yaxis.title.text}
-                onChange={(e) => {
-                  doChartEditorSetLayout({
-                    ...layout,
-                    yaxis: {
-                      ...layout.yaxis,
-                      ...{ title: { text: e.target.value } },
-                    },
-                  });
-                }}
-                className="input is-small"
-                type="text"
-                placeholder="Y Axis Title"
-              />
-            </p>
+          <div className="form-group">
+            <label>Y Axis Title</label>
+
+            <input
+              value={layout.yaxis.title.text}
+              onChange={(e) => {
+                doChartEditorSetLayout({
+                  ...layout,
+                  yaxis: {
+                    ...layout.yaxis,
+                    ...{ title: { text: e.target.value } },
+                  },
+                });
+              }}
+              className="form-control form-control-sm"
+              type="text"
+              placeholder="Y Axis Title"
+            />
           </div>
 
-          <div className="field">
-            <label className="label is-small">X Axis Title</label>
-            <p className="control">
-              <input
-                value={layout.xaxis.title.text}
-                onChange={(e) => {
-                  doChartEditorSetLayout({
-                    ...layout,
-                    xaxis: {
-                      ...layout.xaxis,
-                      ...{ title: { text: e.target.value } },
-                    },
-                  });
-                }}
-                className="input is-small"
-                type="text"
-                placeholder="X Axis Title"
-              />
-            </p>
+          <div className="form-group">
+            <label>X Axis Title</label>
+
+            <input
+              value={layout.xaxis.title.text}
+              onChange={(e) => {
+                doChartEditorSetLayout({
+                  ...layout,
+                  xaxis: {
+                    ...layout.xaxis,
+                    ...{ title: { text: e.target.value } },
+                  },
+                });
+              }}
+              className="form-control form-control-sm"
+              type="text"
+              placeholder="X Axis Title"
+            />
           </div>
 
-          <div className="field">
-            <p className="control">
-              <label className="checkbox label is-small">
-                <input
-                  style={{ marginRight: ".8em" }}
-                  type="checkbox"
-                  checked={exactMatchesOnly}
-                  onChange={(e) => {
-                    doChartEditorSetExactMatchesOnly(e.target.checked);
-                  }}
-                />{" "}
-                Limit to exact temporal matches
-              </label>
-            </p>
+          <div className="form-group">
+            <label className="checkbox label is-small">
+              <input
+                style={{ marginRight: ".8em" }}
+                type="checkbox"
+                checked={exactMatchesOnly}
+                onChange={(e) => {
+                  doChartEditorSetExactMatchesOnly(e.target.checked);
+                }}
+              />{" "}
+              Limit to exact temporal matches
+            </label>
           </div>
         </div>
-        <div className="column">
+        <div className="col">
           <div>Series</div>
 
-          <div className="field">
-            <label className="label is-small">Y Series</label>
-            <div className="control">
-              <div className="select is-small">
-                <select
-                  value={correlationSeriesY}
-                  onChange={(e) => {
-                    doChartEditorSetCorrelationSeriesY(e.target.value);
-                    const title = e.target.selectedOptions[0].dataset.title;
-                    doChartEditorSetLayout({
-                      ...layout,
-                      yaxis: {
-                        ...layout.yaxis,
-                        ...{ title: { text: title } },
-                      },
-                    });
-                  }}
-                >
-                  <option value="">Please Choose a Dataset...</option>
-                  {timeseriesOptions.map((opt) => {
-                    return (
-                      <option
-                        key={opt.key}
-                        data-title={opt.title}
-                        value={opt.value}
-                      >
-                        {opt.title}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
+          <div className="form-group">
+            <label>Y Series</label>
+            <select
+              className="form-control form-control-sm"
+              value={correlationSeriesY}
+              onChange={(e) => {
+                doChartEditorSetCorrelationSeriesY(e.target.value);
+                const title = e.target.selectedOptions[0].dataset.title;
+                doChartEditorSetLayout({
+                  ...layout,
+                  yaxis: {
+                    ...layout.yaxis,
+                    ...{ title: { text: title } },
+                  },
+                });
+              }}
+            >
+              <option value="">Please Choose a Dataset...</option>
+              {timeseriesOptions.map((opt) => {
+                return (
+                  <option
+                    key={opt.key}
+                    data-title={opt.title}
+                    value={opt.value}
+                  >
+                    {opt.title}
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
-          <div className="field">
-            <label className="label is-small">X Series</label>
-            <div className="control">
-              <div className="select is-small">
-                <select
-                  value={correlationSeriesX}
-                  onChange={(e) => {
-                    doChartEditorSetCorrelationSeriesX(e.target.value);
-                    const title = e.target.selectedOptions[0].dataset.title;
-                    doChartEditorSetLayout({
-                      ...layout,
-                      xaxis: {
-                        ...layout.xaxis,
-                        ...{ title: { text: title } },
-                      },
-                    });
-                  }}
-                >
-                  <option value="">Please Choose a Dataset...</option>
-                  {timeseriesOptions.map((opt) => {
-                    return (
-                      <option
-                        key={opt.key}
-                        data-title={opt.title}
-                        value={opt.value}
-                      >
-                        {opt.title}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
+          <div className="form-group">
+            <label>X Series</label>
+            <select
+              className="form-control form-control-sm"
+              value={correlationSeriesX}
+              onChange={(e) => {
+                doChartEditorSetCorrelationSeriesX(e.target.value);
+                const title = e.target.selectedOptions[0].dataset.title;
+                doChartEditorSetLayout({
+                  ...layout,
+                  xaxis: {
+                    ...layout.xaxis,
+                    ...{ title: { text: title } },
+                  },
+                });
+              }}
+            >
+              <option value="">Please Choose a Dataset...</option>
+              {timeseriesOptions.map((opt) => {
+                return (
+                  <option
+                    key={opt.key}
+                    data-title={opt.title}
+                    value={opt.value}
+                  >
+                    {opt.title}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
       </div>

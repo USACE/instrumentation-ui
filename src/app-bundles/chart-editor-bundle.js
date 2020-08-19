@@ -18,10 +18,15 @@ const initialData = {
   layout: {
     title: {
       text: "",
+      y: 0.915,
+      yanchor: "bottom",
     },
     autosize: true,
     showlegend: true,
     dragmode: "pan",
+    margin: {
+      t: 150,
+    },
     yaxis: {
       autorange: true,
       range: [0, 100],

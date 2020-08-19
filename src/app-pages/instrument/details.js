@@ -2,11 +2,11 @@
 import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
-import TimeSeries from "./time-series";
 import InstrumentForm from "../manager/instrument-form";
 import InstrumentDisplay from "./instrument-display";
 import Map from "../../app-components/classMap";
 import Notes from "./notes";
+import Settings from "./settings";
 import RoleFilter from "../../app-components/role-filter";
 import LoginMessage from "../../app-components/login-message";
 
@@ -42,27 +42,23 @@ export default connect(
       }
     }, [len, firstTimeseries, doInstrumentTimeseriesSetActiveId]);
 
-    const handleTab = (id) => {
-      doInstrumentTimeseriesSetActiveId(id);
-    };
-
     // eslint-disable-next-line
     return (
       <div style={{ marginBottom: "200px" }}>
-        <Navbar theme="primary" />
-        <section className="container mt-3">
-          <div className="columns">
-            <div className="column">
-              <div className="panel">
+        <Navbar theme="primary" fixed />
+        <section className="container" style={{ marginTop: "6rem" }}>
+          <div className="row">
+            <div className="col">
+              <div className="card">
                 <div
-                  className="panel-heading"
+                  className="card-header"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
-                  {instrument.name}{" "}
+                  <strong>{instrument.name}</strong>{" "}
                   <RoleFilter
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
@@ -71,7 +67,7 @@ export default connect(
                       onClick={() => {
                         doModalOpen(InstrumentForm, { item: instrument });
                       }}
-                      className="button is-info is-small"
+                      className="btn btn-sm btn-outline-info"
                     >
                       <i className="mdi mdi-pencil pr-2"></i> Edit
                     </button>
@@ -80,54 +76,23 @@ export default connect(
                 <InstrumentDisplay item={instrument} />
               </div>
             </div>
-            <div className="column">
+            <div className="col">
               <div
-                className="panel"
+                className="card"
                 style={{ position: "relative", height: "100%" }}
               >
-                <Map mapKey="instrumentMap" />
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="container mt-3">
-          <div className="panel">
-            <div className="panel-heading">
-              <div className="tabs">
-                {timeseries.map((item, i) => {
-                  return (
-                    <div key={item.id}>
-                      <ul>
-                        <li className={activeId === item.id ? "is-active" : ""}>
-                          <a onClick={() => handleTab(item.id)}>{item.name}</a>
-                        </li>
-                      </ul>
-                    </div>
-                  );
-                })}
-                {!len ? (
-                  <div>
-                    <ul>
-                      <li>No Timeseries Available for this Instrument</li>
-                    </ul>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-            <div className="panel-block">
-              <div className="container">
-                <div className="tab is-active">
-                  <TimeSeries data={measurements[activeId]} />
+                <div className="card-body">
+                  <Map mapKey="instrumentMap" />
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <section className="container mt-3 ">
-          <div className="panel">
-            <div className="panel-heading">Notes</div>
-            <Notes />
-          </div>
+        <section className="container mt-3">
+          <Settings />
+        </section>
+        <section className="container mt-3 mb-5">
+          <Notes />
         </section>
       </div>
     );

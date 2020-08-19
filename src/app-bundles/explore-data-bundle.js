@@ -9,6 +9,8 @@ export default {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
+        case "EXPLORE_DATA_CLEAR":
+          return Object.assign({}, initialData);
         case "EXPLORE_DATA_LOAD":
           return Object.assign({}, state, payload);
         default:
@@ -17,7 +19,14 @@ export default {
     };
   },
 
+  doExploreDataClear: () => ({ dispatch }) => {
+    dispatch({
+      type: "EXPLORE_DATA_CLEAR",
+    });
+  },
+
   doExploreDataLoad: (instrumentIds) => ({ dispatch, store }) => {
+    store.doExploreDataClear();
     const apiRoot = store.selectApiRoot();
     const token = store.selectAuthToken();
     fetch(`${apiRoot}/explorer`, {
