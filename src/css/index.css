@@ -8,6 +8,10 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+.hidden {
+  display: none;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -19,7 +23,9 @@
 }
 
 .timeline-list-item {
+  list-style: none;
   border-left: 1px solid #69b6d5;
+  padding-left: 0;
   padding-bottom: 10px;
 }
 
@@ -80,4 +86,8 @@
 
 .sketch-picker {
   z-index: 99999;
+}
+
+.ag-root-wrapper {
+  overflow: visible;
 }
