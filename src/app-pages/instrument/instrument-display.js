@@ -4,12 +4,10 @@ import TimelineList from "./timeline-list";
 
 export default connect(
   "selectInstrumentStatusItems",
-  "selectInstrumentZItems",
   "selectInstrumentGroupsItemsObjectById",
   "selectProjectsByRoute",
   ({
     instrumentStatusItems: status,
-    instrumentZItems: zs,
     instrumentGroupsItemsObjectById: groups,
     projectsByRoute: project,
     item,
@@ -22,19 +20,6 @@ export default connect(
             ? s.status.charAt(0).toUpperCase() + s.status.slice(1)
             : "Saving...",
           date: new Date(s.time),
-        };
-      })
-      .sort((a, b) => {
-        if (a.date < b.date) return 1;
-        if (a.date > b.date) return -1;
-        return 0;
-      });
-
-    const zItems = zs
-      .map((z) => {
-        return {
-          text: z.zreference ? z.zreference : "Saving...",
-          date: new Date(z.time),
         };
       })
       .sort((a, b) => {
@@ -70,22 +55,6 @@ export default connect(
         </div>
 
         <div className="row mb-2">
-          <div className="col-4 text-right font-weight-light">
-            Z-Reference Elevation
-          </div>
-          <div className="col">
-            <TimelineList items={zItems} />
-          </div>
-        </div>
-
-        <div className="row mb-2">
-          <div className="col-4 text-right font-weight-light">
-            Z-Reference Datum
-          </div>
-          <div className="col">{item.zreference_datum}</div>
-        </div>
-
-        <div className="row mb-2">
           <div className="col-4 text-right font-weight-light">Created On</div>
           <div className="col">
             {item.create_date
@@ -115,7 +84,7 @@ export default connect(
               const group = groups[groupId];
               if (!group) return null;
               return (
-                <a href={`/${project.slug}/groups/${group.slug}`}>
+                <a key={i} href={`/${project.slug}/groups/${group.slug}`}>
                   {group.name}
                 </a>
               );

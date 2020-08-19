@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
-import TimeSeries from "./time-series";
 import InstrumentForm from "../manager/instrument-form";
 import InstrumentDisplay from "./instrument-display";
 import Map from "../../app-components/classMap";
@@ -42,10 +41,6 @@ export default connect(
         doInstrumentTimeseriesSetActiveId(firstTimeseries.id);
       }
     }, [len, firstTimeseries, doInstrumentTimeseriesSetActiveId]);
-
-    const handleTab = (id) => {
-      doInstrumentTimeseriesSetActiveId(id);
-    };
 
     // eslint-disable-next-line
     return (

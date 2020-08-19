@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "redux-bundler-react";
-import debounce from "lodash.debounce";
 import Panel from "./panel";
 import Navbar from "../../app-components/navbar";
 import Map from "../../app-components/classMap";

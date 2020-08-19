@@ -92,24 +92,6 @@ export default {
       },
       validate: isNumeric,
     },
-    zreference: {
-      label: "Z Reference",
-      type: "number",
-      required: true,
-      template: "",
-      parse: (val) => {
-        return Number(val);
-      },
-      validate: isNumeric,
-    },
-    zreference_datum_id: {
-      label: "Z Reference Datum",
-      type: "domain",
-      domainGroup: "zreference_datum",
-      required: true,
-      template: "",
-      helpText: "",
-    },
     station: {
       label: "Station",
       type: "number",

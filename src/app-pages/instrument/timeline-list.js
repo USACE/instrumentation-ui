@@ -2,7 +2,7 @@ import React from "react";
 
 export default ({ items }) => {
   return (
-    <ul>
+    <ul style={{ paddingLeft: "5px" }}>
       {items.map((item, i) => {
         return (
           <li className={`timeline-list-item ${item.status}`} key={i}>{`${
