@@ -12,14 +12,14 @@ export default connect("doUploadClear", ({ doUploadClear }) => {
   });
   return (
     <div>
-      <Navbar theme="primary" />
-      <section className="container is-fluid mt-3">
-        <div className="columns">
-          <div className="column is-4">
+      <Navbar theme="primary" fixed />
+      <section className="container-fluid" style={{ marginTop: "6rem" }}>
+        <div className="row">
+          <div className="col-4">
             <FileDetails />
             <UploadSettings />
           </div>
-          <div className="column is-8">
+          <div className="col-8">
             <FilePreview />
           </div>
         </div>

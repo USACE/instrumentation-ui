@@ -43,7 +43,7 @@ const Table = connect(
                       onClick={() => {
                         doModalOpen(InstrumentForm, { item: instrument });
                       }}
-                      className="button is-small is-info is-outlined mr-3"
+                      className="btn btn-sm btn-outline-info mr-3"
                     >
                       <i className="mdi mdi-pencil"></i>
                     </button>

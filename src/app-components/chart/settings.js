@@ -17,56 +17,57 @@ export default connect(
     return (
       <div style={{ marginTop: "6em", padding: "10px" }}>
         <div className="mb-2">
-          <div className="columns">
-            <div className="column">
-              <div className="field">
-                <label className="label is-small">Chart Type</label>
-                <div className="control">
-                  <div className="select is-small" style={{ width: "100%" }}>
-                    <select
-                      style={{ width: "100%" }}
-                      value={chartType}
-                      onChange={(e) => {
-                        doChartEditorSetChartType(e.target.value);
-                        doChartEditorSetLayout({
-                          ...layout,
-                          xaxis: {
-                            ...layout.xaxis,
-                            ...{
-                              type:
-                                e.target.value === "timeseries" ? "date" : "-",
-                            },
-                          },
-                        });
-                      }}
-                    >
-                      <option value="timeseries">Timeseries</option>
-                      <option value="correlation">Correlation Plot</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="field">
-                <label className="label is-small">Chart Title</label>
-                <p className="control">
-                  <input
-                    value={layout.title.text}
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label>
+                  <small>Chart Type</small>
+                </label>
+                <div className="select is-small" style={{ width: "100%" }}>
+                  <select
+                    className="form-control form-control-sm"
+                    style={{ width: "100%" }}
+                    value={chartType}
                     onChange={(e) => {
+                      doChartEditorSetChartType(e.target.value);
                       doChartEditorSetLayout({
                         ...layout,
-                        title: {
-                          ...layout.title,
-                          ...{ text: e.target.value },
+                        xaxis: {
+                          ...layout.xaxis,
+                          ...{
+                            type:
+                              e.target.value === "timeseries" ? "date" : "-",
+                          },
                         },
                       });
                     }}
-                    className="input is-small"
-                    type="text"
-                    placeholder="Title"
-                  />
-                </p>
+                  >
+                    <option value="timeseries">Timeseries</option>
+                    <option value="correlation">Correlation Plot</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group">
+                <label>
+                  <small>Chart Title</small>
+                </label>
+                <input
+                  value={layout.title.text}
+                  onChange={(e) => {
+                    doChartEditorSetLayout({
+                      ...layout,
+                      title: {
+                        ...layout.title,
+                        ...{ text: e.target.value },
+                      },
+                    });
+                  }}
+                  className="form-control form-control-sm"
+                  type="text"
+                  placeholder="Title"
+                />
               </div>
             </div>
           </div>

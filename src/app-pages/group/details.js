@@ -25,20 +25,21 @@ export default connect(
     if (!group) return null;
     return (
       <div>
-        <Navbar theme="primary" />
-        <section className="container mt-3">
-          <div className="columns">
-            <div className="column">
-              <div className="panel" style={{ height: "300px" }}>
+        <Navbar theme="primary" fixed />
+
+        <section className="container" style={{ marginTop: "6rem" }}>
+          <div className="row">
+            <div className="col">
+              <div className="card" style={{ height: "300px" }}>
                 <div
-                  className="panel-heading"
+                  className="card-header"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
-                  {group.name}{" "}
+                  <strong>{group.name}</strong>{" "}
                   <RoleFilter
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
@@ -47,43 +48,46 @@ export default connect(
                       onClick={() => {
                         doModalOpen(InstrumentGroupForm, { item: group });
                       }}
-                      className="button is-info is-small"
+                      className="btn btn-sm btn-outline-info"
                     >
                       <i className="mdi mdi-pencil pr-2"></i> Edit
                     </button>
                   </RoleFilter>
                 </div>
-                <div className="p-3">{group.description}</div>
+                <div className="card-body">{group.description}</div>
               </div>
             </div>
-            <div className="column">
+            <div className="col">
               <div
-                className="panel"
+                className="card"
                 style={{ position: "relative", height: "100%" }}
               >
-                <Map mapKey="groupMap" />
+                <div className="card-body">
+                  <Map mapKey="groupMap" />
+                </div>
               </div>
             </div>
           </div>
         </section>
+
         <section className="container mt-3">
-          <div className="panel">
+          <div className="card">
             <div
-              className="panel-heading"
+              className="card-header"
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              Instruments
+              <strong>Instruments</strong>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                <div className="buttons">
+                <div className="btn-group">
                   <button
                     onClick={() => {
                       doModalOpen(InstrumentForm, { addToGroup: group });
                     }}
-                    className="button is-info is-small"
+                    className="btn btn-sm btn-outline-info"
                   >
                     <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
                     Instrument
@@ -92,7 +96,7 @@ export default connect(
                     onClick={() => {
                       doModalOpen(InstrumentPicker);
                     }}
-                    className="button is-info is-small"
+                    className="btn btn-sm btn-outline-info"
                   >
                     <i className="mdi mdi-map-marker pr-2"></i> Add Existing
                     Instrument
@@ -100,7 +104,7 @@ export default connect(
                 </div>
               </RoleFilter>
             </div>
-            <div className="panel-block">
+            <div className="card-body">
               <InstrumentTable
                 instruments={instruments}
                 tools={[InstrumentRemove]}

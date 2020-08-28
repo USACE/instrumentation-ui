@@ -8,13 +8,13 @@ export default () => {
         onClick={() => {
           setShow(!show);
         }}
-        className={`button is-primary ${show ? "is-active" : ""}`}
+        className={`btn btn-primary ${show ? "active" : ""}`}
       >
         <i className="ms ms-information"></i>
       </button>
       {show ? (
         <div className="card">
-          <div className="card-content">
+          <div className="card-body">
             <p className="mb-2">
               Select Instruments on the map to include their data in the
               charting tools at the right.
