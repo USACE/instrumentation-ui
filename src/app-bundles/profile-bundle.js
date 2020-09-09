@@ -7,10 +7,10 @@ export default createRestBundle({
   prefetch: true,
   staleAfter: 900000,
   persist: false,
-  routeParam: "profileSlug",
-  getTemplate: "/profile",
-  putTemplate: "/profile/:item.slug",
-  postTemplate: "/profile",
+  routeParam: "id",
+  getTemplate: "/myprofile",
+  putTemplate: "/profiles/:item.slug",
+  postTemplate: "/profiles",
   deleteTemplate: "",
   fetchActions: ["AUTH_LOGGED_IN"],
   forceFetchActions: ["PROFILE_SAVE_FINISHED"],
@@ -30,8 +30,9 @@ export default createRestBundle({
       "selectAuthIsLoggedIn",
       "selectPathnameMinusHomepage",
       "selectProfileActive",
-      (isLoggedIn, path, profile) => {
-        if (isLoggedIn) {
+      "selectProfileIsLoading",
+      (isLoggedIn, path, profileIsLoading, profile) => {
+        if (isLoggedIn && !profileIsLoading) {
           if (!profile) {
             if (path !== "/signup")
               return {
