@@ -51,9 +51,6 @@ export default composeBundles(
       process.env.NODE_ENV === "development"
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
-    unless: {
-      method: "GET",
-    },
   }),
   createCacheBundle({
     cacheFn: cache.set,
