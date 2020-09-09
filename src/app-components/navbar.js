@@ -98,15 +98,14 @@ export default connect(
   "doAuthLogin",
   "selectAuthIsLoggedIn",
   "selectProjectsByRoute",
-  "selectPathnameMinusHomepage",
   ({
     doAuthLogin,
     authIsLoggedIn,
     theme,
     fixed = false,
     hideBrand,
+    brand = null,
     projectsByRoute: project,
-    pathnameMinusHomepage,
   }) => {
     const navClass = classnames({
       navbar: true,
@@ -120,22 +119,14 @@ export default connect(
       "navbar-light": theme === "light",
       "bg-light": theme === "light",
     });
+    if (!brand && project && project.name) brand = project.name;
     return (
       <nav className={navClass}>
-        {hideBrand ? (
-          pathnameMinusHomepage.length > 1 ? (
-            <a className="navbar-brand" href={"/"}>
-              <strong>
-                <i className="mdi mdi-pulse pr-2"></i>
-                Home
-              </strong>
-            </a>
-          ) : null
-        ) : (
+        {hideBrand ? null : (
           <a className="navbar-brand" href={"/"}>
             <strong>
               <i className="mdi mdi-pulse pr-2"></i>
-              {project && project.name ? project.name : ""}
+              {brand}
             </strong>
           </a>
         )}
