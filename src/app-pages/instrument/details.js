@@ -10,6 +10,44 @@ import Settings from "./settings";
 import RoleFilter from "../../app-components/role-filter";
 import LoginMessage from "../../app-components/login-message";
 
+const sampleAlerts = [
+  {
+    id: "1",
+    name: "Above Target Height",
+    time: "4 minutes ago",
+    body:
+      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+  },
+  {
+    id: "2",
+    name: "Above Target Height",
+    time: "10 minutes ago",
+    body:
+      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+  },
+  {
+    id: "3",
+    name: "Above Target Height",
+    time: "16 minutes ago",
+    body:
+      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+  },
+];
+
+const AlertEntry = ({ item }) => {
+  return (
+    item && (
+      <span className="list-group-item list-group-item-action flex-column align-items-start ">
+        <div className="d-flex w-100 justify-content-between">
+          <h5 className="mb-1">{item.name}</h5>
+          <small>{item.time}</small>
+        </div>
+        <p className="mb-1">{item.body}</p>
+      </span>
+    )
+  );
+};
+
 export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
@@ -46,7 +84,7 @@ export default connect(
     return (
       <div style={{ marginBottom: "200px" }}>
         <Navbar theme="primary" fixed />
-        <section className="container" style={{ marginTop: "6rem" }}>
+        <section className="container-fluid" style={{ marginTop: "6rem" }}>
           <div className="row">
             <div className="col">
               <div className="card">
@@ -77,10 +115,31 @@ export default connect(
               </div>
             </div>
             <div className="col">
-              <div
-                className="card"
-                style={{ position: "relative", height: "100%" }}
-              >
+              <div className="card h-100">
+                <div
+                  className="card-header"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <strong>Alerts</strong>
+                </div>
+                <div
+                  className="card-body"
+                  style={{ maxHeight: 400, overflow: "auto" }}
+                >
+                  <div className="list-group">
+                    {sampleAlerts.map((a) => (
+                      <AlertEntry item={a} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="card h-100" style={{ position: "relative" }}>
                 <div className="card-body">
                   <Map mapKey="instrumentMap" />
                 </div>
@@ -88,10 +147,10 @@ export default connect(
             </div>
           </div>
         </section>
-        <section className="container mt-3">
+        <section className="container-fluid mt-4">
           <Settings />
         </section>
-        <section className="container mt-3 mb-5">
+        <section className="container-fluid my-4">
           <Notes />
         </section>
       </div>

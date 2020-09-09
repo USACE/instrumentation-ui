@@ -18,6 +18,7 @@ import exploreMapBundle from "./explore-map-bundle";
 import exploreMapInteractionBundle from "./explore-map-interaction-bundle";
 import homeDataBundle from "./home-data-bundle";
 import instrumentBundle from "./instrument-bundle";
+import instrumentAlertsBundle from "./instrument-alerts-bundle";
 import instrumentMapBundle from "./instrument-map-bundle";
 import instrumentDrawBundle from "./instrument-draw-bundle";
 import instrumentGroupBundle from "./instrument-group-bundle";
@@ -69,6 +70,7 @@ export default composeBundles(
   exploreMapInteractionBundle,
   homeDataBundle,
   instrumentBundle,
+  instrumentAlertsBundle,
   instrumentMapBundle,
   instrumentDrawBundle,
   instrumentGroupBundle,

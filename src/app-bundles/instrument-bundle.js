@@ -20,9 +20,9 @@ export default createRestBundle({
   sortBy: "name",
   routeParam: "instrumentSlug",
   getTemplate: "/projects/:projectId/instruments",
-  putTemplate: "/instruments/:item.id",
-  postTemplate: "/instruments",
-  deleteTemplate: "/instruments/:item.id",
+  putTemplate: "/projects/:projectId/instruments/:item.id",
+  postTemplate: "/projects/:projectId/instruments",
+  deleteTemplate: "/projects/:projectId/instruments/:item.id",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "PROJECTS_FETCH_FINISHED"],
   forceFetchActions: [
     "INSTRUMENTS_SAVE_FINISHED",
