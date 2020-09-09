@@ -4,7 +4,7 @@ import { createSelector } from "redux-bundler";
 export default createRestBundle({
   name: "profile",
   uid: "id",
-  prefetch: true,
+  prefetch: false,
   staleAfter: 900000,
   persist: false,
   routeParam: "id",
