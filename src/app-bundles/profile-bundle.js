@@ -43,5 +43,17 @@ export default createRestBundle({
         }
       }
     ),
+    reactProfileCreatedRedirect: createSelector(
+      "selectProfileActive",
+      "selectAuthIsLoggedIn",
+      "selectPathnameMinusHomepage",
+      (profile, isLoggedIn, path) => {
+        if (path === "/signup" && (profile || !isLoggedIn))
+          return {
+            actionCreator: "doUpdateUrlWithHomepage",
+            args: ["/"],
+          };
+      }
+    ),
   },
 });
