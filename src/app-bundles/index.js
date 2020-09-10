@@ -5,7 +5,8 @@ import {
 } from "redux-bundler";
 import { createNestedUrlBundle } from "@corpsmap/corpsmap-bundles";
 import createAuthBundle from "@corpsmap/create-auth-bundle";
-import createJwtApiBundle from "@corpsmap/create-jwt-api-bundle";
+// Required change from @corpsmap/create-jwt-api-bundle;
+import createJwtApiBundle from "./create-jwt-api-bundle";
 import cache from "../cache";
 import pkg from "../../package.json";
 
@@ -51,6 +52,18 @@ export default composeBundles(
       process.env.NODE_ENV === "development"
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
+    unless: {
+      // GET requests do not include token unless path is GET /myprofile
+      custom: ({ method, path }) => {
+        if (method === "GET") {
+          if (path === "/myprofile") {
+            return false;
+          }
+          return true;
+        }
+        return false;
+      },
+    },
   }),
   createCacheBundle({
     cacheFn: cache.set,
