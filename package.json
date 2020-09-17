@@ -39,7 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 rm s3://corpsmap-appz/instrumentation --recursive && aws s3 cp ./build/ s3://corpsmap-appz/instrumentation --recursive",
+    "deploy-dev": "aws s3 rm s3://corpsmap-appz/instrumentation --recursive && aws s3 cp ./build/ s3://corpsmap-appz/instrumentation --recursive",
+    "deploy-test": "aws s3 rm s3://rsgis-apps/instrumentation --recursive && aws s3 cp ./build/ s3://rsgis-apps/instrumentation --recursive",
     "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
     "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to $npm_package_homepage"
   },
