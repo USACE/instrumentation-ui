@@ -41,7 +41,7 @@ export default connect(
                       a && selectedAlert && a.id === selectedAlert.id
                         ? "active"
                         : ""
-                    }`}
+                      }`}
                     onClick={() => {
                       console.log(a);
                       setSelectedAlert(a);

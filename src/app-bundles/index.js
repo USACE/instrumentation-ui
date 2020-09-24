@@ -33,6 +33,7 @@ import mapsBundle from "./maps-bundle";
 import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
 import notificationBundle from "./notification-bundle";
+import profileAlertsBundle from "./profile-alerts-bundle";
 import profileBundle from "./profile-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
@@ -95,6 +96,7 @@ export default composeBundles(
   modalBundle,
   nestedUrlBundle,
   notificationBundle,
+  profileAlertsBundle,
   profileBundle,
   projectsBundle,
   projectionBundle,

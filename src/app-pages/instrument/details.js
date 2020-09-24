@@ -15,35 +15,65 @@ const sampleAlerts = [
     id: "1",
     name: "Above Target Height",
     time: "4 minutes ago",
-    body:
-      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
+    unread: true,
   },
   {
     id: "2",
     name: "Above Target Height",
     time: "10 minutes ago",
-    body:
-      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
   },
   {
     id: "3",
     name: "Above Target Height",
     time: "16 minutes ago",
-    body:
-      "The demo staff gage has exceeded the target height. Sincerely, Midas",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
+  },
+  {
+    id: "4",
+    name: "Above Target Height",
+    time: "4 minutes ago",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
+    unread: true,
+  },
+  {
+    id: "5",
+    name: "Above Target Height",
+    time: "10 minutes ago",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
+  },
+  {
+    id: "6",
+    name: "Above Target Height",
+    time: "16 minutes ago",
+    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
   },
 ];
+
+const sortAlertsByDate = alerts => {
+  return alerts.sort((a, b) => {
+    if (a.time > b.time) return -1;
+    if (b.time > a.time) return 1;
+    return 0;
+  })
+}
 
 const AlertEntry = ({ item }) => {
   return (
     item && (
-      <span className="list-group-item list-group-item-action flex-column align-items-start ">
-        <div className="d-flex w-100 justify-content-between">
-          <h5 className="mb-1">{item.name}</h5>
-          <small>{item.time}</small>
-        </div>
-        <p className="mb-1">{item.body}</p>
-      </span>
+      <div
+        className={`alert-container${item.unread ? ' unread' : ''}`}
+        onClick={() => console.log("dispatch alert as read")}
+      >
+        <span className="list-group-item list-group-item-action flex-column align-items-start">
+          <div className="d-flex w-100 justify-content-between">
+            <h5 className="mb-1">{item.name}</h5>
+            <small>{item.time}</small>
+          </div>
+          <p className="mb-1">{item.body}</p>
+        </span>
+      </div>
     )
   );
 };
@@ -54,6 +84,7 @@ export default connect(
   "selectProjectsByRoute",
   "selectInstrumentsByRoute",
   "selectInstrumentTimeseriesByInstrumentId",
+  "selectProfileAlerts",
   "selectTimeseriesMeasurementsItemsObject",
   "selectInstrumentTimeseriesActiveId",
   ({
@@ -64,7 +95,10 @@ export default connect(
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     timeseriesMeasurementsItemsObject: measurements,
     instrumentTimeseriesActiveId: activeId,
+    profileAlerts: alerts,
   }) => {
+    console.log("alerts", sortAlertsByDate(sampleAlerts));
+    console.log("profileAlerts", alerts);
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
@@ -87,7 +121,7 @@ export default connect(
         <section className="container-fluid" style={{ marginTop: "6rem" }}>
           <div className="row">
             <div className="col">
-              <div className="card">
+              <div className="card h-100">
                 <div
                   className="card-header"
                   style={{
@@ -116,23 +150,13 @@ export default connect(
             </div>
             <div className="col">
               <div className="card h-100">
-                <div
-                  className="card-header"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
+                <div className="card-header">
                   <strong>Alerts</strong>
                 </div>
-                <div
-                  className="card-body"
-                  style={{ maxHeight: 400, overflow: "auto" }}
-                >
-                  <div className="list-group">
+                <div className="card-body" style={{ maxHeight: 400, overflow: "auto" }}>
+                  <div className="list-group pb-2">
                     {sampleAlerts.map((a) => (
-                      <AlertEntry item={a} />
+                      <AlertEntry key={a.id} item={a} />
                     ))}
                   </div>
                 </div>

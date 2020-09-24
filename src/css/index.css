@@ -91,3 +91,11 @@
 .ag-root-wrapper {
   overflow: visible;
 }
+
+.alert-container.unread {
+  border-left: 4px solid #0a59a3;
+}
+
+.alert-container:hover {
+  cursor: pointer;
+}

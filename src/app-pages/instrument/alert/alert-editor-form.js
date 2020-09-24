@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 export default ({ alert }) => {
-  const [formula, setFormula] = useState(null);
-  const [body, setBody] = useState(null);
+  const [formula, setFormula] = useState('');
+  const [body, setBody] = useState('');
 
   useEffect(() => {
     if (alert) {
@@ -16,8 +16,9 @@ export default ({ alert }) => {
       <form>
         <div className="form-row">
           <div className="form-group col-md-6">
-            <label for="formula">Formula</label>
+            <label htmlFor="formula">Formula</label>
             <textarea
+              id="formula"
               className="form-control"
               value={formula}
               onChange={(e) => {
@@ -27,8 +28,9 @@ export default ({ alert }) => {
             />
           </div>
           <div className="form-group col-md-6">
-            <label for="body">Body</label>
+            <label htmlFor="body">Body</label>
             <textarea
+              id="body"
               className="form-control"
               value={body}
               onChange={(e) => {
