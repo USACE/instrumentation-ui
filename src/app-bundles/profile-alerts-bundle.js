@@ -7,7 +7,7 @@ export default createRestBundle({
   prefetch: true,
   staleAfter: 1,
   persist: false,
-  getTemplate: "/instrumentation/my_alert_subscriptions",
+  getTemplate: "/my_alert_subscriptions",
   deleteTemplate: "",
   fetchActions: ["AUTH_LOGGED_IN"],
   forceFetchActions: [],

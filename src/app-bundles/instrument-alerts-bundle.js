@@ -9,10 +9,9 @@ export default createRestBundle({
   persist: false,
   routeParam: "id",
   getTemplate: "/projects/:projectId/instruments/:instrumentId/alerts", // "/:" disables any accidental trigger of a fetch
-  putTemplate:
-    "/:/projects/:projectId/instruments/:instrumentId/alerts/:item.id",
+  putTemplate: "/projects/:projectId/instruments/:instrumentId/alerts/:item.id",
   postTemplate: "/projects/:projectId/instruments/:instrumentId/alerts",
-  deleteTemplate: "/:",
+  deleteTemplate: "/projects/:projectId/instruments/:instrumentId/alerts/:item.id",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "INSTRUMENTS_FETCH_FINISHED"],
   urlParamSelectors: ["selectProjectsIdByRoute", "selectInstrumentsIdByRoute"],
   addons: {

@@ -57,6 +57,12 @@ const ProfileMenu = connect(
               <small className="text-muted">{`Currently logged in as ${user.name}`}</small>
             </div>
           </a>
+          {/* 
+            Create link to user profile (this will contain *user favorited projects*,  notifications, tbc.)
+          */}
+          <a>
+            My Profile
+          </a>
         </div>
       </li>
     );
@@ -159,8 +165,8 @@ export default connect(
             {authIsLoggedIn ? (
               <ProfileMenu />
             ) : (
-              <NavItem handler={doAuthLogin}>Login</NavItem>
-            )}
+                <NavItem handler={doAuthLogin}>Login</NavItem>
+              )}
           </ul>
         </div>
       </nav>

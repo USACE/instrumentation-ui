@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import Modal from "./app-components/modal";
+import AlertNotification from "./app-components/alert-notification";
 
 import "./css/bootstrap/css/bootstrap.water.min.css";
 import "./css/mdi/css/materialdesignicons.min.css";
@@ -12,6 +13,7 @@ export default connect("selectRoute", ({ route: Route }) => {
     <div>
       <Route />
       <Modal />
+      <AlertNotification />
     </div>
   );
 });
