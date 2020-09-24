@@ -25,7 +25,7 @@ jobs:
       - run: npm install
       - run: npm run build
 
-      - name: Deploy to Dev
+      - name: Deploy to Test
         env:
           AWS_DEFAULT_REGION: ${{ secrets.CWBICI_TEST_AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.CWBICI_TEST_AWS_ACCESS_KEY_ID }}
