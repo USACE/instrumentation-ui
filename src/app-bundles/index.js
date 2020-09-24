@@ -53,10 +53,11 @@ export default composeBundles(
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
     unless: {
-      // GET requests do not include token unless path is GET /myprofile
+      // GET requests do not include token unless path starts with /my_
+      // Need token to figure out who "me" is
       custom: ({ method, path }) => {
         if (method === "GET") {
-          if (path === "/myprofile") {
+          if (path.slice(0, 4) === "/my_") {
             return false;
           }
           return true;
