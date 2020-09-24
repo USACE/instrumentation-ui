@@ -8,7 +8,7 @@ export default createRestBundle({
   staleAfter: 900000,
   persist: false,
   routeParam: "id",
-  getTemplate: "/myprofile",
+  getTemplate: "/my_profile",
   putTemplate: "/profiles/:item.slug",
   postTemplate: "/profiles",
   deleteTemplate: "",
