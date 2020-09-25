@@ -8,10 +8,10 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: "id",
-  getTemplate: "/projects/:projectId/instruments/:instrumentId/alerts", // "/:" disables any accidental trigger of a fetch
-  putTemplate: "/projects/:projectId/instruments/:instrumentId/alerts/:item.id",
-  postTemplate: "/projects/:projectId/instruments/:instrumentId/alerts",
-  deleteTemplate: "/projects/:projectId/instruments/:instrumentId/alerts/:item.id",
+  getTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs", // "/:" disables any accidental trigger of a fetch
+  putTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
+  postTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs",
+  deleteTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "INSTRUMENTS_FETCH_FINISHED"],
   urlParamSelectors: ["selectProjectsIdByRoute", "selectInstrumentsIdByRoute"],
   addons: {

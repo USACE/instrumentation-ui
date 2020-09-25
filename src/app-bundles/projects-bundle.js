@@ -3,6 +3,7 @@ import { createSelector } from "redux-bundler";
 import bird from "../img/florida-bird.jpg";
 import dam from "../img/dam.jpg";
 import moosecreek from "../img/moosecreek.png";
+import mountmorris from "../img/mountmorris.jpg";
 
 export default createRestBundle({
   name: "projects",
@@ -35,6 +36,8 @@ export default createRestBundle({
             img:
               p.name.indexOf("Moose Creek") !== -1
                 ? moosecreek
+                : p.name.indexOf("Buffalo District Streamgages") !== -1
+                ? mountmorris
                 : p.name.indexOf("Dam") !== -1
                 ? dam
                 : bird,
