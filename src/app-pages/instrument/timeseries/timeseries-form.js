@@ -3,24 +3,15 @@ import { connect } from "redux-bundler-react";
 import DomainSelect from "../../../app-components/domain-select";
 
 const DeleteButton = connect(
-  "doInstrumentConstantsDelete",
+  "doInstrumentTimeseriesDelete",
   "doModalClose",
-  "doUpdateUrlWithHomepage",
-  "selectRouteParams",
-
-  ({
-    doInstrumentConstantsDelete,
-    doModalClose,
-    doUpdateUrlWithHomepage,
-    routeParams,
-    item,
-  }) => {
+  ({ doInstrumentTimeseriesDelete, doModalClose, item }) => {
     const [isConfirming, setIsConfirming] = useState(false);
     if (!item || !item.id) return null;
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
       setIsConfirming(false);
-      doInstrumentConstantsDelete(
+      doInstrumentTimeseriesDelete(
         item,
         () => {
           doModalClose();
@@ -68,12 +59,12 @@ const DeleteButton = connect(
 
 export default connect(
   "doModalClose",
-  "doInstrumentConstantsSave",
+  "doInstrumentTimeseriesSave",
   "doInstrumentsSave",
   "selectInstrumentsByRoute",
   ({
     doModalClose,
-    doInstrumentConstantsSave,
+    doInstrumentTimeseriesSave,
     doInstrumentsSave,
     item,
     instrumentsByRoute: instrument,
@@ -87,7 +78,7 @@ export default connect(
 
     const handleSave = (e) => {
       e.preventDefault();
-      doInstrumentConstantsSave(
+      doInstrumentTimeseriesSave(
         Object.assign({}, item, {
           name,
           instrument_id,

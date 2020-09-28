@@ -13,14 +13,14 @@ import "ag-grid-community/dist/styles/ag-theme-fresh.css";
 export default connect(
   "selectProjectsByRoute",
   "selectInstrumentsByRoute",
-  "selectInstrumentTimeseriesItems",
+  "selectInstrumentTimeseriesItemsByRoute",
   "selectTimeseriesMeasurementsItemsObject",
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
   ({
     projectsByRoute: project,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItems: timeseries,
+    instrumentTimeseriesItemsByRoute: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
