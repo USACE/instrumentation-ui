@@ -3,12 +3,12 @@ import { connect } from "redux-bundler-react";
 
 export default connect(
   "selectInstrumentsByRoute",
-  "selectInstrumentTimeseriesItems",
+  "selectInstrumentTimeseriesItemsByRoute",
   "selectTimeseriesMeasurementsItemsObject",
   "doInstrumentsSave",
   ({
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItems: timeseries,
+    instrumentTimeseriesItemsByRoute: timeseries,
     doInstrumentsSave,
   }) => {
     const [formula, setFormula] = useState(instrument.formula || "");
@@ -46,7 +46,7 @@ export default connect(
                     key={i}
                     className="list-group-item list-group-item-action"
                     onDoubleClick={() => {
-                      insertParam(`[${ts.slug}]`);
+                      insertParam(`[${ts.variable}]`);
                     }}
                   >
                     {ts.slug}
