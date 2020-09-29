@@ -21,13 +21,16 @@ export default {
   name: "Instruments",
   url: `/projects/:projectId/instruments`,
   postProcess: (rows) => {
+    // convert lat and lon to geojson geometry
     rows.forEach((row) => {
       row.geometry = { type: "Point", coordinates: [] };
       if (!isNaN(row.lon)) {
-        row.geometry.coordinates[0] = row.lon;
+        row.geometry.coordinates[0] = parseFloat(row.lon);
+        delete row.lon;
       }
       if (!isNaN(row.lat)) {
-        row.geometry.coordinates[1] = row.lat;
+        row.geometry.coordinates[1] = parseFloat(row.lat);
+        delete row.lat;
       }
     });
     return rows;
