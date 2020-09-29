@@ -10,7 +10,7 @@ const UserProfile = connect(
         <div className="col-3">
           User Scaffold
 
-          <img alt="User Profile Picture" />
+          <img alt="User Profile" />
           <p>user.name [last, first m.]</p>
           <p>user.email</p>
         </div>

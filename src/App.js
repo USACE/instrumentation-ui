@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import Modal from "./app-components/modal";
-import AlertNotification from "./app-components/alert-notification";
+// import AlertNotification from "./app-components/alert-notification";
 
 import "./css/bootstrap/css/bootstrap.water.min.css";
 import "./css/mdi/css/materialdesignicons.min.css";
