@@ -10,81 +10,67 @@ import Settings from "./settings";
 import RoleFilter from "../../app-components/role-filter";
 import LoginMessage from "../../app-components/login-message";
 
-const sampleAlerts = [
-  {
-    id: "1",
-    name: "Above Target Height",
-    time: "4 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-    unread: true,
-  },
-  {
-    id: "2",
-    name: "Above Target Height",
-    time: "10 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-  },
-  {
-    id: "3",
-    name: "Above Target Height",
-    time: "16 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-  },
-  {
-    id: "4",
-    name: "Above Target Height",
-    time: "4 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-    unread: true,
-  },
-  {
-    id: "5",
-    name: "Above Target Height",
-    time: "10 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-  },
-  {
-    id: "6",
-    name: "Above Target Height",
-    time: "16 minutes ago",
-    body: "The demo staff gage has exceeded the target height. Sincerely, Midas",
-  },
-];
-
 const sortAlertsByDate = alerts => {
   return alerts.sort((a, b) => {
-    if (a.time > b.time) return -1;
-    if (b.time > a.time) return 1;
+    if (a.create_date > b.create_date) return -1;
+    if (b.create_date > a.create_date) return 1;
     return 0;
-  })
+  });
+};
+
+const convertTimeAgo = milli => {
+  const minutes = milli / 1000 / 60;
+  if (minutes < 60) {
+    return `${Math.floor(minutes)} minute${Math.floor(minutes) !== 1 ? 's' : ''}`;
+  }
+
+  const hours = minutes / 60;
+  if (hours < 24) {
+    return `${Math.floor(hours)} hour${Math.floor(hours) !== 1 ? 's' : ''}`;
+  }
+
+  const days = hours / 24;
+  return `${Math.floor(days)} day${Math.floor(days) !== 1 ? 's' : ''}`;
 }
 
-const AlertEntry = ({ item }) => {
-  return (
-    item && (
-      <div
-        className={`alert-container${item.unread ? ' unread' : ''}`}
-        onClick={() => console.log("dispatch alert as read")}
-      >
-        <span className="list-group-item list-group-item-action flex-column align-items-start">
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1">{item.name}</h5>
-            <small>{item.time}</small>
-          </div>
-          <p className="mb-1">{item.body}</p>
-        </span>
-      </div>
-    )
-  );
-};
+const AlertEntry = connect(
+  "doAlertReadSave",
+  "doAlertUnreadSave",
+  ({ item, doAlertReadSave, doAlertUnreadSave }) => {
+    const isRead = item.read;
+    const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
+    const toggleRead = (...params) => {
+      isRead
+        ? doAlertUnreadSave(...params)
+        : doAlertReadSave(...params)
+    };
+
+    return (
+      item && (
+        <div
+          className={`alert-container${item.read ? '' : ' unread'}`}
+          onClick={() => toggleRead(item, null, true, true)}
+        >
+          <span className="list-group-item list-group-item-action flex-column align-items-start">
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">{item.name}</h5>
+              <small>{timeAgo}</small>
+            </div>
+            <p className="mb-1">{item.body}</p>
+          </span>
+        </div>
+      )
+    );
+  }
+);
 
 export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
   "selectProjectsByRoute",
+  "selectProfileAlertsByInstrumentId",
   "selectInstrumentsByRoute",
   "selectInstrumentTimeseriesByInstrumentId",
-  "selectProfileAlerts",
   "selectTimeseriesMeasurementsItemsObject",
   "selectInstrumentTimeseriesActiveId",
   ({
@@ -95,10 +81,10 @@ export default connect(
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     timeseriesMeasurementsItemsObject: measurements,
     instrumentTimeseriesActiveId: activeId,
-    profileAlerts: alerts,
+    profileAlertsByInstrumentId: alerts,
   }) => {
-    console.log("alerts", sortAlertsByDate(sampleAlerts));
-    console.log("profileAlerts", alerts);
+    console.log(alerts);
+
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
@@ -114,7 +100,6 @@ export default connect(
       }
     }, [len, firstTimeseries, doInstrumentTimeseriesSetActiveId]);
 
-    // eslint-disable-next-line
     return (
       <div style={{ marginBottom: "200px" }}>
         <Navbar theme="primary" fixed />
@@ -155,7 +140,7 @@ export default connect(
                 </div>
                 <div className="card-body" style={{ maxHeight: 400, overflow: "auto" }}>
                   <div className="list-group pb-2">
-                    {sampleAlerts.map((a) => (
+                    {sortAlertsByDate(alerts).map((a) => (
                       <AlertEntry key={a.id} item={a} />
                     ))}
                   </div>

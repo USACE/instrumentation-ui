@@ -119,8 +119,14 @@
   position: fixed;
   opacity: 0.65;
   right: 10px;
+  text-decoration: none;
   width: 390px;
   z-index: 100;
+}
+
+.alert-notification:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 .close-notification {
@@ -128,4 +134,18 @@
   top: 4px;
   right: 4px;
   z-index: 101;
+}
+
+.favorite {
+  position: absolute;
+  align-items: center;
+  background: transparent;
+  font-size: 20px;
+  top: 5px;
+  right: 0;
+  border: none;
+}
+
+.gold {
+  color: #FFD700;
 }

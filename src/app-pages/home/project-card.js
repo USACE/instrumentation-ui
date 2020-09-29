@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default ({ img, title, subtitle, href }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setIsFavorite(!isFavorite)
+  }
+
   return (
-    <a href={href}>
+    <a href={href} tabIndex={0}>
       <div className="card mb-3 mr-3" style={{ maxWidth: "300px" }}>
+        <button className="favorite" onClick={toggleFavorite}>
+          <span className={`mdi ${isFavorite ? 'mdi-star gold' : 'mdi-star-outline'}`} />
+        </button>
         {img ? (
           <img
             style={{ height: "200px", width: "100%", display: "block" }}

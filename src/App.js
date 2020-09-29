@@ -13,7 +13,7 @@ export default connect("selectRoute", ({ route: Route }) => {
     <div>
       <Route />
       <Modal />
-      <AlertNotification />
+      {/* <AlertNotification /> Removing this until profile is completed. */}
     </div>
   );
 });
