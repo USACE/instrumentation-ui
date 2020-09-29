@@ -59,10 +59,11 @@ const ProfileMenu = connect(
           </a>
           {/* 
             Create link to user profile (this will contain *user favorited projects*,  notifications, tbc.)
+          
+            <a>
+              My Profile
+            </a>
           */}
-          <a>
-            My Profile
-          </a>
         </div>
       </li>
     );
