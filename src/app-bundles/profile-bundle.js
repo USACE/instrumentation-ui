@@ -15,6 +15,7 @@ export default createRestBundle({
   fetchActions: ["AUTH_LOGGED_IN"],
   forceFetchActions: ["PROFILE_SAVE_FINISHED"],
   addons: {
+    selectProfileMockToken: (store) => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlRlc3QuVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.D_66UceE82DkXwKcpzj0cxl126jAaev_FSGPCDzhRys",
     selectProfileActive: createSelector(
       "selectProfileItems",
       (profileItems) => {

@@ -33,6 +33,7 @@ import mapsBundle from "./maps-bundle";
 import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
 import notificationBundle from "./notification-bundle";
+import profileAlertsBundle from "./profile-alerts-bundle";
 import profileBundle from "./profile-bundle";
 import projectionBundle from "./projection-bundle";
 import projectsBundle from "./projects-bundle";
@@ -41,17 +42,27 @@ import routesBundle from "./routes-bundle";
 import timeseriesBundle from "./time-series-bundle";
 import timeseriesMeasurementBundle from "./time-series-measurements-bundle";
 import uploadBundle from "./upload-bundle";
+import alertReadBundle from "./alert-read-bundle";
+import alertUnreadBundle from "./alert-unread-bundle";
+import profileAlertSubscriptionsBundle from "./profile-alert-subscriptions-bundle";
+import alertSubscribeBundle from "./alert-subscribe-bundle";
+import alertUnsubscribeBundle from "./alert-unsubscribe-bundle";
 
 export default composeBundles(
   createAuthBundle({
     appId: "07f1223f-f208-4b71-aa43-5d5f27cd8ed9",
     redirectOnLogout: pkg.homepage,
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlRlc3QuVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.D_66UceE82DkXwKcpzj0cxl126jAaev_FSGPCDzhRys',
   }),
   createJwtApiBundle({
     root:
       process.env.NODE_ENV === "development"
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
+    tokenSelector:
+      process.env.NODE_ENV === "development"
+        ? "selectProfileMockToken"
+        : "selectAuthToken",
     unless: {
       // GET requests do not include token unless path starts with /my_
       // Need token to figure out who "me" is
@@ -73,6 +84,10 @@ export default composeBundles(
   createNestedUrlBundle({
     pkg: pkg,
   }),
+  alertReadBundle,
+  alertSubscribeBundle,
+  alertUnreadBundle,
+  alertUnsubscribeBundle,
   chartEditorBundle,
   chartsBundle,
   domainsBundle,
@@ -96,6 +111,8 @@ export default composeBundles(
   modalBundle,
   nestedUrlBundle,
   notificationBundle,
+  profileAlertsBundle,
+  profileAlertSubscriptionsBundle,
   profileBundle,
   projectsBundle,
   projectionBundle,
