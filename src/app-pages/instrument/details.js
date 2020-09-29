@@ -83,8 +83,6 @@ export default connect(
     instrumentTimeseriesActiveId: activeId,
     profileAlertsByInstrumentId: alerts,
   }) => {
-    console.log(alerts);
-
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
