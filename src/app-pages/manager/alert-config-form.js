@@ -6,8 +6,9 @@ const AlertConfigSettings = connect(
   "doAlertsSave",
   "doAlertSubscribeSave",
   "doAlertUnsubscribeSave",
+  "doProfileAlertSubscriptionsSave",
   "selectProfileAlertSubscriptions",
-  ({ doModalClose, doAlertsSave, doAlertSubscribeSave, doAlertUnsubscribeSave, profileAlertSubscriptions, item }) => {
+  ({ doModalClose, doAlertsSave, doAlertSubscribeSave, doAlertUnsubscribeSave, doProfileAlertSubscriptionsSave, profileAlertSubscriptions, item }) => {
     const subscription = profileAlertSubscriptions.find(e => e.alert_config_id === item.id);
 
     const [configSettings, setConfigSettings] = useState(item);
@@ -17,19 +18,27 @@ const AlertConfigSettings = connect(
       muteNotify: subscription ? subscription.mute_notify : false,
     });
 
-    useEffect(() => {
-
-    }, [userPreferences])
+    const toggleSubscribe = (active) => {
+      if (active) {
+        doAlertSubscribeSave(item, null, true, true);
+      } else {
+        doAlertUnsubscribeSave(item, null, true, true);
+      }
+    }
 
     const saveSettings = () => {
       if (configSettings.name !== item.name) {
         doAlertsSave(configSettings, null, true, false);
       }
 
-      if (!subscription && userPreferences.isSubscribed) {
-        doAlertSubscribeSave(item, null, true, true);
-      } else if (!!subscription && !userPreferences.isSubscribed) {
-        doAlertUnsubscribeSave(item, null, true, true);
+      if (!!subscription) {
+        const putBody = {
+          ...subscription,
+          mute_ui: userPreferences.muteUi,
+          mute_notify: userPreferences.muteNotify,
+        };
+
+        doProfileAlertSubscriptionsSave(putBody, null, true, false);
       }
 
       doModalClose();
@@ -67,12 +76,12 @@ const AlertConfigSettings = connect(
                   id="userSubscribe"
                   className="form-check-input"
                   defaultChecked={userPreferences.isSubscribed}
-                  onChange={() => setUserPreferences({ ...userPreferences, isSubscribed: !userPreferences.isSubscribed })}
+                  onChange={(e) => toggleSubscribe(e.target.checked)}
                 />
               </div>
             </div>
           </div>
-          {userPreferences.isSubscribed && (
+          {!!subscription && (
             <>
               <div className="form-group row">
                 <label htmlFor="userMuteUI" className="col-sm-3">Mute UI</label>

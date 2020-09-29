@@ -3,7 +3,7 @@ import { createSelector } from "redux-bundler";
 
 export default createRestBundle({
   name: "profileAlertSubscriptions",
-  uid: null,
+  uid: "id",
   prefetch: false,
   staleAfter: 0,
   persist: false,
