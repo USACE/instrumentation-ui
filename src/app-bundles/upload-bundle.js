@@ -324,11 +324,13 @@ export default {
                   ? setAllTo[1] === "true"
                   : setAllTo[1];
             } else {
+              // If field not mapped, set to null; if required field, push error
               const data = row[sourceKey];
               if (!data) {
                 parsedRow[key] = null;
                 if (config.required) parsedRow.errors.push(key);
               } else {
+                // If field is a domain, set value to primary key of domain
                 if (config.type === "domain") {
                   const foundDomainItem = domains[config.domainGroup].filter(
                     (d) => {
@@ -341,12 +343,14 @@ export default {
                     parsedRow[key] = null;
                     if (config.required) parsedRow.errors.push(key);
                   }
+                  // If not a domain and not unmapped (i.e. anything else)
                 } else {
                   if (config.parse && typeof config.parse === "function") {
                     parsedRow[key] = config.parse(data, state, parsedRow);
                   } else {
                     parsedRow[key] = data;
                   }
+                  // Validation
                   if (
                     config.validate &&
                     typeof config.validate === "function"
