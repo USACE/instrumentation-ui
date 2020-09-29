@@ -10,8 +10,6 @@ const AlertConfigSettings = connect(
   ({ doModalClose, doAlertsSave, doAlertSubscribeSave, doAlertUnsubscribeSave, profileAlertSubscriptions, item }) => {
     const subscription = profileAlertSubscriptions.find(e => e.alert_config_id === item.id);
 
-    console.log('subs:', profileAlertSubscriptions);
-
     const [configSettings, setConfigSettings] = useState(item);
     const [userPreferences, setUserPreferences] = useState({
       isSubscribed: !!subscription,
