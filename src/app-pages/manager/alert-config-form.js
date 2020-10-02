@@ -4,11 +4,21 @@ import { connect } from 'redux-bundler-react';
 const AlertConfigSettings = connect(
   "doModalClose",
   "doAlertsSave",
+  "doAlertsDelete",
   "doAlertSubscribeSave",
   "doAlertUnsubscribeSave",
   "doProfileAlertSubscriptionsSave",
   "selectProfileAlertSubscriptions",
-  ({ doModalClose, doAlertsSave, doAlertSubscribeSave, doAlertUnsubscribeSave, doProfileAlertSubscriptionsSave, profileAlertSubscriptions, item }) => {
+  ({
+    doModalClose,
+    doAlertsSave,
+    doAlertsDelete,
+    doAlertSubscribeSave,
+    doAlertUnsubscribeSave,
+    doProfileAlertSubscriptionsSave,
+    profileAlertSubscriptions,
+    item,
+  }) => {
     const subscription = profileAlertSubscriptions.find(e => e.alert_config_id === item.id);
 
     const [configSettings, setConfigSettings] = useState(item);
@@ -43,6 +53,11 @@ const AlertConfigSettings = connect(
 
       doModalClose();
     };
+
+    const deleteConfig = () => {
+      doAlertsDelete(item, null, true);
+      doModalClose();
+    }
 
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
@@ -84,7 +99,7 @@ const AlertConfigSettings = connect(
           {!!subscription && (
             <>
               <div className="form-group row">
-                <label htmlFor="userMuteUI" className="col-sm-3">Mute UI</label>
+                <label htmlFor="userMuteUI" className="col-sm-3 mb-0">Mute UI</label>
                 <div className="col-sm-9">
                   <div className="form-check">
                     <input
@@ -94,11 +109,13 @@ const AlertConfigSettings = connect(
                       defaultChecked={userPreferences.muteUi}
                       onChange={() => setUserPreferences({ ...userPreferences, muteUi: !userPreferences.muteUi })}
                     />
+                    <br />
                   </div>
                 </div>
+                <small id="muteUiHelp" class="ml-3 form-text text-muted">Enable this option to silence alerts on the User Interface.</small>
               </div>
               <div className="form-group row">
-                <label htmlFor="userMuteNotify" className="col-sm-3">Mute Notify</label>
+                <label htmlFor="userMuteNotify" className="col-sm-3 mb-0">Mute Notify</label>
                 <div className="col-sm-9">
                   <div className="form-check">
                     <input
@@ -110,6 +127,7 @@ const AlertConfigSettings = connect(
                     />
                   </div>
                 </div>
+                <small id="muteNotifyHelp" class="ml-3 form-text text-muted">Enable this option to silence email notifications.</small>
               </div>
             </>
           )}
@@ -120,7 +138,7 @@ const AlertConfigSettings = connect(
             <button className="btn btn-secondary" onClick={doModalClose}>
               Cancel
             </button>
-            <button className="btn btn-danger float-right">
+            <button className="btn btn-danger float-right" onClick={deleteConfig}>
               Delete
             </button>
           </div>
