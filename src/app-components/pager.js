@@ -45,27 +45,13 @@ const determinePagesToShow = (pages, currentPage, setPage) => {
 
     for (let i = -1; i < 2; i++) {
       if (currentPage + i > 0 && currentPage + i < pages.length - 1)
-        ret.push(
-          <Page
-            key={`page-${currentPage + i}`}
-            pageNo={currentPage + i}
-            isCurrent={currentPage === currentPage + i}
-            onClick={() => setPage(currentPage + i)}
-          />
-        );
+        ret.push(createPage(currentPage, setPage, currentPage + i));
     }
 
     if (currentPage < pages.length - 3) ret.push(<Ellipsis />);
     return ret;
   } else if (pages.length >= 3) {
-    return pages.slice(1, pages.length - 1).map((_page, i) => (
-      <Page
-        key={`page-${i + 1}`}
-        pageNo={i + 1}
-        isCurrent={currentPage === i + 1}
-        onClick={() => setPage(i + 1)}
-      />
-    ))
+    return pages.slice(1, pages.length - 1).map((_page, i) => createPage(currentPage, setPage, i + i));
   }
 
   return null;
@@ -127,24 +113,14 @@ const Pagination = ({ items, pageSize, children, itemsKey }) => {
           </li>
 
           {/* Always show Page 1 (index 0) */}
-          <Page
-            key={`page-${0}`}
-            pageNo={0}
-            isCurrent={currentPage === 0}
-            onClick={() => setPage(0)}
-          />
+          {createPage(currentPage, setPage, 0)}
 
           {/* Determine middle pages to show */}
           {determinePagesToShow(pages, currentPage, setPage)}
 
           {/* Show Last Page if more than 1 page (index pages.length - 1) */}
           {pages.length > 1 && (
-            <Page
-              key={`page-${pages.length - 1}`}
-              pageNo={pages.length - 1}
-              isCurrent={currentPage === pages.length - 1}
-              onClick={() => setPage(pages.length - 1)}
-            />
+            createPage(currentPage, setPage, pages.length - 1)
           )}
 
           <li className="page-item" onClick={pageUp}>
