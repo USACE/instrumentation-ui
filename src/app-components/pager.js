@@ -7,16 +7,57 @@ const Page = ({ pageNo, isCurrent, onClick }) => {
     "page-item": true,
     active: isCurrent,
   });
+
   return (
     <li className={pageClass} onClick={onClick}>
       <a className="page-link" aria-label={`Goto page ${pageNo}`}>
-        {pageNo}
+        {pageNo + 1}
       </a>
     </li>
   );
 };
 
-export default ({ items, pageSize, children, itemsKey }) => {
+const createPage = (currentPage, setPage, number) => (
+  <Page
+    key={`page-${number}`}
+    pageNo={number}
+    isCurrent={currentPage === number}
+    onClick={() => setPage(number)}
+  />
+);
+
+const Ellipsis = () => (
+  <li className="page-item">
+    <span className="page-link">…</span>
+  </li>
+);
+
+const determinePagesToShow = (pages, currentPage, setPage) => {
+  const ret = [];
+  if (pages.length > 6) {
+    if (currentPage === 0) {
+      return [createPage(currentPage, setPage, 1), createPage(currentPage, setPage, 2), <Ellipsis />];
+    }
+    if (currentPage === pages.length - 1) {
+      return [<Ellipsis />, createPage(currentPage, setPage, currentPage - 2), createPage(currentPage, setPage, currentPage - 1)];
+    }
+    if (currentPage > 2) ret.push(<Ellipsis />);
+
+    for (let i = -1; i < 2; i++) {
+      if (currentPage + i > 0 && currentPage + i < pages.length - 1)
+        ret.push(createPage(currentPage, setPage, currentPage + i));
+    }
+
+    if (currentPage < pages.length - 3) ret.push(<Ellipsis />);
+    return ret;
+  } else if (pages.length >= 3) {
+    return pages.slice(1, pages.length - 1).map((_page, i) => createPage(currentPage, setPage, i + i));
+  }
+
+  return null;
+}
+
+const Pagination = ({ items, pageSize, children, itemsKey }) => {
   const [currentPage, setPage] = useState(0);
   const [currentPageSize, setPageSize] = useState(pageSize || 10);
 
@@ -71,51 +112,16 @@ export default ({ items, pageSize, children, itemsKey }) => {
             </a>
           </li>
 
-          <Page
-            pageNo={1}
-            isCurrent={currentPage === 0}
-            onClick={() => {
-              setPage(0);
-            }}
-          />
+          {/* Always show Page 1 (index 0) */}
+          {createPage(currentPage, setPage, 0)}
 
-          {currentPage > 2 && pages.length > 5 ? (
-            <li className="page-item">
-              <span className="page-link">…</span>
-            </li>
-          ) : null}
+          {/* Determine middle pages to show */}
+          {determinePagesToShow(pages, currentPage, setPage)}
 
-          {[1, 2, 3].map((_, i) => {
-            let p1 = currentPage - 1;
-            // if current page is 0, or 1 we start the count at idx = 1
-            if (currentPage <= 1) p1 = 1;
-            // if current page is greater than length - 2 we start the idx at length - 4
-            if (currentPage >= pages.length - 2) p1 = pages.length - 4;
-            return (
-              <Page
-                key={`${i}-${p1}`}
-                pageNo={p1 + i + 1}
-                isCurrent={currentPage === p1 + i}
-                onClick={() => {
-                  setPage(p1 + i);
-                }}
-              />
-            );
-          })}
-
-          {currentPage < pages.length - 2 && pages.length > 5 ? (
-            <li className="page-item">
-              <span className="page-link">…</span>
-            </li>
-          ) : null}
-
-          <Page
-            pageNo={pages.length}
-            isCurrent={currentPage === pages.length - 1}
-            onClick={() => {
-              setPage(pages.length - 1);
-            }}
-          />
+          {/* Show Last Page if more than 1 page (index pages.length - 1) */}
+          {pages.length > 1 && (
+            createPage(currentPage, setPage, pages.length - 1)
+          )}
 
           <li className="page-item" onClick={pageUp}>
             <a className="page-link" aria-label={`Go to next page`}>
@@ -127,3 +133,5 @@ export default ({ items, pageSize, children, itemsKey }) => {
     </div>
   );
 };
+
+export default Pagination;
