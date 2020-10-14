@@ -47,6 +47,7 @@ import alertUnreadBundle from "./alert-unread-bundle";
 import profileAlertSubscriptionsBundle from "./profile-alert-subscriptions-bundle";
 import alertSubscribeBundle from "./alert-subscribe-bundle";
 import alertUnsubscribeBundle from "./alert-unsubscribe-bundle";
+import instrumentAlertConfigsBundle from "./instrument-alert-configs-bundle";
 
 export default composeBundles(
   createAuthBundle({
@@ -97,6 +98,7 @@ export default composeBundles(
   exploreMapInteractionBundle,
   homeDataBundle,
   instrumentBundle,
+  instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
   instrumentMapBundle,
   instrumentDrawBundle,

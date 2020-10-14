@@ -34,21 +34,24 @@ const convertTimeAgo = milli => {
 }
 
 const AlertEntry = connect(
+  "selectProfileAlertsByInstrumentId",
   "doAlertReadSave",
   "doAlertUnreadSave",
-  ({ item, doAlertReadSave, doAlertUnreadSave }) => {
-    const isRead = item.read;
+  ({ item, profileAlertsByInstrumentId: userAlerts, doAlertReadSave, doAlertUnreadSave }) => {
     const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
-    const toggleRead = (...params) => {
+
+    const userAlert = userAlerts.find(a => a.id === item.id);
+    const isRead = userAlert ? userAlert.read : false;
+    const toggleRead = userAlert ? (...params) => {
       isRead
         ? doAlertUnreadSave(...params)
         : doAlertReadSave(...params)
-    };
+    } : () => { };
 
     return (
       item && (
         <div
-          className={`alert-container${item.read ? '' : ' unread'}`}
+          className={`alert-container${isRead ? '' : ' unread'}`}
           onClick={() => toggleRead(item, null, true, true)}
         >
           <span className="list-group-item list-group-item-action flex-column align-items-start">
@@ -68,7 +71,7 @@ export default connect(
   "doModalOpen",
   "doInstrumentTimeseriesSetActiveId",
   "selectProjectsByRoute",
-  "selectProfileAlertsByInstrumentId",
+  "selectAlertsByRouteByInstrumentId",
   "selectInstrumentsByRoute",
   "selectInstrumentTimeseriesByInstrumentId",
   "selectTimeseriesMeasurementsItemsObject",
@@ -81,7 +84,7 @@ export default connect(
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     timeseriesMeasurementsItemsObject: measurements,
     instrumentTimeseriesActiveId: activeId,
-    profileAlertsByInstrumentId: alerts,
+    alertsByRouteByInstrumentId: alerts,
   }) => {
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 

@@ -2,18 +2,21 @@ import createRestBundle from "./create-rest-bundle";
 import { createSelector } from "redux-bundler";
 
 export default createRestBundle({
-  name: "alerts",
+  name: "alertConfigs",
   uid: "id",
   prefetch: false,
-  staleAfter: 0,
+  staleAfter: 10000,
   persist: false,
   routeParam: "id",
-  getTemplate: "/projects/:projectId/instruments/:instrumentId/alerts",
-  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "INSTRUMENTS_FETCH_FINISHED", "ALERTREAD_SAVE_FINISHED", "ALERTUNREAD_SAVE_FINISHED"],
+  getTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs", // "/:" disables any accidental trigger of a fetch
+  putTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
+  postTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs",
+  deleteTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
+  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "INSTRUMENTS_FETCH_FINISHED"],
   urlParamSelectors: ["selectProjectsIdByRoute", "selectInstrumentsIdByRoute"],
   addons: {
-    selectAlertsByInstrumentId: createSelector(
-      "selectAlertsItems",
+    selectAlertConfigsByInstrumentId: createSelector(
+      "selectAlertConfigsItems",
       (alerts) => {
         if (!alerts || !alerts.length) return {};
         const out = {};
@@ -24,9 +27,9 @@ export default createRestBundle({
         return out;
       }
     ),
-    selectAlertsByRouteByInstrumentId: createSelector(
+    selectAlertConfigsByRouteByInstrumentId: createSelector(
       "selectInstrumentsByRoute",
-      "selectAlertsByInstrumentId",
+      "selectAlertConfigsByInstrumentId",
       (instruments, alertsByInstrumentId) => {
         if (
           !instruments ||
