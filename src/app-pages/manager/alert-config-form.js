@@ -3,16 +3,16 @@ import { connect } from 'redux-bundler-react';
 
 const AlertConfigSettings = connect(
   "doModalClose",
-  "doAlertsSave",
-  "doAlertsDelete",
+  "doAlertConfigsSave",
+  "doAlertConfigsDelete",
   "doAlertSubscribeSave",
   "doAlertUnsubscribeSave",
   "doProfileAlertSubscriptionsSave",
   "selectProfileAlertSubscriptions",
   ({
     doModalClose,
-    doAlertsSave,
-    doAlertsDelete,
+    doAlertConfigsSave,
+    doAlertConfigsDelete,
     doAlertSubscribeSave,
     doAlertUnsubscribeSave,
     doProfileAlertSubscriptionsSave,
@@ -38,7 +38,7 @@ const AlertConfigSettings = connect(
 
     const saveSettings = () => {
       if (configSettings.name !== item.name) {
-        doAlertsSave(configSettings, null, true, false);
+        doAlertConfigsSave(configSettings, null, true, false);
       }
 
       if (!!subscription) {
@@ -55,7 +55,7 @@ const AlertConfigSettings = connect(
     };
 
     const deleteConfig = () => {
-      doAlertsDelete(item, null, true);
+      doAlertConfigsDelete(item, null, true);
       doModalClose();
     }
 

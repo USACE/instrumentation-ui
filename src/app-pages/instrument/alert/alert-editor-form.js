@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "redux-bundler-react";
 
 export default connect(
-  "doAlertsSave",
-  ({ alert, doAlertsSave }) => {
+  "doAlertConfigsSave",
+  ({ alert, doAlertConfigsSave }) => {
     const [formula, setFormula] = useState('');
     const [body, setBody] = useState('');
 
@@ -56,7 +56,7 @@ export default connect(
           <button
             onClick={() => {
               const updatedAlert = { ...alert, formula, body };
-              doAlertsSave(updatedAlert);
+              doAlertConfigsSave(updatedAlert);
               console.log("Clicked the save button", updatedAlert);
             }}
             className="btn btn-sm btn-success"

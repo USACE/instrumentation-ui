@@ -5,11 +5,11 @@ import { connect } from "redux-bundler-react";
 export default connect(
   "selectInstrumentsByRoute",
   "doModalClose",
-  "doAlertsSave",
+  "doAlertConfigsSave",
   ({
     instrumentsByRoute: instrument,
     doModalClose,
-    doAlertsSave,
+    doAlertConfigsSave,
     item = {},
   }) => {
     const [name, setName] = useState((item && item.name) || "");
@@ -23,7 +23,7 @@ export default connect(
 
     const handleSave = (e) => {
       e.preventDefault();
-      doAlertsSave(
+      doAlertConfigsSave(
         Object.assign({}, item, {
           name: name,
           instrument_id: instrumentId,
