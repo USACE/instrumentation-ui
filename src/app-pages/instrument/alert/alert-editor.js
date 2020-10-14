@@ -6,9 +6,9 @@ import AlertFormModal from "../../manager/alert-form";
 import AlertConfigSettings from '../../manager/alert-config-form';
 
 export default connect(
-  "selectAlertsByRouteByInstrumentId",
+  "selectAlertConfigsByRouteByInstrumentId",
   "doModalOpen",
-  ({ alertsByRouteByInstrumentId: alerts, doModalOpen }) => {
+  ({ alertConfigsByRouteByInstrumentId: alerts, doModalOpen }) => {
     const [selectedAlert, setSelectedAlert] = useState(null);
 
     useEffect(() => {

@@ -127,7 +127,7 @@ const AlertConfigSettings = connect(
                     />
                   </div>
                 </div>
-                <small id="muteNotifyHelp" class="ml-3 form-text text-muted">Enable this option to silence email notifications.</small>
+                <small id="muteNotifyHelp" className="ml-3 form-text text-muted">Enable this option to silence email notifications.</small>
               </div>
             </>
           )}
