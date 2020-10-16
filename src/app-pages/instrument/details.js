@@ -9,6 +9,7 @@ import Notes from "./notes";
 import Settings from "./settings";
 import RoleFilter from "../../app-components/role-filter";
 import LoginMessage from "../../app-components/login-message";
+import Dropdown from "../../app-components/dropdown";
 
 const sortAlertsByDate = alerts => {
   return alerts.sort((a, b) => {
@@ -20,6 +21,11 @@ const sortAlertsByDate = alerts => {
 
 const convertTimeAgo = milli => {
   const minutes = milli / 1000 / 60;
+
+  if (minutes < 1) {
+    return '< 1 minute';
+  }
+
   if (minutes < 60) {
     return `${Math.floor(minutes)} minute${Math.floor(minutes) !== 1 ? 's' : ''}`;
   }
@@ -69,6 +75,7 @@ const AlertEntry = connect(
 
 export default connect(
   "doModalOpen",
+  "doAlertsFetch",
   "doInstrumentTimeseriesSetActiveId",
   "selectProjectsByRoute",
   "selectAlertsByRouteByInstrumentId",
@@ -78,6 +85,7 @@ export default connect(
   "selectInstrumentTimeseriesActiveId",
   ({
     doModalOpen,
+    doAlertsFetch,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
@@ -138,6 +146,17 @@ export default connect(
               <div className="card h-100">
                 <div className="card-header">
                   <strong>Alerts</strong>
+                  <Dropdown.Menu
+                    dropdownClass={['float-right', 'inline']}
+                    buttonClass={['btn-sm', 'btn-outline-info']}
+                    buttonContent={<i className='mdi mdi-cog-outline' />}
+                  >
+                    <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
+                    <Dropdown.Item>Mark All as Read</Dropdown.Item>
+                  </Dropdown.Menu>
+                  <button className="btn btn-sm btn-outline-info float-right mr-2" onClick={doAlertsFetch}>
+                    <i className="mdi mdi-refresh" />
+                  </button>
                 </div>
                 <div className="card-body" style={{ maxHeight: 400, overflow: "auto" }}>
                   <div className="list-group pb-2">

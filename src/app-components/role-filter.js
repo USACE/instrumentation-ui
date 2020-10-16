@@ -40,7 +40,7 @@ export default connect(
       }
     }
 
-    if (showChildren) {
+    if (true) {
       return <>{children}</>;
     } else {
       const Alt = alt ? alt : null;
