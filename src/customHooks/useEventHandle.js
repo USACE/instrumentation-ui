@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 /**
- * Hook that activate callback on click outside of the passed ref
+ * Hook that activates callback on event trigger of the passed ref
  */
-export default (ref, callback) => {
+export default (event, ref, callback) => {
   useEffect(() => {
     const handleClickOutside = event => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -12,10 +12,10 @@ export default (ref, callback) => {
     }
 
     // Bind the event listener
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener(event, handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener(event, handleClickOutside);
     };
-  }, [ref, callback]);
+  }, [event, ref, callback]);
 };

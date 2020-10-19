@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 const convertTimeAgo = milli => {
@@ -26,6 +26,9 @@ const AlertEntry = connect(
   'doAlertReadSave',
   'doAlertUnreadSave',
   ({ item, profileAlertsByInstrumentId: userAlerts, doAlertReadSave, doAlertUnreadSave }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [noteIsOpen, setNoteIsOpen] = useState(false);
+
     const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
 
     const userAlert = userAlerts.find(a => a.id === item.id);
@@ -39,16 +42,35 @@ const AlertEntry = connect(
     return (
       item && (
         <div
+          onMouseOver={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           className={`alert-container${isRead ? '' : ' unread'}`}
-          onClick={() => toggleRead(item, null, true, true)}
         >
-          <span className='list-group-item list-group-item-action flex-column align-items-start'>
-            <div className='d-flex w-100 justify-content-between'>
-              <h5 className='mb-1'>{item.name}</h5>
-              <small>{timeAgo}</small>
-            </div>
-            <p className='mb-1'>{item.body}</p>
-          </span>
+          <>
+            <span className={`list-group-item flex-column align-items-start${isRead && ' list-group-item-action'}`}>
+              <div className='d-flex w-100 justify-content-between'>
+                <h5 className='mb-1'>{item.name}</h5>
+                <small>{timeAgo}</small>
+              </div>
+              <p className='mb-1'>{item.body}</p>
+              {isHovered && (
+                <div className="btn-group float-right" role="group" aria-label="Alert Controls" style={{ marginTop: '-17px', marginRight: '-21px' }}>
+                  <button type="button" className="btn btn-sm btn-outline-info" onClick={() => toggleRead(item, null, true, true)}>
+                    <i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />
+                  </button>
+                  <button type="button" className="btn btn-sm btn-outline-info" onClick={() => setNoteIsOpen(!noteIsOpen)}>
+                    <i className='mdi mdi-note-plus-outline' />
+                  </button>
+                  <button type="button" className="btn btn-sm btn-outline-danger">
+                    <i className='mdi mdi-trash-can-outline' />
+                  </button>
+                </div>
+              )}
+            </span>
+            {noteIsOpen && (
+              <>HELLO!</>
+            )}
+          </>
         </div>
       )
     );
