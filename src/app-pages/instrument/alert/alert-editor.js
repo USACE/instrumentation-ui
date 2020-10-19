@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import AlertForm from "./alert-editor-form";
-import AlertFormModal from "../../manager/alert-form";
+import AlertForm from './alert-editor-form';
+import AlertFormModal from '../../manager/alert-form';
 import AlertConfigSettings from '../../manager/alert-config-form';
 
 export default connect(
-  "selectAlertConfigsByRouteByInstrumentId",
-  "doModalOpen",
+  'selectAlertConfigsByRouteByInstrumentId',
+  'doModalOpen',
   ({ alertConfigsByRouteByInstrumentId: alerts, doModalOpen }) => {
     const [selectedAlert, setSelectedAlert] = useState(null);
 
@@ -39,8 +39,8 @@ export default connect(
           }}
         >
           {a.name}
-          <span className="float-right pointer" style={{ zIndex: 111 }} onClick={(e) => openSettingsModal(e, a)}>
-            <i className="mdi mdi-cog-outline" />
+          <span className='float-right pointer' style={{ zIndex: 111 }} onClick={(e) => openSettingsModal(e, a)} title='Open Configuration Settings'>
+            <i className='mdi mdi-cog-outline' />
           </span>
         </li >
       );
@@ -48,27 +48,28 @@ export default connect(
 
     return (
       <div>
-        <div className="row">
-          <div className="col-3">
-            <div className="d-flex align-items-center justify-content-between my-2">
+        <div className='row'>
+          <div className='col-3'>
+            <div className='d-flex align-items-center justify-content-between my-2'>
               <span>
                 <strong>Select an Alert</strong>
               </span>
               <button
                 onClick={() => {
                   doModalOpen(AlertFormModal, { item: {} });
-                  console.log("Clicked the new alert button");
+                  console.log('Clicked the new alert button');
                 }}
-                className="btn btn-sm btn-success"
+                className='btn btn-sm btn-success'
+                title='New Alert Configuration'
               >
                 New +
               </button>
             </div>
-            <ul className="list-group">
+            <ul className='list-group'>
               {alerts.map((a, i) => alertListItem(a, i))}
             </ul>
           </div>
-          <div className="col">
+          <div className='col'>
             {selectedAlert && <AlertForm alert={selectedAlert} />}
           </div>
         </div>

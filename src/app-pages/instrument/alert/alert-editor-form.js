@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
 export default connect(
-  "doAlertConfigsSave",
+  'doAlertConfigsSave',
   ({ alert, doAlertConfigsSave }) => {
     const [formula, setFormula] = useState('');
     const [body, setBody] = useState('');
@@ -17,12 +17,12 @@ export default connect(
     return (
       <div>
         <form>
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="formula">Formula</label>
+          <div className='form-row'>
+            <div className='form-group col-md-6'>
+              <label htmlFor='formula'>Formula</label>
               <textarea
-                id="formula"
-                className="form-control"
+                id='formula'
+                className='form-control'
                 value={formula}
                 onChange={(e) => {
                   setFormula(e.target.value);
@@ -30,11 +30,11 @@ export default connect(
                 rows={6}
               />
             </div>
-            <div className="form-group col-md-6">
-              <label htmlFor="body">Body</label>
+            <div className='form-group col-md-6'>
+              <label htmlFor='body'>Body</label>
               <textarea
-                id="body"
-                className="form-control"
+                id='body'
+                className='form-control'
                 value={body}
                 onChange={(e) => {
                   setBody(e.target.value);
@@ -44,12 +44,13 @@ export default connect(
             </div>
           </div>
         </form>
-        <div className="d-flex justify-content-end mt-2">
+        <div className='d-flex justify-content-end mt-2'>
           <button
             onClick={() => {
-              console.log("Clicked the cancel button");
+              console.log('Clicked the cancel button');
             }}
-            className="btn btn-sm btn-secondary mr-1"
+            className='btn btn-sm btn-secondary mr-1'
+            title='Cancel'
           >
             Cancel
           </button>
@@ -57,14 +58,15 @@ export default connect(
             onClick={() => {
               const updatedAlert = { ...alert, formula, body };
               doAlertConfigsSave(updatedAlert);
-              console.log("Clicked the save button", updatedAlert);
+              console.log('Clicked the save button', updatedAlert);
             }}
-            className="btn btn-sm btn-success"
+            className='btn btn-sm btn-success'
+            title='Save Alert Configuration'
           >
             Save
           </button>
         </div>
-        <div className="text-right mt-5">
+        <div className='text-right mt-5'>
           <small>{`Last Updated at ${alert.update_date}`}</small>
         </div>
       </div>

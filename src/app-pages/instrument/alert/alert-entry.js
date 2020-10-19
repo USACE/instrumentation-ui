@@ -55,13 +55,27 @@ const AlertEntry = connect(
               <p className='mb-1'>{item.body}</p>
               {isHovered && (
                 <div className="btn-group float-right" role="group" aria-label="Alert Controls" style={{ marginTop: '-17px', marginRight: '-21px' }}>
-                  <button type="button" className="btn btn-sm btn-outline-info" onClick={() => toggleRead(item, null, true, true)}>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-info"
+                    onClick={() => toggleRead(item, null, true, true)}
+                    title={`Mark as ${isRead ? 'Unread' : 'Read'}`}
+                  >
                     <i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />
                   </button>
-                  <button type="button" className="btn btn-sm btn-outline-info" onClick={() => setNoteIsOpen(!noteIsOpen)}>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-info"
+                    onClick={() => setNoteIsOpen(!noteIsOpen)}
+                    title="Add/Edit Note"
+                  >
                     <i className='mdi mdi-note-plus-outline' />
                   </button>
-                  <button type="button" className="btn btn-sm btn-outline-danger">
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-danger"
+                    title='Delete'
+                  >
                     <i className='mdi mdi-trash-can-outline' />
                   </button>
                 </div>

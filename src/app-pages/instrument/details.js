@@ -82,6 +82,7 @@ export default connect(
                         doModalOpen(InstrumentForm, { item: instrument });
                       }}
                       className='btn btn-sm btn-outline-info'
+                      title='Edit'
                     >
                       <i className='mdi mdi-pencil pr-2'></i> Edit
                     </button>
@@ -102,7 +103,7 @@ export default connect(
                     <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
                     <Dropdown.Item>Mark All as Read</Dropdown.Item>
                   </Dropdown.Menu>
-                  <button className='btn btn-sm btn-outline-info float-right mr-2' onClick={doAlertsFetch}>
+                  <button className='btn btn-sm btn-outline-info float-right mr-2' onClick={doAlertsFetch} title='Refresh'>
                     <i className='mdi mdi-refresh' />
                   </button>
                 </div>

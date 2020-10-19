@@ -1,25 +1,25 @@
-import React, { useRef, useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
-import { AgGridReact } from "ag-grid-react";
-import { format } from "date-fns";
-import ConstantListItem from "./constant-list-item";
-import ConstantForm from "./constant-form";
-import RoleFilter from "../../../app-components/role-filter";
-import DateEditor from "./date-editor";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useRef, useState, useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
+import { AgGridReact } from 'ag-grid-react';
+import { format } from 'date-fns';
+import ConstantListItem from './constant-list-item';
+import ConstantForm from './constant-form';
+import RoleFilter from '../../../app-components/role-filter';
+import DateEditor from './date-editor';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-balham.css";
-import "ag-grid-community/dist/styles/ag-theme-balham-dark.css";
-import "ag-grid-community/dist/styles/ag-theme-fresh.css";
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
+import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
 
 export default connect(
-  "selectProjectsByRoute",
-  "selectInstrumentsByRoute",
-  "selectInstrumentTimeseriesItemsObject",
-  "selectTimeseriesMeasurementsItemsObject",
-  "doModalOpen",
-  "doInstrumentTimeseriesSetActiveId",
+  'selectProjectsByRoute',
+  'selectInstrumentsByRoute',
+  'selectInstrumentTimeseriesItemsObject',
+  'selectTimeseriesMeasurementsItemsObject',
+  'doModalOpen',
+  'doInstrumentTimeseriesSetActiveId',
   ({
     projectsByRoute: project,
     instrumentsByRoute: instrument,
@@ -44,10 +44,10 @@ export default connect(
 
     const keys = items && items.length ? Object.keys(items[0]) : [];
     const columnDefs = [
-      { headerName: "", valueGetter: "node.rowIndex + 1", width: 40 },
+      { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
       ...keys
         .filter((key) => {
-          return key !== "id";
+          return key !== 'id';
         })
         .map((key) => {
           return {
@@ -57,13 +57,13 @@ export default connect(
             sortable: false,
             filter: true,
             editable: true,
-            cellEditor: key === "time" ? "dateEditor" : undefined,
+            cellEditor: key === 'time' ? 'dateEditor' : undefined,
             valueFormatter:
-              key === "time"
+              key === 'time'
                 ? (config) => {
-                    const d = new Date(config.value);
-                    return format(d, "MMMM d, yyyy h:mm aa zzzz");
-                  }
+                  const d = new Date(config.value);
+                  return format(d, 'MMMM d, yyyy h:mm aa zzzz');
+                }
                 : undefined,
             onCellValueChanged: (e) => {
               console.log(e);
@@ -90,19 +90,20 @@ export default connect(
           formula editor, constants can be a single value, or a set of values
           valid during distinct time spans.
         </p>
-        <div className="row">
-          <div className="col-3">
+        <div className='row'>
+          <div className='col-3'>
             <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
               <button
-                className="btn btn-sm btn-outline-secondary mb-2"
+                className='btn btn-sm btn-outline-secondary mb-2'
                 onClick={() => {
                   doModalOpen(ConstantForm);
                 }}
+                title='New Constant'
               >
-                <i className="mdi mdi-plus mr-1"></i>New Constant
+                <i className='mdi mdi-plus mr-1'></i>New Constant
               </button>
             </RoleFilter>
-            <ul className="list-group">
+            <ul className='list-group'>
               {constants.map((id, i) => {
                 return (
                   <ConstantListItem
@@ -118,23 +119,24 @@ export default connect(
               })}
             </ul>
           </div>
-          <div className="col">
-            <div className="mb-2">
+          <div className='col'>
+            <div className='mb-2'>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <button
                   disabled={!activeConstant}
-                  className="btn btn-sm btn-outline-secondary"
+                  className='btn btn-sm btn-outline-secondary'
                   onClick={addNew}
+                  title='Add Value'
                 >
-                  <i className="mdi mdi-plus mr-1"></i>Add Value
+                  <i className='mdi mdi-plus mr-1'></i>Add Value
                 </button>
               </RoleFilter>
             </div>
             <div
-              className="ag-theme-balham"
+              className='ag-theme-balham'
               style={{
                 height: `200px`,
-                width: "100%",
+                width: '100%',
               }}
             >
               <AgGridReact

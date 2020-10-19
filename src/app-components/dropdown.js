@@ -29,7 +29,7 @@ const Dropdown = ({
 
   return (
     <div className={dropdownClasses} id={id}>
-      <button className={buttonClasses} type='button' id={`${id}MenuButton`} onClick={() => setIsOpen(!isOpen)} aria-haspopup="true" aria-expanded={isOpen}>
+      <button className={buttonClasses} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' onClick={() => setIsOpen(!isOpen)} aria-haspopup="true" aria-expanded={isOpen}>
         {buttonContent}
       </button>
       <div className={menuClasses} aria-labelledby={`${id}MenuButton`} ref={menuRef}>
