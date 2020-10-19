@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 const AlertConfigSettings = connect(
-  "doModalClose",
-  "doAlertConfigsSave",
-  "doAlertConfigsDelete",
-  "doAlertSubscribeSave",
-  "doAlertUnsubscribeSave",
-  "doProfileAlertSubscriptionsSave",
-  "selectProfileAlertSubscriptions",
+  'doModalClose',
+  'doAlertConfigsSave',
+  'doAlertConfigsDelete',
+  'doAlertSubscribeSave',
+  'doAlertUnsubscribeSave',
+  'doProfileAlertSubscriptionsSave',
+  'selectProfileAlertSubscriptions',
   ({
     doModalClose,
     doAlertConfigsSave,
@@ -60,36 +60,36 @@ const AlertConfigSettings = connect(
     }
 
     return (
-      <div className="modal-content" style={{ overflowY: "auto" }}>
-        <header className="modal-header">
-          <h5 className="modal-title">Alert Config Settings</h5>
-          <span className="pointer" onClick={doModalClose}>
-            <i className="mdi mdi-close-circle-outline"></i>
+      <div className='modal-content' style={{ overflowY: 'auto' }}>
+        <header className='modal-header'>
+          <h5 className='modal-title'>Alert Config Settings</h5>
+          <span className='pointer' onClick={doModalClose}>
+            <i className='mdi mdi-close-circle-outline'></i>
           </span>
         </header>
-        <div className="m-3">
-          <div className="form-group row mt-2">
-            <label htmlFor="alertNameInput" className="col-sm-2 col-form-label">Name</label>
-            <div className="col-sm-10">
+        <div className='m-3'>
+          <div className='form-group row mt-2'>
+            <label htmlFor='alertNameInput' className='col-sm-2 col-form-label'>Name</label>
+            <div className='col-sm-10'>
               <input
-                type="text"
-                id="alertNameInput"
-                className="form-control"
-                placeholder="Alert Name"
+                type='text'
+                id='alertNameInput'
+                className='form-control'
+                placeholder='Alert Name'
                 value={configSettings.name}
                 onChange={e => setConfigSettings({ ...configSettings, name: e.target.value })}
               />
             </div>
           </div>
           <hr />
-          <div className="form-group row">
-            <label htmlFor="userSubscribe" className="col-sm-3">Subscribed</label>
-            <div className="col-sm-9">
-              <div className="form-check">
+          <div className='form-group row'>
+            <label htmlFor='userSubscribe' className='col-sm-3'>Subscribed</label>
+            <div className='col-sm-9'>
+              <div className='form-check'>
                 <input
-                  type="checkbox"
-                  id="userSubscribe"
-                  className="form-check-input"
+                  type='checkbox'
+                  id='userSubscribe'
+                  className='form-check-input'
                   defaultChecked={userPreferences.isSubscribed}
                   onChange={(e) => toggleSubscribe(e.target.checked)}
                 />
@@ -98,47 +98,47 @@ const AlertConfigSettings = connect(
           </div>
           {!!subscription && (
             <>
-              <div className="form-group row">
-                <label htmlFor="userMuteUI" className="col-sm-3 mb-0">Mute UI</label>
-                <div className="col-sm-9">
-                  <div className="form-check">
+              <div className='form-group row'>
+                <label htmlFor='userMuteUI' className='col-sm-3 mb-0'>Mute UI</label>
+                <div className='col-sm-9'>
+                  <div className='form-check'>
                     <input
-                      type="checkbox"
-                      id="userMuteUI"
-                      className="form-check-input"
+                      type='checkbox'
+                      id='userMuteUI'
+                      className='form-check-input'
                       defaultChecked={userPreferences.muteUi}
                       onChange={() => setUserPreferences({ ...userPreferences, muteUi: !userPreferences.muteUi })}
                     />
                     <br />
                   </div>
                 </div>
-                <small id="muteUiHelp" class="ml-3 form-text text-muted">Enable this option to silence alerts on the User Interface.</small>
+                <small id='muteUiHelp' class='ml-3 form-text text-muted'>Enable this option to silence alerts on the User Interface.</small>
               </div>
-              <div className="form-group row">
-                <label htmlFor="userMuteNotify" className="col-sm-3 mb-0">Mute Notify</label>
-                <div className="col-sm-9">
-                  <div className="form-check">
+              <div className='form-group row'>
+                <label htmlFor='userMuteNotify' className='col-sm-3 mb-0'>Mute Notify</label>
+                <div className='col-sm-9'>
+                  <div className='form-check'>
                     <input
-                      type="checkbox"
-                      id="userMuteNotify"
-                      className="form-check-input"
+                      type='checkbox'
+                      id='userMuteNotify'
+                      className='form-check-input'
                       defaultChecked={userPreferences.muteNotify}
                       onChange={() => setUserPreferences({ ...userPreferences, muteNotify: !userPreferences.muteNotify })}
                     />
                   </div>
                 </div>
-                <small id="muteNotifyHelp" className="ml-3 form-text text-muted">Enable this option to stop email notifications.</small>
+                <small id='muteNotifyHelp' className='ml-3 form-text text-muted'>Enable this option to stop email notifications.</small>
               </div>
             </>
           )}
           <div>
-            <button className="btn btn-primary mr-2" onClick={saveSettings}>
+            <button className='btn btn-primary mr-2' onClick={saveSettings}>
               Save
             </button>
-            <button className="btn btn-secondary" onClick={doModalClose}>
+            <button className='btn btn-secondary' onClick={doModalClose}>
               Cancel
             </button>
-            <button className="btn btn-danger float-right" onClick={deleteConfig}>
+            <button className='btn btn-danger float-right' onClick={deleteConfig}>
               Delete
             </button>
           </div>
