@@ -10,7 +10,7 @@ const AlertNoteForm = connect(
 
     const [noteValue, setNoteValue] = useState(note);
 
-    const formattedDate = format(new Date(create_date), 'MMM dd, yyyy HH:mm:SS');
+    const formattedDate = format(new Date(create_date), 'MMM dd, yyyy HH:mm:ss');
 
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
