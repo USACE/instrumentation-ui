@@ -112,7 +112,7 @@ const AlertConfigSettings = connect(
                     <br />
                   </div>
                 </div>
-                <small id='muteUiHelp' class='ml-3 form-text text-muted'>Enable this option to silence alerts on the User Interface.</small>
+                <small id='muteUiHelp' className='ml-3 form-text text-muted'>Enable this option to silence alerts on the User Interface.</small>
               </div>
               <div className='form-group row'>
                 <label htmlFor='userMuteNotify' className='col-sm-3 mb-0'>Mute Notify</label>

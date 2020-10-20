@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import AlertNoteForm from '../../manager/alert-note-form';
+
 const convertTimeAgo = milli => {
   const minutes = milli / 1000 / 60;
 
@@ -25,9 +27,15 @@ const AlertEntry = connect(
   'selectProfileAlertsByInstrumentId',
   'doAlertReadSave',
   'doAlertUnreadSave',
-  ({ item, profileAlertsByInstrumentId: userAlerts, doAlertReadSave, doAlertUnreadSave }) => {
+  'doModalOpen',
+  ({
+    item,
+    profileAlertsByInstrumentId: userAlerts,
+    doAlertReadSave,
+    doAlertUnreadSave,
+    doModalOpen,
+  }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const [noteIsOpen, setNoteIsOpen] = useState(false);
 
     const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
 
@@ -66,7 +74,7 @@ const AlertEntry = connect(
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-info"
-                    onClick={() => setNoteIsOpen(!noteIsOpen)}
+                    onClick={() => doModalOpen(AlertNoteForm, { item })}
                     title="Add/Edit Note"
                   >
                     <i className='mdi mdi-note-plus-outline' />
@@ -75,15 +83,13 @@ const AlertEntry = connect(
                     type="button"
                     className="btn btn-sm btn-outline-danger"
                     title='Delete'
+                    onClick={() => console.log('delete instrument alert')}
                   >
                     <i className='mdi mdi-trash-can-outline' />
                   </button>
                 </div>
               )}
             </span>
-            {noteIsOpen && (
-              <>HELLO!</>
-            )}
           </>
         </div>
       )
