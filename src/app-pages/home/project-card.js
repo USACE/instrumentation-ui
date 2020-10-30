@@ -7,14 +7,18 @@ export default ({ img, title, subtitle, href }) => {
     e.stopPropagation();
     e.preventDefault();
 
-    setIsFavorite(!isFavorite)
-  }
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <a href={href} tabIndex={0}>
-      <div className="card mb-3 mr-3" style={{ maxWidth: "300px" }}>
+      <div className="card mb-5" style={{ maxWidth: "300px" }}>
         <button className="favorite" onClick={toggleFavorite}>
-          <span className={`mdi ${isFavorite ? 'mdi-star gold' : 'mdi-star-outline'}`} />
+          <span
+            className={`mdi ${
+              isFavorite ? "mdi-star gold" : "mdi-star-outline"
+            }`}
+          />
         </button>
         {img ? (
           <img

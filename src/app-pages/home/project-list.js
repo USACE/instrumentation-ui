@@ -367,7 +367,7 @@ export default connect(
             <div className="mb-2">
               <SearchBar value={searchStr} onChange={setSearchStr} />
             </div>
-            <div className="d-flex">
+            <div className="d-flex flex-wrap justify-content-around">
               {projects
                 .filter((proj) => {
                   const str = Object.values(proj).join(" ");
