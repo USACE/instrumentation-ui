@@ -53,7 +53,8 @@ export default composeBundles(
   createAuthBundle({
     appId: "07f1223f-f208-4b71-aa43-5d5f27cd8ed9",
     redirectOnLogout: pkg.homepage,
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlRlc3QuVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.D_66UceE82DkXwKcpzj0cxl126jAaev_FSGPCDzhRys',
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlRlc3QuVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.D_66UceE82DkXwKcpzj0cxl126jAaev_FSGPCDzhRys",
   }),
   createJwtApiBundle({
     root:
