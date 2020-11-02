@@ -12,6 +12,7 @@ import Navbar from '../../app-components/navbar';
 import Notes from './notes';
 import RoleFilter from '../../app-components/role-filter';
 import Settings from './settings';
+import NoAlerts from './alert/no-alerts';
 
 const sortAlertsByDate = alerts => {
   return alerts.sort((a, b) => {
@@ -109,9 +110,9 @@ export default connect(
                 </div>
                 <div className='card-body' style={{ maxHeight: 400, overflow: 'auto' }}>
                   <div className='list-group pb-2'>
-                    {sortAlertsByDate(alerts).map((a) => (
+                    {alerts.length ? sortAlertsByDate(alerts).map((a) => (
                       <AlertEntry key={a.id} item={a} />
-                    ))}
+                    )) : <NoAlerts />}
                   </div>
                 </div>
               </div>
