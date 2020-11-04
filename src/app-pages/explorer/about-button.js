@@ -20,7 +20,7 @@ export default () => {
               charting tools at the right.
             </p>
             <p className="mb-2">
-              Individual instruments may be selected by clicking on them, you
+              Individual instruments may be selected by clicking on them. You
               may select multiple by holding down the shift key and clicking
               multiple instruments.
             </p>
@@ -34,6 +34,9 @@ export default () => {
               select instruments by drawing a box on the map. Note that the
               normal pan/zoom interactions are disabled while in select-by-box
               mode.
+            </p>
+            <p className="mb-2">
+              Press <b>Shift</b>+<b>V</b> to toggle between landscape and portrait mode.
             </p>
           </div>
         </div>

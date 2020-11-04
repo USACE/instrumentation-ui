@@ -1,33 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
-import Panel from "./panel";
-import Navbar from "../../app-components/navbar";
-import Map from "../../app-components/classMap";
-import MapTools from "./map-tools";
-import Visualizations from "./explorer-visualizations";
-import PanelGroup from "react-panelgroup";
+import React, { useState, useCallback } from 'react';
+import { connect } from 'redux-bundler-react';
+import Panel from './panel';
+import Navbar from '../../app-components/navbar';
+import Map from '../../app-components/classMap';
+import MapTools from './map-tools';
+import Visualizations from './explorer-visualizations';
+import PanelGroup from 'react-panelgroup';
+import useWindowListener from '../../customHooks/useWindowListener';
 
-export default connect("selectExploreMapKey", ({ exploreMapKey: mapKey }) => {
+export default connect('selectExploreMapKey', ({ exploreMapKey: mapKey }) => {
   const [landscapeMode, setLandscapeMode] = useState(false);
 
-  useEffect(() => {
-    function toggleLandscape(e) {
-      if (e.keyCode === 86 && e.shiftKey) {
-        setLandscapeMode(!landscapeMode);
-      }
+  const toggleLandscape = useCallback(e => {
+    if (e.keyCode === 86 && e.shiftKey) {
+      setLandscapeMode(!landscapeMode);
     }
-    window.addEventListener("keydown", toggleLandscape);
-    return () => {
-      window.removeEventListener("keydown", toggleLandscape);
-    };
-  });
+  }, [setLandscapeMode, landscapeMode]);
+
+  useWindowListener('keydown', toggleLandscape);
 
   return (
-    <div>
-      <Navbar theme="primary" />
+    <>
+      <Navbar theme='primary' />
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 71,
           right: 0,
           left: 0,
@@ -35,9 +32,9 @@ export default connect("selectExploreMapKey", ({ exploreMapKey: mapKey }) => {
         }}
       >
         <PanelGroup
-          borderColor="#ccc"
+          borderColor='#ccc'
           spacing={2}
-          direction={landscapeMode ? "column" : "row"}
+          direction={landscapeMode ? 'column' : 'row'}
         >
           <Panel>
             <Map
@@ -51,6 +48,6 @@ export default connect("selectExploreMapKey", ({ exploreMapKey: mapKey }) => {
           </Panel>
         </PanelGroup>
       </div>
-    </div>
+    </>
   );
 });

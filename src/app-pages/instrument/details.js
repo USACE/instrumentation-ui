@@ -97,8 +97,8 @@ export default connect(
                 <div className='card-header'>
                   <strong>Alerts</strong>
                   <Dropdown.Menu
-                    dropdownClass={['float-right', 'inline']}
-                    buttonClass={['btn-sm', 'btn-outline-info']}
+                    dropdownClasses={['float-right', 'inline']}
+                    buttonClasses={['btn-sm', 'btn-outline-info']}
                     buttonContent={<i className='mdi mdi-cog-outline' />}
                   >
                     <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
