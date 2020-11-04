@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import useEventHandle from '../customHooks/useOutsideClickHandle';
+import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 
 const DropdownItem = ({
   onClick = () => { },
@@ -29,7 +29,7 @@ const Dropdown = ({
   const buttonClass = ['btn', withToggleArrow && 'dropdown-toggle', ...buttonClasses].join(' ');
   const menuClass = ['dropdown-menu', isOpen && 'show', ...menuClasses].join(' ');
 
-  useEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
+  useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
 
   const commonProps = {
     onClick: () => setIsOpen(!isOpen),
