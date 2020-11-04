@@ -5,17 +5,17 @@ import { useEffect } from 'react';
  */
 export default (event, ref, callback) => {
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleEventOutside = event => {
       if (ref.current && !ref.current.contains(event.target)) {
         callback();
       }
     }
 
     // Bind the event listener
-    document.addEventListener(event, handleClickOutside);
+    document.addEventListener(event, handleEventOutside);
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener(event, handleClickOutside);
+      document.removeEventListener(event, handleEventOutside);
     };
   }, [event, ref, callback]);
 };

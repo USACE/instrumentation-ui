@@ -1,38 +1,53 @@
 import React, { useRef, useState } from 'react';
-import useEventHandle from '../customHooks/useEventHandle';
+import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 
 const DropdownItem = ({
   onClick = () => { },
+  href = null,
   className = '',
   children = null,
 }) => (
-    <button className={`dropdown-item ${className}`} onClick={onClick}>{children}</button>
+  href
+    ? <a className={`dropdown-item text-primary ${className}`} href={href}>{children}</a>
+    : <button className={`dropdown-item text-primary ${className}`} onClick={onClick}>{children}</button>
   );
 
 const Dropdown = ({
   id = 'dropdown',
-  dropdownClass = [],
-  buttonClass = [],
-  menuClass = [],
+  dropdownClasses = [],
+  buttonClasses = [],
+  menuClasses = [],
   withToggleArrow = true,
   buttonContent = null,
+  customContent = null,
   children = null,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const dropdownClasses = ['dropdown', ...dropdownClass].join(' ');
-  const buttonClasses = ['btn', withToggleArrow && 'dropdown-toggle', ...buttonClass].join(' ');
-  const menuClasses = ['dropdown-menu', isOpen && 'show', ...menuClass].join(' ');
+  const dropdownClass = ['dropdown', ...dropdownClasses].join(' ');
+  const buttonClass = ['btn', withToggleArrow && 'dropdown-toggle', ...buttonClasses].join(' ');
+  const menuClass = ['dropdown-menu', isOpen && 'show', ...menuClasses].join(' ');
 
-  useEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
+  useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
+
+  const commonProps = {
+    onClick: () => setIsOpen(!isOpen),
+    'aria-haspopup': true,
+    'aria-expanded': isOpen,
+  };
 
   return (
-    <div className={dropdownClasses} id={id}>
-      <button className={buttonClasses} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' onClick={() => setIsOpen(!isOpen)} aria-haspopup="true" aria-expanded={isOpen}>
-        {buttonContent}
-      </button>
-      <div className={menuClasses} aria-labelledby={`${id}MenuButton`} ref={menuRef}>
+    <div className={dropdownClass} id={id}>
+      {customContent
+        ? React.cloneElement(customContent, commonProps)
+        : (
+          <button className={buttonClass} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' {...commonProps}>
+            {buttonContent}
+          </button>
+        )
+      }
+      <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef}>
         {children}
       </div>
     </div>
