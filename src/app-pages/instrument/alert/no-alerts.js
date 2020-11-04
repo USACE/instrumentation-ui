@@ -2,10 +2,10 @@ import React from 'react';
 
 const NoAlerts = () => (
   <div className='mt-5 pt-4'>
-    <p className='text-center text-muted'>
+    <span className='text-center text-muted'>
       <h4>No Alerts</h4>
-      for this instrument
-    </p>
+      <p>for this instrument</p>
+    </span>
   </div>
 );
 
