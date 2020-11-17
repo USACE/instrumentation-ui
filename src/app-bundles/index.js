@@ -4,7 +4,8 @@ import {
   createUrlBundle,
 } from "redux-bundler";
 import { createNestedUrlBundle } from "@corpsmap/corpsmap-bundles";
-import createAuthBundle from "@corpsmap/create-auth-bundle";
+// Required change from @corpsmap/create-auth-bundle;
+import createAuthBundle from "./create-auth-bundle";
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from "./create-jwt-api-bundle";
 import cache from "../cache";
@@ -49,12 +50,16 @@ import alertSubscribeBundle from "./alert-subscribe-bundle";
 import alertUnsubscribeBundle from "./alert-unsubscribe-bundle";
 import instrumentAlertConfigsBundle from "./instrument-alert-configs-bundle";
 
+// Mock Token User
+const mockTokenUser =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6WyJQVUJMSUMuVVNFUiIsIkJMVUUtV0FURVItREFNLUVYQU1QTEUtUFJPSkVDVC5NRU1CRVIiXX0.q_WcqtU48QoWaBLlTiIJ5JRbfiNbb7iJY1z8_u_AS24";
+
 export default composeBundles(
   createAuthBundle({
     appId: "07f1223f-f208-4b71-aa43-5d5f27cd8ed9",
     redirectOnLogout: pkg.homepage,
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlRlc3QuVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.D_66UceE82DkXwKcpzj0cxl126jAaev_FSGPCDzhRys",
+    mock: process.env.NODE_ENV === "development" ? true : false,
+    token: process.env.NODE_ENV === "development" ? mockTokenUser : null,
   }),
   createJwtApiBundle({
     root:
