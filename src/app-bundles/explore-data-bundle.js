@@ -28,7 +28,7 @@ export default {
   doExploreDataLoad: (instrumentIds) => ({ dispatch, store }) => {
     store.doExploreDataClear();
     const apiRoot = store.selectApiRoot();
-    const token = store.selectAuthToken();
+    const token = store.selectAuthTokenRaw();
     fetch(`${apiRoot}/explorer`, {
       method: "POST",
       mode: "cors",

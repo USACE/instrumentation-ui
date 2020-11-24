@@ -158,7 +158,7 @@ export default {
               dispatch({
                 type: "UPLOAD_POST_FINISHED",
               });
-              store.doFireNotification({
+              store.doNotificationFire({
                 message: "Data Uploaded Successfully",
                 level: "success",
                 autoDismiss: 10,
@@ -170,7 +170,7 @@ export default {
           });
         } else {
           data.errors.forEach((error) => {
-            store.doFireNotification({
+            store.doNotificationFire({
               message: error,
               level: "error",
               autoDismiss: 20,

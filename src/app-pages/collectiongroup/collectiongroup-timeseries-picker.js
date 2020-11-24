@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
 export default connect(
@@ -16,12 +16,6 @@ export default connect(
   }) => {
     const [timeseriesSelected, setTimeseriesSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
-
-    // TODO: Do not fetch all timeseries for all projects to populate the dropdown to select a timeseries
-    // should implement an auto-complete search box with multi-select.
-    // useEffect((doInstrumentTimeseriesFetch) => {
-    //   doInstrumentTimeseriesFetch();
-    // }, []);
 
     const handleClickAdd = (e) => {
       e.preventDefault();
@@ -67,6 +61,7 @@ export default connect(
             >
               {timeseries.map((t, idx) => (
                 <span
+                  key={idx}
                   onClick={(e) => {
                     setTimeseriesSelected(t);
                     setDropdownVisible(false);
