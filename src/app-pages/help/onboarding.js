@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "redux-bundler-react";
+import Tab from '../../app-components/tab';
 
 const csvSampleProjects = [
   ["Project Name"],
@@ -102,42 +103,6 @@ export default connect(
     const NotesTimeseries = ({ props }) => <></>;
     const NotesTimeseriesMeasurements = ({ props }) => <></>;
 
-    const tabs = [
-      {
-        title: "Projects",
-        csvdata: csvSampleProjects,
-        notes: <NotesProjects />,
-      },
-      {
-        title: "Instruments",
-        csvdata: csvSampleInstruments,
-        notes: <NotesInstruments />,
-      },
-      {
-        title: "Timeseries",
-        csvdata: csvSampleTimeseries,
-        notes: <NotesTimeseries />,
-      },
-      {
-        title: "Timeseries Measurements",
-        csvdata: csvSampleTimeseriesMeasurements,
-        notes: <NotesTimeseriesMeasurements />,
-      },
-    ];
-
-    const [tab, setTab] = useState(0);
-
-    const Tab = ({ i, name }) => (
-      <li className={`nav-item pointer`}>
-        <span
-          className={`nav-link${tab === i ? " active" : ""}`}
-          onClick={() => setTab(i)}
-        >
-          {name}
-        </span>
-      </li>
-    );
-
     const CSV = ({ arr }) => (
       <pre>
         {arr.map((row, idx) => (
@@ -147,6 +112,40 @@ export default connect(
         ))}
       </pre>
     );
+
+    const buildContent = (title, csvData, notes) => (
+      <div>
+        <div className="float-right">
+          <DownloadCSVButton
+            csvContent={csvData}
+            filename={`${title}.csv`}
+          />
+        </div>
+        <CSV arr={csvData} />
+        <section className="section has-background-">
+          {notes}
+        </section>
+      </div>
+    );
+
+    const tabs = [
+      {
+        title: "Projects",
+        content: buildContent('Projects', csvSampleProjects, <NotesProjects />),
+      },
+      {
+        title: "Instruments",
+        content: buildContent('Instruments', csvSampleInstruments, <NotesInstruments />),
+      },
+      {
+        title: "Timeseries",
+        content: buildContent('Timeseries', csvSampleTimeseries, <NotesTimeseries />),
+      },
+      {
+        title: "Timeseries Measurements",
+        content: buildContent('Timeseries Measurements', csvSampleTimeseriesMeasurements, <NotesTimeseriesMeasurements />),
+      },
+    ];
 
     return (
       <div className="card">
@@ -165,23 +164,7 @@ export default connect(
             .csv files below and modify them with your own data.
           </p>
           <p></p>
-          <ul class="nav nav-tabs">
-            {tabs.map((t, idx) => (
-              <Tab key={idx} i={idx} name={t.title} />
-            ))}
-          </ul>
-          <section className="mt-3">
-            <div className="float-right">
-              <DownloadCSVButton
-                csvContent={tabs[tab].csvdata}
-                filename={`${tabs[tab].title}.csv`}
-              />
-            </div>
-            <CSV arr={tabs[tab].csvdata} />
-          </section>
-          <section className="section has-background-">
-            {tabs[tab].notes}
-          </section>
+          <Tab.Container tabs={tabs} />
         </div>
       </div>
     );
