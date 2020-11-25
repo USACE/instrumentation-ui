@@ -13,6 +13,8 @@ import pkg from "../../package.json";
 
 import chartEditorBundle from "./chart-editor-bundle";
 import chartsBundle from "./charts-bundle";
+import collectionGroupBundle from "./collection-group-bundle";
+import collectionGroupDetailBundle from "./collection-group-detail-bundle";
 import domainsBundle from "./domains-bundle";
 import exploreChartSyncBundle from "./explore-chart-sync-bundle";
 import exploreDataBundle from "./explore-data-bundle";
@@ -66,10 +68,7 @@ export default composeBundles(
       process.env.NODE_ENV === "development"
         ? `http://localhost:3030/instrumentation`
         : `https://api.rsgis.dev/development/instrumentation`,
-    tokenSelector:
-      process.env.NODE_ENV === "development"
-        ? "selectProfileMockToken"
-        : "selectAuthToken",
+    tokenSelector: "selectAuthTokenRaw",
     unless: {
       // GET requests do not include token unless path starts with /my_
       // Need token to figure out who "me" is
@@ -97,6 +96,8 @@ export default composeBundles(
   alertUnsubscribeBundle,
   chartEditorBundle,
   chartsBundle,
+  collectionGroupBundle,
+  collectionGroupDetailBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,

@@ -2,6 +2,8 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 import Navbar from "../../app-components/navbar";
+import CollectionGroupTable from "./collection-group-table";
+import CollectionGroupForm from "./collection-group-form";
 import InstrumentGroupTable from "./instrument-group-table";
 import InstrumentTable from "./instrument-table";
 import InstrumentForm from "./instrument-form";
@@ -14,6 +16,7 @@ export default connect(
   "selectProjectsByRoute",
   "selectInstrumentGroupsItems",
   "selectInstrumentsItems",
+  "selectCollectionGroupItems",
   "selectKeyValState",
   "doModalOpen",
   "doKeyValSet",
@@ -21,6 +24,7 @@ export default connect(
     projectsByRoute: project,
     instrumentGroupsItems: groups,
     instrumentsItems: instruments,
+    collectionGroupItems: collectionGroups,
     keyValState,
     doModalOpen,
     doKeyValSet,
@@ -39,10 +43,14 @@ export default connect(
     };
 
     const handleAdd = () => {
-      tab === "grp"
-        ? doModalOpen(InstrumentGroupForm)
-        : doModalOpen(InstrumentForm);
+      const obj = {
+        grp: InstrumentGroupForm,
+        all: InstrumentForm,
+        cgrp: CollectionGroupForm,
+      };
+      doModalOpen(obj[tab]);
     };
+
     return (
       <div>
         <Navbar theme="primary" />
@@ -68,6 +76,18 @@ export default connect(
                 >
                   <span className={`nav-link ${tab === "all" ? "active" : ""}`}>
                     <strong>All Instruments</strong>
+                  </span>
+                </li>
+                <li
+                  onClick={() => {
+                    setTab("cgrp");
+                  }}
+                  className="nav-item pointer"
+                >
+                  <span
+                    className={`nav-link ${tab === "cgrp" ? "active" : ""}`}
+                  >
+                    <strong>Collection Groups</strong>
                   </span>
                 </li>
               </ul>
@@ -114,7 +134,7 @@ export default connect(
                   </div>
                 </div>
               </div>
-              {tab === "grp" ? (
+              {tab === "grp" && (
                 <Pager
                   itemsKey="groups"
                   items={groups.filter((item) => {
@@ -129,7 +149,8 @@ export default connect(
                 >
                   <InstrumentGroupTable />
                 </Pager>
-              ) : (
+              )}
+              {tab === "all" && (
                 <Pager
                   itemsKey="instruments"
                   items={instruments.filter((item) => {
@@ -143,6 +164,22 @@ export default connect(
                   })}
                 >
                   <InstrumentTable />
+                </Pager>
+              )}
+              {tab === "cgrp" && (
+                <Pager
+                  itemsKey="collectionGroups"
+                  items={collectionGroups.filter((item) => {
+                    if (!filter) return true;
+                    return (
+                      Object.values(item)
+                        .join(" ")
+                        .toUpperCase()
+                        .indexOf(filter.toUpperCase()) !== -1
+                    );
+                  })}
+                >
+                  <CollectionGroupTable />
                 </Pager>
               )}
             </div>

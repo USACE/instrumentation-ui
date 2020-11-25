@@ -9,11 +9,14 @@ export default createRestBundle({
   routeParam: "",
   getTemplate: `/timeseries/:timeseriesId/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`,
   putTemplate: "",
-  postTemplate: "",
+  postTemplate: "/projects/:projectId/timeseries_measurements",
   deleteTemplate: "",
   fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
   forceFetchActions: ["INSTRUMENTTIMESERIES_SET_ACTIVE_ID"],
-  urlParamSelectors: ["selectInstrumentTimeseriesActiveIdParam"],
+  urlParamSelectors: [
+    "selectInstrumentTimeseriesActiveIdParam",
+    "selectProjectsIdByRoute",
+  ],
   mergeItems: true,
   addons: {},
 });
