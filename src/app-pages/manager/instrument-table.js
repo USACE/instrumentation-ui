@@ -14,7 +14,6 @@ const Table = connect(
             <th>Status</th>
             <th>Name</th>
             <th>Type</th>
-            <th>Z-Reference</th>
             <th>Tools</th>
           </tr>
         </thead>
@@ -35,7 +34,6 @@ const Table = connect(
                   </a>
                 </td>
                 <td>{instrument.type}</td>
-                <td>{instrument.zreference}</td>
                 <td style={{ width: "200px" }}>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <button

@@ -2,8 +2,8 @@ import neat from "neat-csv";
 import { createSelector } from "redux-bundler";
 import { formatBytes } from "../utils";
 import instrumentParser from "../upload-parsers/instrument";
-import timeseriesParser from "../upload-parsers/timeseries";
-import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
+// import timeseriesParser from "../upload-parsers/timeseries";
+// import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
 
 export default {
   name: "upload",
@@ -15,8 +15,8 @@ export default {
       ignoreRows: "",
       parsers: [
         instrumentParser,
-        timeseriesParser,
-        timeseriesMeasurementsParser,
+        // timeseriesParser,
+        // timeseriesMeasurementsParser,
       ],
       selectedParser: null,
       fieldMap: null,
@@ -158,7 +158,7 @@ export default {
               dispatch({
                 type: "UPLOAD_POST_FINISHED",
               });
-              store.doFireNotification({
+              store.doNotificationFire({
                 message: "Data Uploaded Successfully",
                 level: "success",
                 autoDismiss: 10,
@@ -170,7 +170,7 @@ export default {
           });
         } else {
           data.errors.forEach((error) => {
-            store.doFireNotification({
+            store.doNotificationFire({
               message: error,
               level: "error",
               autoDismiss: 20,

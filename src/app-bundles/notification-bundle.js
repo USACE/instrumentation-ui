@@ -18,7 +18,7 @@ export default {
     };
   },
 
-  doFireNotification: (options) => ({ dispatch }) => {
+  doNotificationFire: (options) => ({ dispatch }) => {
     dispatch({ type: "NOTIFICATIONS_FIRE", payload: { options } });
   },
 

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import CollectionGroupTable from './collection-group-table';
+import CollectionGroupForm from './collection-group-form';
 import InstrumentForm from './instrument-form';
 import InstrumentGroupForm from './instrument-group-form';
 import InstrumentGroupTable from './instrument-group-table';
@@ -16,11 +18,13 @@ export default connect(
   'selectProjectsByRoute',
   'selectInstrumentGroupsItems',
   'selectInstrumentsItems',
+  'selectCollectionGroupItems',
   'doModalOpen',
   ({
     projectsByRoute: project,
     instrumentGroupsItems: groups,
     instrumentsItems: instruments,
+    collectionGroupItems: collectionGroups,
     doModalOpen,
   }) => {
     if (!project) return null;
@@ -28,9 +32,12 @@ export default connect(
     const [filter, setFilter] = useState('');
 
     const handleAdd = (title) => {
-      title === 'grp'
-        ? doModalOpen(InstrumentGroupForm)
-        : doModalOpen(InstrumentForm);
+      const forms = {
+        grp: InstrumentGroupForm,
+        all: InstrumentForm,
+        cgrp: CollectionGroupForm,
+      };
+      doModalOpen(forms[title]);
     };
 
     const CommonContent = ({ title }) => (
@@ -118,6 +125,27 @@ export default connect(
           </Pager>
         </>
       ),
+    }, {
+      title: 'Collection Groups',
+      content: (
+        <>
+          <CommonContent title='cgrp' />
+          <Pager
+            itemsKey="collectionGroups"
+            items={collectionGroups.filter((item) => {
+              if (!filter) return true;
+              return (
+                Object.values(item)
+                  .join(" ")
+                  .toUpperCase()
+                  .indexOf(filter.toUpperCase()) !== -1
+              );
+            })}
+          >
+            <CollectionGroupTable />
+          </Pager>
+        </>
+      )
     }];
 
     return (
