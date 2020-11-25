@@ -54,8 +54,8 @@ export default connect(
       };
       const fail = {
         level: "error",
-        title: "value is missing",
-        message: "Enter a value before double-clicking to submit",
+        title: "Missing Value",
+        message: "Enter a value before clicking add",
       };
       if (!value) {
         doNotificationFire(fail);
@@ -84,26 +84,35 @@ export default connect(
           <div style={{ marginBottom: "200px" }}>
             <Navbar theme="primary" fixed />
             <section className="container" style={{ marginTop: "6rem" }}>
-              <div className="d-flex flex-row">
+              <div className="d-flex flex-row align-items-center">
                 <h4 className="py-4">{detail.name}</h4>
-                <button
-                  onClick={(e) => {
-                    doModalOpen(collectionGroupForm, {
-                      item: detail,
-                    });
-                    e.stopPropagation();
-                  }}
-                  className="btn btn-sm btn-link"
+                <RoleFilter
+                  allowRoles={[`${project.slug.toUpperCase()}.*`]}
+                  alt={() => (
+                    <span className="p-2">
+                      <LoginMessage />
+                    </span>
+                  )}
                 >
-                  <span>edit</span>
-                </button>
+                  <button
+                    onClick={(e) => {
+                      doModalOpen(collectionGroupForm, {
+                        item: detail,
+                      });
+                      e.stopPropagation();
+                    }}
+                    className="btn btn-sm btn-link text-left"
+                  >
+                    <span>Edit</span>
+                  </button>
+                </RoleFilter>
               </div>
               {/* CONFIGURATION DETAILS */}
               <div className="row">
                 <div className="col">
                   <div className="card">
                     <div
-                      className="card-header bg-light p-2"
+                      className="card-header bg-light p-2 px-3"
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -122,7 +131,6 @@ export default connect(
                           <strong className="h5 p-0 m-0">Timeseries</strong>
                           <RoleFilter
                             allowRoles={[`${project.slug.toUpperCase()}.*`]}
-                            alt={LoginMessage}
                           >
                             <button
                               onClick={(e) => {

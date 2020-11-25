@@ -11,8 +11,7 @@ const Table = connect(
       <table className="table" style={{ width: "100%" }}>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Size</th>
+            <th className="w-75">Name</th>
             <th>Tools</th>
           </tr>
         </thead>
@@ -20,12 +19,11 @@ const Table = connect(
           {collectionGroups.map((g, i) => {
             return (
               <tr key={i}>
-                <td style={{ width: "30%" }}>
+                <td className="w-75">
                   <a href={`/${project.slug}/collection-groups/${g.slug}`}>
                     {g.name}
                   </a>
                 </td>
-                <td>xx timeseries across xx instruments</td>
                 <td style={{ width: "200px" }}>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <button

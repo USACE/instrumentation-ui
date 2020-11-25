@@ -1,12 +1,13 @@
 import { formatDistanceToNow, parseISO } from "date-fns";
 import React, { useState } from "react";
+import RoleFilter from "../../app-components/role-filter";
 
 const TimeseriesListEntry = ({
   handleItemSaveValue,
   handleItemDelete,
   item,
 }) => {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
 
   return (
     // Flex Wrapper
@@ -23,12 +24,14 @@ const TimeseriesListEntry = ({
             >
               {item.instrument}
             </a>
-            <button
-              className="btn btn-link text-secondary h-100"
-              onClick={(e) => handleItemDelete(item)}
-            >
-              <i className="mdi mdi-delete" />
-            </button>
+            <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
+              <button
+                className="btn btn-link text-secondary h-100"
+                onClick={(e) => handleItemDelete(item)}
+              >
+                <i className="mdi mdi-delete" />
+              </button>
+            </RoleFilter>
           </div>
           <div className="h6">
             {item.name}
@@ -57,16 +60,11 @@ const TimeseriesListEntry = ({
             <input
               style={{ width: 200, textAlign: "center" }}
               type="number"
-              // value={value}
+              value={value}
               className="form-control"
               placeholder="enter value"
               onChange={(e) => {
                 setValue(e.target.value);
-              }}
-              // onDoubleClick stopPropagation required; otherwise, quickly incrementing the value
-              // in the input triggers a double-click on the timeseries, triggering a timeseriesSave.
-              onDoubleClick={(e) => {
-                e.stopPropagation();
               }}
             />
           </div>
@@ -74,6 +72,7 @@ const TimeseriesListEntry = ({
             className="btn btn-secondary btn-small ml-1 text-uppercase"
             onClick={(e) => {
               handleItemSaveValue(item, value);
+              setValue("");
             }}
           >
             <i className="mdi mdi-plus mdi-16px" />
