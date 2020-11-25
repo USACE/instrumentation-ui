@@ -1,40 +1,42 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+import Navbar from '../../app-components/navbar';
+import Tab from '../../app-components/tab';
+
+import './userProfile.css';
 
 const UserProfile = connect(
   "selectProfileAlerts",
-  ({ profileAlerts: alerts }) => {
+  "selectAuthTokenPayload",
+  ({ profileAlerts: alerts, authTokenPayload: user }) => {
+    const tabs = [
+      {
+        title: 'Projects',
+        content: <div>Project List Goes Here</div>
+      },
+      {
+        title: 'Alerts',
+        content: <div>User Subscribed Alerts Go Here</div>
+      }
+    ];
 
     return (
-      <div className="row">
-        <div className="col-3">
-          User Scaffold
-
-          <img alt="User Profile" />
-          <p>user.name [last, first m.]</p>
-          <p>user.email</p>
-        </div>
-        <div className="col-9">
-          <div>
-            Projects Scaffold
-            {[].map((p) => (
-            <div>
-              Favortied Projects
+      <>
+        <Navbar theme='primary' fixed />
+        <section className='container-fluid' style={{ marginTop: '4.65rem' }}>
+          <div className="row">
+            <div className="col-4 user-container">
+              User Scaffold
+              <p>
+                {user.name}
+              </p>
             </div>
-          ))}
+            <div className="col-8">
+              <Tab.Container tabs={tabs} className='mt-2' />
+            </div>
           </div>
-          <div>
-            Alerts Scaffold
-
-            My Profile - Alerts: {alerts.length}
-            {alerts.map((a) => (
-              <div>
-                Alert
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </section>
+      </>
     );
   }
 );

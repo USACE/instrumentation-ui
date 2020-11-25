@@ -29,8 +29,8 @@ const ProfileMenu = connect(
         </span>
       }
     >
-      {/* <Dropdown.Item href='/my-profile'>My Profile</Dropdown.Item> */}
-      <Dropdown.Item href="/logout">
+      <Dropdown.Item href='/profile'>My Profile</Dropdown.Item>
+      <Dropdown.Item href='/logout'>
         Logout
         <small className="d-block">Currently logged in as {user.name}</small>
       </Dropdown.Item>

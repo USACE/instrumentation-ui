@@ -63,9 +63,7 @@ const AlertConfigSettings = connect(
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <header className='modal-header'>
           <h5 className='modal-title'>Alert Config Settings</h5>
-          <span className='pointer' onClick={doModalClose}>
-            <i className='mdi mdi-close-circle-outline'></i>
-          </span>
+          <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
         </header>
         <div className='m-3'>
           <div className='form-group row mt-2'>

@@ -57,7 +57,7 @@ const determinePagesToShow = (pages, currentPage, setPage) => {
   return null;
 }
 
-const Pagination = ({ items, pageSize, children, itemsKey }) => {
+const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
   const [currentPage, setPage] = useState(0);
   const [currentPageSize, setPageSize] = useState(pageSize || 10);
 

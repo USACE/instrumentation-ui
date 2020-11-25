@@ -224,9 +224,7 @@ export default connect(
         <form id="instrument-form" onSubmit={handleSave}>
           <header className="modal-header">
             <h5 className="modal-title">Edit Instrument</h5>
-            <span className="pointer" onClick={doModalClose}>
-              <i className="mdi mdi-close-circle-outline"></i>
-            </span>
+            <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
           </header>
           <section className="modal-body">
             <div className="mb-3" style={{ position: "relative", height: 300 }}>

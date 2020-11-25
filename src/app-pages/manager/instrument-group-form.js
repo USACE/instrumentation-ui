@@ -98,9 +98,7 @@ export default connect(
         <form id="instrument-group-form" onSubmit={handleSave}>
           <header className="modal-header">
             <h5 className="modal-title">Edit Instrument Group</h5>
-            <span className="pointer" onClick={doModalClose}>
-              <i className="mdi mdi-close-circle-outline"></i>
-            </span>
+            <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
           </header>
           <section className="modal-body">
             <div className="form-group">
