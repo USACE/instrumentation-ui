@@ -46,7 +46,6 @@ export default createRestBundle({
         return { timeseriesId: id };
       }
     ),
-
     selectInstrumentTimeseriesByInstrumentId: createSelector(
       "selectInstrumentTimeseriesItems",
       (timeseries) => {
@@ -59,15 +58,46 @@ export default createRestBundle({
         return out;
       }
     ),
+    selectInstrumentTimeseriesByProjectId: createSelector(
+      "selectInstrumentTimeseriesItems",
+      (timeseries) => {
+        if (!timeseries || !timeseries.length) return {};
+        const out = {};
+        timeseries.forEach((ts) => {
+          if (!out.hasOwnProperty(ts.project_id)) out[ts.project_id] = [];
+          out[ts.project_id].push(ts);
+        });
+        return out;
+      }
+    ),
     selectInstrumentTimeseriesItemsByRoute: createSelector(
       "selectInstrumentsByRoute",
+      "selectProjectsByRoute",
       "selectInstrumentTimeseriesByInstrumentId",
-      (instrument, timeseriesByInstrumentID) => {
-        return instrument &&
+      "selectInstrumentTimeseriesByProjectId",
+      (
+        instrument,
+        project,
+        timeseriesByInstrumentId,
+        timeseriesByProjectId
+      ) => {
+        // If on an instrument-specific page
+        if (
+          instrument &&
           instrument.id &&
-          timeseriesByInstrumentID.hasOwnProperty(instrument.id)
-          ? timeseriesByInstrumentID[instrument.id]
-          : [];
+          timeseriesByInstrumentId.hasOwnProperty(instrument.id)
+        ) {
+          return timeseriesByInstrumentId[instrument.id];
+        } // If on a project page
+        else if (
+          project &&
+          project.id &&
+          timeseriesByProjectId.hasOwnProperty(project.id)
+        ) {
+          return timeseriesByProjectId[project.id];
+        } else {
+          return [];
+        }
       }
     ),
   },

@@ -5,14 +5,12 @@ export default connect(
   "doModalClose",
   "doCollectionGroupAddTimeseries",
   "selectCollectionGroupByRoute",
-  "doInstrumentTimeseriesFetch",
-  "selectInstrumentTimeseriesItemsArray",
+  "selectInstrumentTimeseriesItemsByRoute",
   ({
     doModalClose,
     doCollectionGroupAddTimeseries,
     collectionGroupByRoute: collectionGroup,
-    doInstrumentTimeseriesFetch,
-    instrumentTimeseriesItemsArray: timeseries,
+    instrumentTimeseriesItemsByRoute: timeseries,
   }) => {
     const [timeseriesSelected, setTimeseriesSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -57,6 +55,7 @@ export default connect(
             </button>
             <div
               className={`dropdown-menu ${dropdownVisible ? "show" : ""}`}
+              style={{ maxHeight: 240, overflow: "auto" }}
               aria-labelledby="dropdownMenuButton"
             >
               {timeseries.map((t, idx) => (
