@@ -22,8 +22,8 @@ const UserProfile = connect(
 
     return (
       <>
-        <Navbar theme='primary' fixed />
-        <section className='container-fluid' style={{ marginTop: '4.65rem' }}>
+        <Navbar theme='primary' />
+        <section className='container-fluid'>
           <div className="row">
             <div className="col-4 user-container">
               User Scaffold

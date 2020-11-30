@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
 const DeleteButton = connect(
-  "doCollectionGroupDelete",
   "doModalClose",
+  "doCollectionGroupDelete",
   "doUpdateUrlWithHomepage",
   "selectRouteParams",
-
   ({
-    doCollectionGroupDelete: doDelete,
     doModalClose,
+    doCollectionGroupDelete: doDelete,
     doUpdateUrlWithHomepage,
     routeParams,
     item,

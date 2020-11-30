@@ -7,13 +7,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const DeleteButton = connect(
-  "doInstrumentsDelete",
   "doModalClose",
+  "doInstrumentsDelete",
   "doUpdateUrlWithHomepage",
   "selectRouteParams",
   ({
-    doInstrumentsDelete,
     doModalClose,
+    doInstrumentsDelete,
     doUpdateUrlWithHomepage,
     routeParams,
     item,

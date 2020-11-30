@@ -25,6 +25,7 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
   const el = useRef(null);
   const [expanded, setExpanded] = useState(false);
   const isActive = active || item.abbr === filter;
+
   return (
     <li
       ref={el}
@@ -42,35 +43,27 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
           setExpanded(!expanded);
         }
       }}
-      className={`list-group-item list-group-item-action ${
-        isActive ? "active" : ""
-      } pointer`}
+      className={`list-group-item list-group-item-action${isActive ? ' active' : ''} pointer`}
     >
-      <div className="pb-2 noselect  overflow-ellipsis">
-        {item.children && item.children.length ? (
-          <span
-            onClick={() => {
-              setExpanded(!expanded);
-            }}
-          >
-            <i
-              className={`mdi mdi-chevron-${expanded ? "down" : "right"} pr-2`}
-            />
+      <div className="pb-2 noselect overflow-ellipsis">
+        {item.children && !!item.children.length && (
+          <span onClick={() => setExpanded(!expanded)} >
+            <i className={`mdi mdi-chevron-${expanded ? "down" : "right"} pr-2`} />
           </span>
-        ) : null}{" "}
+        )}{" "}
         <span className="pr-2">{item.abbr}</span>
-        {item.abbr !== item.text ? (
+        {item.abbr !== item.text && (
           <small className="text-muted">{item.text}</small>
-        ) : null}
+        )}
       </div>
-      {item.children && expanded ? (
+      {item.children && expanded && (
         <FilterItemList
           items={item.children}
           filter={filter}
           setFilter={setFilter}
           active={isActive}
         />
-      ) : null}
+      )}
     </li>
   );
 };
@@ -353,6 +346,7 @@ export default connect(
     const [filter, setFilter] = useState("All");
     const [searchStr, setSearchStr] = useState("");
     const matcher = new RegExp(searchStr, "ig");
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -365,7 +359,7 @@ export default connect(
           </div>
           <div className="col-md-9">
             <div className="mb-2">
-              <SearchBar value={searchStr} onChange={setSearchStr} />
+              <SearchBar value={searchStr} onChange={setSearchStr} placeholder='Filter Projects...' />
             </div>
             <div className="d-flex flex-wrap justify-content-around">
               {projects
@@ -373,17 +367,7 @@ export default connect(
                   const str = Object.values(proj).join(" ");
                   return matcher.test(str);
                 })
-                .map((proj, i) => {
-                  return (
-                    <ProjectCard
-                      key={i}
-                      title={proj.title}
-                      subtitle={proj.subtitle}
-                      href={proj.href}
-                      img={proj.img}
-                    />
-                  );
-                })}
+                .map((proj, i) => <ProjectCard key={i} project={proj} /> )}
             </div>
           </div>
         </div>
