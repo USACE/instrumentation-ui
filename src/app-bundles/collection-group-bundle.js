@@ -36,10 +36,11 @@ export default createRestBundle({
         payload: {},
       });
       const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
-      apiDelete(url);
-      dispatch({
-        type: "COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH",
-        payload: {},
+      apiDelete(url, (err, body) => {
+        dispatch({
+          type: "COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH",
+          payload: {},
+        });
       });
     },
     doCollectionGroupAddTimeseries: ({
@@ -52,10 +53,11 @@ export default createRestBundle({
         payload: {},
       });
       const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
-      apiPost(url);
-      dispatch({
-        type: "COLLECTIONGROUP_ADD_TIMESERIES_FINISH",
-        payload: {},
+      apiPost(url, {}, (err, body) => {
+        dispatch({
+          type: "COLLECTIONGROUP_ADD_TIMESERIES_FINISH",
+          payload: {},
+        });
       });
     },
   },
