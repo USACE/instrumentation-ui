@@ -43,10 +43,10 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
           setExpanded(!expanded);
         }
       }}
-      className={`list-group-item list-group-item-action${isActive ? 'active' : ''} pointer`}
+      className={`list-group-item list-group-item-action${isActive ? ' active' : ''} pointer`}
     >
       <div className="pb-2 noselect overflow-ellipsis">
-        {item.children && item.children.length && (
+        {item.children && !!item.children.length && (
           <span onClick={() => setExpanded(!expanded)} >
             <i className={`mdi mdi-chevron-${expanded ? "down" : "right"} pr-2`} />
           </span>
