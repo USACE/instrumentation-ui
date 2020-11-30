@@ -359,7 +359,7 @@ export default connect(
           </div>
           <div className="col-md-9">
             <div className="mb-2">
-              <SearchBar value={searchStr} onChange={setSearchStr} />
+              <SearchBar value={searchStr} onChange={setSearchStr} placeholder='Filter Projects...' />
             </div>
             <div className="d-flex flex-wrap justify-content-around">
               {projects

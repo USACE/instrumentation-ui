@@ -4,15 +4,21 @@ const TabContainer = ({
   tabs = [],
   tabListClass = '',
   contentClass = '',
+  onTabChange = () => {},
   ...customProps
 }) => {
   const [tab, setTab] = useState(0);
+
+  const changeTab = (title, index) => {
+    onTabChange(title);
+    setTab(index);
+  };
 
   return (
     <div {...customProps}>
       <ul className={`nav nav-tabs ${tabListClass}`}>
         {tabs.map((t, i) => (
-          <TabItem setTab={setTab} tab={t} index={i} isActive={tab === i} key={i} />
+          <TabItem changeTab={changeTab} tab={t} index={i} isActive={tab === i} key={i} />
         ))}
       </ul>
       <section className={`section mt-3 ${contentClass}`}>
@@ -22,14 +28,14 @@ const TabContainer = ({
   );
 };
 
-const TabItem = ({ tab, setTab, index, isActive }) => {
+const TabItem = ({ tab, changeTab, index, isActive }) => {
   const { title } = tab;
 
   return (
     <li className={`nav-item pointer`}>
       <span
         className={`nav-link${isActive ? ' active' : ''}`}
-        onClick={() => setTab(index)}
+        onClick={() => changeTab(title, index)}
       >
         <b>{title}</b>
       </span>

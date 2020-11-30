@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
 const DeleteButton = connect(
-  "doInstrumentGroupsDelete",
   "doModalClose",
+  "doInstrumentGroupsDelete",
   "doUpdateUrlWithHomepage",
   "selectRouteParams",
-
   ({
-    doInstrumentGroupsDelete,
     doModalClose,
+    doInstrumentGroupsDelete,
     doUpdateUrlWithHomepage,
     routeParams,
     item,
@@ -74,8 +73,8 @@ export default connect(
   ({
     doModalClose,
     doInstrumentGroupsSave,
-    item,
     projectsByRoute: project,
+    item,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [description, setDesc] = useState((item && item.description) || "");

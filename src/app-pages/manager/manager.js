@@ -12,7 +12,19 @@ import LoginMessage from '../../app-components/login-message';
 import Navbar from '../../app-components/navbar';
 import Pager from '../../app-components/pager';
 import RoleFilter from '../../app-components/role-filter';
+import SearchBar from '../home/search-bar';
 import Tab from '../../app-components/tab';
+
+const filterItems = (filter, items) => {
+  const filtered = items.filter((item) => {
+    return Object.values(item)
+      .join(' ')
+      .toUpperCase()
+      .indexOf(filter.toUpperCase()) !== -1
+  });
+
+  return filtered;
+};
 
 export default connect(
   'selectProjectsByRoute',
@@ -30,43 +42,26 @@ export default connect(
     if (!project) return null;
 
     const [filter, setFilter] = useState('');
+    const [form, setForm] = useState('Instrument Groups');
+    const forms = {
+      'Instrument Groups': InstrumentGroupForm,
+      'All Instruments': InstrumentForm,
+      'Collection Groups': CollectionGroupForm,
+    };
+    const data = {
+      'Instrument Groups': filterItems(filter, groups),
+      'All Instruments': filterItems(filter, instruments),
+      'Collection Groups': filterItems(filter, collectionGroups),
+    }
 
-    const handleAdd = (title) => {
-      const forms = {
-        grp: InstrumentGroupForm,
-        all: InstrumentForm,
-        cgrp: CollectionGroupForm,
-      };
-      doModalOpen(forms[title]);
+    const handleAdd = () => {
+      doModalOpen(forms[form]);
     };
 
-    const CommonContent = ({ title }) => (
+    const commonContent = () => (
       <div className='row'>
         <div className='col-10'>
-          <div className='form-group'>
-            <div className='input-group'>
-              <input
-                type='text'
-                className='form-control'
-                placeholder='Filter list...'
-                value={filter}
-                onChange={(e) => {
-                  setFilter(e.target.value);
-                }}
-              />
-              <div className='input-group-append'>
-                <span
-                  title='Clear Filter'
-                  className='input-group-text pointer'
-                  onClick={() => {
-                    setFilter('');
-                  }}
-                >
-                  <i className='mdi mdi-close'></i>
-                </span>
-              </div>
-            </div>
-          </div>
+          <SearchBar value={filter} onChange={e => setFilter(e)} placeholder='Filter List...' />
         </div>
         <div className='col-2'>
           <div className='float-right'>
@@ -74,7 +69,7 @@ export default connect(
               allowRoles={[`${project.slug.toUpperCase()}.*`]}
               alt={LoginMessage}
             >
-              <button onClick={() => handleAdd(title)} className='btn btn-primary'>
+              <button onClick={() => handleAdd()} className='btn btn-primary'>
                 Add New
               </button>
             </RoleFilter>
@@ -87,18 +82,10 @@ export default connect(
       title: 'Instrument Groups',
       content: (
         <>
-          <CommonContent title='grp' />
+          {commonContent()}
           <Pager
             itemsKey='groups'
-            items={groups.filter((item) => {
-              if (!filter) return true;
-              return (
-                Object.values(item)
-                  .join(' ')
-                  .toUpperCase()
-                  .indexOf(filter.toUpperCase()) !== -1
-              );
-            })}
+            items={data[form]}
           >
             <InstrumentGroupTable />
           </Pager>
@@ -108,18 +95,10 @@ export default connect(
       title: 'All Instruments',
       content: (
         <>
-          <CommonContent title='all' />
+          {commonContent()}
           <Pager
             itemsKey='instruments'
-            items={instruments.filter((item) => {
-              if (!filter) return true;
-              return (
-                Object.values(item)
-                  .join(' ')
-                  .toUpperCase()
-                  .indexOf(filter.toUpperCase()) !== -1
-              );
-            })}
+            items={data[form]}
           >
             <InstrumentTable />
           </Pager>
@@ -129,18 +108,10 @@ export default connect(
       title: 'Collection Groups',
       content: (
         <>
-          <CommonContent title='cgrp' />
+          {commonContent()}
           <Pager
             itemsKey="collectionGroups"
-            items={collectionGroups.filter((item) => {
-              if (!filter) return true;
-              return (
-                Object.values(item)
-                  .join(" ")
-                  .toUpperCase()
-                  .indexOf(filter.toUpperCase()) !== -1
-              );
-            })}
+            items={data[form]}
           >
             <CollectionGroupTable />
           </Pager>
@@ -149,14 +120,19 @@ export default connect(
     }];
 
     return (
-      <div>
+      <>
         <Navbar theme='primary' />
-        <section className='container mt-3'>
+        <div className='container mt-3'>
           <div className='card'>
-            <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
+            <Tab.Container
+              tabs={tabs}
+              onTabChange={(title) => { setForm(title); setFilter(''); }}
+              tabListClass='card-header pb-0'
+              contentClass='card-body'
+            />
           </div>
-        </section>
-      </div>
+        </div>
+      </>
     );
   }
 );
