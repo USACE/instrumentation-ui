@@ -52,9 +52,9 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
           </span>
         )}{" "}
         <span className="pr-2">{item.abbr}</span>
-        {item.abbr !== item.text ? (
+        {item.abbr !== item.text && (
           <small className="text-muted">{item.text}</small>
-        ) : null}
+        )}
       </div>
       {item.children && expanded && (
         <FilterItemList

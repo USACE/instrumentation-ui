@@ -8,7 +8,13 @@ export default connect(
   "selectModalProps",
   "selectModalSize",
   ({ modalContent: ModalContent, doModalClose, modalProps, modalSize }) => {
-    if (!ModalContent) return null;
+    if (!ModalContent) {
+      document.body.classList.remove('no-scroll');
+      return null;
+    }
+
+    document.body.classList.add('no-scroll');
+
     const modalCls = classnames({
       "modal-dialog": true,
       "modal-dialog-scrollable": true,
