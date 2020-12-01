@@ -28,7 +28,7 @@ const buildAlertContent = (alerts = []) => {
           >
             <span className={`list-group-item flex-column align-items-start${read && ' list-group-item-action'}`}>
               <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-3'>{name}</h5>
+                <h5 className='mb-3'>{name} - {instrument_name}</h5>
                 <small>{timeAgo}</small>
               </div>
               <p className='mb-1'>{body}</p>
