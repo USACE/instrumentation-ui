@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import AlertNoteForm from '../../manager/alert-note-form';
 
-const convertTimeAgo = milli => {
+export const convertTimeAgo = milli => {
   const minutes = milli / 1000 / 60;
 
   if (minutes < 1) {

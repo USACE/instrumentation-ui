@@ -109,10 +109,6 @@
   border-left: 4px solid #0a59a3;
 }
 
-.alert-container:hover {
-  cursor: default;
-}
-
 .close-notification {
   position: absolute;
   top: 4px;

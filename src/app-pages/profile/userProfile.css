@@ -1,3 +1,9 @@
 .user-container {
   background-color: #e6e6e6;
 }
+
+.limit-height {
+  max-height: 80vh;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
