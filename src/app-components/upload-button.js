@@ -31,7 +31,7 @@ export default connect(
 
     return (
       <>
-        <button className={btnClassNames} onClick={handleClick}>
+        <button className={btnClassNames} onClick={handleClick} title={text}>
           <i className={iconClassNames}></i>{text}
         </button>
         <input

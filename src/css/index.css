@@ -16,10 +16,6 @@
   -webkit-box-orient: vertical;
 }
 
-.pull-right {
-  float: right !important;
-}
-
 .hidden {
   display: none;
 }
