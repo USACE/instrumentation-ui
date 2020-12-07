@@ -67,22 +67,18 @@ export default connect(
                   ) : null}
                   {model[key].type === "domain" ? (
                     <>
-                      {domains[model[key].domainGroup].map((d) => {
-                        return (
+                      {domains[model[key].domainGroup].map((d) => (
                           <option key={d.id} value={`all-${d.id}`}>
                             Set all to {d.value}
                           </option>
-                        );
-                      })}
+                      ))}
                     </>
                   ) : null}
-                  {uploadJsonKeys.map((jsonKey, i) => {
-                    return (
-                      <option key={i} value={jsonKey}>
-                        {jsonKey}
-                      </option>
-                    );
-                  })}
+                  {uploadJsonKeys.map((jsonKey, i) => (
+                    <option key={i} value={jsonKey}>
+                      {jsonKey}
+                    </option>
+                  ))}
                 </select>
                 {model[key] && model[key].helpText ? (
                   <small className="text-muted">{model[key].helpText}</small>

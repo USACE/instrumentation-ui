@@ -20,12 +20,12 @@ export default connect(
         </p>
         <div className="card-body">
           {uploadHasFile && uploadJson && uploadJson.length ? (
-            <div>
+            <>
               <ParserSelector />
               <FieldMapper />
               <IgnoreRows />
               <Toolbar />
-            </div>
+            </>
           ) : (
             <Empty />
           )}

@@ -5,22 +5,20 @@ export default connect(
   "doUploadClear",
   "doUploadSend",
   "selectUploadReadyToUpload",
-  ({ doUploadClear, doUploadSend, uploadReadyToUpload }) => {
-    return (
-      <div className="clearfix">
-        <div className="float-right">
-          <button onClick={doUploadClear} className="btn btn-secondary mr-2">
-            Clear All
-          </button>
-          <button
-            disabled={!uploadReadyToUpload}
-            onClick={doUploadSend}
-            className="btn btn-success"
-          >
-            Upload
-          </button>
-        </div>
+  ({ doUploadClear, doUploadSend, uploadReadyToUpload }) => (
+    <div className="clearfix">
+      <div className="float-right">
+        <button onClick={doUploadClear} className="btn btn-secondary mr-2">
+          Clear All
+        </button>
+        <button
+          disabled={!uploadReadyToUpload}
+          onClick={doUploadSend}
+          className="btn btn-success"
+        >
+          Upload
+        </button>
       </div>
-    );
-  }
+    </div>
+  )
 );
