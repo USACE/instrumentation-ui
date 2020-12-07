@@ -2,14 +2,14 @@ import React from "react";
 import { connect } from "redux-bundler-react";
 
 export default connect(
-  "doUploadClear",
+  "doUploadSettingsClear",
   "doUploadSend",
   "selectUploadReadyToUpload",
-  ({ doUploadClear, doUploadSend, uploadReadyToUpload }) => (
+  ({ doUploadSettingsClear, doUploadSend, uploadReadyToUpload }) => (
     <div className="clearfix">
       <div className="float-right">
-        <button onClick={doUploadClear} className="btn btn-secondary mr-2">
-          Clear All
+        <button onClick={doUploadSettingsClear} className="btn btn-secondary mr-2">
+          Clear Settings
         </button>
         <button
           disabled={!uploadReadyToUpload}

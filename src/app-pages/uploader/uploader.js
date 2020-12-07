@@ -6,10 +6,14 @@ import UploadSettings from "./upload-settings";
 import FilePreview from "./file-preview";
 import Notifications from "../../app-components/notifications";
 
-export default connect("doUploadClear", ({ doUploadClear }) => {
+export default connect("doUploadSettingsClear", ({ doUploadSettingsClear }) => {
   useEffect(() => {
-    return doUploadClear;
+    return () => {
+
+      doUploadSettingsClear();
+    };
   });
+
   return (
     <div>
       <Navbar theme="primary" fixed />

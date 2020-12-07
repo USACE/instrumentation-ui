@@ -16,9 +16,8 @@ export default connect(
           <div>
             {uploadHasFile ? (
               <div className="text-italic">
-                <p>
-                  <strong>{name}</strong>
-                </p>
+                <UploadButton text="Change File" icon="mdi-file-replace-outline" buttonClass='pull-right' />
+                <p><strong>{name}</strong></p>
                 <div className="d-flex justify-content-between">
                   <span>
                     <small className="text-muted">{`file size: `}</small>
@@ -35,7 +34,7 @@ export default connect(
                 </div>
               </div>
             ) : (
-              <UploadButton size="sm" />
+              <UploadButton />
             )}
           </div>
         </div>
