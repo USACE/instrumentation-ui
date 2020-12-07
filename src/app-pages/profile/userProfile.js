@@ -3,11 +3,22 @@ import { connect } from 'redux-bundler-react';
 
 import { convertTimeAgo } from '../instrument/alert/alert-entry';
 import Navbar from '../../app-components/navbar';
+import Select from '../../app-components/select';
 import Tab from '../../app-components/tab';
 
 import './userProfile.css';
 
 const urlify = str => str.toLowerCase().split(' ').join('-');
+
+const buildProjectContent = (projects = []) => {
+  if (!projects.length) return <p>No Projects!</p>
+
+  return (
+    <div>
+      Favorited Project List goes here!
+    </div>
+  );
+};
 
 const buildAlertContent = (alerts = []) => {
   if (!alerts.length) return <p>No alerts!</p>;
@@ -47,7 +58,7 @@ const UserProfile = connect(
     const tabs = [
       {
         title: 'Projects',
-        content: <div>Project List Goes Here</div>
+        content: buildProjectContent(),
       },
       {
         title: 'Alerts',
