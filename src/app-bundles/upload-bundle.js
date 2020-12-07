@@ -45,7 +45,7 @@ export default {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "UPLOAD_FILE_CLEAR":
+        case "UPLOAD_CLEAR":
         case "UPLOAD_SETTINGS_CLEAR":
         case "UPLOAD_QUEUE_CSV":
         case "UPLOAD_PARSE_CSV_START":
@@ -96,12 +96,24 @@ export default {
     });
   },
 
+  doUploadClear: () => ({ dispatch }) => {
+    dispatch({
+      type: "UPLOAD_CLEAR",
+      payload: {
+        csv: null,
+        json: null,
+        ignoreRows: "",
+        selectedParser: null,
+        fieldMap: null,
+        _errors: [],
+      },
+    });
+  },
+
   doUploadSettingsClear: () => ({ dispatch }) => {
     dispatch({
       type: "UPLOAD_SETTINGS_CLEAR",
       payload: {
-        // csv: null,
-        // json: null,
         ignoreRows: "",
         selectedParser: null,
         fieldMap: null,

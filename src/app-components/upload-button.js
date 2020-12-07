@@ -32,7 +32,7 @@ export default connect(
     return (
       <>
         <button className={btnClassNames} onClick={handleClick} title={text}>
-          <i className={iconClassNames}></i>{text}
+          <i className={iconClassNames}/>{text}
         </button>
         <input
           accept='.csv'
@@ -40,7 +40,7 @@ export default connect(
           ref={inputEl}
           type='file'
           onChange={handleInputChange}
-        ></input>
+        />
       </>
     );
   },
