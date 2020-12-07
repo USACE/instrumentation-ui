@@ -64,8 +64,7 @@ export default {
       domainGroup: "instrument_type",
       required: true,
       template: "",
-      helpText:
-        'Acceptable data values include "Piezometer" or "Staff Gage" others will be ignored',
+      helpText: 'Acceptable data values include "Piezometer" or "Staff Gage" others will be ignored',
     },
     lon: {
       label: "Lon.",
