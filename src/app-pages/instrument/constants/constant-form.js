@@ -5,14 +5,9 @@ import DomainSelect from "../../../app-components/domain-select";
 const DeleteButton = connect(
   "doInstrumentConstantsDelete",
   "doModalClose",
-  "doUpdateUrlWithHomepage",
-  "selectRouteParams",
-
   ({
     doInstrumentConstantsDelete,
     doModalClose,
-    doUpdateUrlWithHomepage,
-    routeParams,
     item,
   }) => {
     const [isConfirming, setIsConfirming] = useState(false);
@@ -129,9 +124,7 @@ export default connect(
               <label>Parameter</label>
               <DomainSelect
                 value={parameter_id}
-                onChange={(e) => {
-                  setParameterId(e.target.value);
-                }}
+                onChange={(val) => setParameterId(val)}
                 domain="parameter"
               />
             </div>
@@ -139,9 +132,7 @@ export default connect(
               <label>Unit</label>
               <DomainSelect
                 value={unit_id}
-                onChange={(e) => {
-                  setUnitId(e.target.value);
-                }}
+                onChange={(val) => setUnitId(val)}
                 domain="unit"
               />
             </div>

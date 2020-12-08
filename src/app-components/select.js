@@ -12,7 +12,7 @@ const Option = ({ value, text = '' }) => (
  * @param {function} onChange A function that is executed when the value of the select changes, `option.value` is provided as a parameter.
  * @param {boolean} showPlaceholderOption Whether or not the placeholder option is shown. Defaulted to `true`.
  * @param {boolean} showPlaceholderWhileValid Whether or not the placeholder option is shown if a value is selected. Defaulted to `false`.
- * @param {string} setDefaultOption Set to specify an option that should be selected by default, use the `option.value` property.
+ * @param {string} defaultOption Set to specify an option that should be selected by default, use the `option.value` property.
  * @param {string} placeholderText Provide custom text to display in the placeholder option.
  * @param {string} className Classes to provide to the `<select>` element.
  * @param {array} options A list of options `{ value: string, text: string }` or `{ value: string }` provided within the select element.
