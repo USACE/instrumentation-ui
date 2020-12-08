@@ -42,6 +42,7 @@ const Select = ({
       className={`custom-select ${className}`}
       onChange={handleChange}
       title={title}
+      value={currentOption}
     >
       {showPlaceholder && placeholderOption}
       {options.map(option => <Option value={option.value} text={option.text} key={option.value} />)}
