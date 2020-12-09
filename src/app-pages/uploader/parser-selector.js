@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Select from '../../app-components/select';
 
 export default connect(
+  'doUploadSetFieldmap',
+  'selectProjectsByRoute',
   'selectUploadParsers',
+  'selectUploadSelectedParser',
   'doUploadSetSelectedParser',
-  ({ uploadParsers, doUploadSetSelectedParser }) => {
+  ({
+    doUploadSetFieldmap,
+    projectsByRoute: project,
+    uploadParsers,
+    uploadSelectedParser,
+    doUploadSetSelectedParser,
+  }) => {
     const options = uploadParsers.map(o => ({ value: o.name }));
 
-    const handleSelectParser = (v) => {
-      const parser = uploadParsers.find((p) => p.name === v);
+    const handleSelectParser = useCallback((val) => {
+      const parser = uploadParsers.find((p) => p.name === val);
 
-      if (parser) {
-        doUploadSetSelectedParser(parser);
+      if (parser) doUploadSetSelectedParser(parser);
+    }, [doUploadSetSelectedParser, uploadParsers]);
+
+    useEffect(() => {
+      if (!!uploadSelectedParser) {
+        const fieldMap = Object.keys(uploadSelectedParser.model).reduce((accum, current) => {
+          console.log(uploadSelectedParser.model[current]);
+          accum[current] = uploadSelectedParser.model[current].template || '';
+          return accum;
+        }, {});
+        fieldMap.project_id = project.id;
+
+        doUploadSetFieldmap(fieldMap);
       }
-    };
+    }, [uploadSelectedParser, doUploadSetFieldmap, project]);
 
     return (
       <div className='form-group row' style={{ marginBottom: '0.75rem' }}>
         <label className='col-3 col-form-label text-right'>Import As</label>
         <div className='col-9'>
           <Select
-            onChange={(v) => handleSelectParser(v)}
+            onChange={handleSelectParser}
             options={options}
             placeholderText='Select One...'
           />

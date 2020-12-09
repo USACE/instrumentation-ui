@@ -31,6 +31,7 @@ const Select = ({
 
   const placeholderOption = <Option value='' text={placeholderText} />;
   const showPlaceholder = showPlaceholderOption && (showPlaceholderWhileValid || !currentOption);
+
   const handleChange = e => setCurrentOption(e.target.value);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Select = ({
   return (
     <select
       className={`custom-select ${className}`}
-      onChange={handleChange}
+      onChange={(e) => handleChange(e)}
       title={title}
       value={currentOption}
     >

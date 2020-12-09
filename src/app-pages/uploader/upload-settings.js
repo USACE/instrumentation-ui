@@ -11,7 +11,9 @@ const Empty = () => <p>Select a file to preview and upload...</p>;
 export default connect(
   'selectUploadHasFile',
   'selectUploadJson',
-  ({ uploadHasFile, uploadJson }) => (
+  'selectUploadSelectedParser',
+  'selectUploadFieldMap',
+  ({ uploadHasFile, uploadJson, uploadSelectedParser, uploadFieldMap }) => (
     <div className='card'>
       <p className='card-header'>
         <strong>Upload Settings</strong>
@@ -20,9 +22,13 @@ export default connect(
         {uploadHasFile && uploadJson && uploadJson.length ? (
           <>
             <ParserSelector />
-            <FieldMapper />
-            <IgnoreRows />
-            <Toolbar />
+            { uploadSelectedParser && uploadFieldMap && (
+              <>
+                <FieldMapper />
+                <IgnoreRows />
+                <Toolbar />
+              </>
+            )}
           </>
         ) : (
           <Empty />
