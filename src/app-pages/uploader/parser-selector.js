@@ -44,6 +44,7 @@ export default connect(
             onChange={handleSelectParser}
             options={options}
             placeholderText='Select One...'
+            value={uploadSelectedParser ? uploadSelectedParser.name : ''}
           />
         </div>
       </div>

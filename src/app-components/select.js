@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import usePrevious from '../customHooks/usePrevious';
 
 const Option = ({ value, text = '' }) => (
   <option value={value}>{text || value}</option>
@@ -16,6 +17,7 @@ const Option = ({ value, text = '' }) => (
  * @param {string} placeholderText Provide custom text to display in the placeholder option.
  * @param {string} className Classes to provide to the `<select>` element.
  * @param {array} options A list of options `{ value: string, text: string }` or `{ value: string }` provided within the select element.
+ * @param {string} value The value the `<select>` should set. Should only be set if you have a use case to override the internal state. Not needed for the component to function.
  */
 const Select = ({
   title = '',
@@ -23,17 +25,28 @@ const Select = ({
   showPlaceholderOption = true,
   showPlaceholderWhileValid = false,
   defaultOption = '',
+  value = '',
   placeholderText = 'Select an option...',
-  className='',
+  className = '',
   options = [],
 }) => {
   const [currentOption, setCurrentOption] = useState(defaultOption);
+  const previousOption = usePrevious(currentOption);
+  const previousValue = usePrevious(value);
 
   const placeholderOption = <Option value='' text={placeholderText} />;
   const showPlaceholder = showPlaceholderOption && (showPlaceholderWhileValid || !currentOption);
 
   const handleChange = e => setCurrentOption(e.target.value);
 
+  /** Allow user to manually override internal currentOption state if value changes but internal state does not. */
+  useEffect(() => {
+    if (value !== previousValue && currentOption === previousOption) {
+      setCurrentOption(value);
+    }
+  }, [value, previousValue, currentOption, previousOption, setCurrentOption]);
+
+  /** Execute parent's onChange function after our interal state has changed. */
   useEffect(() => {
     onChange(currentOption);
   }, [currentOption, onChange])
