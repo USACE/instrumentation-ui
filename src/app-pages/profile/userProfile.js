@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 
 import { convertTimeAgo } from '../instrument/alert/alert-entry';
 import Navbar from '../../app-components/navbar';
-import Select from '../../app-components/select';
 import Tab from '../../app-components/tab';
 
 import './userProfile.css';

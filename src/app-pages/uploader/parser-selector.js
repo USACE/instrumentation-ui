@@ -27,7 +27,6 @@ export default connect(
     useEffect(() => {
       if (!!uploadSelectedParser) {
         const fieldMap = Object.keys(uploadSelectedParser.model).reduce((accum, current) => {
-          console.log(uploadSelectedParser.model[current]);
           accum[current] = uploadSelectedParser.model[current].template || '';
           return accum;
         }, {});
