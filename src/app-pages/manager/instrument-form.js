@@ -48,9 +48,7 @@ const DeleteButton = connect(
             <button
               title="Cancel"
               className="btn btn-secondary"
-              onClick={() => {
-                setIsConfirming(false);
-              }}
+              onClick={() => setIsConfirming(false)}
             >
               Cancel
             </button>
@@ -58,9 +56,7 @@ const DeleteButton = connect(
         ) : (
           <button
             title="Remove from Group"
-            onClick={() => {
-              setIsConfirming(true);
-            }}
+            onClick={() => setIsConfirming(true)}
             className="btn btn-danger"
           >
             Delete
@@ -106,7 +102,6 @@ export default connect(
     const [station, setStation] = useState((item && item.station) || "");
     const [offset, setOffset] = useState((item && item.offset) || "");
     const [project_id] = useState((item && item.project_id) || project.id);
-
     const [status_id, setStatusId] = useState((item && item.status_id) || "");
     const [status_time, setStatusTime] = useState(new Date());
 
@@ -235,12 +230,9 @@ export default connect(
             </div>
             <div className="form-group">
               <label>Name</label>
-
               <input
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={(e) => setName(e.target.value)}
                 className="form-control"
                 type="text"
                 placeholder="Name"
@@ -248,24 +240,11 @@ export default connect(
             </div>
             <div className="form-group">
               <label>Type</label>
-
-              <DomainSelect
-                value={type_id}
-                onChange={(e) => {
-                  setTypeId(e.target.value);
-                }}
-                domain="instrument_type"
-              />
+              <DomainSelect value={type_id} onChange={(val) => setTypeId(val)} domain="instrument_type" />
             </div>
             <div className="form-group">
               <label>Status</label>
-              <DomainSelect
-                value={status_id}
-                onChange={(e) => {
-                  setStatusId(e.target.value);
-                }}
-                domain="status"
-              />
+              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain="status" />
             </div>
             {statusHasChanged ? (
               <div className="form-group">
@@ -274,9 +253,7 @@ export default connect(
                   <DatePicker
                     className="form-control"
                     selected={status_time}
-                    onChange={(val) => {
-                      setStatusTime(val);
-                    }}
+                    onChange={(val) => setStatusTime(val)}
                     showTimeInput
                   />
                 </div>
@@ -284,12 +261,9 @@ export default connect(
             ) : null}
             <div className="form-group">
               <label>Station</label>
-
               <input
                 value={station}
-                onChange={(e) => {
-                  setStation(e.target.value);
-                }}
+                onChange={(e) => setStation(e.target.value)}
                 className="form-control"
                 type="number"
                 placeholder="Station"
@@ -297,17 +271,13 @@ export default connect(
             </div>
             <div className="form-group">
               <label>Offset</label>
-
               <input
                 value={offset}
-                onChange={(e) => {
-                  setOffset(e.target.value);
-                }}
+                onChange={(e) => setOffset(e.target.value)}
                 className="form-control"
                 type="number"
                 placeholder="Offset"
               />
-
               <small className="form-text text-muted">
                 Offset should be positive on land side, negative on water side
               </small>
@@ -315,7 +285,6 @@ export default connect(
 
             <div className="form-group">
               <label>Use Projection</label>
-
               <select
                 onChange={handleSetDisplayProjection}
                 value={projDisplayProjection}
@@ -339,9 +308,7 @@ export default connect(
               <input
                 data-key="x"
                 value={x}
-                onChange={(e) => {
-                  setX(e.target.value);
-                }}
+                onChange={(e) => setX(e.target.value)}
                 onBlur={handleLocUpdate}
                 className="form-control"
                 type="number"
@@ -358,9 +325,7 @@ export default connect(
               <input
                 data-key="y"
                 value={y}
-                onChange={(e) => {
-                  setY(e.target.value);
-                }}
+                onChange={(e) => setY(e.target.value)}
                 onBlur={handleLocUpdate}
                 className="form-control"
                 type="number"

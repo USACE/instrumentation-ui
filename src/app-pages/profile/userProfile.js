@@ -9,6 +9,16 @@ import './userProfile.css';
 
 const urlify = str => str.toLowerCase().split(' ').join('-');
 
+const buildProjectContent = (projects = []) => {
+  if (!projects.length) return <p>No Projects!</p>
+
+  return (
+    <div>
+      Favorited Project List goes here!
+    </div>
+  );
+};
+
 const buildAlertContent = (alerts = []) => {
   if (!alerts.length) return <p>No alerts!</p>;
 
@@ -47,7 +57,7 @@ const UserProfile = connect(
     const tabs = [
       {
         title: 'Projects',
-        content: <div>Project List Goes Here</div>
+        content: buildProjectContent(),
       },
       {
         title: 'Alerts',

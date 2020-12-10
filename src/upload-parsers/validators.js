@@ -1,12 +1,8 @@
-exports.isNotNull = (val) => {
-  return !null;
-};
+exports.isNotNull = (val) => val !== null;
 
 exports.isNotEmpty = (val) => {
-  let empty = val === null || val === undefined || val === "";
-  return empty;
+  const empty = val === null || val === undefined || val === "";
+  return !empty;
 };
 
-exports.isNumeric = (val) => {
-  return !isNaN(Number(val));
-};
+exports.isNumeric = (val) => !isNaN(Number(val));

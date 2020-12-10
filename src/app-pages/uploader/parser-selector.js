@@ -1,40 +1,51 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
+import React, { useCallback, useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
+
+import Select from '../../app-components/select';
 
 export default connect(
-  "selectUploadSelectedParser",
-  "selectUploadParsers",
-  "doUploadSetSelectedParser",
-  ({ uploadSelectedParser, uploadParsers, doUploadSetSelectedParser }) => {
-    const handleSelectParser = (e) => {
-      const filtered = uploadParsers.filter((p) => {
-        return p.name === e.target.value;
-      });
-      if (filtered.length) {
-        doUploadSetSelectedParser(filtered[0]);
-      }
-    };
-    return (
-      <div>
-        <div className="form-group row" style={{ marginBottom: "0.75rem" }}>
-          <label className="col-3 col-form-label text-right">Import As</label>
+  'doUploadSetFieldmap',
+  'selectProjectsByRoute',
+  'selectUploadParsers',
+  'selectUploadSelectedParser',
+  'doUploadSetSelectedParser',
+  ({
+    doUploadSetFieldmap,
+    projectsByRoute: project,
+    uploadParsers,
+    uploadSelectedParser,
+    doUploadSetSelectedParser,
+  }) => {
+    const options = uploadParsers.map(o => ({ value: o.name }));
 
-          <div className="col-9">
-            <select
-              className="form-control"
-              value={(uploadSelectedParser && uploadSelectedParser.name) || ""}
-              onChange={handleSelectParser}
-            >
-              <option value="">Select One...</option>
-              {uploadParsers.map((parser, i) => {
-                return (
-                  <option key={i} value={parser.name}>
-                    {parser.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+    const handleSelectParser = useCallback((val) => {
+      const parser = uploadParsers.find((p) => p.name === val);
+
+      if (parser) doUploadSetSelectedParser(parser);
+    }, [doUploadSetSelectedParser, uploadParsers]);
+
+    useEffect(() => {
+      if (!!uploadSelectedParser) {
+        const fieldMap = Object.keys(uploadSelectedParser.model).reduce((accum, current) => {
+          accum[current] = uploadSelectedParser.model[current].template || '';
+          return accum;
+        }, {});
+        fieldMap.project_id = project.id;
+
+        doUploadSetFieldmap(fieldMap);
+      }
+    }, [uploadSelectedParser, doUploadSetFieldmap, project]);
+
+    return (
+      <div className='form-group row' style={{ marginBottom: '0.75rem' }}>
+        <label className='col-3 col-form-label text-right'>Import As</label>
+        <div className='col-9'>
+          <Select
+            onChange={handleSelectParser}
+            options={options}
+            placeholderText='Select One...'
+            value={uploadSelectedParser ? uploadSelectedParser.name : ''}
+          />
         </div>
       </div>
     );

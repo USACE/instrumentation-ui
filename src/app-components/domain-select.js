@@ -1,22 +1,28 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 
+import Select from './select';
+
 export default connect(
   "selectDomainsItemsByGroup",
   ({ value, onChange, domain, domainsItemsByGroup }) => {
-    const options = domainsItemsByGroup[domain];
-    if (!options) return <p>no options...</p>;
+    const options = domainsItemsByGroup[domain].map(item => (
+      { value: item.id, text: item.value }
+    ));
+
     return (
-      <select className="form-control" value={value} onChange={onChange}>
-        {value ? null : <option value="">Select one...</option>}
-        {options.map((opt, i) => {
-          return (
-            <option key={i} value={opt.id}>
-              {opt.value}
-            </option>
-          );
-        })}
-      </select>
+      <>
+        {!options.length ? (
+          <p>No Options...</p>
+        ) : (
+          <Select
+            defaultOption={value}
+            onChange={() =>  onChange}
+            placeholderText='Select one...'
+            options={options}
+          />
+        )}
+      </>
     );
   }
 );

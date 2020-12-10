@@ -5,6 +5,23 @@ import instrumentParser from "../upload-parsers/instrument";
 // import timeseriesParser from "../upload-parsers/timeseries";
 // import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
 
+const cellStyle = (params, key) => {
+  const style = {};
+
+  if (params.data.ignore) {
+    style.color = "grey";
+    style.opacity = 0.5;
+  }
+
+  if (params.data.errors && params.data.errors.indexOf(key) !== -1) {
+    style.color = "#d22a0e";
+    style.backgroundColor = "#feeeec";
+    style.borderColor = "#ea2f10";
+  }
+
+  return style;
+};
+
 export default {
   name: "upload",
 
@@ -29,6 +46,7 @@ export default {
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case "UPLOAD_CLEAR":
+        case "UPLOAD_SETTINGS_CLEAR":
         case "UPLOAD_QUEUE_CSV":
         case "UPLOAD_PARSE_CSV_START":
         case "UPLOAD_PARSE_CSV_FINISH":
@@ -84,6 +102,18 @@ export default {
       payload: {
         csv: null,
         json: null,
+        ignoreRows: "",
+        selectedParser: null,
+        fieldMap: null,
+        _errors: [],
+      },
+    });
+  },
+
+  doUploadSettingsClear: () => ({ dispatch }) => {
+    dispatch({
+      type: "UPLOAD_SETTINGS_CLEAR",
+      payload: {
         ignoreRows: "",
         selectedParser: null,
         fieldMap: null,
@@ -200,17 +230,11 @@ export default {
     });
   },
 
-  selectUploadErrors: (state) => {
-    return state.upload._errors;
-  },
+  selectUploadErrors: (state) => state.upload._errors,
 
-  selectUploadCsv: (state) => {
-    return state.upload.csv;
-  },
+  selectUploadCsv: (state) => state.upload.csv,
 
-  selectUploadJson: (state) => {
-    return state.upload.json;
-  },
+  selectUploadJson: (state) => state.upload.json,
 
   selectUploadColumnDefsOriginal: createSelector("selectUploadJson", (json) => {
     if (!json || !json.length) return [];
@@ -225,19 +249,7 @@ export default {
           sortable: true,
           filter: false,
           editable: false,
-          cellStyle: (params) => {
-            const style = {};
-            if (params.data.ignore) {
-              style.color = "grey";
-              style.opacity = 0.5;
-            }
-            if (params.data.errors && params.data.errors.indexOf(key) !== -1) {
-              style.color = "#d22a0e";
-              style.backgroundColor = "#feeeec";
-              style.borderColor = "#ea2f10";
-            }
-            return style;
-          },
+          cellStyle: (params) => cellStyle(params, key),
         };
       }),
     ];
@@ -274,31 +286,14 @@ export default {
             sortable: true,
             filter: false,
             editable: false,
-            cellStyle: (params) => {
-              const style = {};
-              if (params.data.ignore) {
-                style.color = "grey";
-                style.opacity = 0.5;
-              }
-              if (
-                params.data.errors &&
-                params.data.errors.indexOf(key) !== -1
-              ) {
-                style.color = "#d22a0e";
-                style.backgroundColor = "#feeeec";
-                style.borderColor = "#ea2f10";
-              }
-              return style;
-            },
+            cellStyle: (params) => cellStyle(params, key),
           };
         }),
       ];
     }
   ),
 
-  selectCurrentState: (state) => {
-    return state;
-  },
+  selectCurrentState: (state) => state,
 
   selectUploadDataParsed: createSelector(
     "selectCurrentState",
@@ -406,28 +401,16 @@ export default {
     return keys;
   }),
 
-  selectUploadIsParsing: (state) => {
-    return state.upload._isParsing;
-  },
+  selectUploadIsParsing: (state) => state.upload._isParsing,
 
-  selectUploadFileName: createSelector("selectUploadCsv", (csv) => {
-    if (!csv) return null;
-    return csv.name;
-  }),
+  selectUploadFileName: createSelector("selectUploadCsv", (csv) => !csv ? null : csv.name),
 
-  selectUploadFileType: createSelector("selectUploadCsv", (csv) => {
-    if (!csv) return null;
-    return csv.type;
-  }),
+  selectUploadFileType: createSelector("selectUploadCsv", (csv) => !csv ? null : csv.type),
 
-  selectUploadFileSize: createSelector("selectUploadCsv", (csv) => {
-    if (!csv) return null;
-    return formatBytes(csv.size);
-  }),
+  selectUploadFileSize: createSelector("selectUploadCsv", (csv) => !csv ? null : formatBytes(csv.size)),
 
   selectUploadFileLastModified: createSelector("selectUploadCsv", (csv) => {
-    if (!csv) return null;
-    return new Date(csv.lastModified).toLocaleString();
+    return !csv ? null : new Date(csv.lastModified).toLocaleString();
   }),
 
   selectUploadFileData: createSelector(
@@ -447,13 +430,9 @@ export default {
     }
   ),
 
-  selectUploadHasFile: createSelector("selectUploadCsv", (csv) => {
-    return !!csv;
-  }),
+  selectUploadHasFile: createSelector("selectUploadCsv", (csv) => !!csv),
 
-  selectUploadIgnoreRows: (state) => {
-    return state.upload.ignoreRows;
-  },
+  selectUploadIgnoreRows: (state) => state.upload.ignoreRows,
 
   selectUploadIgnoreRowsList: createSelector(
     "selectUploadIgnoreRows",
@@ -484,21 +463,13 @@ export default {
     }
   ),
 
-  selectUploadParsers: (state) => {
-    return state.upload.parsers;
-  },
+  selectUploadParsers: (state) => state.upload.parsers,
 
-  selectUploadSelectedParser: (state) => {
-    return state.upload.selectedParser;
-  },
+  selectUploadSelectedParser: (state) => state.upload.selectedParser,
 
-  selectUploadIsUploading: (state) => {
-    return state.upload._isUploading;
-  },
+  selectUploadIsUploading: (state) => state.upload._isUploading,
 
-  selectUploadFieldMap: (state) => {
-    return state.upload.fieldMap;
-  },
+  selectUploadFieldMap: (state) => state.upload.fieldMap,
 
   reactUploadShouldParseCsv: (state) => {
     if (state.upload._shouldParseCsv)
