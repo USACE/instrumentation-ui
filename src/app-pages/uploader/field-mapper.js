@@ -3,7 +3,7 @@ import { connect } from "redux-bundler-react";
 
 import Select from '../../app-components/select';
 
-const generateOptions = (model, jsonKeys, domains) => {
+const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
 
   if (model.type === 'boolean') {
@@ -15,6 +15,10 @@ const generateOptions = (model, jsonKeys, domains) => {
     ret.push(...domains[model.domainGroup].map(domain => (
       { value: `all-${domain.id}`, text: `Set all to ${domain.value}`}
     )));
+  } else if (model.type === 'internal') {
+    ret.push(...model.provider(state).map(key => (
+      { value: key }
+    )));
   }
 
   ret.push(...jsonKeys.map(jsonKey => ({ value: jsonKey })));
@@ -22,17 +26,19 @@ const generateOptions = (model, jsonKeys, domains) => {
 };
 
 export default connect(
+  "doUploadSetFieldmap",
   "selectDomainsItemsByGroup",
   "selectUploadFieldMap",
-  "doUploadSetFieldmap",
   "selectUploadJsonKeys",
   "selectUploadSelectedParser",
+  "selectStateData",
   ({
+    doUploadSetFieldmap,
     domainsItemsByGroup: domains,
     uploadFieldMap,
-    doUploadSetFieldmap,
     uploadJsonKeys,
     uploadSelectedParser,
+    stateData,
   }) => {
     const { model } = uploadSelectedParser;
     const modelKeys = Object.keys(model);
@@ -62,7 +68,7 @@ export default connect(
                   <Select
                     onChange={(val) => updateFieldMap(val, key)}
                     placeholderText='Select One...'
-                    options={generateOptions(model[key], uploadJsonKeys, domains)}
+                    options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
                   />
                   {model[key] && model[key].helpText ? (
                     <small className="text-muted">{model[key].helpText}</small>

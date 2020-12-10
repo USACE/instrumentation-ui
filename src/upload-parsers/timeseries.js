@@ -5,7 +5,10 @@ export default {
   model: {
     instrument_id: {
       label: 'Instrument',
-      type: 'string',
+      type: 'internal',
+      provider: state => (
+        Object.keys(state.instruments).filter(key => key.charAt(0) !== '_')
+      ),
       required: true,
       parse: (val, state) => {
         const instrument = state.instruments[val.toLowerCase()];

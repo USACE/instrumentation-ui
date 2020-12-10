@@ -2,8 +2,8 @@ import neat from "neat-csv";
 import { createSelector } from "redux-bundler";
 import { formatBytes } from "../utils";
 import instrumentParser from "../upload-parsers/instrument";
-// import timeseriesParser from "../upload-parsers/timeseries";
-// import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
+import timeseriesParser from "../upload-parsers/timeseries";
+import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
 
 const cellStyle = (params, key) => {
   const style = {};
@@ -32,8 +32,8 @@ export default {
       ignoreRows: "",
       parsers: [
         instrumentParser,
-        // timeseriesParser,
-        // timeseriesMeasurementsParser,
+        timeseriesParser,
+        timeseriesMeasurementsParser,
       ],
       selectedParser: null,
       fieldMap: null,
@@ -470,6 +470,11 @@ export default {
   selectUploadIsUploading: (state) => state.upload._isUploading,
 
   selectUploadFieldMap: (state) => state.upload.fieldMap,
+
+  /** NOTE: Only add required data for mapping to minimize overhead. */
+  selectStateData: (state) => ({
+    instruments: state.instruments,
+  }),
 
   reactUploadShouldParseCsv: (state) => {
     if (state.upload._shouldParseCsv)
