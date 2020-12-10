@@ -1,4 +1,3 @@
-import { update } from "plotly.js";
 import React, { useCallback } from "react";
 import { connect } from "redux-bundler-react";
 
