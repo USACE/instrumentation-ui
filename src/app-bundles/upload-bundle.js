@@ -320,7 +320,7 @@ export default {
                   : setAllTo[1];
             } else {
               // If field not mapped, set to null; if required field, push error
-              const data = row[sourceKey];
+              const data = row[sourceKey] || fieldMap[key];
               if (!data) {
                 parsedRow[key] = null;
                 if (config.required) parsedRow.errors.push(key);
