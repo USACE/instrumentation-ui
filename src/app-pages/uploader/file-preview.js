@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+
 import PreviewTable from './preview-table';
 import Tab from '../../app-components/tab';
 

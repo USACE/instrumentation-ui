@@ -1,17 +1,15 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+
 export default connect(
   "doUploadSetIgnoreRows",
   "doUploadIgnoreErrors",
   "selectUploadIgnoreRows",
-  "selectUploadSelectedParser",
   ({
     doUploadSetIgnoreRows,
     doUploadIgnoreErrors,
     uploadIgnoreRows,
-    uploadSelectedParser,
   }) => {
-    if (!uploadSelectedParser) return null;
     return (
       <div className="form-group row">
         <label className="col-3 col-form-label text-right">Ignore Rows</label>
