@@ -21,7 +21,7 @@ const shouldSkipToken = (method, path, unless) => {
   // check custom
   if (!skip) {
     if (unless && unless.custom) {
-      if (typeof unless.custom === "function") {
+      if (typeof unless.custom === 'function') {
         skip = unless.custom({ method: method, path: path });
       }
     }
@@ -44,7 +44,7 @@ const commonFetch = (root, path, options, callback) => {
   fetch(`${root}${path}`, options)
     .then(processResponse)
     .then(response => {
-      if (callback && typeof callback === "function")
+      if (callback && typeof callback === 'function')
         callback(null, response.json);
     })
     .catch(response => {
@@ -71,9 +71,9 @@ class ApiError extends Error {
 
 export default (opts) => {
   const defaults = {
-    name: "api",
-    root: "",
-    tokenSelector: "selectAuthToken",
+    name: 'api',
+    root: '',
+    tokenSelector: 'selectAuthToken',
     unless: null,
   };
 
@@ -96,22 +96,12 @@ export default (opts) => {
         tokenSelector: config.tokenSelector,
       };
 
-      return (state = initialData) => {
-        return state;
-      };
+      return (state = initialData) => state;
     },
 
-    [selectRoot]: (state) => {
-      return state[config.name].root;
-    },
-
-    [selectUnless]: (state) => {
-      return state[config.name].unless;
-    },
-
-    [selectTokenSelector]: (state) => {
-      return state[config.name].tokenSelector;
-    },
+    [selectRoot]: (state) => state[config.name].root,
+    [selectUnless]: (state) => state[config.name].unless,
+    [selectTokenSelector]: (state) => state[config.name].tokenSelector,
 
     getExtraArgs: (store) => {
       const getCommonItems = () => ({
@@ -120,17 +110,18 @@ export default (opts) => {
         tokenSelector: store[selectTokenSelector](),
       });
 
+      const defaultHeaders = token => ({
+        Authorization: `Bearer ${token}`,
+      })
+
       return {
         apiFetch: (path, options = {}) => {
           const { root, unless, tokenSelector } = getCommonItems();
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
-            if (!token) {
-              return null;
-            } else {
-              options.headers = {
-                Authorization: "Bearer " + token,
-              };
+            if (!token) return null;
+            else {
+              options.headers = { ...defaultHeaders(token) };
             }
           }
           return fetch(`${root}${path}`, options);
@@ -139,16 +130,13 @@ export default (opts) => {
         apiGet: (path, callback) => {
           const { root, unless, tokenSelector } = getCommonItems();
           const options = {
-            method: "GET",
+            method: 'GET',
           };
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
-            if (!token) {
-              return null;
-            } else {
-              options.headers = {
-                Authorization: "Bearer " + token,
-              };
+            if (!token) return null;
+            else {
+              options.headers = { ...defaultHeaders(token) };
             }
           }
           commonFetch(root, path, options, callback);
@@ -157,19 +145,18 @@ export default (opts) => {
         apiPut: (path, payload, callback) => {
           const { root, unless, tokenSelector } = getCommonItems();
           const options = {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           };
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
-            if (!token) {
-              return null;
-            } else {
+            if (!token) return null;
+            else {
               options.headers = {
                 ...options.headers,
-                Authorization: "Bearer " + token,
+                ...defaultHeaders(token),
               };
             }
           }
@@ -182,19 +169,18 @@ export default (opts) => {
         apiPost: (path, payload, callback) => {
           const { root, unless, tokenSelector } = getCommonItems();
           const options = {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           };
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
-            if (!token) {
-              return null;
-            } else {
+            if (!token) return null;
+            else {
               options.headers = {
                 ...options.headers,
-                Authorization: "Bearer " + token,
+                ...defaultHeaders(token),
               };
             }
           }
@@ -207,16 +193,13 @@ export default (opts) => {
         apiDelete: (path, callback) => {
           const { root, unless, tokenSelector } = getCommonItems();
           const options = {
-            method: "DELETE",
+            method: 'DELETE',
           };
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
-            if (!token) {
-              return null;
-            } else {
-              options.headers = {
-                Authorization: "Bearer " + token,
-              };
+            if (!token) return null;
+            else {
+              options.headers = { ...defaultHeaders(token) };
             }
           }
           commonFetch(root, path, options, callback);
