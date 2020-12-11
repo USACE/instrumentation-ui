@@ -159,9 +159,9 @@ export default {
 
     const project = store.selectProjectsByRoute();
     const selectedParser = store.selectUploadSelectedParser();
-    let parsed = store.selectUploadDataParsed();
+    const parsedData = store.selectUploadDataParsed();
 
-    parsed = parsed
+    const filteredData = parsedData
       .filter((row) => {
         return !row.ignore;
       })
@@ -173,14 +173,17 @@ export default {
       });
 
     const postUrl = selectedParser.url.replace(":projectId", project.id);
-    apiPost(`${postUrl}?dry_run=true`, parsed, (err, body) => {
+    apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
-        // @TODO add better error handling here
-        console.log(err);
+        store.doNotificationFire({
+          message: err ? `${err.name}: ${err.details}` : 'An unexpected error occured. Please try again later.',
+          level: 'error',
+          autoDismiss: 0,
+        });
       } else {
         const data = body;
         if (data.is_valid) {
-          apiPost(postUrl, parsed, (err, body) => {
+          apiPost(postUrl, filteredData, (err, body) => {
             if (err) {
               // @TODO add better error handling here
               console.log(err);

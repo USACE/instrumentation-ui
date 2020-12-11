@@ -30,6 +30,45 @@ const shouldSkipToken = (method, path, unless) => {
   return skip;
 };
 
+const processResponse = response => (
+  new Promise((resolve, reject) => {
+    const func = response.status < 400 ? resolve : reject;
+    response.json().then(json => func({
+      'status': response.status,
+      'json': json,
+    }));
+  })
+);
+
+const commonFetch = (root, path, options, callback) => {
+  fetch(`${root}${path}`, options)
+    .then(processResponse)
+    .then(response => {
+      if (callback && typeof callback === "function")
+        callback(null, response.json);
+    })
+    .catch(response => {
+      throw new ApiError(response.json, `Request returned a ${response.status}`);
+    })
+    .catch(err => {
+      callback(err);
+    })
+};
+
+class ApiError extends Error {
+  constructor(data = {}, ...params) {
+    super(...params);
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ApiError);
+    }
+
+    this.name = 'Api Error';
+    this.details = data.Detail;
+    this.timestamp = new Date();
+  }
+}
+
 export default (opts) => {
   const defaults = {
     name: "api",
@@ -75,11 +114,15 @@ export default (opts) => {
     },
 
     getExtraArgs: (store) => {
+      const getCommonItems = () => ({
+        root: store[selectRoot](),
+        unless: store[selectUnless](),
+        tokenSelector: store[selectTokenSelector](),
+      });
+
       return {
         apiFetch: (path, options = {}) => {
-          const root = store[selectRoot]();
-          const unless = store[selectUnless]();
-          const tokenSelector = store[selectTokenSelector]();
+          const { root, unless, tokenSelector } = getCommonItems();
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
             if (!token) {
@@ -94,9 +137,7 @@ export default (opts) => {
         },
 
         apiGet: (path, callback) => {
-          const root = store[selectRoot]();
-          const unless = store[selectUnless]();
-          const tokenSelector = store[selectTokenSelector]();
+          const { root, unless, tokenSelector } = getCommonItems();
           const options = {
             method: "GET",
           };
@@ -110,26 +151,11 @@ export default (opts) => {
               };
             }
           }
-          fetch(`${root}${path}`, options)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`Request returned a ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((json) => {
-              if (callback && typeof callback === "function")
-                callback(null, json);
-            })
-            .catch((err) => {
-              callback(err);
-            });
+          commonFetch(root, path, options, callback);
         },
 
         apiPut: (path, payload, callback) => {
-          const root = store[selectRoot]();
-          const unless = store[selectUnless]();
-          const tokenSelector = store[selectTokenSelector]();
+          const { root, unless, tokenSelector } = getCommonItems();
           const options = {
             method: "PUT",
             headers: {
@@ -150,26 +176,11 @@ export default (opts) => {
           if (payload) {
             options.body = JSON.stringify(payload);
           }
-          fetch(`${root}${path}`, options)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`Request returned a ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((json) => {
-              if (callback && typeof callback === "function")
-                callback(null, json);
-            })
-            .catch((err) => {
-              callback(err);
-            });
+          commonFetch(root, path, options, callback);
         },
 
         apiPost: (path, payload, callback) => {
-          const root = store[selectRoot]();
-          const unless = store[selectUnless]();
-          const tokenSelector = store[selectTokenSelector]();
+          const { root, unless, tokenSelector } = getCommonItems();
           const options = {
             method: "POST",
             headers: {
@@ -190,26 +201,11 @@ export default (opts) => {
           if (payload) {
             options.body = JSON.stringify(payload);
           }
-          fetch(`${root}${path}`, options)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`Request returned a ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((json) => {
-              if (callback && typeof callback === "function")
-                callback(null, json);
-            })
-            .catch((err) => {
-              callback(err);
-            });
+          commonFetch(root, path, options, callback);
         },
 
         apiDelete: (path, callback) => {
-          const root = store[selectRoot]();
-          const unless = store[selectUnless]();
-          const tokenSelector = store[selectTokenSelector]();
+          const { root, unless, tokenSelector } = getCommonItems();
           const options = {
             method: "DELETE",
           };
@@ -223,20 +219,7 @@ export default (opts) => {
               };
             }
           }
-          fetch(`${root}${path}`, options)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`Request returned a ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((json) => {
-              if (callback && typeof callback === "function")
-                callback(null, json);
-            })
-            .catch((err) => {
-              callback(err);
-            });
+          commonFetch(root, path, options, callback);
         },
       };
     },
