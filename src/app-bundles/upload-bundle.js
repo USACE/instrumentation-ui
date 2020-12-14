@@ -174,7 +174,7 @@ export default {
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
         store.doNotificationFire({
-          message: err ? `${err.name}: ${err.details}` : 'An unexpected error occured. Please try again later.',
+          message: err ? `${err.name}: ${err.Detail}` : 'An unexpected error occured. Please try again later.',
           level: 'error',
           autoDismiss: 0,
         });

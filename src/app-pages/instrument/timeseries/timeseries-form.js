@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+
 import DomainSelect from "../../../app-components/domain-select";
 
 const DeleteButton = connect(
   "doInstrumentTimeseriesDelete",
   "doModalClose",
   ({ doInstrumentTimeseriesDelete, doModalClose, item }) => {
-    const [isConfirming, setIsConfirming] = useState(false);
     if (!item || !item.id) return null;
 
-    const handleDelete = (e) => {
+    const [isConfirming, setIsConfirming] = useState(false);
+
+    const handleDelete = (_e) => {
       setIsConfirming(false);
       doInstrumentTimeseriesDelete(
         item,
-        () => {
-          doModalClose();
-        },
+        () => doModalClose(),
         true
       );
     };
@@ -34,9 +34,7 @@ const DeleteButton = connect(
             <button
               title="Cancel"
               className="btn btn-secondary"
-              onClick={() => {
-                setIsConfirming(false);
-              }}
+              onClick={() => setIsConfirming(false)}
             >
               Cancel
             </button>
@@ -44,9 +42,7 @@ const DeleteButton = connect(
         ) : (
           <button
             title="Remove from Group"
-            onClick={() => {
-              setIsConfirming(true);
-            }}
+            onClick={() => setIsConfirming(true)}
             className="btn btn-danger"
           >
             Delete
@@ -100,7 +96,7 @@ export default connect(
       <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="instrument-constant-form" onSubmit={handleSave}>
           <header className="modal-header">
-            <h5 className="modal-title">Edit Constant</h5>
+            <h5 className="modal-title">Edit Timeseries</h5>
             <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
           </header>
           <section className="modal-body">

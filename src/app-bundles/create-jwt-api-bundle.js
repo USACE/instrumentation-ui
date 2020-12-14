@@ -33,6 +33,15 @@ const shouldSkipToken = (method, path, unless) => {
 const processResponse = response => (
   new Promise((resolve, reject) => {
     const func = response.status < 400 ? resolve : reject;
+
+    // Handle no content - untested
+    // if (response.status === 204) {
+    //   return func({
+    //     'status': response.status,
+    //     'json': {},
+    //   });
+    // }
+
     response.json().then(json => func({
       'status': response.status,
       'json': json,
@@ -44,10 +53,12 @@ const commonFetch = (root, path, options, callback) => {
   fetch(`${root}${path}`, options)
     .then(processResponse)
     .then(response => {
+      console.log('response: ', response);
       if (callback && typeof callback === 'function')
         callback(null, response.json);
     })
     .catch(response => {
+      console.log('catch response', response);
       throw new ApiError(response.json, `Request returned a ${response.status}`);
     })
     .catch(err => {
@@ -63,9 +74,14 @@ class ApiError extends Error {
       Error.captureStackTrace(this, ApiError);
     }
 
+    const dataKeys = Object.keys(data);
+
     this.name = 'Api Error';
-    this.details = data.Detail;
     this.timestamp = new Date();
+
+    dataKeys.forEach(key => {
+      this[key] = data[key];
+    })
   };
 };
 

@@ -4,7 +4,7 @@ export default {
   postProcess: (rows) => (
     /** Remove duplicate entries of timeseries name + instrument_id combinations */
     rows.reduce((accum, current) => {
-      const exists = accum.find(elem => {
+      const found = accum.find(elem => {
         const { instrument_id, name } = elem;
 
         if (!instrument_id || !name) return false;
@@ -12,7 +12,7 @@ export default {
         return instrument_id === current.instrument_id && name === current.name;
       });
 
-      if (!exists) accum.push(current);
+      if (!found) accum.push(current);
       return accum;
     }, [])
   ),
@@ -20,10 +20,8 @@ export default {
     instrument_id: {
       label: 'Instrument',
       type: 'internal',
-      provider: state => (
-        Object.keys(state.instruments).filter(key => key.charAt(0) !== '_')
-      ),
       required: true,
+      provider: state => Object.keys(state.instruments).filter(key => key.charAt(0) !== '_'),
       parse: (val, state) => {
         const instrument = state.instruments[val.toLowerCase()];
         return instrument ? instrument.id : null;
