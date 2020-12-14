@@ -1,7 +1,21 @@
 export default {
   name: 'Timeseries',
   url: '/timeseries',
-  postProcess: null,
+  postProcess: (rows) => (
+    /** Remove duplicate entries of timeseries name + instrument_id combinations */
+    rows.reduce((accum, current) => {
+      const exists = accum.find(elem => {
+        const { instrument_id, name } = elem;
+
+        if (!instrument_id || !name) return false;
+
+        return instrument_id === current.instrument_id && name === current.name;
+      });
+
+      if (!exists) accum.push(current);
+      return accum;
+    }, [])
+  ),
   model: {
     instrument_id: {
       label: 'Instrument',

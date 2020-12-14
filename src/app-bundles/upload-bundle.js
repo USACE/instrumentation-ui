@@ -162,10 +162,8 @@ export default {
     const parsedData = store.selectUploadDataParsed();
 
     const filteredData = parsedData
-      .filter((row) => {
-        return !row.ignore;
-      })
-      .map((row) => {
+      .filter(row => !row.ignore)
+      .map(row => {
         delete row.ignore;
         delete row.errors;
         row.project_id = project.id;
@@ -186,7 +184,12 @@ export default {
           apiPost(postUrl, filteredData, (err, body) => {
             if (err) {
               // @TODO add better error handling here
-              console.log(err);
+              console.log(err.message);
+              store.doNotificationFire({
+                message: 'An unexpected error occured. Please try again later.',
+                level: 'error',
+                autoDismiss: 0,
+              });
             } else {
               dispatch({
                 type: "UPLOAD_POST_FINISHED",
