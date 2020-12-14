@@ -52,7 +52,7 @@ const commonFetch = (root, path, options, callback) => {
     })
     .catch(err => {
       callback(err);
-    })
+    });
 };
 
 class ApiError extends Error {
@@ -66,8 +66,8 @@ class ApiError extends Error {
     this.name = 'Api Error';
     this.details = data.Detail;
     this.timestamp = new Date();
-  }
-}
+  };
+};
 
 export default (opts) => {
   const defaults = {
@@ -112,7 +112,7 @@ export default (opts) => {
 
       const defaultHeaders = token => ({
         Authorization: `Bearer ${token}`,
-      })
+      });
 
       return {
         apiFetch: (path, options = {}) => {

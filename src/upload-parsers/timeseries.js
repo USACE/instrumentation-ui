@@ -14,7 +14,10 @@ export default {
         const instrument = state.instruments[val.toLowerCase()];
         return instrument ? instrument.id : null;
       },
-      validate: (val) => !!val,
+      validate: (val, state) => {
+        const existingInstruments = Object.keys(state.instruments);
+        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
+      },
       helpText: 'Should map to an instrument name that exists in the system.',
     },
     name: {
