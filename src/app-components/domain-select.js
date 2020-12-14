@@ -17,7 +17,7 @@ export default connect(
         ) : (
           <Select
             defaultOption={value}
-            onChange={() =>  onChange}
+            onChange={onChange}
             placeholderText='Select one...'
             options={options}
           />
