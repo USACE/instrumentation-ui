@@ -53,12 +53,10 @@ const commonFetch = (root, path, options, callback) => {
   fetch(`${root}${path}`, options)
     .then(processResponse)
     .then(response => {
-      console.log('response: ', response);
       if (callback && typeof callback === 'function')
         callback(null, response.json);
     })
     .catch(response => {
-      console.log('catch response', response);
       throw new ApiError(response.json, `Request returned a ${response.status}`);
     })
     .catch(err => {

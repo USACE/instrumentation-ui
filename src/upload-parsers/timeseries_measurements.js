@@ -5,27 +5,33 @@ export default {
   model: {
     instrument_id: {
       label: 'Instrument',
-      type: 'string',
+      type: 'internal',
       required: true,
-      parse: (val, state) => {
-        const instrument = state.instruments[val.toLowerCase()];
-        return instrument ? instrument.id : null;
+      provider: state => (
+        Object.keys(state.instruments)
+          .filter(key => key.charAt(0) !== '_')
+          .map(key => ({ value: state.instruments[key].id, text: key }))
+      ),
+      parse: (val) => val,
+      validate: (val, state) => {
+        const existingInstruments = Object.keys(state.instruments);
+        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
       },
-      validate: (val) => !!val,
       helpText: 'Should map to an instrument name that exists in the system.',
     },
     timeseries_id: {
       label: 'Timeseries',
-      type: 'string',
+      type: 'internal',
       required: true,
-      parse: (val, state, row) => {
-        const timeseries = Object.values(state.instrumentTimeseries);
-        const found = timeseries.filter((t) => {
-          if (!t || !row || !val) return null;
-          return t.name === val && t.instrument_id === row.instrument_id;
-        });
-        return (found && found.length) ? found[0].id : null;
-      },
+      provider: state => (
+        Object.keys(state.instrumentTimeseries)
+          .filter(key => key.charAt(0) !== '_')
+          .map(key => ({
+            value: key,
+            text: `${state.instrumentTimeseries[key].instrument} - ${state.instrumentTimeseries[key].name}`,
+          }))
+      ),
+      parse: (val) => val,
       validate: (val) => !!val,
       helpText: 'Should map to an timeseries name that exists in the system for the selected instrument.',
     },

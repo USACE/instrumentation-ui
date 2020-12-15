@@ -480,6 +480,7 @@ export default {
   /** NOTE: Only add required data for mapping to minimize overhead. */
   selectStateData: (state) => ({
     instruments: state.instruments,
+    instrumentTimeseries: state.instrumentTimeseries,
   }),
 
   reactUploadShouldParseCsv: (state) => {

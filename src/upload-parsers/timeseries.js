@@ -21,11 +21,12 @@ export default {
       label: 'Instrument',
       type: 'internal',
       required: true,
-      provider: state => Object.keys(state.instruments).filter(key => key.charAt(0) !== '_'),
-      parse: (val, state) => {
-        const instrument = state.instruments[val.toLowerCase()];
-        return instrument ? instrument.id : null;
-      },
+      provider: state => (
+        Object.keys(state.instruments)
+          .filter(key => key.charAt(0) !== '_')
+          .map(key => ({ value: state.instruments[key].id, text: key }))
+      ),
+      parse: (val) => val,
       validate: (val, state) => {
         const existingInstruments = Object.keys(state.instruments);
         return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;

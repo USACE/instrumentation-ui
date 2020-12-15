@@ -4,7 +4,16 @@ import { connect } from 'redux-bundler-react';
 export default connect(
   'doUploadQueueCsv',
   'doUploadSettingsClear',
-  ({ doUploadQueueCsv, doUploadSettingsClear, size = 'sm', text = 'Choose File', type = 'success', icon = 'mdi-cloud-upload', buttonClass = '' }) => {
+  ({
+    doUploadQueueCsv,
+    doUploadSettingsClear,
+    size = 'sm',
+    text = 'Choose File',
+    type = 'success',
+    icon = 'mdi-cloud-upload',
+    buttonClass = '',
+    clearSettings = true,
+  }) => {
     const inputEl = useRef(null);
 
     const handleClick = (e) => {
@@ -12,7 +21,8 @@ export default connect(
     };
 
     const handleInputChange = (e) => {
-      doUploadSettingsClear();
+      if (clearSettings) doUploadSettingsClear();
+      
       doUploadQueueCsv(inputEl.current.files[0]);
     };
 

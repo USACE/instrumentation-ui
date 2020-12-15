@@ -41,6 +41,7 @@ export default connect(
         <label className='col-3 col-form-label text-right'>Import As</label>
         <div className='col-9'>
           <Select
+            defaultOption={uploadSelectedParser ? uploadSelectedParser.name : ''}
             onChange={handleSelectParser}
             options={options}
             placeholderText='Select One...'

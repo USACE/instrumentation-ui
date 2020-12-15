@@ -14,7 +14,7 @@ import React from 'react';
  */
 const Button = ({
   size = '',
-  type = '',
+  type = 'primary',
   text = '',
   title = '',
   href = '',
@@ -41,14 +41,16 @@ const Button = ({
     title: title || text,
     disabled: isDisabled,
     'aria-disabled': isDisabled,
-    ...href ? { href: isDisabled ? null : href } : { handleClick },
+    ...href ? { href: isDisabled ? null : href } : { onClick: handleClick },
     ...customProps,
   };
 
   const Child = () => (
-    <span>
-      {icon ? <span>{icon}&nbsp;</span> : null}{text}
-    </span>
+    <>
+      {icon}
+      {icon && text && <>&nbsp;</>}
+      {text}
+    </>
   );
 
   return React.createElement(elem, buttonProps, <Child />);

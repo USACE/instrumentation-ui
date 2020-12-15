@@ -33,10 +33,7 @@ export default connect(
         <li
           key={i}
           className={classes}
-          onClick={() => {
-            console.log(a);
-            setSelectedAlert(a);
-          }}
+          onClick={() => setSelectedAlert(a)}
         >
           {a.name}
           <span className='float-right pointer' style={{ zIndex: 111 }} onClick={(e) => openSettingsModal(e, a)} title='Open Configuration Settings'>

@@ -36,7 +36,7 @@ export default connect(
                 </div>
               </div>
             ) : (
-              <UploadButton />
+              <UploadButton clearSettings={false} />
             )}
           </>
         </div>

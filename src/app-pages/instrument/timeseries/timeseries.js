@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import { AgGridReact } from 'ag-grid-react';
 
+import Button from '../../../app-components/button';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
@@ -10,7 +11,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
-import Button from '../../../app-components/button';
 
 export default connect(
   'doModalOpen',
@@ -38,9 +38,9 @@ export default connect(
     }, [activeTimeseries, doInstrumentTimeseriesSetActiveId]);
 
     // filter out any timeseries used for constants
-    const actualSeries = timeseries.filter((ts) => {
-      return instrument.constants.indexOf(ts.id) === -1;
-    });
+    const actualSeries = timeseries.filter((ts) => (
+      instrument.constants.indexOf(ts.id) === -1
+    ));
 
     const data = measurements[activeTimeseries];
     const items = (data && data.items) || [];
@@ -71,13 +71,15 @@ export default connect(
         <div className='row'>
           <div className='col-3'>
             <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-              <button
-                className='btn btn-sm btn-outline-success mb-2'
-                onClick={() => doModalOpen(TimeseriesForm)}
-                title='New Timeseries'
-              >
-                <i className='mdi mdi-plus mr-1' /> New Timeseries
-              </button>
+              <Button
+                isOutline
+                size='small'
+                type='success'
+                className='mb-2'
+                handleClick={() => doModalOpen(TimeseriesForm)}
+                text='New Timeseries'
+                icon={<i className='mdi mdi-plus mr-1' />}
+              />
             </RoleFilter>
             <ul className='list-group'>
               {actualSeries.map((ts, i) => (
@@ -99,7 +101,7 @@ export default connect(
                 isDisabled={!activeTimeseries}
                 type='primary'
                 size='small'
-                href={`/${project.slug}/upload?timeseriesId=${activeTimeseries}`}
+                href={`/${project.slug}/upload?type=Timeseries Measurement`}
                 text='Upload to this timeseries'
                 title='Upload'
                 icon={<i className='mdi mdi-upload mr-1' />}

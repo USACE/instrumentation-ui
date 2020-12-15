@@ -16,8 +16,8 @@ const generateOptions = (model, jsonKeys, domains, state) => {
       { value: `all-${domain.id}`, text: `Set all to ${domain.value}`}
     )));
   } else if (model.type === 'internal') {
-    ret.push(...model.provider(state).map(key => (
-      { value: key }
+    ret.push(...model.provider(state).map(item => (
+      { value: item.value, text: item.text }
     )));
   }
 
