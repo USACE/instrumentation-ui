@@ -90,6 +90,7 @@ export default connect(
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
     item = {},
+    isEdit = true,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
@@ -218,7 +219,7 @@ export default connect(
       <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="instrument-form" onSubmit={handleSave}>
           <header className="modal-header">
-            <h5 className="modal-title">Edit Instrument</h5>
+            <h5 className="modal-title">{`${isEdit ? 'Edit' : 'Add'} Instrument`}</h5>
             <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
           </header>
           <section className="modal-body">

@@ -59,7 +59,7 @@ export default connect(
                   doModalOpen(AlertFormModal, { item: {} });
                   console.log('Clicked the new alert button');
                 }}
-                className='btn btn-sm btn-success'
+                className='btn btn-sm btn-outline-success'
                 title='New Alert Configuration'
               >
                 New +

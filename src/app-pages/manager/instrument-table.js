@@ -22,11 +22,8 @@ const Table = connect(
             return (
               <tr key={i}>
                 <td title={`Instrument is ${instrument.status}`}>
-                  <i
-                    className={`mdi mdi-circle status-icon-${instrument.status} pr-2`}
-                  ></i>
-                  {instrument.status.charAt(0).toUpperCase() +
-                    instrument.status.slice(1)}
+                  <i className={`mdi mdi-circle status-icon-${instrument.status} pr-2`} />
+                  {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
                 </td>
                 <td style={{ width: "30%" }}>
                   <a href={`/${project.slug}/instruments/${instrument.slug}`}>
@@ -43,13 +40,11 @@ const Table = connect(
                       }}
                       className="btn btn-sm btn-outline-info mr-3"
                     >
-                      <i className="mdi mdi-pencil"></i>
+                      <i className="mdi mdi-pencil" />
                     </button>
-                    {tools
-                      ? tools.map((Tool, i) => {
-                          return <Tool key={i} item={instrument} />;
-                        })
-                      : null}
+                    {tools && (
+                      tools.map((Tool, i) => <Tool key={i} item={instrument} />)
+                    )}
                   </RoleFilter>
                 </td>
               </tr>

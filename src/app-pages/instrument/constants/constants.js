@@ -94,7 +94,7 @@ export default connect(
           <div className='col-3'>
             <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
               <button
-                className='btn btn-sm btn-outline-secondary mb-2'
+                className='btn btn-sm btn-outline-success mb-2'
                 onClick={() => {
                   doModalOpen(ConstantForm);
                 }}

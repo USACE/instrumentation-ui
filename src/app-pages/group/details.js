@@ -1,15 +1,16 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
-import Navbar from "../../app-components/navbar";
-import InstrumentTable from "../manager/instrument-table";
-import InstrumentGroupForm from "../manager/instrument-group-form";
+
 import InstrumentForm from "../manager/instrument-form";
+import InstrumentGroupForm from "../manager/instrument-group-form";
 import InstrumentPicker from "./instrument-picker";
 import InstrumentRemove from "./instrument-remove";
-import Map from "../../app-components/classMap";
-import TimeseriesPanel from "./group-time-series-panel";
-import RoleFilter from "../../app-components/role-filter";
+import InstrumentTable from "../manager/instrument-table";
 import LoginMessage from "../../app-components/login-message";
+import Map from "../../app-components/classMap";
+import Navbar from "../../app-components/navbar";
+import RoleFilter from "../../app-components/role-filter";
+import TimeseriesPanel from "./group-time-series-panel";
 
 export default connect(
   "doModalOpen",
@@ -23,10 +24,10 @@ export default connect(
     instrumentGroupInstrumentsItems: instruments,
   }) => {
     if (!group) return null;
-    return (
-      <div>
-        <Navbar theme="primary" fixed />
 
+    return (
+      <>
+        <Navbar theme="primary" fixed />
         <section className="container" style={{ marginTop: "6rem" }}>
           <div className="row">
             <div className="col">
@@ -39,7 +40,7 @@ export default connect(
                     justifyContent: "space-between",
                   }}
                 >
-                  <strong>{group.name}</strong>{" "}
+                  <strong>{group.name}</strong>&nbsp;
                   <RoleFilter
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
@@ -50,7 +51,7 @@ export default connect(
                       }}
                       className="btn btn-sm btn-outline-info"
                     >
-                      <i className="mdi mdi-pencil pr-2"></i> Edit
+                      <i className="mdi mdi-pencil pr-2" /> Edit
                     </button>
                   </RoleFilter>
                 </div>
@@ -85,21 +86,18 @@ export default connect(
                 <div className="btn-group">
                   <button
                     onClick={() => {
-                      doModalOpen(InstrumentForm, { addToGroup: group });
+                      doModalOpen(InstrumentForm, { addToGroup: group, isEdit: false });
                     }}
                     className="btn btn-sm btn-outline-info"
                   >
-                    <i className="mdi mdi-map-marker-plus pr-2"></i> Add New
+                    <i className="mdi mdi-map-marker-plus pr-2" /> Add New
                     Instrument
                   </button>
                   <button
-                    onClick={() => {
-                      doModalOpen(InstrumentPicker);
-                    }}
+                    onClick={() => doModalOpen(InstrumentPicker)}
                     className="btn btn-sm btn-outline-info"
                   >
-                    <i className="mdi mdi-map-marker pr-2"></i> Add Existing
-                    Instrument
+                    <i className="mdi mdi-map-marker pr-2" /> Add Existing Instrument
                   </button>
                 </div>
               </RoleFilter>
@@ -113,7 +111,7 @@ export default connect(
           </div>
           <TimeseriesPanel />
         </section>
-      </div>
+      </>
     );
   }
 );
