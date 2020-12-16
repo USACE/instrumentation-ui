@@ -1,24 +1,27 @@
+import formatISO from 'date-fns/formatISO';
+
+const formatTime = t => formatISO(new Date(t));
+
 export default {
   name: 'Timeseries Measurement',
   url: '/timeseries/measurements',
-  postProcess: null,
+  prePostFilter: (data) => (
+    /** this will work for single timeseries_id, needs to be updated to allow for multiple */
+    data.reduce((accum, current) => {
+      const { timeseries_id, time, value, project_id } = current;
+
+      return ({
+        ...accum,
+        timeseries_id,
+        project_id,
+        items: (accum['items'] || []).concat([{
+          time: formatTime(time),
+          value,
+        }])
+      });
+    }, {})
+  ),
   model: {
-    instrument_id: {
-      label: 'Instrument',
-      type: 'internal',
-      required: true,
-      provider: state => (
-        Object.keys(state.instruments)
-          .filter(key => key.charAt(0) !== '_')
-          .map(key => ({ value: state.instruments[key].id, text: key }))
-      ),
-      parse: (val) => val,
-      validate: (val, state) => {
-        const existingInstruments = Object.keys(state.instruments);
-        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
-      },
-      helpText: 'Should map to an instrument name that exists in the system.',
-    },
     timeseries_id: {
       label: 'Timeseries',
       type: 'internal',
@@ -39,12 +42,14 @@ export default {
       label: 'Time',
       type: 'string',
       required: true,
+      parse: (val) => formatTime(val),
       helpText: 'Value should be able to be parsed into a Javascript Date String (see MDN docs for this)',
     },
     value: {
       label: 'Value',
       type: 'number',
       required: true,
+      parse: (val) => Number(val),
       helpText: 'Numeric value of the measurement at the specified time',
     },
   },

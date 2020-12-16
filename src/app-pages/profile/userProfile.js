@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+import { formatDistance } from 'date-fns';
 
-import { convertTimeAgo } from '../instrument/alert/alert-entry';
 import Navbar from '../../app-components/navbar';
 import Tab from '../../app-components/tab';
 
@@ -27,7 +27,7 @@ const buildAlertContent = (alerts = []) => {
       {alerts.map((alert, i) => {
         const { project_name, instrument_name, name, body, read, create_date } = alert;
         const url = `/instrumentation/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
-        const timeAgo = convertTimeAgo(Date.now() - new Date(create_date));
+        const timeAgo = formatDistance(new Date(create_date), Date.now());
 
         return (
           <div

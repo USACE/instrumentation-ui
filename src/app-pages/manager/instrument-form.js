@@ -1,9 +1,11 @@
 /* eslint-disable no-mixed-operators */
 import React, { useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
-import Map from "../../app-components/classMap";
-import DomainSelect from "../../app-components/domain-select";
 import DatePicker from "react-datepicker";
+import { connect } from "redux-bundler-react";
+
+import DomainSelect from "../../app-components/domain-select";
+import Map from "../../app-components/classMap";
+
 import "react-datepicker/dist/react-datepicker.css";
 
 const DeleteButton = connect(
@@ -118,12 +120,13 @@ export default connect(
     const [y, setY] = useState(projected[1]);
 
     useEffect(() => {
-      if (!instrumentDrawReady || !item || !item.geometry) return undefined;
-      const geom = item.geometry;
-      const itemLon = geom.coordinates[0];
-      const itemLat = geom.coordinates[1];
-      doInstrumentDrawUpdateLoc({ lat: itemLat, lon: itemLon });
-      return doInstrumentDrawOnMapClose;
+      if (instrumentDrawReady  && item && item.geometry) {
+        const geom = item.geometry;
+        const itemLon = geom.coordinates[0];
+        const itemLat = geom.coordinates[1];
+        doInstrumentDrawUpdateLoc({ lat: itemLat, lon: itemLon });
+      }
+      return () => doInstrumentDrawOnMapClose;
     }, [
       instrumentDrawReady,
       doInstrumentDrawUpdateLoc,

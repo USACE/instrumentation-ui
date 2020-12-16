@@ -161,7 +161,7 @@ export default {
     const selectedParser = store.selectUploadSelectedParser();
     const parsedData = store.selectUploadDataParsed();
 
-    const filteredData = parsedData
+    let filteredData = parsedData
       .filter(row => !row.ignore)
       .map(row => {
         delete row.ignore;
@@ -169,6 +169,10 @@ export default {
         row.project_id = project.id;
         return row;
       });
+
+    if (selectedParser.prePostFilter && typeof selectedParser.prePostFilter === 'function') {
+      filteredData = selectedParser.prePostFilter(filteredData);
+    }
 
     const postUrl = selectedParser.url.replace(":projectId", project.id);
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {

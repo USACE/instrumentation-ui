@@ -1,27 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { formatDistance } from 'date-fns';
 
 import AlertNoteForm from '../../manager/alert-note-form';
-
-export const convertTimeAgo = milli => {
-  const minutes = milli / 1000 / 60;
-
-  if (minutes < 1) {
-    return '< 1 minute';
-  }
-
-  if (minutes < 60) {
-    return `${Math.floor(minutes)} minute${Math.floor(minutes) !== 1 ? 's' : ''}`;
-  }
-
-  const hours = minutes / 60;
-  if (hours < 24) {
-    return `${Math.floor(hours)} hour${Math.floor(hours) !== 1 ? 's' : ''}`;
-  }
-
-  const days = hours / 24;
-  return `${Math.floor(days)} day${Math.floor(days) !== 1 ? 's' : ''}`;
-}
 
 const AlertEntry = connect(
   'selectProfileAlertsByInstrumentId',
@@ -37,7 +18,7 @@ const AlertEntry = connect(
   }) => {
     const [isHovered, setIsHovered] = useState(false);
 
-    const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
+    const timeAgo = formatDistance(new Date(item.create_date), Date.now());
 
     const userAlert = userAlerts.find(a => a.id === item.id);
     const isRead = userAlert ? userAlert.read : false;
