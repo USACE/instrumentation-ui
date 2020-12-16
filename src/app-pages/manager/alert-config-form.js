@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import Button from '../../app-components/button';
 
 const AlertConfigSettings = connect(
   'doModalClose',
@@ -65,7 +66,7 @@ const AlertConfigSettings = connect(
           <h5 className='modal-title'>Alert Config Settings</h5>
           <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
         </header>
-        <div className='m-3'>
+        <section className='modal-body'>
           <div className='form-group row mt-2'>
             <label htmlFor='alertNameInput' className='col-sm-2 col-form-label'>Name</label>
             <div className='col-sm-10'>
@@ -129,18 +130,26 @@ const AlertConfigSettings = connect(
               </div>
             </>
           )}
+        </section>
+        <footer className='modal-footer'>
           <div>
-            <button className='btn btn-primary mr-2' onClick={saveSettings}>
-              Save
-            </button>
-            <button className='btn btn-secondary' onClick={doModalClose}>
-              Cancel
-            </button>
-            <button className='btn btn-danger float-right' onClick={deleteConfig}>
-              Delete
-            </button>
+            <Button
+              handleClick={saveSettings}
+              className='mr-2'
+              text='Save'
+            />
+            <Button
+              variant='secondary'
+              handleClick={doModalClose}
+              text='Cancel'
+            />
           </div>
-        </div>
+          <Button
+            variant='danger'
+            handleClick={deleteConfig}
+            text='Delete'
+          />
+        </footer>
       </div>
     );
   }

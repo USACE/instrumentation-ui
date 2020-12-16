@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
+import Button from '../../app-components/button';
+
 const DeleteButton = connect(
   "doModalClose",
   "doCollectionGroupDelete",
@@ -109,32 +111,23 @@ export default connect(
               />
             </div>
           </section>
-          <footer
-            className="modal-footer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <footer className="modal-footer">
             <div>
-              <button type="submit" className="btn btn-primary mr-2">
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
+              <Button
+                type='submit'
+                className='mr-2'
+                text='Save'
+              />
+              <Button
+                variant='secondary'
+                handleClick={(e) => {
                   e.preventDefault();
                   doModalClose();
                 }}
-                className="btn btn-secondary"
-              >
-                Cancel
-              </button>
+                text='Cancel'
+              />
             </div>
-            <div>
-              <DeleteButton item={item} />
-            </div>
+            <DeleteButton item={item} />
           </footer>
         </form>
       </div>

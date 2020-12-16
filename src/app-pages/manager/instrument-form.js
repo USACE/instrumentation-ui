@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { connect } from "redux-bundler-react";
 
+import Button from '../../app-components/button';
 import DomainSelect from "../../app-components/domain-select";
 import Map from "../../app-components/classMap";
 
@@ -39,30 +40,24 @@ const DeleteButton = connect(
     return (
       <>
         {isConfirming ? (
-          <div className="btn-group">
-            <button
-              title="Confirm"
-              className="btn btn-danger"
-              onClick={handleDelete}
-            >
-              Confirm
-            </button>
-            <button
-              title="Cancel"
-              className="btn btn-secondary"
-              onClick={() => setIsConfirming(false)}
-            >
-              Cancel
-            </button>
+          <div className='btn-group'>
+            <Button
+              variant='danger'
+              handleClick={handleDelete}
+              text='Confirm'
+            />
+            <Button
+              variant='secondary'
+              handleClick={() => setIsConfirming(false)}
+              text='Cancel'
+            />
           </div>
         ) : (
-          <button
-            title="Remove from Group"
-            onClick={() => setIsConfirming(true)}
-            className="btn btn-danger"
-          >
-            Delete
-          </button>
+          <Button 
+            variant='danger'
+            handleClick={() => setIsConfirming(true)}
+            text='Delete'
+          />
         )}
       </>
     );
@@ -114,7 +109,7 @@ export default connect(
             [instrumentDrawLon, instrumentDrawLat],
             projOptions[projDisplayProjection]
           )
-        : ["", ""];
+        : ['', ''];
 
     const [x, setX] = useState(projected[0]);
     const [y, setY] = useState(projected[1]);
@@ -179,19 +174,19 @@ export default connect(
             status_id,
             status_time,
             station:
-              station === null || station === ""
+              station === null || station === ''
                 ? null
                 : isNaN(Number(station))
                 ? null
                 : Number(station),
             offset:
-              offset === null || offset === ""
+              offset === null || offset === ''
                 ? null
                 : isNaN(Number(offset))
                 ? null
                 : Number(offset),
             geometry: {
-              type: "Point",
+              type: 'Point',
               coordinates: [lonLat[0], lonLat[1]],
             },
           }),
@@ -339,32 +334,23 @@ export default connect(
               />
             </div>
           </section>
-          <footer
-            className="modal-footer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <footer className="modal-footer">
             <div>
-              <button type="submit" className="btn btn-primary mr-2">
-                Save changes
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
+              <Button
+                type='submit'
+                className='mr-2'
+                text='Save changes'
+              />
+              <Button
+                variant='secondary'
+                text='Cancel'
+                handleClick={(e) => {
                   e.preventDefault();
                   doModalClose();
                 }}
-                className="btn btn-secondary"
-              >
-                Cancel
-              </button>
+              />
             </div>
-            <div>
-              <DeleteButton item={item} />
-            </div>
+            <DeleteButton item={item} />
           </footer>
         </form>
       </div>

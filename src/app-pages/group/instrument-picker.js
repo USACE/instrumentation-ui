@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+import Button from "../../app-components/button";
 
 export default connect(
   "doModalClose",
@@ -64,19 +65,22 @@ export default connect(
             </div>
           </section>
           <footer className="modal-footer">
-            <button type="submit" className="btn btn-primary mr-2">
-              Save changes
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                doModalClose();
-              }}
-              className="btn btn-secondary"
-            >
-              Cancel
-            </button>
+            <div>
+              <Button
+                type='submit'
+                className='mr-2'
+                text='Save changes'
+              />
+              <Button
+                variant='secondary'
+                handleClick={(e) => {
+                  e.preventDefault();
+                  doModalClose();
+                }}
+                text='Cancel'
+              />
+            </div>
+            <div />
           </footer>
         </form>
       </div>

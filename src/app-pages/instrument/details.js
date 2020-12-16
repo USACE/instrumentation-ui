@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import AlertEntry from './alert/alert-entry';
+import Button from '../../app-components/button';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../manager/instrument-form';
@@ -78,15 +79,14 @@ export default connect(
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
                   >
-                    <button
-                      onClick={() => {
-                        doModalOpen(InstrumentForm, { item: instrument });
-                      }}
-                      className='btn btn-sm btn-outline-info'
-                      title='Edit'
-                    >
-                      <i className='mdi mdi-pencil pr-2'></i> Edit
-                    </button>
+                    <Button
+                      handleClick={() => doModalOpen(InstrumentForm, { item: instrument })}
+                      variant='info'
+                      size='small'
+                      isOutline
+                      text='Edit'
+                      icon={<i className='mdi mdi-pencil pr-2' />}
+                    />
                   </RoleFilter>
                 </div>
                 <InstrumentDisplay item={instrument} />
@@ -104,9 +104,15 @@ export default connect(
                     <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
                     <Dropdown.Item>Mark All as Read</Dropdown.Item>
                   </Dropdown.Menu>
-                  <button className='btn btn-sm btn-outline-info float-right mr-2' onClick={doAlertsFetch} title='Refresh'>
-                    <i className='mdi mdi-refresh' />
-                  </button>
+                  <Button
+                    className='float-right mr-2'
+                    handleClick={doAlertsFetch}
+                    variant='info'
+                    size='small'
+                    isOutline
+                    title='Refresh'
+                    icon={<i className='mdi mdi-refresh' />}
+                  />
                 </div>
                 <div className='card-body' style={{ maxHeight: 400, overflow: 'auto' }}>
                   <div className='list-group pb-2'>

@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "redux-bundler-react";
 
+import Button from '../../app-components/button';
+
 export default connect(
   "selectInstrumentsByRoute",
   "doModalClose",
@@ -57,21 +59,21 @@ export default connect(
               />
             </div>
           </section>
-          <footer className="modal-footer d-flex justify-content-between align-items-center">
+          <footer className="modal-footer">
             <div>
-              <button type="submit" className="btn btn-primary mr-2">
-                Save changes
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
+              <Button
+                type='submit'
+                className='mr-2'
+                text='Save changes'
+              />
+              <Button
+                variant='secondary'
+                handleClick={(e) => {
                   e.preventDefault();
                   doModalClose();
                 }}
-                className="btn btn-secondary"
-              >
-                Cancel
-              </button>
+                text='Cancel'
+              />
             </div>
           </footer>
         </form>

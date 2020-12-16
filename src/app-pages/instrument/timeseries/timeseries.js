@@ -75,7 +75,7 @@ export default connect(
               <Button
                 isOutline
                 size='small'
-                type='success'
+                variant='success'
                 className='mb-2'
                 handleClick={() => doModalOpen(TimeseriesForm)}
                 text='New Timeseries'
@@ -100,7 +100,6 @@ export default connect(
               <Button
                 isOutline
                 isDisabled={!activeTimeseries}
-                type='primary'
                 size='small'
                 href={`/${project.slug}/upload?type=Timeseries Measurement`}
                 text='Upload to this timeseries'
