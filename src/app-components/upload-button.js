@@ -46,7 +46,7 @@ export default connect(
           accept='.csv'
           style={{ display: 'none' }}
           ref={inputEl}
-          variant='file'
+          type='file'
           onChange={handleInputChange}
         />
       </>
