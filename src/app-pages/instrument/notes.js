@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+
+import Button from '../../app-components/button';
 import RoleFilter from "../../app-components/role-filter";
 
 const NoteEditor = connect(
   "selectInstrumentsByRoute",
   ({ instrumentsByRoute: instrument, note, onSave, onCancel }) => {
     if (!instrument) return null;
+
     const [id] = useState(note.id || null);
     const [title, setTitle] = useState(note.title || "");
     const [body, setBody] = useState(note.body || "");
+
     const handleSave = () => {
       onSave({
         id,
@@ -18,6 +22,7 @@ const NoteEditor = connect(
         time: new Date(),
       });
     };
+
     return (
       <div style={{ margin: "1em", paddingBottom: "1em" }}>
         <div className="form-group">
@@ -26,9 +31,7 @@ const NoteEditor = connect(
             type="text"
             placeholder="Title"
             value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -36,19 +39,21 @@ const NoteEditor = connect(
             className="form-control"
             placeholder="Note..."
             value={body}
-            onChange={(e) => {
-              setBody(e.target.value);
-            }}
+            onChange={(e) => setBody(e.target.value)}
             rows={5}
           />
         </div>
         <div>
-          <button className="btn btn-primary mr-2" onClick={handleSave}>
-            Save
-          </button>
-          <button className="btn btn-secondary" onClick={onCancel}>
-            Cancel
-          </button>
+          <Button
+            className='mr-2'
+            handleClick={handleSave}
+            text='Save'
+          />
+          <Button
+            variant='secondary'
+            handleClick={onCancel}
+            text='Cancel'
+          />
         </div>
       </div>
     );
@@ -67,9 +72,7 @@ const NoteItem = ({ note, editable, save, del }) => {
             setEditing(false);
             save(item);
           }}
-          onCancel={() => {
-            setEditing(false);
-          }}
+          onCancel={() => setEditing(false)}
         />
       ) : (
         <>
@@ -80,14 +83,14 @@ const NoteItem = ({ note, editable, save, del }) => {
                 <em>{`${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`}</em>
               </small>
               {editable ? (
-                <button
-                  onClick={() => {
-                    setEditing(true);
-                  }}
-                  className="btn btn-sm btn-link ml-2"
-                >
-                  <i className="mdi mdi-pencil"></i> Edit
-                </button>
+                <Button 
+                  variant='link'
+                  size='small'
+                  className='ml-2'
+                  text='Edit'
+                  handleClick={() => setEditing(true)}
+                  icon={<i className='mdi mdi-pencil' />}
+                />
               ) : null}
             </div>
           </div>
@@ -112,9 +115,12 @@ export default connect(
     doInstrumentNotesDelete: del,
   }) => {
     if (!project) return null;
-    const edipi = Number(authEdipi);
+
     const [isAdding, setAdding] = useState(false);
+
+    const edipi = Number(authEdipi);
     const sorted = notes.sort();
+
     return (
       <div className="card">
         <div className="card-header">
@@ -141,20 +147,16 @@ export default connect(
                   setAdding(false);
                   save(newNote);
                 }}
-                onCancel={() => {
-                  setAdding(false);
-                }}
+                onCancel={() => setAdding(false)}
               />
             ) : (
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                <button
-                  className="btn btn-outline-info"
-                  onClick={() => {
-                    setAdding(true);
-                  }}
-                >
-                  Add New
-                </button>
+                <Button
+                  variant='info'
+                  isOutline
+                  text='Add New'
+                  handleClick={() => setAdding(true)}
+                />
               </RoleFilter>
             )}
           </li>

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "redux-bundler-react";
-import Navbar from "../../app-components/navbar";
-import RoleFilter from "../../app-components/role-filter";
-import LoginMessage from "../../app-components/login-message";
+import { roundToNearestMinutes } from "date-fns";
+
+import Button from '../../app-components/button';
 import collectionGroupForm from "../manager/collection-group-form";
 import collectionGroupTimeseriesPicker from "./collectiongroup-timeseries-picker";
-import TimeseriesList from "./collectiongroup-timeseries-list";
-import { roundToNearestMinutes } from "date-fns";
-import TimestampModeSwitcher from "./collectiongroup-timestamp-mode-switcher";
+import LoginMessage from "../../app-components/login-message";
+import Navbar from "../../app-components/navbar";
 import Notifications from "../../app-components/notifications";
+import RoleFilter from "../../app-components/role-filter";
+import TimeseriesList from "./collectiongroup-timeseries-list";
+import TimestampModeSwitcher from "./collectiongroup-timestamp-mode-switcher";
 
 export default connect(
   "doModalOpen",
@@ -94,17 +96,16 @@ export default connect(
                     </span>
                   )}
                 >
-                  <button
-                    onClick={(e) => {
-                      doModalOpen(collectionGroupForm, {
-                        item: detail,
-                      });
+                  <Button
+                    variant='link'
+                    size='small'
+                    className='text-left'
+                    handleClick={(e) => {
+                      doModalOpen(collectionGroupForm, { item: detail });
                       e.stopPropagation();
                     }}
-                    className="btn btn-sm btn-link text-left"
-                  >
-                    <span>Edit</span>
-                  </button>
+                    text='Edit'
+                  />
                 </RoleFilter>
               </div>
               {/* CONFIGURATION DETAILS */}
@@ -132,15 +133,16 @@ export default connect(
                           <RoleFilter
                             allowRoles={[`${project.slug.toUpperCase()}.*`]}
                           >
-                            <button
-                              onClick={(e) => {
+                            <Button
+                              variant='link'
+                              size='small'
+                              handleClick={(e) => {
                                 doModalOpen(collectionGroupTimeseriesPicker);
                                 e.stopPropagation();
                               }}
-                              className="btn btn-sm btn-link"
-                            >
-                              <i className="mdi mdi-plus"></i>Add
-                            </button>
+                              text='Add'
+                              icon={<i className='mdi mdi-plus' />}
+                            />
                           </RoleFilter>
                         </div>
                       </div>

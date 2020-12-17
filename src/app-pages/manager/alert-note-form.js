@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { format } from 'date-fns';
 
-import Button from '../../app-components/button';
 import { ModalFooter } from '../../app-components/modal';
 
 const AlertNoteForm = connect(

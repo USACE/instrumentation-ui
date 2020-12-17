@@ -50,7 +50,7 @@ export default connect(
           true
         );
       }
-    }
+    };
 
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { connect } from "redux-bundler-react";
 
-import Button from '../../app-components/button';
 import DomainSelect from "../../app-components/domain-select";
 import Map from "../../app-components/classMap";
 import { ModalFooter } from "../../app-components/modal";

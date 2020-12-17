@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+import Button from "../../app-components/button";
 import Tab from '../../app-components/tab';
 
 const csvSampleProjects = [
@@ -68,9 +69,13 @@ const DownloadCSVButton = ({ csvContent, filename }) => {
   };
 
   return (
-    <button onClick={handleClick} className="btn btn-sm btn-outline-info">
-      Download Template .CSV
-    </button>
+    <Button
+      variant='info'
+      size='small'
+      isOutline
+      text='Download Template .CSV'
+      handleClick={handleClick}
+    />
   );
 };
 

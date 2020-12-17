@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 
+import Button from '../../app-components/button';
 import InstrumentForm from "../manager/instrument-form";
 import InstrumentGroupForm from "../manager/instrument-group-form";
 import InstrumentPicker from "./instrument-picker";
@@ -45,14 +46,14 @@ export default connect(
                     allowRoles={[`${project.slug.toUpperCase()}.*`]}
                     alt={LoginMessage}
                   >
-                    <button
-                      onClick={() => {
-                        doModalOpen(InstrumentGroupForm, { item: group });
-                      }}
-                      className="btn btn-sm btn-outline-info"
-                    >
-                      <i className="mdi mdi-pencil pr-2" /> Edit
-                    </button>
+                    <Button
+                      variant='info'
+                      size='small'
+                      isOutline
+                      text='Edit'
+                      handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
+                      icon={<i className="mdi mdi-pencil pr-2" />}
+                    />
                   </RoleFilter>
                 </div>
                 <div className="card-body">{group.description}</div>
@@ -84,21 +85,22 @@ export default connect(
               <strong>Instruments</strong>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <div className="btn-group">
-                  <button
-                    onClick={() => {
-                      doModalOpen(InstrumentForm, { addToGroup: group, isEdit: false });
-                    }}
-                    className="btn btn-sm btn-outline-info"
-                  >
-                    <i className="mdi mdi-map-marker-plus pr-2" /> Add New
-                    Instrument
-                  </button>
-                  <button
-                    onClick={() => doModalOpen(InstrumentPicker)}
-                    className="btn btn-sm btn-outline-info"
-                  >
-                    <i className="mdi mdi-map-marker pr-2" /> Add Existing Instrument
-                  </button>
+                  <Button
+                    variant='info'
+                    size='small'
+                    isOutline
+                    text='Add New Instrument'
+                    handleClick={() => doModalOpen(InstrumentForm, { addToGroup: group, isEdit: false })}
+                    icon={<i className="mdi mdi-map-marker-plus pr-2" />}
+                  />
+                  <Button
+                    variant='info'
+                    size='small'
+                    isOutline
+                    text='Add Existing Instrument'
+                    handleClick={() => doModalOpen(InstrumentPicker)}
+                    icon={<i className="mdi mdi-map-marker pr-2" />}
+                  />
                 </div>
               </RoleFilter>
             </div>

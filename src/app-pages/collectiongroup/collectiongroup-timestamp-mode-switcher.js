@@ -1,6 +1,9 @@
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import DatePicker from "react-datepicker";
+
+import Button from '../../app-components/button';
+
 import "./collectiongroup-timestamp-mode-switcher.css";
 
 export default ({ timestampMode, setTimestampMode, date, setDate }) => {
@@ -28,17 +31,14 @@ export default ({ timestampMode, setTimestampMode, date, setDate }) => {
             </small>
           </div>
           {timestampMode !== "now" && (
-            <button
+            <Button
+              variant='link'
+              size='small'
+              className={`p-0 text-left ${timestampMode === 'now' ? 'text-secondary' : ''}`}
               style={{ width: 120 }}
-              className={`btn btn-link btn-sm p-0 text-left ${
-                timestampMode === "now" ? "text-secondary" : ""
-              }`}
-              onClick={(e) => {
-                setTimestampMode("now");
-              }}
-            >
-              reset to now
-            </button>
+              handleClick={() => setTimestampMode('now')}
+              text='reset to now'
+            />
           )}
         </div>
       </div>

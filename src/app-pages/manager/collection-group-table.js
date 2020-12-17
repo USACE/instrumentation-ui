@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+
 import CollectionGroupForm from "./collection-group-form";
 import RoleFilter from "../../app-components/role-filter";
 
