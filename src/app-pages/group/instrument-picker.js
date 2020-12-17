@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
-import Button from "../../app-components/button";
 import { ModalFooter } from "../../app-components/modal";
 
 export default connect(

@@ -1,17 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'redux-bundler-react';
 import { AgGridReact } from 'ag-grid-react';
+import { connect } from 'redux-bundler-react';
 import { format } from 'date-fns';
+
+import Button from '../../../app-components/button';
 import ConstantListItem from './constant-list-item';
 import ConstantForm from './constant-form';
-import RoleFilter from '../../../app-components/role-filter';
 import DateEditor from './date-editor';
-import 'react-datepicker/dist/react-datepicker.css';
+import RoleFilter from '../../../app-components/role-filter';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default connect(
   'selectProjectsByRoute',
@@ -35,8 +37,9 @@ export default connect(
 
     // trigger the fetch for our measurements
     useEffect(() => {
-      if (!activeConstant) return undefined;
-      doInstrumentTimeseriesSetActiveId(activeConstant);
+      if (activeConstant) {
+        doInstrumentTimeseriesSetActiveId(activeConstant);
+      }
     }, [activeConstant, doInstrumentTimeseriesSetActiveId]);
 
     const data = measurements[activeConstant];
@@ -46,11 +49,8 @@ export default connect(
     const columnDefs = [
       { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
       ...keys
-        .filter((key) => {
-          return key !== 'id';
-        })
-        .map((key) => {
-          return {
+        .filter(key => key !== 'id')
+        .map(key => ({
             headerName: key.toUpperCase(),
             field: key,
             resizable: true,
@@ -68,8 +68,7 @@ export default connect(
             onCellValueChanged: (e) => {
               console.log(e);
             },
-          };
-        }),
+          })),
     ];
 
     const addNew = () => {
@@ -93,15 +92,15 @@ export default connect(
         <div className='row'>
           <div className='col-3'>
             <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-              <button
-                className='btn btn-sm btn-outline-success mb-2'
-                onClick={() => {
-                  doModalOpen(ConstantForm);
-                }}
-                title='New Constant'
-              >
-                <i className='mdi mdi-plus mr-1'></i>New Constant
-              </button>
+              <Button
+                variant='success'
+                size='small'
+                className='mb-2'
+                isOutline
+                text='New Constant'
+                handleClick={() => doModalOpen(ConstantForm)}
+                icon={<i className='mdi mdi-plus mr-1' />}
+              />
             </RoleFilter>
             <ul className='list-group'>
               {constants.map((id, i) => {
@@ -122,14 +121,15 @@ export default connect(
           <div className='col'>
             <div className='mb-2'>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                <button
-                  disabled={!activeConstant}
-                  className='btn btn-sm btn-outline-secondary'
-                  onClick={addNew}
-                  title='Add Value'
-                >
-                  <i className='mdi mdi-plus mr-1'></i>Add Value
-                </button>
+                <Button
+                  variant='secondary'
+                  size='small'
+                  isOutline
+                  isDisabled={!activeConstant}
+                  text='Add Value'
+                  handleClick={addNew}
+                  icon={<i className='mdi mdi-plus mr-1' />}
+                />
               </RoleFilter>
             </div>
             <div

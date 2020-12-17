@@ -98,9 +98,10 @@ export default connect(
           <div className='col'>
             <div className='mb-2'>
               <Button
+                variant='secondary'
+                size='small'
                 isOutline
                 isDisabled={!activeTimeseries}
-                size='small'
                 href={`/${project.slug}/upload?type=Timeseries Measurement`}
                 text='Upload to this timeseries'
                 title='Upload'

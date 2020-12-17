@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 
+import Button from "../../app-components/button";
 import InstrumentGroupForm from "./instrument-group-form";
 import RoleFilter from "../../app-components/role-filter";
-import Button from "../../app-components/button";
 
 const Table = connect(
   "doModalOpen",

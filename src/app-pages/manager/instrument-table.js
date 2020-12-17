@@ -40,6 +40,7 @@ const Table = connect(
                       size='small'
                       isOutline
                       title='Edit'
+                      className='mr-3'
                       handleClick={() => doModalOpen(InstrumentForm, { item: instrument })}
                       icon={<i className="mdi mdi-pencil" />}
                     />

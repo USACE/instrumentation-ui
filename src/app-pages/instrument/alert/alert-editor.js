@@ -54,7 +54,6 @@ export default connect(
             <Button
               variant='success'
               size='small'
-              isOutline
               handleClick={() => {
                 doModalOpen(AlertFormModal, { item: {} });
                 console.log('Clicked the new alert button');

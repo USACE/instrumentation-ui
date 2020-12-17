@@ -91,7 +91,7 @@ export default connect(
                     isOutline
                     text='Add New Instrument'
                     handleClick={() => doModalOpen(InstrumentForm, { addToGroup: group, isEdit: false })}
-                    icon={<i className="mdi mdi-map-marker-plus pr-2" />}
+                    icon={<i className='mdi mdi-map-marker-plus pr-2' />}
                   />
                   <Button
                     variant='info'
@@ -99,7 +99,7 @@ export default connect(
                     isOutline
                     text='Add Existing Instrument'
                     handleClick={() => doModalOpen(InstrumentPicker)}
-                    icon={<i className="mdi mdi-map-marker pr-2" />}
+                    icon={<i className='mdi mdi-map-marker pr-2' />}
                   />
                 </div>
               </RoleFilter>
