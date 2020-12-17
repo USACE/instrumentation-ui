@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
-import Button from '../../../app-components/button';
 import DomainSelect from "../../../app-components/domain-select";
 import { ModalFooter, ModalHeader } from "../../../app-components/modal";
 
