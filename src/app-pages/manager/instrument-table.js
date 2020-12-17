@@ -23,10 +23,12 @@ const Table = connect(
           {instruments.map((instrument, i) => {
             return (
               <tr key={i}>
-                <td title={`Instrument is ${instrument.status}`}>
-                  <i className={`mdi mdi-circle status-icon-${instrument.status} pr-2`} />
-                  {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
-                </td>
+                {instrument.status ? (
+                  <td title={`Instrument is ${instrument.status}`}>
+                    <i className={`mdi mdi-circle status-icon-${instrument.status} pr-2`} />
+                    {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
+                  </td>) : <td />
+                }
                 <td style={{ width: "30%" }}>
                   <a href={`/${project.slug}/instruments/${instrument.slug}`}>
                     {instrument.name}

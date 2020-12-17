@@ -35,12 +35,12 @@ const processResponse = response => (
     const func = response.status < 400 ? resolve : reject;
 
     // Handle no content - untested
-    // if (response.status === 204) {
-    //   return func({
-    //     'status': response.status,
-    //     'json': {},
-    //   });
-    // }
+    if (response.status === 204) {
+      return func({
+        'status': response.status,
+        'json': {},
+      });
+    }
 
     response.json().then(json => func({
       'status': response.status,

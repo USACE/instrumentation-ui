@@ -60,12 +60,10 @@ export default connect(
               <label>Name</label>
               <input
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={(e) => setName(e.target.value)}
                 className="form-control"
                 type="text"
-                placeholder="Text input"
+                placeholder="Group name..."
               />
             </div>
           </section>

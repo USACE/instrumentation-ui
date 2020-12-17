@@ -117,6 +117,7 @@ export default connect(
         //     station === null || station === ""
         //   }`
         // );
+
         doInstrumentsSave(
           Object.assign({}, item, {
             name,
