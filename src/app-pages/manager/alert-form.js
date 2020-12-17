@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { ModalFooter } from '../../app-components/modal';
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 export default connect(
   'selectInstrumentsByRoute',
@@ -41,10 +41,7 @@ export default connect(
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <form id='alert-form' onSubmit={handleSave}>
-          <header className='modal-header'>
-            <h5 className='modal-title'>Create Alert</h5>
-            <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
-          </header>
+          <ModalHeader title='Create Alert' />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>

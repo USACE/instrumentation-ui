@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
 import DomainSelect from "../../../app-components/domain-select";
-import { ModalFooter } from "../../../app-components/modal";
+import { ModalFooter, ModalHeader } from "../../../app-components/modal";
 
 export default connect(
   "doModalClose",
@@ -56,10 +56,7 @@ export default connect(
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="instrument-constant-form" onSubmit={handleSave}>
-          <header className="modal-header">
-            <h5 className="modal-title">Edit Constant</h5>
-            <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
-          </header>
+          <ModalHeader title='Edit Constant' />
           <section className="modal-body">
             <div className="form-group">
               <label>Name</label>

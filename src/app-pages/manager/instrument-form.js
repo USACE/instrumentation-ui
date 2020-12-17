@@ -5,7 +5,7 @@ import { connect } from "redux-bundler-react";
 
 import DomainSelect from "../../app-components/domain-select";
 import Map from "../../app-components/classMap";
-import { ModalFooter } from "../../app-components/modal";
+import { ModalFooter, ModalHeader } from "../../app-components/modal";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -183,10 +183,7 @@ export default connect(
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="instrument-form" onSubmit={handleSave}>
-          <header className="modal-header">
-            <h5 className="modal-title">{`${isEdit ? 'Edit' : 'Add'} Instrument`}</h5>
-            <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
-          </header>
+          <ModalHeader title={`${isEdit ? 'Edit' : 'Add'} Instrument`} />
           <section className="modal-body">
             <div className="mb-3" style={{ position: "relative", height: 300 }}>
               <Map

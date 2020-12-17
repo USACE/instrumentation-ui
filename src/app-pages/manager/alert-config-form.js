@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { ModalFooter } from '../../app-components/modal';
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 const AlertConfigSettings = connect(
   'doModalClose',
@@ -63,10 +63,7 @@ const AlertConfigSettings = connect(
 
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
-        <header className='modal-header'>
-          <h5 className='modal-title'>Alert Config Settings</h5>
-          <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
-        </header>
+        <ModalHeader title='Alert Config Settings' />
         <section className='modal-body'>
           <div className='form-group row mt-2'>
             <label htmlFor='alertNameInput' className='col-sm-2 col-form-label'>Name</label>

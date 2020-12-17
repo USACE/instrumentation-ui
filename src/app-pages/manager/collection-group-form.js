@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
-import { ModalFooter } from "../../app-components/modal";
+import { ModalFooter, ModalHeader } from "../../app-components/modal";
 
 export default connect(
   "doModalClose",
@@ -54,12 +54,7 @@ export default connect(
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
         <form id="collection-group-form" onSubmit={handleSave}>
-          <header className="modal-header">
-            <h5 className="modal-title">Edit Collection Group</h5>
-            <span className="pointer" onClick={doModalClose}>
-              <i className="mdi mdi-close-circle-outline"></i>
-            </span>
-          </header>
+          <ModalHeader title='Edit Collection Group' />
           <section className="modal-body">
             <div className="form-group">
               <label>Name</label>
