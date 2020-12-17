@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { formatDistance } from 'date-fns';
 
 import AlertNoteForm from '../../manager/alert-note-form';
+import Button from '../../../app-components/button';
 
 const AlertEntry = connect(
   'selectProfileAlertsByInstrumentId',
@@ -44,30 +45,30 @@ const AlertEntry = connect(
               <p className='mb-1'>{item.body}</p>
               {isHovered && (
                 <div className="btn-group float-right" role="group" aria-label="Alert Controls" style={{ marginTop: '-17px', marginRight: '-21px' }}>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-info"
-                    onClick={() => toggleRead(item, null, true, true)}
+                  <Button
+                    variant='info'
+                    size='small'
+                    isOutline
+                    handleClick={() => toggleRead(item, null, true, true)}
                     title={`Mark as ${isRead ? 'Unread' : 'Read'}`}
-                  >
-                    <i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-info"
-                    onClick={() => doModalOpen(AlertNoteForm, { item })}
-                    title="Add/Edit Note"
-                  >
-                    <i className='mdi mdi-note-plus-outline' />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                    title='Delete'
-                    onClick={() => console.log('delete instrument alert')}
-                  >
-                    <i className='mdi mdi-trash-can-outline' />
-                  </button>
+                    icon={<i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />}
+                  />
+                  <Button 
+                    variant='info'
+                    size='small'
+                    isOutline
+                    handleClick={() => doModalOpen(AlertNoteForm, { item })}
+                    title='Add/Edit Note'
+                    icon={<i className='mdi mdi-note-plus-outline' />}
+                  />
+                  <Button
+                    variant='danger'
+                    size='small'
+                    isOutline
+                    handleClick={() => console.log('delete instrument alert')}
+                    title='Delete Alert'
+                    icon={<i className='mdi mdi-trash-can-outline' />}
+                  />
                 </div>
               )}
             </span>

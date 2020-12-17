@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
+
 import Button from "../../app-components/button";
+import { ModalFooter } from "../../app-components/modal";
 
 export default connect(
   "doModalClose",
@@ -64,24 +66,12 @@ export default connect(
               </select>
             </div>
           </section>
-          <footer className="modal-footer">
-            <div>
-              <Button
-                type='submit'
-                className='mr-2'
-                text='Save changes'
-              />
-              <Button
-                variant='secondary'
-                handleClick={(e) => {
-                  e.preventDefault();
-                  doModalClose();
-                }}
-                text='Cancel'
-              />
-            </div>
-            <div />
-          </footer>
+          <ModalFooter
+            saveIsSubmit
+            customClosingLogic
+            saveText='Save changes'
+            onCancel={() => doModalClose()}
+          />
         </form>
       </div>
     );

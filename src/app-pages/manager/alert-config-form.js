@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import Button from '../../app-components/button';
+
+import { ModalFooter } from '../../app-components/modal';
 
 const AlertConfigSettings = connect(
   'doModalClose',
@@ -131,25 +132,12 @@ const AlertConfigSettings = connect(
             </>
           )}
         </section>
-        <footer className='modal-footer'>
-          <div>
-            <Button
-              handleClick={saveSettings}
-              className='mr-2'
-              text='Save'
-            />
-            <Button
-              variant='secondary'
-              handleClick={doModalClose}
-              text='Cancel'
-            />
-          </div>
-          <Button
-            variant='danger'
-            handleClick={deleteConfig}
-            text='Delete'
-          />
-        </footer>
+        <ModalFooter
+          customClosingLogic
+          onSave={saveSettings}
+          onCancel={doModalClose}
+          onDelete={deleteConfig}
+        />
       </div>
     );
   }

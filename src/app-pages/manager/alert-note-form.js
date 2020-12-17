@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
-
 import { format } from 'date-fns';
+
+import Button from '../../app-components/button';
+import { ModalFooter } from '../../app-components/modal';
 
 const AlertNoteForm = connect(
   'doModalClose',
@@ -18,7 +20,7 @@ const AlertNoteForm = connect(
           <h5 className='modal-title'>Add Note</h5>
           <span className='close pointer text-primary' onClick={doModalClose}>&times;</span>
         </header>
-        <div className='m-3 form'>
+        <section className='modal-body form'>
           <p>
             <strong>Alert Name: &nbsp;</strong>
             {name}
@@ -30,10 +32,11 @@ const AlertNoteForm = connect(
           <p><i>{body}</i></p>
           <hr />
           <textarea className='form-control' value={noteValue} onChange={(e) => setNoteValue(e.target.value)} />
-          <hr />
-          <button className='btn btn-primary mr-2' title='Save' onClick={() => { console.log('save note'); doModalClose(); }}>Save</button>
-          <button className='btn btn-secondary' title='Cancel' onClick={() => doModalClose()}>Cancel</button>
-        </div>
+        </section>
+        <ModalFooter
+          onSave={() => console.log('save note')}
+          showCancelButton
+        />
       </div>
     )
   }

@@ -6,63 +6,9 @@ import { connect } from "redux-bundler-react";
 import Button from '../../app-components/button';
 import DomainSelect from "../../app-components/domain-select";
 import Map from "../../app-components/classMap";
+import { ModalFooter } from "../../app-components/modal";
 
 import "react-datepicker/dist/react-datepicker.css";
-
-const DeleteButton = connect(
-  "doModalClose",
-  "doInstrumentsDelete",
-  "doUpdateUrlWithHomepage",
-  "selectRouteParams",
-  ({
-    doModalClose,
-    doInstrumentsDelete,
-    doUpdateUrlWithHomepage,
-    routeParams,
-    item,
-  }) => {
-    const [isConfirming, setIsConfirming] = useState(false);
-    if (!item || !item.id) return null;
-
-    const handleDelete = () => {
-      setIsConfirming(false);
-      doInstrumentsDelete(
-        item,
-        () => {
-          doModalClose();
-          if (routeParams.hasOwnProperty("instrumentSlug"))
-            doUpdateUrlWithHomepage("/manager");
-        },
-        true
-      );
-    };
-
-    return (
-      <>
-        {isConfirming ? (
-          <div className='btn-group'>
-            <Button
-              variant='danger'
-              handleClick={handleDelete}
-              text='Confirm'
-            />
-            <Button
-              variant='secondary'
-              handleClick={() => setIsConfirming(false)}
-              text='Cancel'
-            />
-          </div>
-        ) : (
-          <Button 
-            variant='danger'
-            handleClick={() => setIsConfirming(true)}
-            text='Delete'
-          />
-        )}
-      </>
-    );
-  }
-);
 
 export default connect(
   "doModalClose",
@@ -72,6 +18,9 @@ export default connect(
   "doProjSetDisplayProjection",
   "doProjTransformFromLonLat",
   "doProjTransformToLonLat",
+  "doInstrumentsDelete",
+  "doUpdateUrlWithHomepage",
+  "selectRouteParams",
   "selectInstrumentDrawLon",
   "selectInstrumentDrawLat",
   "selectInstrumentDrawReady",
@@ -86,14 +35,17 @@ export default connect(
     doProjSetDisplayProjection,
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
-    item = {},
-    isEdit = true,
+    doInstrumentsDelete,
+    doUpdateUrlWithHomepage,
+    routeParams,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
     projDisplayProjection,
     projOptions,
     projectsByRoute: project,
+    item = {},
+    isEdit = true,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [type_id, setTypeId] = useState((item && item.type_id) || "");
@@ -195,6 +147,22 @@ export default connect(
         );
       }
     };
+
+    const handleDelete = (e) => {
+      e.preventDefault();
+
+      if (item && item.id) {
+        doInstrumentsDelete(
+          item,
+          () => {
+            doModalClose();
+            if (routeParams.hasOwnProperty("instrumentSlug"))
+              doUpdateUrlWithHomepage("/manager");
+          },
+          true
+        );
+      }
+    }
 
     const currentProj = projOptions[projDisplayProjection];
     const units = currentProj.getUnits();
@@ -334,24 +302,12 @@ export default connect(
               />
             </div>
           </section>
-          <footer className="modal-footer">
-            <div>
-              <Button
-                type='submit'
-                className='mr-2'
-                text='Save changes'
-              />
-              <Button
-                variant='secondary'
-                text='Cancel'
-                handleClick={(e) => {
-                  e.preventDefault();
-                  doModalClose();
-                }}
-              />
-            </div>
-            <DeleteButton item={item} />
-          </footer>
+          <ModalFooter
+            saveIsSubmit
+            customClosingLogic
+            onCancel={() => doModalClose()}
+            onDelete={handleDelete}
+          />
         </form>
       </div>
     );

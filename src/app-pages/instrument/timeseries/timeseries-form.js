@@ -3,68 +3,21 @@ import { connect } from "redux-bundler-react";
 
 import Button from '../../../app-components/button';
 import DomainSelect from "../../../app-components/domain-select";
-
-const DeleteButton = connect(
-  "doInstrumentTimeseriesDelete",
-  "doModalClose",
-  ({ doInstrumentTimeseriesDelete, doModalClose, item }) => {
-    if (!item || !item.id) return null;
-
-    const [isConfirming, setIsConfirming] = useState(false);
-
-    const handleDelete = (_e) => {
-      setIsConfirming(false);
-      doInstrumentTimeseriesDelete(
-        item,
-        () => doModalClose(),
-        true
-      );
-    };
-
-    return (
-      <>
-        {isConfirming ? (
-          <div className="btn-group">
-            <button
-              title="Confirm"
-              className="btn btn-danger"
-              onClick={handleDelete}
-            >
-              Confirm
-            </button>
-            <button
-              title="Cancel"
-              className="btn btn-secondary"
-              onClick={() => setIsConfirming(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <button
-            title="Remove from Group"
-            onClick={() => setIsConfirming(true)}
-            className="btn btn-danger"
-          >
-            Delete
-          </button>
-        )}
-      </>
-    );
-  }
-);
+import { ModalFooter } from "../../../app-components/modal";
 
 export default connect(
   "doModalClose",
   "doInstrumentTimeseriesSave",
   "doInstrumentsSave",
+  "doInstrumentTimeseriesDelete",
   "selectInstrumentsByRoute",
   ({
     doModalClose,
     doInstrumentTimeseriesSave,
     doInstrumentsSave,
-    item,
+    doInstrumentTimeseriesDelete,
     instrumentsByRoute: instrument,
+    item,
   }) => {
     const [name, setName] = useState((item && item.name) || "");
     const [instrument_id] = useState(instrument.id);
@@ -92,6 +45,14 @@ export default connect(
         true
       );
     };
+
+    const handleDelete = (e) => {
+      e.preventDefault();
+
+      if (item && item.id) {
+        doInstrumentTimeseriesDelete(item, () => doModalClose(), true);
+      }
+    }
 
     return (
       <div className="modal-content" style={{ overflowY: "auto" }}>
@@ -130,24 +91,13 @@ export default connect(
               />
             </div>
           </section>
-          <footer className="modal-footer">
-            <div>
-              <Button
-                type='submit'
-                className='mr-2'
-                text='Save changes'
-              />
-              <Button
-                variant='secondary'
-                handleClick={(e) => {
-                  e.preventDefault();
-                  doModalClose();
-                }}
-                text='Cancel'
-              />
-            </div>
-            <DeleteButton item={item} />
-          </footer>
+          <ModalFooter
+            saveIsSubmit
+            customClosingLogic
+            saveText='Save changes'
+            onCancel={() => doModalClose()}
+            onDelete={handleDelete}
+          />
         </form>
       </div>
     );

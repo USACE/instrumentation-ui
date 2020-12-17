@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import AlertForm from './alert-editor-form';
 import AlertFormModal from '../../manager/alert-form';
 import AlertConfigSettings from '../../manager/alert-config-form';
+import Button from '../../../app-components/button';
 
 export default connect(
   'selectAlertConfigsByRouteByInstrumentId',
@@ -44,31 +45,30 @@ export default connect(
     };
 
     return (
-      <div>
-        <div className='row'>
-          <div className='col-3'>
-            <div className='d-flex align-items-center justify-content-between my-2'>
-              <span>
-                <strong>Select an Alert</strong>
-              </span>
-              <button
-                onClick={() => {
-                  doModalOpen(AlertFormModal, { item: {} });
-                  console.log('Clicked the new alert button');
-                }}
-                className='btn btn-sm btn-outline-success'
-                title='New Alert Configuration'
-              >
-                New +
-              </button>
-            </div>
-            <ul className='list-group'>
-              {alerts.map((a, i) => alertListItem(a, i))}
-            </ul>
+      <div className='row'>
+        <div className='col-3'>
+          <div className='d-flex align-items-center justify-content-between my-2'>
+            <span>
+              <strong>Select an Alert</strong>
+            </span>
+            <Button
+              variant='success'
+              size='small'
+              isOutline
+              handleClick={() => {
+                doModalOpen(AlertFormModal, { item: {} });
+                console.log('Clicked the new alert button');
+              }}
+              text='New +'
+              title='New Alert Configuration'
+            />
           </div>
-          <div className='col'>
-            {selectedAlert && <AlertForm alert={selectedAlert} />}
-          </div>
+          <ul className='list-group'>
+            {alerts.map((a, i) => alertListItem(a, i))}
+          </ul>
+        </div>
+        <div className='col'>
+          {selectedAlert && <AlertForm alert={selectedAlert} />}
         </div>
       </div>
     );
