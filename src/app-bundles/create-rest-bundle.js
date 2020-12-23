@@ -494,6 +494,8 @@ export default (opts) => {
         } else {
           // remove the item from our state and update it internally
           const updatedState = store[selectState]();
+          const holdCurrent = Object.assign({}, updatedState);
+
           delete updatedState[item[config.uid]];
           dispatch({
             type: actions.UPDATED_ITEM,
@@ -509,6 +511,10 @@ export default (opts) => {
                   _err: { err: err },
                   _isSaving: false,
                 },
+              });
+              dispatch({
+                type: actions.UPDATED_ITEM,
+                payload: holdCurrent,
               });
             } else {
               dispatch({

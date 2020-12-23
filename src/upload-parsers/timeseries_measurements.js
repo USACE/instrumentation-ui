@@ -1,6 +1,15 @@
 import formatISO from 'date-fns/formatISO';
+import { isNumeric } from '../utils';
 
-const formatTime = t => formatISO(new Date(t));
+const formatTime = t => {
+  try {
+    const formatted = formatISO(new Date(t));
+    return formatted;
+  }
+  catch (_e) {
+    return undefined;
+  }
+}
 
 export default {
   name: 'Timeseries Measurement',
@@ -34,22 +43,24 @@ export default {
             text: `${state.instrumentTimeseries[key].instrument} - ${state.instrumentTimeseries[key].name}`,
           }))
       ),
-      parse: (val) => val,
-      validate: (val) => !!val,
+      parse: val => val,
+      validate: val => !!val,
       helpText: 'Should map to an timeseries name that exists in the system for the selected instrument.',
     },
     time: {
       label: 'Time',
       type: 'string',
       required: true,
-      parse: (val) => formatTime(val),
+      parse: val => formatTime(val),
+      validate: val => !!val,
       helpText: 'Value should be able to be parsed into a Javascript Date String (see MDN docs for this)',
     },
     value: {
       label: 'Value',
       type: 'number',
       required: true,
-      parse: (val) => Number(val),
+      parse: val => isNumeric(val) ? Number(val) : null,
+      validate: val => !!val,
       helpText: 'Numeric value of the measurement at the specified time',
     },
   },

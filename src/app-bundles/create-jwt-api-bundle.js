@@ -34,18 +34,18 @@ const processResponse = response => (
   new Promise((resolve, reject) => {
     const func = response.status < 400 ? resolve : reject;
 
-    // Handle no content - untested
+    // Handle no content - @TODO: test more
     if (response.status === 204) {
-      return func({
+      func({
         'status': response.status,
         'json': {},
       });
+    } else {
+      response.json().then(json => func({
+        'status': response.status,
+        'json': json,
+      }));
     }
-
-    response.json().then(json => func({
-      'status': response.status,
-      'json': json,
-    }));
   })
 );
 

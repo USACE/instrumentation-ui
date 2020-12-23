@@ -1,9 +1,10 @@
 import neat from "neat-csv";
 import { createSelector } from "redux-bundler";
-import { formatBytes } from "../utils";
+
 import instrumentParser from "../upload-parsers/instrument";
 import timeseriesParser from "../upload-parsers/timeseries";
 import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
+import { formatBytes } from "../utils";
 
 const cellStyle = (params, key) => {
   const style = {};
