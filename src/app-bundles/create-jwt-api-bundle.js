@@ -34,7 +34,7 @@ const processResponse = response => (
   new Promise((resolve, reject) => {
     const func = response.status < 400 ? resolve : reject;
 
-    // Handle no content - @TODO: test more
+    // Handle no content - @TODO: test this
     if (response.status === 204) {
       func({
         'status': response.status,

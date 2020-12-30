@@ -178,6 +178,7 @@ export default {
     const postUrl = selectedParser.url.replace(":projectId", project.id);
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
+        console.error(err.message);
         store.doNotificationFire({
           message: err ? `${err.name}: ${err.Detail}` : 'An unexpected error occured. Please try again later.',
           level: 'error',
@@ -189,7 +190,7 @@ export default {
           apiPost(postUrl, filteredData, (err, body) => {
             if (err) {
               // @TODO add better error handling here
-              console.log(err.message);
+              console.error(err.message);
               store.doNotificationFire({
                 message: 'An unexpected error occured. Please try again later.',
                 level: 'error',
@@ -210,13 +211,28 @@ export default {
             }
           });
         } else {
-          data.errors.forEach((error) => {
-            store.doNotificationFire({
-              message: error,
-              level: "error",
-              autoDismiss: 20,
+          // Safety meaasure until ?dry_run=true is complete on API for all uploaders
+          if (Array.isArray(data) && data.length > 0) {
+            dispatch({
+              type: "UPLOAD_POST_FINISHED",
             });
-          });
+            store.doNotificationFire({
+              message: "Data Uploaded Successfully",
+              level: "success",
+              autoDismiss: 10,
+              onRemove: () => {
+                store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+              },
+            });
+          } else {
+            data.errors.forEach((error) => {
+              store.doNotificationFire({
+                message: error,
+                level: "error",
+                autoDismiss: 20,
+              });
+            });
+          }
         }
       }
     });
