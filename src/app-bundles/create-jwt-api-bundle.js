@@ -53,8 +53,9 @@ const commonFetch = (root, path, options, callback) => {
   fetch(`${root}${path}`, options)
     .then(processResponse)
     .then(response => {
-      if (callback && typeof callback === 'function')
+      if (callback && typeof callback === 'function') {
         callback(null, response.json);
+      }
     })
     .catch(response => {
       throw new ApiError(response.json, `Request returned a ${response.status}`);
@@ -201,6 +202,7 @@ export default (opts) => {
           if (payload) {
             options.body = JSON.stringify(payload);
           }
+
           commonFetch(root, path, options, callback);
         },
 

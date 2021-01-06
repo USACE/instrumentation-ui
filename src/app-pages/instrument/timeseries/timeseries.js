@@ -111,7 +111,8 @@ export default connect(
             <div
               className='ag-theme-balham'
               style={{
-                height: `200px`,
+                minHeight: '200px',
+                height: '85%',
                 width: '100%',
               }}
             >

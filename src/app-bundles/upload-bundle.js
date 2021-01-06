@@ -176,6 +176,7 @@ export default {
     }
 
     const postUrl = selectedParser.url.replace(":projectId", project.id);
+
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
         console.error(err.message);

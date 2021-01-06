@@ -13,7 +13,7 @@ const formatTime = t => {
 
 export default {
   name: 'Timeseries Measurement',
-  url: '/timeseries/measurements',
+  url: '/projects/:projectId/timeseries_measurements',
   prePostFilter: (data) => (
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
