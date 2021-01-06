@@ -1,27 +1,30 @@
 import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Button from './button';
+
 export default connect(
   'doUploadQueueCsv',
   'doUploadSettingsClear',
-  ({ doUploadQueueCsv, doUploadSettingsClear, size = 'sm', text = 'Choose File', type = 'success', icon = 'mdi-cloud-upload', buttonClass = '' }) => {
+  ({
+    doUploadQueueCsv,
+    doUploadSettingsClear,
+    text = 'Choose File',
+    icon = 'mdi-cloud-upload',
+    buttonClass = '',
+    clearSettings = true,
+  }) => {
     const inputEl = useRef(null);
 
-    const handleClick = (e) => {
+    const handleClick = (_e) => {
       inputEl.current.click();
     };
 
-    const handleInputChange = (e) => {
-      doUploadSettingsClear();
+    const handleInputChange = (_e) => {
+      if (clearSettings) doUploadSettingsClear();
+      
       doUploadQueueCsv(inputEl.current.files[0]);
     };
-
-    const btnClassNames = [
-      'btn',
-      `btn-${size}`,
-      `btn-${type}`,
-      buttonClass,
-    ].join(' ');
 
     const iconClassNames = [
       'mdi',
@@ -31,9 +34,14 @@ export default connect(
 
     return (
       <>
-        <button className={btnClassNames} onClick={handleClick} title={text}>
-          <i className={iconClassNames}/>{text}
-        </button>
+        <Button
+          className={buttonClass}
+          handleClick={handleClick}
+          variant='success'
+          size='small'
+          text={text}
+          icon={<i className={iconClassNames} />}
+        />
         <input
           accept='.csv'
           style={{ display: 'none' }}

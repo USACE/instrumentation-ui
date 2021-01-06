@@ -1,5 +1,7 @@
 import { formatDistanceToNow, parseISO } from "date-fns";
 import React, { useState } from "react";
+
+import Button from "../../app-components/button";
 import RoleFilter from "../../app-components/role-filter";
 
 const TimeseriesListEntry = ({
@@ -25,12 +27,12 @@ const TimeseriesListEntry = ({
               {item.instrument}
             </a>
             <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
-              <button
-                className="btn btn-link text-secondary h-100"
-                onClick={(e) => handleItemDelete(item)}
-              >
-                <i className="mdi mdi-delete" />
-              </button>
+              <Button
+                variant='link'
+                className='text-secondary h-100'
+                handleClick={() => handleItemDelete(item)}
+                icon={<i className="mdi mdi-delete" />}
+              />
             </RoleFilter>
           </div>
           <div className="h6">

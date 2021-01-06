@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
 
+import Button from '../../app-components/button';
+
 export default connect(
   "doUploadSettingsClear",
   "doUploadSend",
@@ -8,16 +10,18 @@ export default connect(
   ({ doUploadSettingsClear, doUploadSend, uploadReadyToUpload }) => (
     <div className="clearfix">
       <div className="float-right">
-        <button onClick={doUploadSettingsClear} className="btn btn-secondary mr-2">
-          Clear Settings
-        </button>
-        <button
-          disabled={!uploadReadyToUpload}
-          onClick={doUploadSend}
-          className="btn btn-success"
-        >
-          Upload
-        </button>
+        <Button
+          variant='secondary'
+          className='mr-2'
+          text='Clear Settings'
+          handleClick={doUploadSettingsClear}
+        />
+        <Button
+          variant='success'
+          isDisabled={!uploadReadyToUpload}
+          text='Upload'
+          handleClick={doUploadSend}
+        />
       </div>
     </div>
   )

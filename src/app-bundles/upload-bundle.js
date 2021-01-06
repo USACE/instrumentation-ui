@@ -1,9 +1,10 @@
 import neat from "neat-csv";
 import { createSelector } from "redux-bundler";
-import { formatBytes } from "../utils";
+
 import instrumentParser from "../upload-parsers/instrument";
-// import timeseriesParser from "../upload-parsers/timeseries";
-// import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
+import timeseriesParser from "../upload-parsers/timeseries";
+import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
+import { formatBytes } from "../utils";
 
 const cellStyle = (params, key) => {
   const style = {};
@@ -32,8 +33,8 @@ export default {
       ignoreRows: "",
       parsers: [
         instrumentParser,
-        // timeseriesParser,
-        // timeseriesMeasurementsParser,
+        timeseriesParser,
+        timeseriesMeasurementsParser,
       ],
       selectedParser: null,
       fieldMap: null,
@@ -159,31 +160,43 @@ export default {
 
     const project = store.selectProjectsByRoute();
     const selectedParser = store.selectUploadSelectedParser();
-    let parsed = store.selectUploadDataParsed();
+    const parsedData = store.selectUploadDataParsed();
 
-    parsed = parsed
-      .filter((row) => {
-        return !row.ignore;
-      })
-      .map((row) => {
+    let filteredData = parsedData
+      .filter(row => !row.ignore)
+      .map(row => {
         delete row.ignore;
         delete row.errors;
         row.project_id = project.id;
         return row;
       });
 
+    if (selectedParser.prePostFilter && typeof selectedParser.prePostFilter === 'function') {
+      filteredData = selectedParser.prePostFilter(filteredData);
+    }
+
     const postUrl = selectedParser.url.replace(":projectId", project.id);
-    apiPost(`${postUrl}?dry_run=true`, parsed, (err, body) => {
+
+    apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
-        // @TODO add better error handling here
-        console.log(err);
+        console.error(err.message);
+        store.doNotificationFire({
+          message: err ? `${err.name}: ${err.Detail}` : 'An unexpected error occured. Please try again later.',
+          level: 'error',
+          autoDismiss: 0,
+        });
       } else {
         const data = body;
         if (data.is_valid) {
-          apiPost(postUrl, parsed, (err, body) => {
+          apiPost(postUrl, filteredData, (err, body) => {
             if (err) {
               // @TODO add better error handling here
-              console.log(err);
+              console.error(err.message);
+              store.doNotificationFire({
+                message: 'An unexpected error occured. Please try again later.',
+                level: 'error',
+                autoDismiss: 0,
+              });
             } else {
               dispatch({
                 type: "UPLOAD_POST_FINISHED",
@@ -199,13 +212,28 @@ export default {
             }
           });
         } else {
-          data.errors.forEach((error) => {
-            store.doNotificationFire({
-              message: error,
-              level: "error",
-              autoDismiss: 20,
+          // Safety meaasure until ?dry_run=true is complete on API for all uploaders
+          if (Array.isArray(data) && data.length > 0) {
+            dispatch({
+              type: "UPLOAD_POST_FINISHED",
             });
-          });
+            store.doNotificationFire({
+              message: "Data Uploaded Successfully",
+              level: "success",
+              autoDismiss: 10,
+              onRemove: () => {
+                store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+              },
+            });
+          } else {
+            data.errors.forEach((error) => {
+              store.doNotificationFire({
+                message: error,
+                level: "error",
+                autoDismiss: 20,
+              });
+            });
+          }
         }
       }
     });
@@ -320,7 +348,7 @@ export default {
                   : setAllTo[1];
             } else {
               // If field not mapped, set to null; if required field, push error
-              const data = row[sourceKey];
+              const data = row[sourceKey] || fieldMap[key];
               if (!data) {
                 parsedRow[key] = null;
                 if (config.required) parsedRow.errors.push(key);
@@ -470,6 +498,12 @@ export default {
   selectUploadIsUploading: (state) => state.upload._isUploading,
 
   selectUploadFieldMap: (state) => state.upload.fieldMap,
+
+  /** NOTE: Only add required data for mapping to minimize overhead. */
+  selectStateData: (state) => ({
+    instruments: state.instruments,
+    instrumentTimeseries: state.instrumentTimeseries,
+  }),
 
   reactUploadShouldParseCsv: (state) => {
     if (state.upload._shouldParseCsv)

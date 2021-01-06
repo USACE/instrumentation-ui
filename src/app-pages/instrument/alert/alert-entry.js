@@ -1,27 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { formatDistance } from 'date-fns';
 
 import AlertNoteForm from '../../manager/alert-note-form';
-
-export const convertTimeAgo = milli => {
-  const minutes = milli / 1000 / 60;
-
-  if (minutes < 1) {
-    return '< 1 minute';
-  }
-
-  if (minutes < 60) {
-    return `${Math.floor(minutes)} minute${Math.floor(minutes) !== 1 ? 's' : ''}`;
-  }
-
-  const hours = minutes / 60;
-  if (hours < 24) {
-    return `${Math.floor(hours)} hour${Math.floor(hours) !== 1 ? 's' : ''}`;
-  }
-
-  const days = hours / 24;
-  return `${Math.floor(days)} day${Math.floor(days) !== 1 ? 's' : ''}`;
-}
+import Button from '../../../app-components/button';
 
 const AlertEntry = connect(
   'selectProfileAlertsByInstrumentId',
@@ -37,7 +19,7 @@ const AlertEntry = connect(
   }) => {
     const [isHovered, setIsHovered] = useState(false);
 
-    const timeAgo = convertTimeAgo(Date.now() - new Date(item.create_date));
+    const timeAgo = formatDistance(new Date(item.create_date), Date.now());
 
     const userAlert = userAlerts.find(a => a.id === item.id);
     const isRead = userAlert ? userAlert.read : false;
@@ -63,30 +45,30 @@ const AlertEntry = connect(
               <p className='mb-1'>{item.body}</p>
               {isHovered && (
                 <div className="btn-group float-right" role="group" aria-label="Alert Controls" style={{ marginTop: '-17px', marginRight: '-21px' }}>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-info"
-                    onClick={() => toggleRead(item, null, true, true)}
+                  <Button
+                    variant='info'
+                    size='small'
+                    isOutline
+                    handleClick={() => toggleRead(item, null, true, true)}
                     title={`Mark as ${isRead ? 'Unread' : 'Read'}`}
-                  >
-                    <i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-info"
-                    onClick={() => doModalOpen(AlertNoteForm, { item })}
-                    title="Add/Edit Note"
-                  >
-                    <i className='mdi mdi-note-plus-outline' />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                    title='Delete'
-                    onClick={() => console.log('delete instrument alert')}
-                  >
-                    <i className='mdi mdi-trash-can-outline' />
-                  </button>
+                    icon={<i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />}
+                  />
+                  <Button 
+                    variant='info'
+                    size='small'
+                    isOutline
+                    handleClick={() => doModalOpen(AlertNoteForm, { item })}
+                    title='Add/Edit Note'
+                    icon={<i className='mdi mdi-note-plus-outline' />}
+                  />
+                  <Button
+                    variant='danger'
+                    size='small'
+                    isOutline
+                    handleClick={() => console.log('delete instrument alert')}
+                    title='Delete Alert'
+                    icon={<i className='mdi mdi-trash-can-outline' />}
+                  />
                 </div>
               )}
             </span>

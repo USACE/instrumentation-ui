@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+
+import Button from "../../app-components/button";
 import InstrumentGroupForm from "./instrument-group-form";
 import RoleFilter from "../../app-components/role-filter";
 
@@ -28,14 +30,13 @@ const Table = connect(
                 <td>{group.description}</td>
                 <td style={{ width: "200px" }}>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <button
-                      onClick={() => {
-                        doModalOpen(InstrumentGroupForm, { item: group });
-                      }}
-                      className="btn btn-sm btn-outline-info"
-                    >
-                      <i className="mdi mdi-pencil"></i>
-                    </button>
+                    <Button
+                      variant='info'
+                      size='small'
+                      isOutline
+                      handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
+                      icon={<i className="mdi mdi-pencil" />}
+                    />
                   </RoleFilter>
                 </td>
               </tr>

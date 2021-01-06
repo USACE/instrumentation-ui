@@ -40,19 +40,15 @@ export default connect(
         <div className='row'>
           <div className='col-3'>
             <ul className='list-group'>
-              {timeseries.map((ts, i) => {
-                return (
-                  <li
-                    key={i}
-                    className='list-group-item list-group-item-action'
-                    onDoubleClick={() => {
-                      insertParam(`[${ts.variable}]`);
-                    }}
-                  >
-                    {ts.slug}
-                  </li>
-                );
-              })}
+              {timeseries.map((ts, i) => (
+                <li
+                  key={i}
+                  className='list-group-item list-group-item-action noselect'
+                  onDoubleClick={() => insertParam(`[${ts.variable}]`)}
+                >
+                  {ts.slug}
+                </li>
+              ))}
             </ul>
           </div>
           <div className='col'>
@@ -60,9 +56,7 @@ export default connect(
               ref={input}
               className='form-control'
               value={formula}
-              onChange={(e) => {
-                setFormula(e.target.value);
-              }}
+              onChange={(e) => setFormula(e.target.value)}
               rows={6}
             />
             <div className='float-right mt-2'>

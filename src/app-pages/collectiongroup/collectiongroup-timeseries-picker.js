@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 
+import { ModalFooter, ModalHeader } from "../../app-components/modal";
+
 export default connect(
   "doModalClose",
   "doCollectionGroupAddTimeseries",
@@ -30,12 +32,7 @@ export default connect(
 
     return (
       <div className="modal-content" style={{ overflow: "visible" }}>
-        <header className="modal-header">
-          <h5 className="modal-title">Add Field</h5>
-          <span className="pointer" onClick={doModalClose}>
-            <i className="mdi mdi-close-circle-outline"></i>
-          </span>
-        </header>
+        <ModalHeader title='Add Field' />
         <section className="modal-body" style={{ overflow: "visible" }}>
           <div className="dropdown">
             <button
@@ -71,34 +68,15 @@ export default connect(
             </div>
           </div>
         </section>
-        <footer
-          className="modal-footer"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+        <ModalFooter
+          customClosingLogic
+          saveText='Add'
+          onSave={(e) => handleClickAdd(e)}
+          onCancel={(e) => {
+            e.preventDefault();
+            doModalClose();
           }}
-        >
-          <div>
-            <button
-              onClick={(e) => handleClickAdd(e)}
-              className="btn btn-primary mr-2"
-            >
-              Add
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                doModalClose();
-              }}
-              className="btn btn-secondary"
-            >
-              Cancel
-            </button>
-          </div>
-          <div></div>
-        </footer>
+        />
       </div>
     );
   }

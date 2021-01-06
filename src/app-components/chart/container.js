@@ -1,10 +1,12 @@
 import React from "react";
-import { connect } from "redux-bundler-react";
 import DatePicker from "react-datepicker";
+import { connect } from "redux-bundler-react";
+import { subDays } from "date-fns";
+
+import Button from '../button';
 import Settings from "./settings";
 import VizTimeseries from "./viz-timeseries";
 import VizCorrelation from "./viz-correlation";
-import { subDays } from "date-fns";
 
 export default connect(
   "doChartEditorSetShowSettings",
@@ -77,6 +79,7 @@ export default connect(
         doChartEditorSetCorrelationDates(null, null);
       }
     };
+
     return (
       <div style={{ height: "100%" }}>
         <span
@@ -147,41 +150,43 @@ export default connect(
             </label>
             <div>
               <div className="btn-group">
-                <button
-                  className="btn btn-sm btn-outline-info"
-                  onClick={() => {
+                <Button
+                  variant='info'
+                  size='small'
+                  isOutline
+                  text='30 day'
+                  handleClick={() => {
                     const backDate = subDays(now, 30);
                     updateChartDates(backDate.toISOString(), now.toISOString());
                   }}
-                >
-                  30 day
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-info"
-                  onClick={() => {
+                />
+                <Button
+                  variant='info'
+                  size='small'
+                  isOutline
+                  text='60 day'
+                  handleClick={() => {
                     const backDate = subDays(now, 60);
                     updateChartDates(backDate.toISOString(), now.toISOString());
                   }}
-                >
-                  60 day
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-info"
-                  onClick={() => {
+                />
+                <Button
+                  variant='info'
+                  size='small'
+                  isOutline
+                  text='90 day'
+                  handleClick={() => {
                     const backDate = subDays(now, 90);
                     updateChartDates(backDate.toISOString(), now.toISOString());
                   }}
-                >
-                  90 day
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-info"
-                  onClick={() => {
-                    setLifetime();
-                  }}
-                >
-                  Lifetime
-                </button>
+                />
+                <Button
+                  variant='info'
+                  size='small'
+                  isOutline
+                  text='Lifetime'
+                  handleClick={() => setLifetime()}
+                />
               </div>
             </div>
           </div>

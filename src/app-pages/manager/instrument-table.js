@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+
+import Button from "../../app-components/button";
 import InstrumentForm from "./instrument-form";
 import RoleFilter from "../../app-components/role-filter";
 
@@ -21,13 +23,12 @@ const Table = connect(
           {instruments.map((instrument, i) => {
             return (
               <tr key={i}>
-                <td title={`Instrument is ${instrument.status}`}>
-                  <i
-                    className={`mdi mdi-circle status-icon-${instrument.status} pr-2`}
-                  ></i>
-                  {instrument.status.charAt(0).toUpperCase() +
-                    instrument.status.slice(1)}
-                </td>
+                {instrument.status ? (
+                  <td title={`Instrument is ${instrument.status}`}>
+                    <i className={`mdi mdi-circle status-icon-${instrument.status} pr-2`} />
+                    {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
+                  </td>) : <td />
+                }
                 <td style={{ width: "30%" }}>
                   <a href={`/${project.slug}/instruments/${instrument.slug}`}>
                     {instrument.name}
@@ -36,20 +37,18 @@ const Table = connect(
                 <td>{instrument.type}</td>
                 <td style={{ width: "200px" }}>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <button
-                      title="Edit"
-                      onClick={() => {
-                        doModalOpen(InstrumentForm, { item: instrument });
-                      }}
-                      className="btn btn-sm btn-outline-info mr-3"
-                    >
-                      <i className="mdi mdi-pencil"></i>
-                    </button>
-                    {tools
-                      ? tools.map((Tool, i) => {
-                          return <Tool key={i} item={instrument} />;
-                        })
-                      : null}
+                    <Button
+                      variant='info'
+                      size='small'
+                      isOutline
+                      title='Edit'
+                      className='mr-3'
+                      handleClick={() => doModalOpen(InstrumentForm, { item: instrument })}
+                      icon={<i className="mdi mdi-pencil" />}
+                    />
+                    {tools && (
+                      tools.map((Tool, i) => <Tool key={i} item={instrument} />)
+                    )}
                   </RoleFilter>
                 </td>
               </tr>

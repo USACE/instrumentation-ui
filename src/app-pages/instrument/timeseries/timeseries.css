@@ -1,0 +1,4 @@
+.limit-item-list {
+  max-height: 68vh;
+  overflow: scroll;
+}

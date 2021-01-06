@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Button from '../../../app-components/button';
+
 export default connect(
   'doAlertConfigsSave',
   ({ alert, doAlertConfigsSave }) => {
@@ -24,9 +26,7 @@ export default connect(
                 id='formula'
                 className='form-control'
                 value={formula}
-                onChange={(e) => {
-                  setFormula(e.target.value);
-                }}
+                onChange={(e) => setFormula(e.target.value)}
                 rows={6}
               />
             </div>
@@ -36,35 +36,31 @@ export default connect(
                 id='body'
                 className='form-control'
                 value={body}
-                onChange={(e) => {
-                  setBody(e.target.value);
-                }}
+                onChange={(e) => setBody(e.target.value)}
                 rows={6}
               />
             </div>
           </div>
         </form>
         <div className='d-flex justify-content-end mt-2'>
-          <button
-            onClick={() => {
-              console.log('Clicked the cancel button');
-            }}
-            className='btn btn-sm btn-secondary mr-1'
-            title='Cancel'
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
+          <Button
+            variant='secondary'
+            size='small'
+            className='mr-1'
+            text='Cancel'
+            handleClick={() => console.log('Clicked the cancel button')}
+          />
+          <Button
+            variant='success'
+            size='small'
+            text='Save'
+            title='Save Alert Configuration'
+            handleClick={() => {
               const updatedAlert = { ...alert, formula, body };
               doAlertConfigsSave(updatedAlert);
               console.log('Clicked the save button', updatedAlert);
             }}
-            className='btn btn-sm btn-success'
-            title='Save Alert Configuration'
-          >
-            Save
-          </button>
+          />
         </div>
         <div className='text-right mt-5'>
           <small>{`Last Updated at ${alert.update_date}`}</small>

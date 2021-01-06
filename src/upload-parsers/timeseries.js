@@ -1,17 +1,36 @@
 export default {
   name: 'Timeseries',
   url: '/timeseries',
-  postProcess: null,
+  postProcess: (rows) => (
+    /** Remove duplicate entries of timeseries name + instrument_id combinations */
+    rows.reduce((accum, current) => {
+      const found = accum.find(elem => {
+        const { instrument_id, name } = elem;
+
+        if (!instrument_id || !name) return false;
+
+        return instrument_id === current.instrument_id && name === current.name;
+      });
+
+      if (!found) accum.push(current);
+      return accum;
+    }, [])
+  ),
   model: {
     instrument_id: {
       label: 'Instrument',
-      type: 'string',
+      type: 'internal',
       required: true,
-      parse: (val, state) => {
-        const instrument = state.instruments[val.toLowerCase()];
-        return instrument ? instrument.id : null;
+      provider: state => (
+        Object.keys(state.instruments)
+          .filter(key => key.charAt(0) !== '_')
+          .map(key => ({ value: state.instruments[key].id, text: key }))
+      ),
+      parse: (val) => val,
+      validate: (val, state) => {
+        const existingInstruments = Object.keys(state.instruments);
+        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
       },
-      validate: (val) => !!val,
       helpText: 'Should map to an instrument name that exists in the system.',
     },
     name: {

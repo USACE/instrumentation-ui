@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "redux-bundler-react";
+
 import UploadButton from "../../app-components/upload-button";
 
 export default connect(
@@ -35,7 +36,7 @@ export default connect(
                 </div>
               </div>
             ) : (
-              <UploadButton />
+              <UploadButton clearSettings={false} />
             )}
           </>
         </div>
