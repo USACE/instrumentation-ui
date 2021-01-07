@@ -23,11 +23,11 @@ const AlertEntry = connect(
 
     const userAlert = userAlerts.find(a => a.id === item.id);
     const isRead = userAlert ? userAlert.read : false;
-    const toggleRead = userAlert ? (...params) => {
+    const toggleRead = (...params) => {
       isRead
         ? doAlertUnreadSave(...params)
         : doAlertReadSave(...params)
-    } : () => { };
+    };
 
     return (
       item && (
@@ -49,11 +49,12 @@ const AlertEntry = connect(
                     variant='info'
                     size='small'
                     isOutline
+                    isDisabled={!userAlert}
                     handleClick={() => toggleRead(item, null, true, true)}
                     title={`Mark as ${isRead ? 'Unread' : 'Read'}`}
                     icon={<i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />}
                   />
-                  <Button 
+                  <Button
                     variant='info'
                     size='small'
                     isOutline
@@ -65,6 +66,7 @@ const AlertEntry = connect(
                     variant='danger'
                     size='small'
                     isOutline
+                    isDisabled={!userAlert}
                     handleClick={() => console.log('delete instrument alert')}
                     title='Delete Alert'
                     icon={<i className='mdi mdi-trash-can-outline' />}
