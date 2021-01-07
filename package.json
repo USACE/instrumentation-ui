@@ -18,7 +18,7 @@
     "lodash.isequal": "^4.5.0",
     "money-clip": "^3.0.1",
     "neat-csv": "^5.2.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^5.0.0",
     "ol": "^6.2.1",
     "plotly.js": "^1.57.1",
     "proj4": "^2.6.1",
@@ -29,7 +29,7 @@
     "react-notification-system": "^0.4.0",
     "react-panelgroup": "^1.0.10",
     "react-plotly.js": "^2.4.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^4.0.1",
     "redux-bundler": "^27.0.1",
     "redux-bundler-react": "^1.2.0",
     "xhr": "^2.5.0"
