@@ -1,4 +1,4 @@
-export default {
+const timeseriesParser = {
   name: 'Timeseries',
   url: '/timeseries',
   postProcess: (rows) => (
@@ -44,14 +44,16 @@ export default {
       type: 'domain',
       domainGroup: 'parameter',
       required: true,
-      helpText: 'Acceptable data values include "pressure", "temperature", "elevation", "length", "precipitation", or "voltage" others will be ignored',
+      helpText: `Acceptable data values include 'pressure', 'temperature', 'elevation', 'length', 'precipitation', or 'voltage' others will be ignored`,
     },
     unit_id: {
       label: 'Unit',
       type: 'domain',
       domainGroup: 'unit',
       required: true,
-      helpText: 'Acceptable data values include "inches", "feet", "volts", "millibar", or "inches mercury (Hg)" others will be ignored',
+      helpText: `Acceptable data values include 'inches', 'feet', 'volts', 'millibar', or 'inches mercury (Hg)' others will be ignored`,
     },
   },
 };
+
+export default timeseriesParser;

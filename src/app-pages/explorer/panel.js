@@ -1,9 +1,11 @@
-import React from "react";
+import React from 'react';
 
-export default ({ children }) => {
+const Panel = ({ children }) => {
   return (
-    <div style={{ position: "absolute", top: 0, right: 0, left: 0, bottom: 0 }}>
+    <div style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}>
       {children}
     </div>
   );
 };
+
+export default Panel;

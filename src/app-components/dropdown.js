@@ -54,7 +54,9 @@ const Dropdown = ({
   );
 }
 
-export default {
+const dropdown = {
   Menu: Dropdown,
   Item: DropdownItem,
 };
+
+export default dropdown;

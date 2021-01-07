@@ -1,15 +1,17 @@
-import React from "react";
+import React from 'react';
 
-export default ({ items }) => {
+const TimelineList = ({ items }) => {
   return (
-    <ul style={{ paddingLeft: "5px" }}>
+    <ul style={{ paddingLeft: '5px' }}>
       {items.map((item, i) => {
         return (
           <li className={`timeline-list-item ${item.status}`} key={i}>{`${
             item.text
-          } ${i > 0 ? `(as of ${item.date.toLocaleDateString()})` : ""}`}</li>
+          } ${i > 0 ? `(as of ${item.date.toLocaleDateString()})` : ''}`}</li>
         );
       })}
     </ul>
   );
 };
+
+export default TimelineList;

@@ -1,11 +1,11 @@
-export default {
-  name: "keyval",
+const KeyValueBundle = {
+  name: 'keyval',
 
   getReducer: () => {
     const initalData = {};
     return (state = initalData, { type, payload }) => {
       switch (type) {
-        case "KEY_VALUE_UPDATE":
+        case 'KEY_VALUE_UPDATE':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -15,7 +15,7 @@ export default {
 
   doKeyValSet: (opt) => ({ dispatch }) => {
     dispatch({
-      type: "KEY_VALUE_UPDATE",
+      type: 'KEY_VALUE_UPDATE',
       payload: opt,
     });
   },
@@ -24,3 +24,5 @@ export default {
     return state.keyval;
   },
 };
+
+export default KeyValueBundle;

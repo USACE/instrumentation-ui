@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import Hero from "../../app-components/hero";
-import Navbar from "../../app-components/navbar";
-import Onboarding from "./onboarding";
+import Hero from '../../app-components/hero';
+import Navbar from '../../app-components/navbar';
+import Onboarding from './onboarding';
 
-export default () => (
+const HelpPage = () => (
   <div>
-    <Navbar theme="transparent" hideBrand={true} />
+    <Navbar theme='transparent' hideBrand={true} />
     <Hero />
     <section>
-      <div className="container">
-        <h3 className="mt-3 mb-6">Frequently Asked Questions</h3>
-        <hr className="mb-6" />
+      <div className='container'>
+        <h3 className='mt-3 mb-6'>Frequently Asked Questions</h3>
+        <hr className='mb-6' />
         <section>
           <Onboarding />
         </section>
@@ -19,3 +19,5 @@ export default () => (
     </section>
   </div>
 );
+
+export default HelpPage;

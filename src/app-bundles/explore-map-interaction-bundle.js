@@ -1,10 +1,10 @@
-import Select from "ol/interaction/Select";
-import DragBox from "ol/interaction/DragBox";
-import { defaults } from "ol/interaction";
-import debounce from "lodash.debounce";
+import Select from 'ol/interaction/Select';
+import DragBox from 'ol/interaction/DragBox';
+import { defaults } from 'ol/interaction';
+import debounce from 'lodash.debounce';
 
-export default {
-  name: "exploreMapInteractions",
+const exploreMapInteractionBundle = {
+  name: 'exploreMapInteractions',
 
   getReducer: () => {
     const initialData = {
@@ -16,13 +16,13 @@ export default {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "EXPLOREMAPINTERACTIONS_INITIALIZE_START":
-        case "EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH":
-        case "EXPLOREMAPINTERACTIONS_RESET_START":
-        case "EXPLOREMAPINTERACTIONS_SELECT_UPDATED":
+        case 'EXPLOREMAPINTERACTIONS_INITIALIZE_START':
+        case 'EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH':
+        case 'EXPLOREMAPINTERACTIONS_RESET_START':
+        case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
           return Object.assign({}, state, payload);
-        case "MAPS_INITIALIZED":
-          if (payload.hasOwnProperty("exploreMap")) {
+        case 'MAPS_INITIALIZED':
+          if (payload.hasOwnProperty('exploreMap')) {
             return Object.assign({}, state, {
               _shouldInitialize: true,
             });
@@ -37,7 +37,7 @@ export default {
 
   doExploreMapInteractionsInitialize: () => ({ dispatch, store }) => {
     dispatch({
-      type: "EXPLOREMAPINTERACTIONS_INITIALIZE_START",
+      type: 'EXPLOREMAPINTERACTIONS_INITIALIZE_START',
       payload: {
         _shouldInitialize: false,
       },
@@ -52,18 +52,18 @@ export default {
       200
     );
     const collection = select.getFeatures();
-    collection.on("add", handleSelectionChange);
-    collection.on("remove", handleSelectionChange);
+    collection.on('add', handleSelectionChange);
+    collection.on('remove', handleSelectionChange);
     map.addInteraction(select);
 
     const dragBox = new DragBox();
-    dragBox.on("boxend", store.doExploreMapInteractionsSelectByArea);
-    dragBox.on("boxstart", () => {
+    dragBox.on('boxend', store.doExploreMapInteractionsSelectByArea);
+    dragBox.on('boxstart', () => {
       select.getFeatures().clear();
     });
 
     dispatch({
-      type: "EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH",
+      type: 'EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH',
       payload: {
         select,
         dragBox,
@@ -74,7 +74,7 @@ export default {
   doExploreMapInteractionsIncrementVersion: () => ({ dispatch, store }) => {
     const version = store.selectExploreMapInteractionsVersion();
     dispatch({
-      type: "EXPLOREMAPINTERACTIONS_SELECT_UPDATED",
+      type: 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED',
       payload: {
         version: version + 1,
       },
@@ -194,6 +194,8 @@ export default {
 
   reactExploreMapInteractionsShouldInitialize: (state) => {
     if (state.exploreMapInteractions._shouldInitialize)
-      return { actionCreator: "doExploreMapInteractionsInitialize" };
+      return { actionCreator: 'doExploreMapInteractionsInitialize' };
   },
 };
+
+export default exploreMapInteractionBundle;

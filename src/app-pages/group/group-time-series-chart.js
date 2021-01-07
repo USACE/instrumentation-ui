@@ -1,14 +1,14 @@
-import React from "react";
-import Plot from "react-plotly.js";
+import React from 'react';
+import Plot from 'react-plotly.js';
 
-export default ({ data, title }) => {
+const GroupTimeseriesChart = ({ data, title }) => {
   if (!data) return null;
 
   const chartData = [];
 
   Object.keys(data).forEach((id, i) => {
     const { items, style, name } = data[id];
-    if (!items || !items.length) return "no data to show";
+    if (!items || !items.length) return 'no data to show';
     const x = [];
     const y = [];
     items
@@ -37,7 +37,7 @@ export default ({ data, title }) => {
         layout={{
           autosize: true,
           showlegend: false,
-          dragmode: "pan",
+          dragmode: 'pan',
         }}
         showLegend={false}
         config={{
@@ -46,8 +46,10 @@ export default ({ data, title }) => {
           displayModeBar: true,
           scrollZoom: true,
         }}
-        style={{ width: "100%", height: "500px" }}
+        style={{ width: '100%', height: '500px' }}
       />
     </div>
   );
 };
+
+export default GroupTimeseriesChart;

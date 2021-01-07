@@ -1,25 +1,25 @@
 /* eslint-disable no-mixed-operators */
-import { createSelector } from "redux-bundler";
-import olMap from "ol/Map.js";
-import View from "ol/View";
+import { createSelector } from 'redux-bundler';
+import olMap from 'ol/Map.js';
+import View from 'ol/View';
 
-import ScaleBar from "ol/control/ScaleLine";
-// import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
-// import { OSM, Vector as VectorSource } from "ol/source";
-import BasemapPicker from "../ol-controls/basemap-picker";
+import ScaleBar from 'ol/control/ScaleLine';
+// import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
+// import { OSM, Vector as VectorSource } from 'ol/source';
+import BasemapPicker from '../ol-controls/basemap-picker';
 
 const actions = {
   MAPS_INITIALIZED: `MAPS_INITIALIZED`,
   MAPS_SHUTDOWN: `MAPS_SHUTDOWN`,
 };
 
-export default {
-  name: "maps",
+const MapsBundle = {
+  name: 'maps',
 
   getReducer: () => {
     const initialData = {
-      _geoProjection: "EPSG:4326",
-      _webProjection: "EPSG:3857",
+      _geoProjection: 'EPSG:4326',
+      _webProjection: 'EPSG:3857',
     };
 
     return (state = initialData, { type, payload }) => {
@@ -37,7 +37,7 @@ export default {
     const map = new olMap(
       Object.assign(
         {
-          controls: [new ScaleBar({ units: "us" }), new BasemapPicker()],
+          controls: [new ScaleBar({ units: 'us' }), new BasemapPicker()],
           target: el,
           view: new View({
             center: (options && options.center) || [-11000000, 4600000],
@@ -69,18 +69,18 @@ export default {
     return state.maps;
   },
 
-  selectMapsObject: createSelector("selectMapsState", (state) => {
+  selectMapsObject: createSelector('selectMapsState', (state) => {
     const items = {};
     Object.keys(state).forEach((key) => {
-      if (key[0] !== "_") items[key] = state[key];
+      if (key[0] !== '_') items[key] = state[key];
     });
     return items;
   }),
 
-  selectMapsFlags: createSelector("selectMapsState", (state) => {
+  selectMapsFlags: createSelector('selectMapsState', (state) => {
     const flags = {};
     Object.keys(state).forEach((key) => {
-      if (key[0] === "_") flags[key] = state[key];
+      if (key[0] === '_') flags[key] = state[key];
     });
     return flags;
   }),
@@ -93,3 +93,5 @@ export default {
     return state.maps._webProjection;
   },
 };
+
+export default MapsBundle;

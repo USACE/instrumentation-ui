@@ -11,7 +11,7 @@ const formatTime = t => {
   }
 }
 
-export default {
+const timeseriesMeasurementParser = {
   name: 'Timeseries Measurement',
   url: '/projects/:projectId/timeseries_measurements',
   prePostFilter: (data) => (
@@ -65,3 +65,5 @@ export default {
     },
   },
 };
+
+export default timeseriesMeasurementParser;

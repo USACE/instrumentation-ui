@@ -1,12 +1,12 @@
-export default {
-  name: "exploreChartSync",
+const exploreChartSyncBundle = {
+  name: 'exploreChartSync',
 
   getReducer: () => {
     const initialData = { xMin: 0, xMax: 100 };
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "EXPLORE_CHART_SYNC_LAYOUT":
+        case 'EXPLORE_CHART_SYNC_LAYOUT':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -16,7 +16,7 @@ export default {
 
   doExploreChartSyncState: (xaxis) => ({ dispatch }) => {
     dispatch({
-      type: "EXPLORE_CHART_SYNC_LAYOUT",
+      type: 'EXPLORE_CHART_SYNC_LAYOUT',
       payload: {
         xMin: xaxis.range[0],
         xMax: xaxis.range[1],
@@ -32,3 +32,5 @@ export default {
     return state.exploreChartSync.xMax;
   },
 };
+
+export default exploreChartSyncBundle;

@@ -1,12 +1,12 @@
-import { isNumeric } from "./validators";
+import { isNumeric } from './validators';
 
 const parseStupidCoords = (stupid) => {
-  const splitted = stupid.split(" ");
+  const splitted = stupid.split(' ');
   let dd = 0;
   if (splitted[1]) dd = dd + Number(splitted[1]);
   if (splitted[2]) dd = dd + Number(splitted[2]) / 60;
   if (splitted[3]) dd = dd + Number(splitted[3]) / 60 / 60;
-  if (splitted[0].toUpperCase() === "W" || splitted[0].toUpperCase() === "S")
+  if (splitted[0].toUpperCase() === 'W' || splitted[0].toUpperCase() === 'S')
     dd = dd * -1;
   return dd;
 };
@@ -17,13 +17,13 @@ const parseStupidCoords = (stupid) => {
  * once fields are mapped over.
  */
 
-export default {
-  name: "Instruments",
+const instrumentParser = {
+  name: 'Instruments',
   url: `/projects/:projectId/instruments`,
   postProcess: (rows) => {
     // convert lat and lon to geojson geometry
     rows.forEach((row) => {
-      row.geometry = { type: "Point", coordinates: [] };
+      row.geometry = { type: 'Point', coordinates: [] };
       if (!isNaN(row.lon)) {
         row.geometry.coordinates[0] = parseFloat(row.lon);
         delete row.lon;
@@ -37,8 +37,8 @@ export default {
   },
   model: {
     name: {
-      label: "Name",
-      type: "string",
+      label: 'Name',
+      type: 'string',
       required: true,
       parse: (val) => {
         return val;
@@ -48,70 +48,72 @@ export default {
         return existingInstruments.indexOf(val.toLowerCase()) === -1;
       },
       helpText:
-        "Instrument Names must be unique for a project, these will be compared to all names within the database and show an error if a duplicate is found.",
+        'Instrument Names must be unique for a project, these will be compared to all names within the database and show an error if a duplicate is found.',
     },
     status_id: {
-      label: "Status",
-      type: "domain",
-      domainGroup: "status",
+      label: 'Status',
+      type: 'domain',
+      domainGroup: 'status',
       required: true,
-      template: "",
-      helpText: `Acceptable data values include "active", "inactive", "lost", "destroyed", or "abandoned" and are case-insensitive, all others will be ignored`,
+      template: '',
+      helpText: `Acceptable data values include 'active', 'inactive', 'lost', 'destroyed', or 'abandoned' and are case-insensitive, all others will be ignored`,
     },
     type_id: {
-      label: "Type",
-      type: "domain",
-      domainGroup: "instrument_type",
+      label: 'Type',
+      type: 'domain',
+      domainGroup: 'instrument_type',
       required: true,
-      template: "",
-      helpText: 'Acceptable data values include "Piezometer" or "Staff Gage" others will be ignored',
+      template: '',
+      helpText: `Acceptable data values include 'Piezometer' or 'Staff Gage' others will be ignored`,
     },
     lon: {
-      label: "Lon.",
-      type: "coord",
+      label: 'Lon.',
+      type: 'coord',
       required: true,
-      template: "",
+      template: '',
       parse: (val) => {
-        if (val.toUpperCase().indexOf("W") !== -1)
+        if (val.toUpperCase().indexOf('W') !== -1)
           return parseStupidCoords(val);
-        if (val.toUpperCase().indexOf("E") !== -1)
+        if (val.toUpperCase().indexOf('E') !== -1)
           return parseStupidCoords(val);
         return val;
       },
       validate: isNumeric,
     },
     lat: {
-      label: "Lat.",
-      type: "coord",
+      label: 'Lat.',
+      type: 'coord',
       required: true,
-      template: "",
+      template: '',
       parse: (val) => {
-        if (val.toUpperCase().indexOf("N") !== -1)
+        if (val.toUpperCase().indexOf('N') !== -1)
           return parseStupidCoords(val);
-        if (val.toUpperCase().indexOf("S") !== -1)
+        if (val.toUpperCase().indexOf('S') !== -1)
           return parseStupidCoords(val);
         return val;
       },
       validate: isNumeric,
     },
     station: {
-      label: "Station",
-      type: "number",
+      label: 'Station',
+      type: 'number',
       required: false,
-      template: "",
+      template: '',
       helpText: `Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.`,
       parse: (val) => {
-        return Number(val.replace("+", ""));
+        return Number(val.replace('+', ''));
       },
       validate: isNumeric,
     },
     offset: {
-      label: "Offset",
-      type: "number*100",
+      label: 'Offset',
+      type: 'number*100',
       required: false,
-      template: "",
+      template: '',
       helpText:
-        "Only numeric values will be parsed, positive values are water-side and negative values are land-side",
+        'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
     },
   },
 };
+
+export default instrumentParser;

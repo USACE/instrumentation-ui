@@ -1,29 +1,29 @@
-import Layer from "ol/layer/Vector";
-import Source from "ol/source/Vector";
-import GeoJSON from "ol/format/GeoJSON";
-import Style from "ol/style/Style";
-import Text from "ol/style/Text";
-import Fill from "ol/style/Fill";
-import Stroke from "ol/style/Stroke";
-import Circle from "ol/geom/Circle";
+import Layer from 'ol/layer/Vector';
+import Source from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Circle from 'ol/geom/Circle';
 
 const geoJSON = new GeoJSON();
 
 const statusColors = {
-  active: "#43ac6a",
-  inactive: "grey",
-  abandoned: "grey",
-  destroyed: "#f04124",
-  lost: "#d08002",
+  active: '#43ac6a',
+  inactive: 'grey',
+  abandoned: 'grey',
+  destroyed: '#f04124',
+  lost: '#d08002',
 };
 
-export default {
-  name: "exploreMap",
+const exploreMapBundle = {
+  name: 'exploreMap',
 
   getReducer: () => {
     const initialData = {
       layer: null,
-      _mapKey: "exploreMap",
+      _mapKey: 'exploreMap',
       _shouldInitialize: true,
       _shouldAddData: false,
       _mapLoaded: false,
@@ -32,17 +32,17 @@ export default {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (process.env.NODE_ENV === "development") console.log(type, payload);
+      if (process.env.NODE_ENV === 'development') console.log(type, payload);
       switch (type) {
-        case "INSTRUMENTS_FETCH_FINISHED":
+        case 'INSTRUMENTS_FETCH_FINISHED':
           return Object.assign({}, state, {
             _instrumentsLoaded: true,
           });
-        case "INSTRUMENTGROUPS_FETCH_FINISHED":
+        case 'INSTRUMENTGROUPS_FETCH_FINISHED':
           return Object.assign({}, state, {
             _groupsLoaded: true,
           });
-        case "MAPS_INITIALIZED":
+        case 'MAPS_INITIALIZED':
           if (payload.hasOwnProperty(initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: true,
@@ -50,7 +50,7 @@ export default {
           } else {
             return state;
           }
-        case "MAPS_SHUTDOWN":
+        case 'MAPS_SHUTDOWN':
           if (payload.hasOwnProperty(initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: false,
@@ -58,10 +58,10 @@ export default {
           } else {
             return state;
           }
-        case "EXPLOREMAP_INITIALIZE_START":
-        case "EXPLOREMAP_INITIALIZE_FINISH":
-        case "EXPLOREMAP_ADD_DATA_START":
-        case "EXPLOREMAP_ADD_DATA_FINISH":
+        case 'EXPLOREMAP_INITIALIZE_START':
+        case 'EXPLOREMAP_INITIALIZE_FINISH':
+        case 'EXPLOREMAP_ADD_DATA_START':
+        case 'EXPLOREMAP_ADD_DATA_FINISH':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -71,7 +71,7 @@ export default {
 
   doExploreMapInitialize: () => ({ dispatch, store }) => {
     dispatch({
-      type: "EXPLOREMAP_INITIALIZE_START",
+      type: 'EXPLOREMAP_INITIALIZE_START',
       payload: {
         _shouldInitialize: false,
       },
@@ -84,33 +84,33 @@ export default {
         return new Style({
           geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
           fill: new Fill({
-            color: "#ffffff",
+            color: '#ffffff',
           }),
           stroke: new Stroke({
-            color: statusColors[f.getProperties()["status"]],
+            color: statusColors[f.getProperties()['status']],
             width: 3,
           }),
           text: new Text({
             fill: new Fill({
-              color: "#000000",
+              color: '#000000',
             }),
-            font: "10px sans-serif",
+            font: '10px sans-serif',
             offsetX: 12,
             offsetY: -12,
             padding: [2, 2, 2, 2],
             stroke: new Stroke({
-              color: "#ffffff",
+              color: '#ffffff',
               width: 2,
             }),
-            text: f.get("name"),
-            textAlign: "left",
+            text: f.get('name'),
+            textAlign: 'left',
           }),
         });
       },
     });
 
     dispatch({
-      type: "EXPLOREMAP_INITIALIZE_FINISH",
+      type: 'EXPLOREMAP_INITIALIZE_FINISH',
       payload: {
         layer: lyr,
       },
@@ -119,7 +119,7 @@ export default {
 
   doExploreMapAddData: () => ({ dispatch, store }) => {
     dispatch({
-      type: "EXPLOREMAP_ADD_DATA_START",
+      type: 'EXPLOREMAP_ADD_DATA_START',
       payload: {
         _mapLoaded: false,
       },
@@ -147,7 +147,7 @@ export default {
       });
     }
     dispatch({
-      type: "EXPLOREMAP_ADD_DATA_FINISH",
+      type: 'EXPLOREMAP_ADD_DATA_FINISH',
     });
   },
 
@@ -161,7 +161,7 @@ export default {
 
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)
-      return { actionCreator: "doExploreMapInitialize" };
+      return { actionCreator: 'doExploreMapInitialize' };
   },
 
   reactExploreMapShouldAddData: (state) => {
@@ -170,6 +170,8 @@ export default {
       state.exploreMap._groupsLoaded &&
       state.exploreMap._mapLoaded
     )
-      return { actionCreator: "doExploreMapAddData" };
+      return { actionCreator: 'doExploreMapAddData' };
   },
 };
+
+export default exploreMapBundle;

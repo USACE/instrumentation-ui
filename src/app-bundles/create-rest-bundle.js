@@ -1,4 +1,4 @@
-import { createSelector } from "redux-bundler";
+import { createSelector } from 'redux-bundler';
 
 /**
  * Replace any :item.* values in the url with the actual value from the item
@@ -12,8 +12,8 @@ const decorateUrlWithItem = (urlTemplate, item) => {
       regex.lastIndex++;
     }
     const param = m[1];
-    if (param.indexOf("item") !== -1) {
-      const key = param.split(".")[1];
+    if (param.indexOf('item') !== -1) {
+      const key = param.split('.')[1];
       url = url.replace(param, item[key]);
     }
   }
@@ -26,7 +26,7 @@ const decorateUrlWithItem = (urlTemplate, item) => {
 function checkTokenPart(tokenRoles, val, idx) {
   let match = false;
   tokenRoles.forEach((tokenRole) => {
-    const tokenPart = tokenRole.split(".")[idx];
+    const tokenPart = tokenRole.split('.')[idx];
     if (tokenPart === val) match = true;
   });
   return match;
@@ -42,11 +42,11 @@ function checkRoles(roles, tokenRolesJoined, orgsActiveSlug) {
     let role = roles[i];
     role = role.replace(
       `:ORG.`,
-      `${orgsActiveSlug ? orgsActiveSlug.toUpperCase() : ""}.`
+      `${orgsActiveSlug ? orgsActiveSlug.toUpperCase() : ''}.`
     );
 
     // let super users through no matter what
-    if (tokenRolesJoined.indexOf("APP.SYSADMIN") !== -1) {
+    if (tokenRolesJoined.indexOf('APP.SYSADMIN') !== -1) {
       pass = true;
       break;
     }
@@ -58,25 +58,25 @@ function checkRoles(roles, tokenRolesJoined, orgsActiveSlug) {
     }
 
     // ok, let's check to see if we have a wildcard
-    if (role.indexOf("*") !== -1) {
+    if (role.indexOf('*') !== -1) {
       // if both parts are * then pass is true
-      if (role === "*.*") {
+      if (role === '*.*') {
         pass = true;
         break;
       }
 
       // otherwise we've got to check both parts separately
-      const parts = role.split(".");
+      const parts = role.split('.');
 
       // looks like we do, is it in the org position?
-      if (parts[0] === "*") {
+      if (parts[0] === '*') {
         // if so, check tokenRoles for the role
         if (checkTokenPart(tokenRolesJoined, parts[1], 1)) pass = true;
         if (pass) break;
       }
 
       // how about the role position?
-      if (parts[1] === "*") {
+      if (parts[1] === '*') {
         if (checkTokenPart(tokenRolesJoined, parts[0], 0)) pass = true;
         if (pass) break;
       }
@@ -88,23 +88,23 @@ function checkRoles(roles, tokenRolesJoined, orgsActiveSlug) {
 /**
  * Main Bundle Creator export
  */
-export default (opts) => {
+const createRestBundle = (opts) => {
   const defaults = {
     name: null,
-    uid: "id",
+    uid: 'id',
     lastFetch: new Date(),
     staleAfter: 0, // always stale
     persist: false,
     prefetch: false,
     routeParam: null,
-    getTemplate: "/",
-    putTemplate: "/",
-    postTemplate: "/",
-    deleteTemplate: "/",
+    getTemplate: '/',
+    putTemplate: '/',
+    postTemplate: '/',
+    deleteTemplate: '/',
     fetchActions: [],
     forceFetchActions: [],
     urlParamSelectors: [],
-    allowRoles: ["*.*"],
+    allowRoles: ['*.*'],
     disallowRoles: [],
     addons: {},
     reduceFurther: null,
@@ -242,7 +242,7 @@ export default (opts) => {
             default:
               if (
                 config.reduceFurther &&
-                typeof config.reduceFurther === "function"
+                typeof config.reduceFurther === 'function'
               ) {
                 return config.reduceFurther(state, { type, payload });
               } else {
@@ -282,7 +282,7 @@ export default (opts) => {
         const flags = store[selectFlags]();
         const items = store[selectItemsObject]();
 
-        if (url.indexOf("/:") !== -1) {
+        if (url.indexOf('/:') !== -1) {
           // if we haven't filled in all of our params then bail
           dispatch({
             type: actions.FETCH_ABORT,
@@ -340,7 +340,7 @@ export default (opts) => {
                 },
               });
             } else {
-              let data = typeof body === "string" ? JSON.parse(body) : body;
+              let data = typeof body === 'string' ? JSON.parse(body) : body;
               if (!Array.isArray(data)) data = [data];
               const itemsById = {};
               if (config.mergeItems) {
@@ -415,7 +415,7 @@ export default (opts) => {
               delete updatedState[tempId];
 
               // add our new id to our item and re-attach to our state
-              let data = typeof body === "string" ? JSON.parse(body) : body;
+              let data = typeof body === 'string' ? JSON.parse(body) : body;
               if (data && data.length) data = data[0];
               const updatedItem = Object.assign({}, item, data);
               updatedState[updatedItem[config.uid]] = updatedItem;
@@ -488,7 +488,7 @@ export default (opts) => {
 
         const url = decorateUrlWithItem(store[selectDeleteUrl](), item);
 
-        if (url.indexOf("/:") !== -1) {
+        if (url.indexOf('/:') !== -1) {
           // if we haven't filled in all of our params then bail
           return;
         } else {
@@ -533,7 +533,7 @@ export default (opts) => {
       },
 
       [doUpdatePageSize]: (ps) => ({ dispatch }) => {
-        if (typeof ps === "number")
+        if (typeof ps === 'number')
           dispatch({
             type: actions.PAGE_SIZE_UPDATED,
             payload: { _pageSize: ps },
@@ -591,7 +591,7 @@ export default (opts) => {
       },
 
       [selectIsStale]: createSelector(
-        "selectAppTime",
+        'selectAppTime',
         selectLastFetch,
         (now, lastFetch) => {
           return now - new Date(lastFetch) > config.staleAfter;
@@ -601,7 +601,7 @@ export default (opts) => {
       [selectFlags]: createSelector(selectState, (state) => {
         const flags = {};
         Object.keys(state).forEach((key) => {
-          if (key[0] === "_") flags[key] = state[key];
+          if (key[0] === '_') flags[key] = state[key];
         });
         return flags;
       }),
@@ -621,7 +621,7 @@ export default (opts) => {
       [selectItemsObject]: createSelector(selectState, (state) => {
         const items = {};
         Object.keys(state).forEach((key) => {
-          if (key[0] !== "_") items[key] = state[key];
+          if (key[0] !== '_') items[key] = state[key];
         });
         return items;
       }),
@@ -629,7 +629,7 @@ export default (opts) => {
       [selectItemsArray]: createSelector(selectState, (state) => {
         const items = [];
         Object.keys(state).forEach((key) => {
-          if (key[0] !== "_") items.push(state[key]);
+          if (key[0] !== '_') items.push(state[key]);
         });
         return items;
       }),
@@ -657,7 +657,7 @@ export default (opts) => {
 
       [selectByRoute]: createSelector(
         selectItemsObject,
-        "selectRouteParams",
+        'selectRouteParams',
         (items, params) => {
           if (params.hasOwnProperty(config.routeParam)) {
             if (items.hasOwnProperty(params[config.routeParam])) {
@@ -689,7 +689,7 @@ export default (opts) => {
 
       [selectGetUrl]: createSelector(
         selectGetTemplate,
-        "selectRouteParams",
+        'selectRouteParams',
         ...config.urlParamSelectors,
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
@@ -703,7 +703,7 @@ export default (opts) => {
 
       [selectPutUrl]: createSelector(
         selectPutTemplate,
-        "selectRouteParams",
+        'selectRouteParams',
         ...config.urlParamSelectors,
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
@@ -717,7 +717,7 @@ export default (opts) => {
 
       [selectPostUrl]: createSelector(
         selectPostTemplate,
-        "selectRouteParams",
+        'selectRouteParams',
         ...config.urlParamSelectors,
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
@@ -731,7 +731,7 @@ export default (opts) => {
 
       [selectDeleteUrl]: createSelector(
         selectDeleteTemplate,
-        "selectRouteParams",
+        'selectRouteParams',
         ...config.urlParamSelectors,
         (template, params, ...args) => {
           const availableParams = Object.assign({}, params, ...args);
@@ -749,7 +749,7 @@ export default (opts) => {
 
       [selectIsAllowedRole]: createSelector(
         selectAllowRoles,
-        "selectAuthRoles",
+        'selectAuthRoles',
         checkRoles
       ),
 
@@ -759,7 +759,7 @@ export default (opts) => {
 
       [selectIsDisallowedRole]: createSelector(
         selectDisallowRoles,
-        "selectAuthRoles",
+        'selectAuthRoles',
         checkRoles
       ),
 
@@ -796,3 +796,5 @@ export default (opts) => {
 
   return result;
 };
+
+export default createRestBundle;
