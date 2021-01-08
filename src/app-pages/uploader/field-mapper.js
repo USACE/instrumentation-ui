@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { connect } from "redux-bundler-react";
 
 import Select from '../../app-components/select';
+import TypeaheadSelect from "../../app-components/typeahead-select";
 
 const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
@@ -65,11 +66,18 @@ export default connect(
                   {model[key].label}
                 </label>
                 <div className="col-9">
-                  <Select
-                    onChange={(val) => updateFieldMap(val, key)}
-                    placeholderText='Select One...'
-                    options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
-                  />
+                  {model[key] && model[key].useTypeahead ? (
+                    <TypeaheadSelect
+                      onChange={(_, __, val) => updateFieldMap(val, key)}
+                      items={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
+                    />
+                  ) : (
+                    <Select
+                      onChange={(val) => updateFieldMap(val, key)}
+                      placeholderText='Select One...'
+                      options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
+                    />
+                  )}
                   {model[key] && model[key].helpText ? (
                     <small className="text-muted">{model[key].helpText}</small>
                   ) : null}

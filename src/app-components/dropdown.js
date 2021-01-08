@@ -47,7 +47,7 @@ const Dropdown = ({
           </button>
         )
       }
-      <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef}>
+      <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'scroll' }}>
         {children}
       </div>
     </div>

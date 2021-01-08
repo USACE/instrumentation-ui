@@ -51,6 +51,7 @@ const timeseriesParser = {
       type: 'domain',
       domainGroup: 'unit',
       required: true,
+      useTypeahead: true,
       helpText: `Acceptable data values include 'inches', 'feet', 'volts', 'millibar', or 'inches mercury (Hg)' others will be ignored`,
     },
   },
