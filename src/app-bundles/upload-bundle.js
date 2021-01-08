@@ -1,36 +1,36 @@
-import neat from "neat-csv";
-import { createSelector } from "redux-bundler";
+import neat from 'neat-csv';
+import { createSelector } from 'redux-bundler';
 
-import instrumentParser from "../upload-parsers/instrument";
-import timeseriesParser from "../upload-parsers/timeseries";
-import timeseriesMeasurementsParser from "../upload-parsers/timeseries_measurements";
-import { formatBytes } from "../utils";
+import instrumentParser from '../upload-parsers/instrument';
+import timeseriesParser from '../upload-parsers/timeseries';
+import timeseriesMeasurementsParser from '../upload-parsers/timeseries_measurements';
+import { formatBytes } from '../utils';
 
 const cellStyle = (params, key) => {
   const style = {};
 
   if (params.data.ignore) {
-    style.color = "grey";
+    style.color = 'grey';
     style.opacity = 0.5;
   }
 
   if (params.data.errors && params.data.errors.indexOf(key) !== -1) {
-    style.color = "#d22a0e";
-    style.backgroundColor = "#feeeec";
-    style.borderColor = "#ea2f10";
+    style.color = '#d22a0e';
+    style.backgroundColor = '#feeeec';
+    style.borderColor = '#ea2f10';
   }
 
   return style;
 };
 
-export default {
-  name: "upload",
+const uploadBundle = {
+  name: 'upload',
 
   getReducer: () => {
     const initialData = {
       csv: null,
       json: null,
-      ignoreRows: "",
+      ignoreRows: '',
       parsers: [
         instrumentParser,
         timeseriesParser,
@@ -46,18 +46,18 @@ export default {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "UPLOAD_CLEAR":
-        case "UPLOAD_SETTINGS_CLEAR":
-        case "UPLOAD_QUEUE_CSV":
-        case "UPLOAD_PARSE_CSV_START":
-        case "UPLOAD_PARSE_CSV_FINISH":
-        case "UPLOAD_SET_IGNORE_ROWS":
-        case "UPLOAD_SET_PARSER":
-        case "UPLOAD_POST_START":
-        case "UPLOAD_POST_HAS_ERRORS":
-        case "UPLOAD_SET_FIELD_MAP":
+        case 'UPLOAD_CLEAR':
+        case 'UPLOAD_SETTINGS_CLEAR':
+        case 'UPLOAD_QUEUE_CSV':
+        case 'UPLOAD_PARSE_CSV_START':
+        case 'UPLOAD_PARSE_CSV_FINISH':
+        case 'UPLOAD_SET_IGNORE_ROWS':
+        case 'UPLOAD_SET_PARSER':
+        case 'UPLOAD_POST_START':
+        case 'UPLOAD_POST_HAS_ERRORS':
+        case 'UPLOAD_SET_FIELD_MAP':
           return Object.assign({}, state, payload);
-        case "UPLOAD_POST_FINISH":
+        case 'UPLOAD_POST_FINISH':
           return Object.assign({}, initialData);
         default:
           return state;
@@ -67,7 +67,7 @@ export default {
 
   doUploadQueueCsv: (csv) => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_QUEUE_CSV",
+      type: 'UPLOAD_QUEUE_CSV',
       payload: {
         csv: csv,
         _shouldParseCsv: true,
@@ -77,7 +77,7 @@ export default {
 
   doUploadParseCsv: () => async ({ dispatch, store }) => {
     dispatch({
-      type: "UPLOAD_PARSE_CSV_START",
+      type: 'UPLOAD_PARSE_CSV_START',
       payload: {
         _isParsing: true,
         _shouldParseCsv: false,
@@ -89,7 +89,7 @@ export default {
     const json = await neat(text);
 
     dispatch({
-      type: "UPLOAD_PARSE_CSV_FINISH",
+      type: 'UPLOAD_PARSE_CSV_FINISH',
       payload: {
         _isParsing: false,
         json: json,
@@ -99,11 +99,11 @@ export default {
 
   doUploadClear: () => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_CLEAR",
+      type: 'UPLOAD_CLEAR',
       payload: {
         csv: null,
         json: null,
-        ignoreRows: "",
+        ignoreRows: '',
         selectedParser: null,
         fieldMap: null,
         _errors: [],
@@ -113,9 +113,9 @@ export default {
 
   doUploadSettingsClear: () => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_SETTINGS_CLEAR",
+      type: 'UPLOAD_SETTINGS_CLEAR',
       payload: {
-        ignoreRows: "",
+        ignoreRows: '',
         selectedParser: null,
         fieldMap: null,
         _errors: [],
@@ -125,7 +125,7 @@ export default {
 
   doUploadSetIgnoreRows: (rows) => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_SET_IGNORE_ROWS",
+      type: 'UPLOAD_SET_IGNORE_ROWS',
       payload: {
         ignoreRows: rows,
       },
@@ -134,7 +134,7 @@ export default {
 
   doUploadSetSelectedParser: (parser) => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_SET_PARSER",
+      type: 'UPLOAD_SET_PARSER',
       payload: {
         selectedParser: parser,
       },
@@ -143,7 +143,7 @@ export default {
 
   doUploadSetFieldmap: (fieldMap) => ({ dispatch }) => {
     dispatch({
-      type: "UPLOAD_SET_FIELD_MAP",
+      type: 'UPLOAD_SET_FIELD_MAP',
       payload: {
         fieldMap: fieldMap,
       },
@@ -152,7 +152,7 @@ export default {
 
   doUploadSend: () => async ({ dispatch, store, apiPost }) => {
     dispatch({
-      type: "UPLOAD_POST_START",
+      type: 'UPLOAD_POST_START',
       payload: {
         _isUploading: true,
       },
@@ -175,7 +175,7 @@ export default {
       filteredData = selectedParser.prePostFilter(filteredData);
     }
 
-    const postUrl = selectedParser.url.replace(":projectId", project.id);
+    const postUrl = selectedParser.url.replace(':projectId', project.id);
 
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
@@ -199,11 +199,11 @@ export default {
               });
             } else {
               dispatch({
-                type: "UPLOAD_POST_FINISHED",
+                type: 'UPLOAD_POST_FINISHED',
               });
               store.doNotificationFire({
-                message: "Data Uploaded Successfully",
-                level: "success",
+                message: 'Data Uploaded Successfully',
+                level: 'success',
                 autoDismiss: 10,
                 onRemove: () => {
                   store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
@@ -215,11 +215,11 @@ export default {
           // Safety meaasure until ?dry_run=true is complete on API for all uploaders
           if (Array.isArray(data) && data.length > 0) {
             dispatch({
-              type: "UPLOAD_POST_FINISHED",
+              type: 'UPLOAD_POST_FINISHED',
             });
             store.doNotificationFire({
-              message: "Data Uploaded Successfully",
-              level: "success",
+              message: 'Data Uploaded Successfully',
+              level: 'success',
               autoDismiss: 10,
               onRemove: () => {
                 store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
@@ -229,7 +229,7 @@ export default {
             data.errors.forEach((error) => {
               store.doNotificationFire({
                 message: error,
-                level: "error",
+                level: 'error',
                 autoDismiss: 20,
               });
             });
@@ -249,9 +249,9 @@ export default {
       .filter((row) => {
         return !!row;
       })
-      .join(",");
+      .join(',');
     dispatch({
-      type: "UPLOAD_SET_IGNORE_ROWS",
+      type: 'UPLOAD_SET_IGNORE_ROWS',
       payload: {
         ignoreRows: errRows,
       },
@@ -264,11 +264,11 @@ export default {
 
   selectUploadJson: (state) => state.upload.json,
 
-  selectUploadColumnDefsOriginal: createSelector("selectUploadJson", (json) => {
+  selectUploadColumnDefsOriginal: createSelector('selectUploadJson', (json) => {
     if (!json || !json.length) return [];
     const keys = Object.keys(json[Math.round(json.length / 2)]);
     return [
-      { headerName: "", valueGetter: "node.rowIndex + 1", width: 60 },
+      { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
       ...keys.map((key) => {
         return {
           headerName: key.toUpperCase(),
@@ -284,8 +284,8 @@ export default {
   }),
 
   selectUploadDataOriginal: createSelector(
-    "selectUploadJson",
-    "selectUploadIgnoreRowsList",
+    'selectUploadJson',
+    'selectUploadIgnoreRowsList',
     (json, ignore) => {
       if (!json || !json.length) return [];
       return json.map((row, i) => {
@@ -300,12 +300,12 @@ export default {
   ),
 
   selectUploadColumnDefsParsed: createSelector(
-    "selectUploadSelectedParser",
+    'selectUploadSelectedParser',
     (parser) => {
       if (!parser || !parser.model) return [];
       const keys = Object.keys(parser.model);
       return [
-        { headerName: "", valueGetter: "node.rowIndex + 1", width: 60 },
+        { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
         ...keys.map((key) => {
           return {
             headerName: key.toUpperCase(),
@@ -324,12 +324,12 @@ export default {
   selectCurrentState: (state) => state,
 
   selectUploadDataParsed: createSelector(
-    "selectCurrentState",
-    "selectUploadJson",
-    "selectUploadFieldMap",
-    "selectUploadSelectedParser",
-    "selectUploadIgnoreRowsList",
-    "selectDomainsItemsByGroup",
+    'selectCurrentState',
+    'selectUploadJson',
+    'selectUploadFieldMap',
+    'selectUploadSelectedParser',
+    'selectUploadIgnoreRowsList',
+    'selectDomainsItemsByGroup',
     (state, json, fieldMap, parser, ignore, domains) => {
       if (!json || !fieldMap || !parser || !parser.model) return [];
       let rows = json.map((row, i) => {
@@ -343,8 +343,8 @@ export default {
             const setAllTo = allTest.exec(sourceKey);
             if (setAllTo) {
               parsedRow[key] =
-                config.type === "boolean"
-                  ? setAllTo[1] === "true"
+                config.type === 'boolean'
+                  ? setAllTo[1] === 'true'
                   : setAllTo[1];
             } else {
               // If field not mapped, set to null; if required field, push error
@@ -354,7 +354,7 @@ export default {
                 if (config.required) parsedRow.errors.push(key);
               } else {
                 // If field is a domain, set value to primary key of domain
-                if (config.type === "domain") {
+                if (config.type === 'domain') {
                   const foundDomainItem = domains[config.domainGroup].filter(
                     (d) => {
                       return d.value.toUpperCase() === data.toUpperCase();
@@ -368,7 +368,7 @@ export default {
                   }
                   // If not a domain and not unmapped (i.e. anything else)
                 } else {
-                  if (config.parse && typeof config.parse === "function") {
+                  if (config.parse && typeof config.parse === 'function') {
                     parsedRow[key] = config.parse(data, state, parsedRow);
                   } else {
                     parsedRow[key] = data;
@@ -376,7 +376,7 @@ export default {
                   // Validation
                   if (
                     config.validate &&
-                    typeof config.validate === "function"
+                    typeof config.validate === 'function'
                   ) {
                     if (!config.validate(parsedRow[key], state, parsedRow)) {
                       parsedRow.errors.push(key);
@@ -391,22 +391,22 @@ export default {
         if (ignore.indexOf(i + 1) !== -1) parsedRow.ignore = true;
         return parsedRow;
       });
-      if (parser.postProcess && typeof parser.postProcess === "function")
+      if (parser.postProcess && typeof parser.postProcess === 'function')
         rows = parser.postProcess(rows);
       return rows;
     }
   ),
 
   selectUploadReadyToUpload: createSelector(
-    "selectUploadFieldMap",
-    "selectUploadSelectedParser",
+    'selectUploadFieldMap',
+    'selectUploadSelectedParser',
     (fieldMap, parser) => {
       let ready = true;
       if (fieldMap) {
         const keys = Object.keys(parser.model);
         for (let i = 0; i < keys.length; i++) {
           const field = parser.model[keys[i]];
-          if (field.required && fieldMap[keys[i]] === "") {
+          if (field.required && fieldMap[keys[i]] === '') {
             ready = false;
             break;
           }
@@ -418,10 +418,10 @@ export default {
     }
   ),
 
-  selectUploadJsonKeys: createSelector("selectUploadJson", (json) => {
+  selectUploadJsonKeys: createSelector('selectUploadJson', (json) => {
     if (!json || !json.length) return [];
     const keys = Object.keys(json[0]);
-    const removeTheseKeys = ["ignore"];
+    const removeTheseKeys = ['ignore'];
     removeTheseKeys.forEach((removeKey) => {
       const idx = keys.indexOf(removeKey);
       if (idx !== -1) keys.splice(idx, 1);
@@ -431,22 +431,22 @@ export default {
 
   selectUploadIsParsing: (state) => state.upload._isParsing,
 
-  selectUploadFileName: createSelector("selectUploadCsv", (csv) => !csv ? null : csv.name),
+  selectUploadFileName: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.name),
 
-  selectUploadFileType: createSelector("selectUploadCsv", (csv) => !csv ? null : csv.type),
+  selectUploadFileType: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.type),
 
-  selectUploadFileSize: createSelector("selectUploadCsv", (csv) => !csv ? null : formatBytes(csv.size)),
+  selectUploadFileSize: createSelector('selectUploadCsv', (csv) => !csv ? null : formatBytes(csv.size)),
 
-  selectUploadFileLastModified: createSelector("selectUploadCsv", (csv) => {
+  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) => {
     return !csv ? null : new Date(csv.lastModified).toLocaleString();
   }),
 
   selectUploadFileData: createSelector(
-    "selectUploadFileName",
-    "selectUploadFileSize",
-    "selectUploadFileType",
-    "selectUploadFileLastModified",
-    "selectUploadJson",
+    'selectUploadFileName',
+    'selectUploadFileSize',
+    'selectUploadFileType',
+    'selectUploadFileLastModified',
+    'selectUploadJson',
     (name, size, type, lastModified, json) => {
       return {
         name: name,
@@ -458,20 +458,20 @@ export default {
     }
   ),
 
-  selectUploadHasFile: createSelector("selectUploadCsv", (csv) => !!csv),
+  selectUploadHasFile: createSelector('selectUploadCsv', (csv) => !!csv),
 
   selectUploadIgnoreRows: (state) => state.upload.ignoreRows,
 
   selectUploadIgnoreRowsList: createSelector(
-    "selectUploadIgnoreRows",
+    'selectUploadIgnoreRows',
     (rows) => {
       const rowNumbers = [];
-      const rowItems = rows.replace(" ", "").split(",");
+      const rowItems = rows.replace(' ', '').split(',');
       rowItems.forEach((item) => {
-        if (item !== "") {
+        if (item !== '') {
           // if a user enters a range with a '-' split it and iterate through that range
-          if (item.indexOf("-") !== -1) {
-            const rangeFromTo = item.split("-");
+          if (item.indexOf('-') !== -1) {
+            const rangeFromTo = item.split('-');
             const from = Number(rangeFromTo[0]);
             const to = Number(rangeFromTo[1]);
             if (!isNaN(from) && !isNaN(to)) {
@@ -507,6 +507,8 @@ export default {
 
   reactUploadShouldParseCsv: (state) => {
     if (state.upload._shouldParseCsv)
-      return { actionCreator: "doUploadParseCsv" };
+      return { actionCreator: 'doUploadParseCsv' };
   },
 };
+
+export default uploadBundle;

@@ -1,17 +1,16 @@
-import Draw from "ol/interaction/Draw";
-import Modify from "ol/interaction/Modify";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import { Style, Fill, Stroke, Circle as CircleStyle } from "ol/style";
-import { toLonLat, fromLonLat } from "ol/proj";
-import Feature from "ol/Feature";
-import { Point } from "ol/geom";
-import debounce from "lodash.debounce";
+import Draw from 'ol/interaction/Draw';
+import Modify from 'ol/interaction/Modify';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
+import { toLonLat, fromLonLat } from 'ol/proj';
+import Feature from 'ol/Feature';
+import { Point } from 'ol/geom';
+import debounce from 'lodash.debounce';
 
 // need to initialize once but then add the layer to the map each time...
-
-export default {
-  name: "instrumentDraw",
+const instrumentDrawBundle = {
+  name: 'instrumentDraw',
 
   getReducer: () => {
     const initialData = {
@@ -23,21 +22,21 @@ export default {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (type === "MAPS_INITIALIZED" && payload.hasOwnProperty("inst-edit")) {
+      if (type === 'MAPS_INITIALIZED' && payload.hasOwnProperty('inst-edit')) {
         return Object.assign({}, state, {
-          map: payload["inst-edit"],
+          map: payload['inst-edit'],
           _shouldAddToMap: true,
         });
       }
 
       switch (type) {
-        case "INSTRUMENT_DRAW_INITIALIZE_START":
-        case "INSTRUMENT_DRAW_INITIALIZE_FINISH":
-        case "INSTRUMENT_DRAW_ADD_TO_MAP_START":
-        case "INSTRUMENT_DRAW_ADD_TO_MAP_FINISH":
-        case "INSTRUMENT_DRAW_MAP_CLOSED":
-        case "INSTRUMENT_DRAW_CHANGED":
-        case "INSTRUMENT_DRAW_UPDATE_LOC":
+        case 'INSTRUMENT_DRAW_INITIALIZE_START':
+        case 'INSTRUMENT_DRAW_INITIALIZE_FINISH':
+        case 'INSTRUMENT_DRAW_ADD_TO_MAP_START':
+        case 'INSTRUMENT_DRAW_ADD_TO_MAP_FINISH':
+        case 'INSTRUMENT_DRAW_MAP_CLOSED':
+        case 'INSTRUMENT_DRAW_CHANGED':
+        case 'INSTRUMENT_DRAW_UPDATE_LOC':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -47,7 +46,7 @@ export default {
 
   doInstrumentDrawInitialize: () => ({ dispatch, store }) => {
     dispatch({
-      type: "INSTRUMENT_DRAW_INITIALIZE_START",
+      type: 'INSTRUMENT_DRAW_INITIALIZE_START',
       payload: {
         _shouldInitialize: false,
       },
@@ -55,26 +54,26 @@ export default {
 
     const source = new VectorSource();
 
-    source.on("changefeature", debounce(store.doInstrumentDrawChanged, 50));
-    source.on("addfeature", store.doInstrumentDrawChanged);
+    source.on('changefeature', debounce(store.doInstrumentDrawChanged, 50));
+    source.on('addfeature', store.doInstrumentDrawChanged);
 
     const layer = new VectorLayer({
       source: source,
       style: new Style({
         fill: new Fill({
-          color: "rgba(255, 255, 255, 0.2)",
+          color: 'rgba(255, 255, 255, 0.2)',
         }),
         stroke: new Stroke({
-          color: "#ffcc33",
+          color: '#ffcc33',
           width: 2,
         }),
         image: new CircleStyle({
           radius: 7,
           fill: new Fill({
-            color: "#ffffff",
+            color: '#ffffff',
           }),
           stroke: new Stroke({
-            color: "#ffcc33",
+            color: '#ffcc33',
             width: 2,
           }),
         }),
@@ -82,15 +81,15 @@ export default {
     });
     var modify = new Modify({ source: source });
     const draw = new Draw({
-      type: "Point",
+      type: 'Point',
       source: source,
     });
-    draw.on("drawstart", () => {
+    draw.on('drawstart', () => {
       source.clear();
     });
 
     dispatch({
-      type: "INSTRUMENT_DRAW_INITIALIZE_FINISH",
+      type: 'INSTRUMENT_DRAW_INITIALIZE_FINISH',
       payload: {
         layer: layer,
         draw: draw,
@@ -101,7 +100,7 @@ export default {
 
   doInstrumentDrawAddToMap: () => ({ dispatch, store }) => {
     dispatch({
-      type: "INSTRUMENT_DRAW_ADD_TO_MAP_START",
+      type: 'INSTRUMENT_DRAW_ADD_TO_MAP_START',
       payload: {
         _shouldAddToMap: false,
       },
@@ -117,7 +116,7 @@ export default {
     map.addLayer(layer);
 
     dispatch({
-      type: "INSTRUMENT_DRAW_ADD_TO_MAP_FINISH",
+      type: 'INSTRUMENT_DRAW_ADD_TO_MAP_FINISH',
       payload: {
         _ready: true,
       },
@@ -137,7 +136,7 @@ export default {
     map.removeLayer(layer);
 
     dispatch({
-      type: "INSTRUMENT_DRAW_MAP_CLOSED",
+      type: 'INSTRUMENT_DRAW_MAP_CLOSED',
       payload: {
         map: null,
         _ready: false,
@@ -156,7 +155,7 @@ export default {
     const coords = geom.getCoordinates();
     const lonLat = toLonLat(coords);
     dispatch({
-      type: "INSTRUMENT_DRAW_CHANGED",
+      type: 'INSTRUMENT_DRAW_CHANGED',
       payload: {
         lon: lonLat[0],
         lat: lonLat[1],
@@ -166,7 +165,7 @@ export default {
 
   doInstrumentDrawUpdateLoc: (updates) => ({ dispatch, store }) => {
     dispatch({
-      type: "INSTRUMENT_DRAW_UPDATE_LOC",
+      type: 'INSTRUMENT_DRAW_UPDATE_LOC',
       payload: updates,
     });
     const lat = store.selectInstrumentDrawLat();
@@ -210,11 +209,13 @@ export default {
 
   reactInstrumentDrawShouldInitialize: (state) => {
     if (state.instrumentDraw._shouldInitialize)
-      return { actionCreator: "doInstrumentDrawInitialize" };
+      return { actionCreator: 'doInstrumentDrawInitialize' };
   },
 
   reactInstrumentDrawShouldAddToMap: (state) => {
     if (state.instrumentDraw._shouldAddToMap)
-      return { actionCreator: "doInstrumentDrawAddToMap" };
+      return { actionCreator: 'doInstrumentDrawAddToMap' };
   },
 };
+
+export default instrumentDrawBundle;

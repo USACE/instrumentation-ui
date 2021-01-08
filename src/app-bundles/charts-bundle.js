@@ -1,15 +1,15 @@
 let ID = 1;
 
-export default {
-  name: "charts",
+const chartsBundle = {
+  name: 'charts',
 
   getReducer: () => {
     const initialData = {};
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "CHARTS_CREATE_NEW":
-        case "CHARTS_SAVE":
+        case 'CHARTS_CREATE_NEW':
+        case 'CHARTS_SAVE':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -20,33 +20,33 @@ export default {
   doChartsCreateNew: () => ({ dispatch, store }) => {
     const id = ID++;
     dispatch({
-      type: "CHARTS_CREATE_NEW",
+      type: 'CHARTS_CREATE_NEW',
       payload: {
         [id]: {
           showSettings: false,
-          title: "",
-          xaxisTitle: "",
-          yaxisTitle: "",
+          title: '',
+          xaxisTitle: '',
+          yaxisTitle: '',
           shapes: [],
           series: {},
-          chartType: "timeseries",
-          correlationSeriesY: "",
-          correlationSeriesX: "",
+          chartType: 'timeseries',
+          correlationSeriesY: '',
+          correlationSeriesX: '',
           layout: {
-            title: "",
+            title: '',
             autosize: true,
             showlegend: false,
-            dragmode: "pan",
+            dragmode: 'pan',
             yaxis: {
               autorange: true,
               title: {
-                text: "",
+                text: '',
               },
             },
             xaxis: {
               autorange: true,
               title: {
-                text: "",
+                text: '',
               },
             },
             shapes: [],
@@ -66,7 +66,7 @@ export default {
 
   doChartsSave: (id, figure) => ({ dispatch, store }) => {
     dispatch({
-      type: "CHARTS_SAVE",
+      type: 'CHARTS_SAVE',
       payload: {
         [id]: figure,
       },
@@ -77,3 +77,5 @@ export default {
     return state.charts;
   },
 };
+
+export default chartsBundle;

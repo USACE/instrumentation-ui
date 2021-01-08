@@ -32,7 +32,7 @@ const Button = ({
     'btn',
     size && size === 'small' ? 'btn-sm' : size === 'large' ? 'btn-lg' : '',
     `btn-${isOutline ? 'outline-' : ''}${variant}`,
-    isDisabled && 'disabled',
+    isDisabled && 'disabled not-allowed',
     className,
   ].filter(e => e).join(' ');
 

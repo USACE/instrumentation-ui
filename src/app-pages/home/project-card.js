@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default ({ project }) => {
+const ProjectCard = ({ project }) => {
   const { img, title, subtitle, href } = project;
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -36,3 +36,5 @@ export default ({ project }) => {
     </a>
   );
 };
+
+export default ProjectCard;

@@ -43,7 +43,9 @@ const TabItem = ({ tab, changeTab, index, isActive }) => {
   );
 };
 
-export default {
+const tabObject = {
   Container: TabContainer,
   Item: TabItem,
 };
+
+export default tabObject;

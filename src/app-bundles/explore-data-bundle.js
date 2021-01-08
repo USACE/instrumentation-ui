@@ -1,17 +1,17 @@
-import { createSelector } from "redux-bundler";
-import { seriesStyles } from "../utils";
+import { createSelector } from 'redux-bundler';
+import { seriesStyles } from '../utils';
 
-export default {
-  name: "exploreData",
+const exploreDataBundle = {
+  name: 'exploreData',
 
   getReducer: () => {
     const initialData = {};
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "EXPLORE_DATA_CLEAR":
+        case 'EXPLORE_DATA_CLEAR':
           return Object.assign({}, initialData);
-        case "EXPLORE_DATA_LOAD":
+        case 'EXPLORE_DATA_LOAD':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -21,7 +21,7 @@ export default {
 
   doExploreDataClear: () => ({ dispatch }) => {
     dispatch({
-      type: "EXPLORE_DATA_CLEAR",
+      type: 'EXPLORE_DATA_CLEAR',
     });
   },
 
@@ -30,11 +30,11 @@ export default {
     const apiRoot = store.selectApiRoot();
     const token = store.selectAuthTokenRaw();
     fetch(`${apiRoot}/explorer`, {
-      method: "POST",
-      mode: "cors",
+      method: 'POST',
+      mode: 'cors',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify(instrumentIds),
     })
@@ -43,7 +43,7 @@ export default {
       })
       .then((data) => {
         dispatch({
-          type: "EXPLORE_DATA_LOAD",
+          type: 'EXPLORE_DATA_LOAD',
           payload: data,
         });
       });
@@ -54,9 +54,9 @@ export default {
   },
 
   selectExploreDataByInstrumentId: createSelector(
-    "selectExploreData",
-    "selectInstrumentsItemsObjectById",
-    "selectInstrumentTimeseriesItemsObject",
+    'selectExploreData',
+    'selectInstrumentsItemsObjectById',
+    'selectInstrumentTimeseriesItemsObject',
     (data, instrumentsById, timeseriesItems) => {
       if (!data) return {};
       const out = {};
@@ -77,3 +77,5 @@ export default {
     }
   ),
 };
+
+export default exploreDataBundle;

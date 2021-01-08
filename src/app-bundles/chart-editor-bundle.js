@@ -1,15 +1,15 @@
-import { createSelector } from "redux-bundler";
-import { trendline } from "../utils";
-import { subDays } from "date-fns";
+import { createSelector } from 'redux-bundler';
+import { trendline } from '../utils';
+import { subDays } from 'date-fns';
 
 const now = new Date();
 const initialData = {
   selectionVersion: null,
   showSettings: false,
-  chartType: "timeseries",
+  chartType: 'timeseries',
   series: {},
-  correlationSeriesX: "",
-  correlationSeriesY: "",
+  correlationSeriesX: '',
+  correlationSeriesY: '',
   correlationMinDate: subDays(now, 60),
   correlationMaxDate: now,
   showToday: false,
@@ -17,13 +17,13 @@ const initialData = {
   exactMatchesOnly: true,
   layout: {
     title: {
-      text: "",
+      text: '',
       y: 0.915,
-      yanchor: "bottom",
+      yanchor: 'bottom',
     },
     autosize: true,
     showlegend: true,
-    dragmode: "pan",
+    dragmode: 'pan',
     margin: {
       t: 150,
     },
@@ -31,20 +31,20 @@ const initialData = {
       autorange: true,
       range: [0, 100],
       title: {
-        text: "",
+        text: '',
       },
     },
     yaxis2: {
       range: [10, 0],
       title: {
-        text: "Rainfall",
+        text: 'Rainfall',
       },
     },
     xaxis: {
       autorange: true,
       range: [0, 100],
       title: {
-        text: "",
+        text: '',
       },
     },
     grid: {},
@@ -57,19 +57,19 @@ const initialData = {
     responsive: true,
     displaylogo: false,
     displayModeBar: true,
-    modeBarButtonsToRemove: ["select2d", "lasso2d", "zoomIn2d", "zoomOut2d"],
+    modeBarButtonsToRemove: ['select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d'],
     scrollZoom: true,
   },
 };
 
-export default {
-  name: "chartEditor",
+const chartEditorBundle = {
+  name: 'chartEditor',
 
   getReducer: () => {
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case "CHART_EDITOR_UPDATE":
-        case "CHART_EDITOR_TRIGGER_MEASURE_LOAD":
+        case 'CHART_EDITOR_UPDATE':
+        case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
           return { ...state, ...payload };
         default:
           return state;
@@ -79,7 +79,7 @@ export default {
 
   doChartEditorSetShowSettings: (showSettings) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         showSettings,
       },
@@ -88,7 +88,7 @@ export default {
 
   doChartEditorSetSeries: (series) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         series,
       },
@@ -97,7 +97,7 @@ export default {
 
   doChartEditorSetChartType: (chartType) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         chartType,
         layout: initialData.layout,
@@ -109,7 +109,7 @@ export default {
     dispatch,
   }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         correlationSeriesX,
       },
@@ -120,7 +120,7 @@ export default {
     dispatch,
   }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         correlationSeriesY,
       },
@@ -131,7 +131,7 @@ export default {
     const f = from instanceof Date ? from.toISOString() : from;
     const t = to instanceof Date ? to.toISOString() : to;
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         correlationMinDate: f,
         correlationMaxDate: t,
@@ -141,7 +141,7 @@ export default {
 
   doChartEditorSetShowToday: (showToday) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         showToday,
       },
@@ -150,7 +150,7 @@ export default {
 
   doChartEditorSetShowRainfall: (showRainfall) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         showRainfall,
       },
@@ -159,7 +159,7 @@ export default {
 
   doChartEditorSetExactMatchesOnly: (exactMatchesOnly) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         exactMatchesOnly,
       },
@@ -168,7 +168,7 @@ export default {
 
   doChartEditorSetLayout: (layout) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         layout,
       },
@@ -177,7 +177,7 @@ export default {
 
   doChartEditorSetData: (data) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         data,
       },
@@ -186,7 +186,7 @@ export default {
 
   doChartEditorSetFrames: (frames) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         frames,
       },
@@ -195,7 +195,7 @@ export default {
 
   doChartEditorSetConfig: (config) => ({ dispatch }) => {
     dispatch({
-      type: "CHART_EDITOR_UPDATE",
+      type: 'CHART_EDITOR_UPDATE',
       payload: {
         config,
       },
@@ -207,7 +207,7 @@ export default {
     store,
   }) => {
     dispatch({
-      type: "CHART_EDITOR_TRIGGER_MEASURE_LOAD",
+      type: 'CHART_EDITOR_TRIGGER_MEASURE_LOAD',
       payload: {
         selectionVersion,
       },
@@ -277,9 +277,9 @@ export default {
   },
 
   selectChartEditorTimeseriesData: createSelector(
-    "selectExploreDataByInstrumentId",
-    "selectChartEditorShowRainfall",
-    "selectRainfallData",
+    'selectExploreDataByInstrumentId',
+    'selectChartEditorShowRainfall',
+    'selectRainfallData',
     (dataByInstrumentId, showRainfall, rainfallData) => {
       const chartSeries = [];
       Object.keys(dataByInstrumentId).forEach((id) => {
@@ -307,7 +307,7 @@ export default {
               y.push(item.value);
             });
           chartSeries.push({
-            type: "scattergl",
+            type: 'scattergl',
             name: `${instrumentName} - ${name}`,
             x: x,
             y: y,
@@ -323,12 +323,12 @@ export default {
   ),
 
   selectChartEditorCorrelationData: createSelector(
-    "selectExploreDataByInstrumentId",
-    "selectChartEditorCorrelationSeriesX",
-    "selectChartEditorCorrelationSeriesY",
-    "selectChartEditorExactMatchesOnly",
-    "selectChartEditorCorrelationMinDate",
-    "selectChartEditorCorrelationMaxDate",
+    'selectExploreDataByInstrumentId',
+    'selectChartEditorCorrelationSeriesX',
+    'selectChartEditorCorrelationSeriesY',
+    'selectChartEditorExactMatchesOnly',
+    'selectChartEditorCorrelationMinDate',
+    'selectChartEditorCorrelationMaxDate',
     (
       dataByInstrumentId,
       correlationSeriesX,
@@ -436,9 +436,9 @@ export default {
       }
 
       chartSeries.push({
-        type: "scattergl",
-        name: "Observations",
-        mode: "markers",
+        type: 'scattergl',
+        name: 'Observations',
+        mode: 'markers',
         x: xseries,
         y: yseries,
         marker: {
@@ -451,9 +451,9 @@ export default {
       chartSeries.unshift({
         ...trend,
         ...{
-          mode: "lines",
-          line: { width: 1, color: "#669BBC" },
-          marker: { symbol: "circle", color: "#669BBC" },
+          mode: 'lines',
+          line: { width: 1, color: '#669BBC' },
+          marker: { symbol: 'circle', color: '#669BBC' },
         },
       });
 
@@ -464,9 +464,9 @@ export default {
         if (xseries[u] < min) min = xseries[u];
       }
       chartSeries.push({
-        name: "Equiv.",
-        mode: "lines",
-        line: { width: 2, color: "#000000" },
+        name: 'Equiv.',
+        mode: 'lines',
+        line: { width: 2, color: '#000000' },
         x: [min, max],
         y: [min, max],
       });
@@ -476,9 +476,9 @@ export default {
   ),
 
   reactChartEditorFetchMeasurements: createSelector(
-    "selectChartEditorSelectionVersion",
-    "selectExploreMapInteractionsVersion",
-    "selectExploreMapSelectedInstruments",
+    'selectChartEditorSelectionVersion',
+    'selectExploreMapInteractionsVersion',
+    'selectExploreMapSelectedInstruments',
     (pastVersion, newVersion, instruments) => {
       if (newVersion > pastVersion) {
         const instrumentIds = instruments.map((instrument) => {
@@ -486,7 +486,7 @@ export default {
         });
         if (instrumentIds.length) {
           return {
-            actionCreator: "doChartEditorTriggerExploreDataLoad",
+            actionCreator: 'doChartEditorTriggerExploreDataLoad',
             args: [newVersion, instrumentIds],
           };
         }
@@ -494,3 +494,5 @@ export default {
     }
   ),
 };
+
+export default chartEditorBundle;

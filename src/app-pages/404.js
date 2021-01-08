@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-export default () => {
+const Logout = () => {
   return (
     <div>
       <div>
@@ -10,3 +10,5 @@ export default () => {
     </div>
   );
 };
+
+export default Logout;

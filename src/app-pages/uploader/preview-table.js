@@ -6,7 +6,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
 
-export default ({ columnDefs, data }) => {
+const PreviewTable = ({ columnDefs, data }) => {
   const grid = useRef(null);
 
   useEffect(() => {
@@ -32,3 +32,5 @@ export default ({ columnDefs, data }) => {
     </div>
   ) : <p>No Data to show yet</p>;    
 };
+
+export default PreviewTable;

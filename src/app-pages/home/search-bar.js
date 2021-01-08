@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ value, placeholder, onChange }) => {
+const Searchbar = ({ value, placeholder, onChange }) => {
   return (
     <div className='form-group'>
       <div className='input-group'>
@@ -24,3 +24,5 @@ export default ({ value, placeholder, onChange }) => {
     </div>
   );
 };
+
+export default Searchbar;

@@ -1,15 +1,15 @@
-import { createSelector } from "redux-bundler";
-import xhr from "xhr";
+import { createSelector } from 'redux-bundler';
+import xhr from 'xhr';
 
 const getTokenPart = function (token, part) {
-  const splitToken = token.split(".");
+  const splitToken = token.split('.');
   return splitToken[part];
 };
 
-export default (opts) => {
+const createAuthBundle = (opts) => {
   const defaults = {
-    url: "https://corpsmap-dev.sec.usace.army.mil/cwbi/auth/basic",
-    name: "auth",
+    url: 'https://corpsmap-dev.sec.usace.army.mil/cwbi/auth/basic',
+    name: 'auth',
     token: null,
     redirectOnLogout: null,
     verifyInterval: 1000 * 60,
@@ -36,10 +36,10 @@ export default (opts) => {
 
       return (state = initialState, { type, payload }) => {
         switch (type) {
-          case "AUTH_LOGGED_IN":
-          case "AUTH_LOGGED_OUT":
-          case "AUTH_ERROR":
-          case "AUTH_VERIFY_TOKEN":
+          case 'AUTH_LOGGED_IN':
+          case 'AUTH_LOGGED_OUT':
+          case 'AUTH_ERROR':
+          case 'AUTH_VERIFY_TOKEN':
             return Object.assign({}, state, payload);
           default:
             return state;
@@ -52,7 +52,7 @@ export default (opts) => {
       if (isMock) {
         const token = store.selectAuthTokenMockRaw();
         dispatch({
-          type: "AUTH_LOGGED_IN",
+          type: 'AUTH_LOGGED_IN',
           payload: { token: token, error: null, shouldVerifyToken: true },
         });
       } else {
@@ -61,20 +61,20 @@ export default (opts) => {
         try {
           xhr(url, (err, response, body) => {
             if (err) {
-              throw new Error("Login Response not ok");
+              throw new Error('Login Response not ok');
             } else {
-              const token = typeof body === "string" ? body : JSON.parse(body);
+              const token = typeof body === 'string' ? body : JSON.parse(body);
               dispatch({
-                type: "AUTH_LOGGED_IN",
+                type: 'AUTH_LOGGED_IN',
                 payload: { token: token, error: null, shouldVerifyToken: true },
               });
             }
           });
         } catch (err) {
-          if (process.env.NODE_ENV === "development") console.error(err);
+          if (process.env.NODE_ENV === 'development') console.error(err);
           dispatch({
-            type: "AUTH_ERROR",
-            payload: { msg: "Error Logging In", err: err },
+            type: 'AUTH_ERROR',
+            payload: { msg: 'Error Logging In', err: err },
           });
         }
       }
@@ -82,7 +82,7 @@ export default (opts) => {
 
     doAuthLogout: () => ({ dispatch, store }) => {
       dispatch({
-        type: "AUTH_LOGGED_OUT",
+        type: 'AUTH_LOGGED_OUT',
         payload: { token: null, error: null },
       });
       const redirect = store.selectAuthRedirectOnLogout();
@@ -91,7 +91,7 @@ export default (opts) => {
 
     doAuthVerifyToken: () => ({ dispatch, store }) => {
       dispatch({
-        type: "AUTH_VERIFY_TOKEN",
+        type: 'AUTH_VERIFY_TOKEN',
         payload: { shouldVerifyToken: false },
       });
       const isExpired = store.selectAuthTokenIsExpired();
@@ -122,56 +122,56 @@ export default (opts) => {
       return state.auth.mockToken;
     },
 
-    selectAuthTokenHeader: createSelector("selectAuthTokenRaw", (token) => {
+    selectAuthTokenHeader: createSelector('selectAuthTokenRaw', (token) => {
       if (!token) return {};
       return JSON.parse(window.atob(getTokenPart(token, 0)));
     }),
 
-    selectAuthTokenPayload: createSelector("selectAuthTokenRaw", (token) => {
+    selectAuthTokenPayload: createSelector('selectAuthTokenRaw', (token) => {
       if (!token) return {};
       return JSON.parse(window.atob(getTokenPart(token, 1)));
     }),
 
     // select info about token expiration
 
-    selectAuthTokenExp: createSelector("selectAuthTokenPayload", (payload) => {
-      if (!payload.hasOwnProperty("exp")) return null;
+    selectAuthTokenExp: createSelector('selectAuthTokenPayload', (payload) => {
+      if (!payload.hasOwnProperty('exp')) return null;
       return payload.exp;
     }),
 
-    selectAuthTokenIsExpired: createSelector("selectAuthTokenExp", (exp) => {
+    selectAuthTokenIsExpired: createSelector('selectAuthTokenExp', (exp) => {
       if (!exp) return true;
       return exp < Math.floor(Date.now() / 1000);
     }),
 
     // select parts of the payload
 
-    selectAuthUsername: createSelector("selectAuthTokenPayload", (payload) => {
-      if (!payload.hasOwnProperty("name")) return null;
+    selectAuthUsername: createSelector('selectAuthTokenPayload', (payload) => {
+      if (!payload.hasOwnProperty('name')) return null;
       return payload.name;
     }),
 
-    selectAuthEdipi: createSelector("selectAuthTokenPayload", (payload) => {
-      if (!payload.hasOwnProperty("sub")) return null;
+    selectAuthEdipi: createSelector('selectAuthTokenPayload', (payload) => {
+      if (!payload.hasOwnProperty('sub')) return null;
       return payload.sub;
     }),
 
-    selectAuthRoles: createSelector("selectAuthTokenPayload", (payload) => {
-      if (!payload.hasOwnProperty("roles")) return [];
+    selectAuthRoles: createSelector('selectAuthTokenPayload', (payload) => {
+      if (!payload.hasOwnProperty('roles')) return [];
       return payload.roles;
     }),
 
-    selectAuthGroups: createSelector("selectAuthRoles", (roles) => {
+    selectAuthGroups: createSelector('selectAuthRoles', (roles) => {
       return roles.map((role) => {
-        const roleArr = role.split(".");
+        const roleArr = role.split('.');
         return roleArr[0];
       });
     }),
 
-    selectAuthGroupRoles: createSelector("selectAuthRoles", (roles) => {
+    selectAuthGroupRoles: createSelector('selectAuthRoles', (roles) => {
       const groupRoles = {};
       roles
-        .map((role) => role.split("."))
+        .map((role) => role.split('.'))
         .forEach((role) => {
           if (!groupRoles.hasOwnProperty(role[0])) groupRoles[role[0]] = [];
           groupRoles[role[0]].push(role[1]);
@@ -185,9 +185,11 @@ export default (opts) => {
 
     reactAuthShouldVerifyToken: (state) => {
       if (state.auth.shouldVerifyToken)
-        return { actionCreator: "doAuthVerifyToken" };
+        return { actionCreator: 'doAuthVerifyToken' };
     },
 
-    persistActions: ["AUTH_LOGGED_IN", "AUTH_LOGGED_OUT"],
+    persistActions: ['AUTH_LOGGED_IN', 'AUTH_LOGGED_OUT'],
   };
 };
+
+export default createAuthBundle;

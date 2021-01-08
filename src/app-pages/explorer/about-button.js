@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '../../app-components/button';
 
-export default () => {
+const AboutButton = () => {
   const [show, setShow] = useState(false);
 
   return (
@@ -44,3 +44,5 @@ export default () => {
     </>
   );
 };
+
+export default AboutButton;

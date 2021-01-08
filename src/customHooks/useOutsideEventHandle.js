@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 /**
  * Hook that activates callback on event trigger of the passed ref
  */
-export default (event, ref, callback) => {
+const useOutsideEventHandle = (event, ref, callback) => {
   useEffect(() => {
     const handleEventOutside = event => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -19,3 +19,5 @@ export default (event, ref, callback) => {
     };
   }, [event, ref, callback]);
 };
+
+export default useOutsideEventHandle;

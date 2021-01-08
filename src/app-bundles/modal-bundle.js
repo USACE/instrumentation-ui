@@ -1,5 +1,5 @@
-export default {
-  name: "modal",
+const ModalBundle = {
+  name: 'modal',
   getReducer: () => {
     const initialData = {
       content: null,
@@ -8,7 +8,7 @@ export default {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (type === "MODAL_UPDATED") {
+      if (type === 'MODAL_UPDATED') {
         return Object.assign({}, state, payload);
       }
       return state;
@@ -16,7 +16,7 @@ export default {
   },
   doModalOpen: (content, props, size) => ({ dispatch }) => {
     dispatch({
-      type: "MODAL_UPDATED",
+      type: 'MODAL_UPDATED',
       payload: {
         content: content,
         props: props,
@@ -25,7 +25,7 @@ export default {
   },
   doModalClose: () => ({ dispatch }) => {
     dispatch({
-      type: "MODAL_UPDATED",
+      type: 'MODAL_UPDATED',
       payload: {
         content: null,
         props: null,
@@ -42,3 +42,5 @@ export default {
     return state.modal.size;
   },
 };
+
+export default ModalBundle;

@@ -84,7 +84,7 @@ class ApiError extends Error {
   };
 };
 
-export default (opts) => {
+const createJwtApiBundle = (opts) => {
   const defaults = {
     name: 'api',
     root: '',
@@ -224,3 +224,5 @@ export default (opts) => {
     },
   };
 };
+
+export default createJwtApiBundle;
