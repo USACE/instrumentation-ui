@@ -35,7 +35,7 @@ const timeseriesMeasurementParser = {
       label: 'Timeseries',
       type: 'internal',
       required: true,
-      useTypeahead: true,
+      useFilterComponent: true,
       provider: state => (
         Object.keys(state.instrumentTimeseries)
           .filter(key => key.charAt(0) !== '_')

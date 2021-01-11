@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { connect } from "redux-bundler-react";
 
 import Select from '../../app-components/select';
-import TypeaheadSelect from "../../app-components/typeahead-select";
+import FilterSelect from "../../app-components/filter-select";
 
 const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
@@ -66,8 +66,9 @@ export default connect(
                   {model[key].label}
                 </label>
                 <div className="col-9">
-                  {model[key] && model[key].useTypeahead ? (
-                    <TypeaheadSelect
+                  {model[key] && model[key].useFilterComponent ? (
+                    <FilterSelect
+                      placeholder='Select One...'
                       onChange={(_, __, val) => updateFieldMap(val, key)}
                       items={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
                     />

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import ProjectCard from './project-card';
-import TypeaheadSelect from '../../app-components/typeahead-select';
+import FilterSelect from '../../app-components/filter-select';
 
 const FilterItemList = ({ items, filter, setFilter, active }) => {
   return (
@@ -363,7 +363,7 @@ export default connect(
           </div>
           <div className='col-md-9'>
             <div className='mb-2'>
-              <TypeaheadSelect items={projects.map(p => ({ value: p.title }))} onChange={onChange} hasClearButton />
+              <FilterSelect items={projects.map(p => ({ value: p.title }))} onChange={onChange} hasClearButton />
             </div>
             <div className='d-flex flex-wrap justify-content-around'>
               {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}

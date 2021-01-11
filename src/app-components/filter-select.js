@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import usePrevious from '../customHooks/usePrevious';
+
 import Dropdown from './dropdown';
+import usePrevious from '../customHooks/usePrevious';
 
 const getDisplay = elem => {
   const { value, text } = elem;
@@ -13,10 +14,10 @@ const getDisplay = elem => {
  * @param {Array} items - a list of items to populate the dropdown list with. Each item must be an object with the shape: `{value: '', text: ''}`
  * @param {string} placeholder - a string to be displayed in the input field when it is empty
  * @param {boolean} hasClearButton - whether or not there should be a button to clear the input field, default `false`
- * @param {Function} onChange - callback function that supplies the consumer with the filtered list and current input value
+ * @param {Function} onChange - callback function that supplies the consumer with the filtered list, current input value, value of element if input matches an element
  * @param {string} className - a string of custom class(es) to be applied to the dropdown container
  */
-const TypeaheadSelect = ({
+const FilterSelect = ({
   items,
   placeholder = 'Filter...',
   hasClearButton = false,
@@ -76,4 +77,4 @@ const TypeaheadSelect = ({
   );
 };
 
-export default TypeaheadSelect;
+export default FilterSelect;
