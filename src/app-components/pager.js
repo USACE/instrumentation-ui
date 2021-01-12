@@ -36,19 +36,19 @@ const determinePagesToShow = (pages, currentPage, setPage) => {
   const ret = [];
   if (pages.length > 6) {
     if (currentPage === 0) {
-      return [createPage(currentPage, setPage, 1), createPage(currentPage, setPage, 2), <Ellipsis key='ellipsis' />];
+      return [createPage(currentPage, setPage, 1), createPage(currentPage, setPage, 2), <Ellipsis key='ellipsis-0' />];
     }
     if (currentPage === pages.length - 1) {
-      return [<Ellipsis key='ellipsis' />, createPage(currentPage, setPage, currentPage - 2), createPage(currentPage, setPage, currentPage - 1)];
+      return [<Ellipsis key='ellipsis-1' />, createPage(currentPage, setPage, currentPage - 2), createPage(currentPage, setPage, currentPage - 1)];
     }
-    if (currentPage > 2) ret.push(<Ellipsis key='ellipsis' />);
+    if (currentPage > 2) ret.push(<Ellipsis key='ellipsis-2' />);
 
     for (let i = -1; i < 2; i++) {
       if (currentPage + i > 0 && currentPage + i < pages.length - 1)
         ret.push(createPage(currentPage, setPage, currentPage + i));
     }
 
-    if (currentPage < pages.length - 3) ret.push(<Ellipsis  key='ellipsis' />);
+    if (currentPage < pages.length - 3) ret.push(<Ellipsis  key='ellipsis-3' />);
     return ret;
   } else if (pages.length >= 3) {
     return pages.slice(1, pages.length - 1).map((_page, i) => createPage(currentPage, setPage, i + i));
