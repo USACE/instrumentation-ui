@@ -36,14 +36,18 @@ const timeseriesMeasurementParser = {
       type: 'internal',
       required: true,
       useFilterComponent: true,
-      provider: state => (
-        Object.keys(state.instrumentTimeseries)
-          .filter(key => key.charAt(0) !== '_')
+      provider: state => {
+        const regex = new RegExp('/projects/(.*)/instruments');
+        const match = state.instruments._lastResource.match(regex);
+        const projectId = match && match.length >= 2 ? match[1] : '';
+
+        return Object.keys(state.instrumentTimeseries)
+          .filter(key => (key.charAt(0) !== '_' && state.instrumentTimeseries[key].project_id === projectId))
           .map(key => ({
             value: key,
             text: `${state.instrumentTimeseries[key].instrument} - ${state.instrumentTimeseries[key].name}`,
-          }))
-      ),
+          }));
+      },
       parse: val => val,
       validate: val => !!val,
       helpText: 'Should map to an timeseries name that exists in the system for the selected instrument.',
