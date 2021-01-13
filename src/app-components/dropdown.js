@@ -1,5 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { createContext, useRef, useState } from 'react';
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
+
+const defaultVal = { closeDropdown: () => {}};
+const DropdownContext = createContext(defaultVal);
 
 const DropdownItem = ({
   onClick = () => { },
@@ -7,10 +10,25 @@ const DropdownItem = ({
   className = '',
   children = null,
 }) => (
-  href
-    ? <a className={`dropdown-item text-primary ${className}`} href={href}>{children}</a>
-    : <button className={`dropdown-item text-primary ${className}`} onClick={onClick}>{children}</button>
-  );
+  <DropdownContext.Consumer>
+    {({ closeDropdown }) => (
+      href
+        ? <a className={`dropdown-item text-primary ${className}`} href={href}>{children}</a>
+        : (
+          <button 
+            className={`dropdown-item text-primary ${className}`}
+            onClick={(e) => {
+              closeDropdown();
+              onClick(e);
+            }}
+          >
+            {children}
+          </button>
+        )
+    )}
+  </DropdownContext.Consumer>
+  
+);
 
 const Dropdown = ({
   id = 'dropdown',
@@ -38,19 +56,21 @@ const Dropdown = ({
   };
 
   return (
-    <div className={dropdownClass} id={id}>
-      {customContent
-        ? React.cloneElement(customContent, commonProps)
-        : (
-          <button className={buttonClass} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' {...commonProps}>
-            {buttonContent}
-          </button>
-        )
-      }
-      <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'scroll' }}>
-        {children}
+    <DropdownContext.Provider value={{ closeDropdown: () => setIsOpen(false) }}>
+      <div className={dropdownClass} id={id}>
+        {customContent
+          ? React.cloneElement(customContent, commonProps)
+          : (
+            <button className={buttonClass} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' {...commonProps}>
+              {buttonContent}
+            </button>
+          )
+        }
+        <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'scroll' }}>
+          {children}
+        </div>
       </div>
-    </div>
+    </DropdownContext.Provider>
   );
 }
 
