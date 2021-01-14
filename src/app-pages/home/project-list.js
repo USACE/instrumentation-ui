@@ -4,22 +4,20 @@ import { connect } from 'redux-bundler-react';
 import ProjectCard from './project-card';
 import FilterSelect from '../../app-components/filter-select';
 
-const FilterItemList = ({ items, filter, setFilter, active }) => {
-  return (
-    <ul className='list-group'>
-      {items.map((item, i) => (
-          <FilterItem
-            item={item}
-            key={i}
-            filter={filter}
-            setFilter={setFilter}
-            active={active}
-          />
-        )
-      )}
-    </ul>
-  );
-};
+const FilterItemList = ({ items, filter, setFilter, active }) => (
+  <ul className='list-group'>
+    {items.map((item, i) => (
+        <FilterItem
+          item={item}
+          key={i}
+          filter={filter}
+          setFilter={setFilter}
+          active={active}
+        />
+      )
+    )}
+  </ul>
+);
 
 const FilterItem = ({ item, filter, setFilter, active }) => {
   const el = useRef(null);
