@@ -32,9 +32,11 @@
     "react-scripts": "^4.0.1",
     "redux-bundler": "^27.0.1",
     "redux-bundler-react": "^1.2.0",
+    "source-map-explorer": "^2.5.2",
     "xhr": "^2.5.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
