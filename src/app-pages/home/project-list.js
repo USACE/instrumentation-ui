@@ -4,22 +4,19 @@ import { connect } from 'redux-bundler-react';
 import ProjectCard from './project-card';
 import FilterSelect from '../../app-components/filter-select';
 
-const FilterItemList = ({ items, filter, setFilter, active }) => {
-  return (
-    <ul className='list-group'>
-      {items.map((item, i) => (
-          <FilterItem
-            item={item}
-            key={i}
-            filter={filter}
-            setFilter={setFilter}
-            active={active}
-          />
-        )
-      )}
-    </ul>
-  );
-};
+const FilterItemList = ({ items, filter, setFilter, active }) => (
+  <ul className='list-group'>
+    {items.map((item, i) => (
+      <FilterItem
+        item={item}
+        key={i}
+        filter={filter}
+        setFilter={setFilter}
+        active={active}
+      />
+    ))}
+  </ul>
+);
 
 const FilterItem = ({ item, filter, setFilter, active }) => {
   const el = useRef(null);
@@ -351,6 +348,8 @@ export default connect(
       setFilteredProjects(filtered);
     };
 
+    const filterList = projects ? projects.map(p => ({ value: p.title })) : {};
+
     return (
       <div className='container-fluid'>
         <div className='row'>
@@ -362,12 +361,16 @@ export default connect(
             />
           </div>
           <div className='col-md-9'>
-            <div className='mb-2'>
-              <FilterSelect items={projects.map(p => ({ value: p.title }))} onChange={onChange} hasClearButton />
-            </div>
-            <div className='d-flex flex-wrap justify-content-around'>
-              {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
-            </div>
+            { projects.length ? (
+              <>
+                <div className='mb-2'>
+                  <FilterSelect items={filterList} onChange={onChange} hasClearButton />
+                </div>
+                <div className='d-flex flex-wrap justify-content-around'>
+                  {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
+                </div>
+              </>
+            ) : <p>Loading Projects...</p> }
           </div>
         </div>
       </div>
