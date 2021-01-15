@@ -7,15 +7,14 @@ import FilterSelect from '../../app-components/filter-select';
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
     {items.map((item, i) => (
-        <FilterItem
-          item={item}
-          key={i}
-          filter={filter}
-          setFilter={setFilter}
-          active={active}
-        />
-      )
-    )}
+      <FilterItem
+        item={item}
+        key={i}
+        filter={filter}
+        setFilter={setFilter}
+        active={active}
+      />
+    ))}
   </ul>
 );
 
