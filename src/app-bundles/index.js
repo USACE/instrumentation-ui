@@ -31,7 +31,6 @@ import instrumentGroupInstrumentsBundle from "./instrument-group-instruments-bun
 import instrumentNotesBundle from "./instrument-notes-bundle";
 import instrumentStatusBundle from "./instrument-status-bundle";
 import instrumentConstantsBundle from "./instrument-constants-bundle";
-import keyvalBundle from "./key-value-bundle";
 import mapsBundle from "./maps-bundle";
 import modalBundle from "./modal-bundle";
 import nestedUrlBundle from "./nested-url-bundle";
@@ -115,7 +114,6 @@ export default composeBundles(
   instrumentNotesBundle,
   instrumentStatusBundle,
   instrumentConstantsBundle,
-  keyvalBundle,
   mapsBundle,
   modalBundle,
   nestedUrlBundle,
