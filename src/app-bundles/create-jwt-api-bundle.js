@@ -41,10 +41,12 @@ const processResponse = response => (
         'json': {},
       });
     } else {
-      response.json().then(json => func({
-        'status': response.status,
-        'json': json,
-      }));
+      response.json()
+        .then(json => func({
+          'status': response.status,
+          'json': json,
+        }))
+        .catch(e => console.error(e));
     }
   })
 );
