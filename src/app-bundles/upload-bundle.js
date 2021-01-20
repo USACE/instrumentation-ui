@@ -46,21 +46,21 @@ const uploadBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'UPLOAD_CLEAR':
-        case 'UPLOAD_SETTINGS_CLEAR':
-        case 'UPLOAD_QUEUE_CSV':
-        case 'UPLOAD_PARSE_CSV_START':
-        case 'UPLOAD_PARSE_CSV_FINISH':
-        case 'UPLOAD_SET_IGNORE_ROWS':
-        case 'UPLOAD_SET_PARSER':
-        case 'UPLOAD_POST_START':
-        case 'UPLOAD_POST_HAS_ERRORS':
-        case 'UPLOAD_SET_FIELD_MAP':
-          return Object.assign({}, state, payload);
-        case 'UPLOAD_POST_FINISH':
-          return Object.assign({}, initialData);
-        default:
-          return state;
+      case 'UPLOAD_CLEAR':
+      case 'UPLOAD_SETTINGS_CLEAR':
+      case 'UPLOAD_QUEUE_CSV':
+      case 'UPLOAD_PARSE_CSV_START':
+      case 'UPLOAD_PARSE_CSV_FINISH':
+      case 'UPLOAD_SET_IGNORE_ROWS':
+      case 'UPLOAD_SET_PARSER':
+      case 'UPLOAD_POST_START':
+      case 'UPLOAD_POST_HAS_ERRORS':
+      case 'UPLOAD_SET_FIELD_MAP':
+        return Object.assign({}, state, payload);
+      case 'UPLOAD_POST_FINISH':
+        return Object.assign({}, initialData);
+      default:
+        return state;
       }
     };
   },
@@ -268,14 +268,14 @@ const uploadBundle = {
     return [
       { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
       ...keys.map((key) => ({
-          headerName: key.toUpperCase(),
-          field: key,
-          resizable: true,
-          sortable: true,
-          filter: false,
-          editable: false,
-          cellStyle: (params) => cellStyle(params, key),
-        })),
+        headerName: key.toUpperCase(),
+        field: key,
+        resizable: true,
+        sortable: true,
+        filter: false,
+        editable: false,
+        cellStyle: (params) => cellStyle(params, key),
+      })),
     ];
   }),
 
@@ -303,14 +303,14 @@ const uploadBundle = {
       return [
         { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
         ...keys.map((key) => ({
-            headerName: key.toUpperCase(),
-            field: key,
-            resizable: true,
-            sortable: true,
-            filter: false,
-            editable: false,
-            cellStyle: (params) => cellStyle(params, key),
-          })),
+          headerName: key.toUpperCase(),
+          field: key,
+          resizable: true,
+          sortable: true,
+          filter: false,
+          editable: false,
+          cellStyle: (params) => cellStyle(params, key),
+        })),
       ];
     }
   ),
@@ -438,12 +438,12 @@ const uploadBundle = {
     'selectUploadFileLastModified',
     'selectUploadJson',
     (name, size, type, lastModified, json) => ({
-        name: name,
-        type: type,
-        size: size,
-        lastModified: lastModified,
-        totalRows: json ? json.length : 0,
-      })
+      name: name,
+      type: type,
+      size: size,
+      lastModified: lastModified,
+      totalRows: json ? json.length : 0,
+    })
   ),
 
   selectUploadHasFile: createSelector('selectUploadCsv', (csv) => !!csv),

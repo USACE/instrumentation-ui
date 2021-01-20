@@ -27,17 +27,17 @@ export default createRestBundle({
     selectInstrumentGroupInstrumentsItemsGeoJSON: createSelector(
       'selectInstrumentGroupInstrumentsItems',
       (items) => ({
-          type: 'FeatureCollection',
-          features: items.map((item) => {
-            const feature = {
-              type: 'Feature',
-              geometry: { ...item.geometry },
-              properties: { ...item },
-            };
-            delete feature.properties.geometry;
-            return feature;
-          }),
-        })
+        type: 'FeatureCollection',
+        features: items.map((item) => {
+          const feature = {
+            type: 'Feature',
+            geometry: { ...item.geometry },
+            properties: { ...item },
+          };
+          delete feature.properties.geometry;
+          return feature;
+        }),
+      })
     ),
   },
 });

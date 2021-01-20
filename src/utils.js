@@ -1,6 +1,6 @@
 exports.classnames = (opts) => Object.keys(opts)
-    .map((key) => !!opts[key] ? key : '')
-    .join(' ');
+  .map((key) => !!opts[key] ? key : '')
+  .join(' ');
 
 exports.formatBytes = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -117,14 +117,14 @@ const rSquared = function (x, y) {
 
 exports.trendline = function (x, y) {
   let sumX = 0,
-    sumY = 0,
-    sumXsquared = 0,
-    sumYsquared = 0,
-    sumXY = 0;
+      sumY = 0,
+      sumXsquared = 0,
+      sumYsquared = 0,
+      sumXY = 0;
   let minX = Infinity,
-    minY = Infinity;
+      minY = Infinity;
   let maxX = -Infinity,
-    maxY = -Infinity;
+      maxY = -Infinity;
   if (x.length !== y.length) return undefined;
   const N = x.length;
 

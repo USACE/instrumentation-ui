@@ -8,11 +8,11 @@ const chartsBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'CHARTS_CREATE_NEW':
-        case 'CHARTS_SAVE':
-          return Object.assign({}, state, payload);
-        default:
-          return state;
+      case 'CHARTS_CREATE_NEW':
+      case 'CHARTS_SAVE':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },

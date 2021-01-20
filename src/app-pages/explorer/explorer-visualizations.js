@@ -9,9 +9,9 @@ export default connect(
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
   }) => (
-      <Chart
-        version={exploreMapInteractionsVersion}
-        instruments={instruments}
-      />
-    )
+    <Chart
+      version={exploreMapInteractionsVersion}
+      instruments={instruments}
+    />
+  )
 );

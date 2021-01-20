@@ -66,14 +66,14 @@ const chartEditorBundle = {
   name: 'chartEditor',
 
   getReducer: () => (state = initialData, { type, payload }) => {
-      switch (type) {
-        case 'CHART_EDITOR_UPDATE':
-        case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
-          return { ...state, ...payload };
-        default:
-          return state;
-      }
-    },
+    switch (type) {
+    case 'CHART_EDITOR_UPDATE':
+    case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
+      return { ...state, ...payload };
+    default:
+      return state;
+    }
+  },
 
   doChartEditorSetShowSettings: (showSettings) => ({ dispatch }) => {
     dispatch({
@@ -260,9 +260,9 @@ const chartEditorBundle = {
           const y = [];
           items
             .map((item) => ({
-                time: Object.keys(item)[0],
-                value: Object.values(item)[0],
-              }))
+              time: Object.keys(item)[0],
+              value: Object.values(item)[0],
+            }))
             .sort((a, b) => {
               if (a.time > b.time) return 1;
               if (a.time < b.time) return -1;
@@ -315,16 +315,16 @@ const chartEditorBundle = {
       });
 
       let xItems = [],
-        yItems = [];
+          yItems = [];
       if (
         itemsByTimeseriesId[correlationSeriesX] &&
         itemsByTimeseriesId[correlationSeriesY]
       ) {
         xItems = itemsByTimeseriesId[correlationSeriesX]
           .map((item) => ({
-              time: Object.keys(item)[0],
-              value: Object.values(item)[0],
-            }))
+            time: Object.keys(item)[0],
+            value: Object.values(item)[0],
+          }))
           .filter((item) => {
             if (minDate) {
               if (item.time < minDate) return false;
@@ -341,9 +341,9 @@ const chartEditorBundle = {
           });
         yItems = itemsByTimeseriesId[correlationSeriesY]
           .map((item) => ({
-              time: Object.keys(item)[0],
-              value: Object.values(item)[0],
-            }))
+            time: Object.keys(item)[0],
+            value: Object.values(item)[0],
+          }))
           .filter((item) => {
             if (minDate) {
               if (item.time < minDate) return false;

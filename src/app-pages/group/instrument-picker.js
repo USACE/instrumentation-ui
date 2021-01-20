@@ -51,10 +51,10 @@ export default connect(
                   <option value=''>Select one...</option>
                 )}
                 {options.map((opt, i) => (
-                    <option key={i} value={opt.slug}>
-                      {opt.name}
-                    </option>
-                  ))}
+                  <option key={i} value={opt.slug}>
+                    {opt.name}
+                  </option>
+                ))}
               </select>
             </div>
           </section>

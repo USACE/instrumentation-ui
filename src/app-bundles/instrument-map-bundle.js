@@ -21,34 +21,34 @@ const instrumentMapBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'INSTRUMENTS_FETCH_FINISHED':
+      case 'INSTRUMENTS_FETCH_FINISHED':
+        return Object.assign({}, state, {
+          _shouldAddData: true,
+        });
+      case 'MAPS_INITIALIZED':
+        if (payload.hasOwnProperty('instrumentMap')) {
           return Object.assign({}, state, {
+            _mapLoaded: true,
             _shouldAddData: true,
           });
-        case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('instrumentMap')) {
-            return Object.assign({}, state, {
-              _mapLoaded: true,
-              _shouldAddData: true,
-            });
-          } else {
-            return state;
-          }
-        case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('instrumentMap')) {
-            return Object.assign({}, state, {
-              _mapLoaded: false,
-            });
-          } else {
-            return state;
-          }
-        case 'INSTRUMENTMAP_INITIALIZE_START':
-        case 'INSTRUMENTMAP_INITIALIZE_FINISH':
-        case 'INSTRUMENTMAP_ADD_DATA_START':
-        case 'INSTRUMENTMAP_ADD_DATA_FINISH':
-          return Object.assign({}, state, payload);
-        default:
+        } else {
           return state;
+        }
+      case 'MAPS_SHUTDOWN':
+        if (payload.hasOwnProperty('instrumentMap')) {
+          return Object.assign({}, state, {
+            _mapLoaded: false,
+          });
+        } else {
+          return state;
+        }
+      case 'INSTRUMENTMAP_INITIALIZE_START':
+      case 'INSTRUMENTMAP_INITIALIZE_FINISH':
+      case 'INSTRUMENTMAP_ADD_DATA_START':
+      case 'INSTRUMENTMAP_ADD_DATA_FINISH':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },
@@ -64,30 +64,30 @@ const instrumentMapBundle = {
       source: new Source(),
       declutter: true,
       style: (f, r) => new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+        fill: new Fill({
+          color: '#000000',
+        }),
+        stroke: new Stroke({
+          color: '#ffffff',
+          width: 1,
+        }),
+        text: new Text({
           fill: new Fill({
             color: '#000000',
           }),
+          font: '16px sans-serif',
+          offsetX: 12,
+          offsetY: -12,
+          padding: [2, 2, 2, 2],
           stroke: new Stroke({
             color: '#ffffff',
-            width: 1,
+            width: 2,
           }),
-          text: new Text({
-            fill: new Fill({
-              color: '#000000',
-            }),
-            font: '16px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
-            stroke: new Stroke({
-              color: '#ffffff',
-              width: 2,
-            }),
-            text: f.get('name'),
-            textAlign: 'left',
-          }),
+          text: f.get('name'),
+          textAlign: 'left',
         }),
+      }),
     });
 
     dispatch({

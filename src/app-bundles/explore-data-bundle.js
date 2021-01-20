@@ -9,12 +9,12 @@ const exploreDataBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'EXPLORE_DATA_CLEAR':
-          return Object.assign({}, initialData);
-        case 'EXPLORE_DATA_LOAD':
-          return Object.assign({}, state, payload);
-        default:
-          return state;
+      case 'EXPLORE_DATA_CLEAR':
+        return Object.assign({}, initialData);
+      case 'EXPLORE_DATA_LOAD':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },
@@ -61,10 +61,10 @@ const exploreDataBundle = {
         out[instrumentId] = {
           ...instrumentsById[instrumentId],
           timeseries: data[instrumentId].map((ts) => ({
-              ...timeseriesItems[ts.timeseries_id],
-              items: ts.items,
-              style: seriesStyles[styleIter++ % 11],
-            })),
+            ...timeseriesItems[ts.timeseries_id],
+            items: ts.items,
+            style: seriesStyles[styleIter++ % 11],
+          })),
         };
       });
       return out;

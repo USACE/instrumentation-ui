@@ -91,16 +91,16 @@ const CollectionGroupTimeseriesList = ({
   handleItemDelete,
   handleItemSaveValue,
 }) => (
-    <div className='w-100 list-group'>
-      {items.map((item, idx) => (
-        <TimeseriesListEntry
-          key={idx}
-          item={item}
-          handleItemDelete={handleItemDelete}
-          handleItemSaveValue={handleItemSaveValue}
-        />
-      ))}
-    </div>
-  );
+  <div className='w-100 list-group'>
+    {items.map((item, idx) => (
+      <TimeseriesListEntry
+        key={idx}
+        item={item}
+        handleItemDelete={handleItemDelete}
+        handleItemSaveValue={handleItemSaveValue}
+      />
+    ))}
+  </div>
+);
 
 export default CollectionGroupTimeseriesList;

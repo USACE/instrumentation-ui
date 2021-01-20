@@ -114,14 +114,14 @@ export default connect(
             >
               <option value=''>Please Choose a Dataset...</option>
               {timeseriesOptions.map((opt) => (
-                  <option
-                    key={opt.key}
-                    data-title={opt.title}
-                    value={opt.value}
-                  >
-                    {opt.title}
-                  </option>
-                ))}
+                <option
+                  key={opt.key}
+                  data-title={opt.title}
+                  value={opt.value}
+                >
+                  {opt.title}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -144,14 +144,14 @@ export default connect(
             >
               <option value=''>Please Choose a Dataset...</option>
               {timeseriesOptions.map((opt) => (
-                  <option
-                    key={opt.key}
-                    data-title={opt.title}
-                    value={opt.value}
-                  >
-                    {opt.title}
-                  </option>
-                ))}
+                <option
+                  key={opt.key}
+                  data-title={opt.title}
+                  value={opt.value}
+                >
+                  {opt.title}
+                </option>
+              ))}
             </select>
           </div>
         </div>

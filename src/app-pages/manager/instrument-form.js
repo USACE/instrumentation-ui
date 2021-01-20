@@ -57,9 +57,9 @@ export default connect(
     const projected =
       instrumentDrawLon && instrumentDrawLat
         ? doProjTransformFromLonLat(
-            [instrumentDrawLon, instrumentDrawLat],
-            projOptions[projDisplayProjection]
-          )
+          [instrumentDrawLon, instrumentDrawLat],
+          projOptions[projDisplayProjection]
+        )
         : ['', ''];
 
     const [x, setX] = useState(projected[0]);
@@ -129,14 +129,14 @@ export default connect(
               station === null || station === ''
                 ? null
                 : isNaN(Number(station))
-                ? null
-                : Number(station),
+                  ? null
+                  : Number(station),
             offset:
               offset === null || offset === ''
                 ? null
                 : isNaN(Number(offset))
-                ? null
-                : Number(offset),
+                  ? null
+                  : Number(offset),
             geometry: {
               type: 'Point',
               coordinates: [lonLat[0], lonLat[1]],
@@ -255,10 +255,10 @@ export default connect(
                 className='form-control'
               >
                 {Object.keys(projOptions).map((key, i) => (
-                    <option key={i} value={key}>
-                      {key}
-                    </option>
-                  ))}
+                  <option key={i} value={key}>
+                    {key}
+                  </option>
+                ))}
               </select>
             </div>
             <div className='form-group'>

@@ -59,14 +59,14 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
         {!timeseries
           ? 'No timeseries data...'
           : timeseries.map((ts, i) => (
-                <TimeseriesCheckbox
-                  key={i}
-                  instrument={instrument}
-                  timeseries={ts}
-                  chartSeries={series[ts.id]}
-                  onChange={onChange}
-                />
-              ))}
+            <TimeseriesCheckbox
+              key={i}
+              instrument={instrument}
+              timeseries={ts}
+              chartSeries={series[ts.id]}
+              onChange={onChange}
+            />
+          ))}
       </div>
     </div>
   );
@@ -83,29 +83,29 @@ export default connect(
     state,
     dispatch,
   }) => (
-      <div>
-        {instruments.length
-          ? instruments
-              .sort((a, b) => {
-                if (a.name > b.name) return 1;
-                if (a.name < b.name) return -1;
-                return 0;
-              })
-              .map((instrument, i) => (
-                  <InstrumentControl
-                    key={i}
-                    instrument={instrument}
-                    timeseries={timeseriesByInstrumentId[instrument.id]}
-                    series={state.series}
-                    onChange={(e) => {
-                      dispatch({
-                        type: 'SET_SERIES',
-                        payload: e,
-                      });
-                    }}
-                  />
-                ))
-          : 'Select Instruments on the Map'}
-      </div>
-    )
+    <div>
+      {instruments.length
+        ? instruments
+          .sort((a, b) => {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+          })
+          .map((instrument, i) => (
+            <InstrumentControl
+              key={i}
+              instrument={instrument}
+              timeseries={timeseriesByInstrumentId[instrument.id]}
+              series={state.series}
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET_SERIES',
+                  payload: e,
+                });
+              }}
+            />
+          ))
+        : 'Select Instruments on the Map'}
+    </div>
+  )
 );

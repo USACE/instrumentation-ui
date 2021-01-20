@@ -55,14 +55,14 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
       <div className='control'>{instrument.name}</div>
       <div>
         {timeseries.map((ts, i) => (
-            <TimeseriesCheckbox
-              key={i}
-              instrument={instrument}
-              checked={series[ts.id] && series[ts.id].active}
-              timeseries={ts}
-              onChange={onChange}
-            />
-          ))}
+          <TimeseriesCheckbox
+            key={i}
+            instrument={instrument}
+            checked={series[ts.id] && series[ts.id].active}
+            timeseries={ts}
+            onChange={onChange}
+          />
+        ))}
       </div>
     </div>
   );
@@ -74,10 +74,10 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
 // a bundle.
 const reducer = (series, { type, payload }) => {
   switch (type) {
-    case 'UPDATE_SERIES':
-      return Object.assign({}, series, payload);
-    default:
-      return series;
+  case 'UPDATE_SERIES':
+    return Object.assign({}, series, payload);
+  default:
+    return series;
   }
 };
 
@@ -123,19 +123,19 @@ export default connect(
                 {Object.keys(instruments)
                   .sort()
                   .map((instrumentId, i) => (
-                      <InstrumentControl
-                        key={i}
-                        instrument={instruments[instrumentId]}
-                        timeseries={timeseriesByInstrumentId[instrumentId]}
-                        series={series}
-                        onChange={(e) => {
-                          dispatch({
-                            type: 'UPDATE_SERIES',
-                            payload: e,
-                          });
-                        }}
-                      />
-                    ))}
+                    <InstrumentControl
+                      key={i}
+                      instrument={instruments[instrumentId]}
+                      timeseries={timeseriesByInstrumentId[instrumentId]}
+                      series={series}
+                      onChange={(e) => {
+                        dispatch({
+                          type: 'UPDATE_SERIES',
+                          payload: e,
+                        });
+                      }}
+                    />
+                  ))}
               </div>
               <div className='col-9'>
                 <TimeSeries data={chartSeries} />

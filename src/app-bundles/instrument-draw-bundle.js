@@ -30,16 +30,16 @@ const instrumentDrawBundle = {
       }
 
       switch (type) {
-        case 'INSTRUMENT_DRAW_INITIALIZE_START':
-        case 'INSTRUMENT_DRAW_INITIALIZE_FINISH':
-        case 'INSTRUMENT_DRAW_ADD_TO_MAP_START':
-        case 'INSTRUMENT_DRAW_ADD_TO_MAP_FINISH':
-        case 'INSTRUMENT_DRAW_MAP_CLOSED':
-        case 'INSTRUMENT_DRAW_CHANGED':
-        case 'INSTRUMENT_DRAW_UPDATE_LOC':
-          return Object.assign({}, state, payload);
-        default:
-          return state;
+      case 'INSTRUMENT_DRAW_INITIALIZE_START':
+      case 'INSTRUMENT_DRAW_INITIALIZE_FINISH':
+      case 'INSTRUMENT_DRAW_ADD_TO_MAP_START':
+      case 'INSTRUMENT_DRAW_ADD_TO_MAP_FINISH':
+      case 'INSTRUMENT_DRAW_MAP_CLOSED':
+      case 'INSTRUMENT_DRAW_CHANGED':
+      case 'INSTRUMENT_DRAW_UPDATE_LOC':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },

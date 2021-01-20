@@ -11,11 +11,11 @@ const rainfallBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'RAINFALL_LOAD_START':
-        case 'RAINFALL_LOAD_FINISHED':
-          return { ...state, ...payload };
-        default:
-          return state;
+      case 'RAINFALL_LOAD_START':
+      case 'RAINFALL_LOAD_FINISHED':
+        return { ...state, ...payload };
+      default:
+        return state;
       }
     };
   },

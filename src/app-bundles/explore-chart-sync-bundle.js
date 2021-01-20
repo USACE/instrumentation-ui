@@ -6,10 +6,10 @@ const exploreChartSyncBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'EXPLORE_CHART_SYNC_LAYOUT':
-          return Object.assign({}, state, payload);
-        default:
-          return state;
+      case 'EXPLORE_CHART_SYNC_LAYOUT':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },

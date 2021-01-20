@@ -128,14 +128,14 @@ export default connect(
         </div>
         <ul className='list-group list-group-flush'>
           {sorted.map((note, i) => (
-              <NoteItem
-                key={i}
-                note={note}
-                save={save}
-                del={del}
-                editable={edipi === note.creator}
-              />
-            ))}
+            <NoteItem
+              key={i}
+              note={note}
+              save={save}
+              del={del}
+              editable={edipi === note.creator}
+            />
+          ))}
           <li className='list-group-item'>
             {isAdding ? (
               <NoteEditor

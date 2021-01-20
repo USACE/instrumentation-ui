@@ -45,30 +45,30 @@ export default createRestBundle({
         source: new Source(),
         declutter: true,
         style: (f, r) => new Style({
-            geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+          fill: new Fill({
+            color: '#000000',
+          }),
+          stroke: new Stroke({
+            color: '#ffffff',
+            width: 1,
+          }),
+          text: new Text({
             fill: new Fill({
               color: '#000000',
             }),
+            font: '16px sans-serif',
+            offsetX: 12,
+            offsetY: -12,
+            padding: [2, 2, 2, 2],
             stroke: new Stroke({
               color: '#ffffff',
-              width: 1,
+              width: 2,
             }),
-            text: new Text({
-              fill: new Fill({
-                color: '#000000',
-              }),
-              font: '16px sans-serif',
-              offsetX: 12,
-              offsetY: -12,
-              padding: [2, 2, 2, 2],
-              stroke: new Stroke({
-                color: '#ffffff',
-                width: 2,
-              }),
-              text: f.get('name'),
-              textAlign: 'left',
-            }),
+            text: f.get('name'),
+            textAlign: 'left',
           }),
+        }),
       });
       map.addLayer(lyr);
 
@@ -106,9 +106,9 @@ export default createRestBundle({
     selectInstrumentsItemsObjectById: createSelector(
       'selectInstrumentsItems',
       (items) => items.reduce((out, instrument) => {
-          out[instrument.id] = instrument;
-          return out;
-        }, {})
+        out[instrument.id] = instrument;
+        return out;
+      }, {})
     ),
 
     selectInstrumentsLayer: (state) => state.instruments._layer,
@@ -116,17 +116,17 @@ export default createRestBundle({
     selectInstrumentsItemsGeoJSON: createSelector(
       'selectInstrumentsItems',
       (items) => ({
-          type: 'FeatureCollection',
-          features: items.map((item) => {
-            const feature = {
-              type: 'Feature',
-              geometry: { ...item.geometry },
-              properties: { ...item },
-            };
-            delete feature.properties.geometry;
-            return feature;
-          }),
-        })
+        type: 'FeatureCollection',
+        features: items.map((item) => {
+          const feature = {
+            type: 'Feature',
+            geometry: { ...item.geometry },
+            properties: { ...item },
+          };
+          delete feature.properties.geometry;
+          return feature;
+        }),
+      })
     ),
 
     selectInstrumentsByRouteGeoJSON: createSelector(
@@ -174,17 +174,17 @@ export default createRestBundle({
   },
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-      case 'MAP_INITIALIZED':
-        return Object.assign({}, state, {
-          _shouldInitializeLayer: true,
-        });
-      case 'INSTRUMENTS_INITIALIZE_LAYER_START':
-      case 'INSTRUMENTS_INITIALIZE_LAYER_FINISH':
-      case 'INSTRUMENTS_LOAD_DATA_START':
-      case 'INSTRUMENTS_LOAD_DATA_FINISH':
-        return Object.assign({}, state, payload);
-      default:
-        return state;
+    case 'MAP_INITIALIZED':
+      return Object.assign({}, state, {
+        _shouldInitializeLayer: true,
+      });
+    case 'INSTRUMENTS_INITIALIZE_LAYER_START':
+    case 'INSTRUMENTS_INITIALIZE_LAYER_FINISH':
+    case 'INSTRUMENTS_LOAD_DATA_START':
+    case 'INSTRUMENTS_LOAD_DATA_FINISH':
+      return Object.assign({}, state, payload);
+    default:
+      return state;
     }
   },
 });

@@ -13,59 +13,59 @@ export default connect(
   'doChartUpdateWidth',
   'doChartUpdateColor',
   ({ doChartUpdateType, doChartUpdateWidth, doChartUpdateColor, chartType, chartColor }) => (
-      <div className='panel'>
-        <div
-          className='panel-heading'
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+    <div className='panel'>
+      <div
+        className='panel-heading'
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
           Chart Options
-        </div>
-        <div className='p-3'>
-          <div className='columns'>
-            <div className='column'>
-              <div className='control'>
+      </div>
+      <div className='p-3'>
+        <div className='columns'>
+          <div className='column'>
+            <div className='control'>
+              <div className='select'>
+                <Select
+                  onChange={value => doChartUpdateType(value)}
+                  placeholderText='Chart Type'
+                  options={[
+                    { value: 'markers', text: 'Markers' },
+                    { value: 'lines', text: 'Lines' },
+                    { value: 'lines+markers', text: 'Line+Markers' },
+                  ]}
+                />
+              </div>
+              <br />
+              <br />
+              {chartType !== 'markers' ? (
                 <div className='select'>
                   <Select
-                    onChange={value => doChartUpdateType(value)}
-                    placeholderText='Chart Type'
+                    onChange={value => doChartUpdateWidth(value)}
+                    placeholderText='Line Width'
                     options={[
-                      { value: 'markers', text: 'Markers' },
-                      { value: 'lines', text: 'Lines' },
-                      { value: 'lines+markers', text: 'Line+Markers' },
+                      { value: '1', text: '.5' },
+                      { value: '2', text: '1' },
+                      { value: '3', text: '2' },
+                      { value: '4', text: '3' },
                     ]}
                   />
                 </div>
-                <br />
-                <br />
-                {chartType !== 'markers' ? (
-                  <div className='select'>
-                    <Select
-                      onChange={value => doChartUpdateWidth(value)}
-                      placeholderText='Line Width'
-                      options={[
-                        { value: '1', text: '.5' },
-                        { value: '2', text: '1' },
-                        { value: '3', text: '2' },
-                        { value: '4', text: '3' },
-                      ]}
-                    />
-                  </div>
-                ) : null}
-              </div>
+              ) : null}
             </div>
-            <div className='column'>
-              <ChromePicker
-                color={chartColor}
-                onChange={doChartUpdateColor}
-              />
-            </div>
+          </div>
+          <div className='column'>
+            <ChromePicker
+              color={chartColor}
+              onChange={doChartUpdateColor}
+            />
           </div>
         </div>
       </div>
-    )
+    </div>
+  )
 );
 

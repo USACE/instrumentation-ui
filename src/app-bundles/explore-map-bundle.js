@@ -34,37 +34,37 @@ const exploreMapBundle = {
     return (state = initialData, { type, payload }) => {
       if (process.env.NODE_ENV === 'development') console.log(type, payload);
       switch (type) {
-        case 'INSTRUMENTS_FETCH_FINISHED':
+      case 'INSTRUMENTS_FETCH_FINISHED':
+        return Object.assign({}, state, {
+          _instrumentsLoaded: true,
+        });
+      case 'INSTRUMENTGROUPS_FETCH_FINISHED':
+        return Object.assign({}, state, {
+          _groupsLoaded: true,
+        });
+      case 'MAPS_INITIALIZED':
+        if (payload.hasOwnProperty(initialData._mapKey)) {
           return Object.assign({}, state, {
-            _instrumentsLoaded: true,
+            _mapLoaded: true,
           });
-        case 'INSTRUMENTGROUPS_FETCH_FINISHED':
-          return Object.assign({}, state, {
-            _groupsLoaded: true,
-          });
-        case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
-            return Object.assign({}, state, {
-              _mapLoaded: true,
-            });
-          } else {
-            return state;
-          }
-        case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
-            return Object.assign({}, state, {
-              _mapLoaded: false,
-            });
-          } else {
-            return state;
-          }
-        case 'EXPLOREMAP_INITIALIZE_START':
-        case 'EXPLOREMAP_INITIALIZE_FINISH':
-        case 'EXPLOREMAP_ADD_DATA_START':
-        case 'EXPLOREMAP_ADD_DATA_FINISH':
-          return Object.assign({}, state, payload);
-        default:
+        } else {
           return state;
+        }
+      case 'MAPS_SHUTDOWN':
+        if (payload.hasOwnProperty(initialData._mapKey)) {
+          return Object.assign({}, state, {
+            _mapLoaded: false,
+          });
+        } else {
+          return state;
+        }
+      case 'EXPLOREMAP_INITIALIZE_START':
+      case 'EXPLOREMAP_INITIALIZE_FINISH':
+      case 'EXPLOREMAP_ADD_DATA_START':
+      case 'EXPLOREMAP_ADD_DATA_FINISH':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
       }
     };
   },
@@ -81,30 +81,30 @@ const exploreMapBundle = {
       source: new Source(),
       declutter: false,
       style: (f, r) => new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
-          fill: new Fill({
-            color: '#ffffff',
-          }),
-          stroke: new Stroke({
-            color: statusColors[f.getProperties()['status']],
-            width: 3,
-          }),
-          text: new Text({
-            fill: new Fill({
-              color: '#000000',
-            }),
-            font: '10px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
-            stroke: new Stroke({
-              color: '#ffffff',
-              width: 2,
-            }),
-            text: f.get('name'),
-            textAlign: 'left',
-          }),
+        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+        fill: new Fill({
+          color: '#ffffff',
         }),
+        stroke: new Stroke({
+          color: statusColors[f.getProperties()['status']],
+          width: 3,
+        }),
+        text: new Text({
+          fill: new Fill({
+            color: '#000000',
+          }),
+          font: '10px sans-serif',
+          offsetX: 12,
+          offsetY: -12,
+          padding: [2, 2, 2, 2],
+          stroke: new Stroke({
+            color: '#ffffff',
+            width: 2,
+          }),
+          text: f.get('name'),
+          textAlign: 'left',
+        }),
+      }),
     });
 
     dispatch({

@@ -8,8 +8,8 @@ import './css/ms/css/mapskin.min.css';
 import './css/index.css';
 
 export default connect('selectRoute', ({ route: Route }) => (
-    <div>
-      <Route />
-      <Modal />
-    </div>
-  ));
+  <div>
+    <Route />
+    <Modal />
+  </div>
+));
