@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useCallback } from 'react';
+import { connect } from 'redux-bundler-react';
 
 import Select from '../../app-components/select';
-import FilterSelect from "../../app-components/filter-select";
+import FilterSelect from '../../app-components/filter-select';
 
 const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
@@ -27,12 +27,12 @@ const generateOptions = (model, jsonKeys, domains, state) => {
 };
 
 export default connect(
-  "doUploadSetFieldmap",
-  "selectDomainsItemsByGroup",
-  "selectUploadFieldMap",
-  "selectUploadJsonKeys",
-  "selectUploadSelectedParser",
-  "selectStateData",
+  'doUploadSetFieldmap',
+  'selectDomainsItemsByGroup',
+  'selectUploadFieldMap',
+  'selectUploadJsonKeys',
+  'selectUploadSelectedParser',
+  'selectStateData',
   ({
     doUploadSetFieldmap,
     domainsItemsByGroup: domains,
@@ -52,7 +52,7 @@ export default connect(
             [key]: val,
             [val]: key,
           }
-        })
+        });
       }
     }, [doUploadSetFieldmap, uploadFieldMap]);
 
@@ -61,11 +61,11 @@ export default connect(
         {modelKeys.map(key => (
           <div key={key}>
             {model[key].hidden ? null : (
-              <div className="form-group row">
-                <label className="col-3 col-form-label text-right">
+              <div className='form-group row'>
+                <label className='col-3 col-form-label text-right'>
                   {model[key].label}
                 </label>
-                <div className="col-9">
+                <div className='col-9'>
                   {model[key] && model[key].useFilterComponent ? (
                     <FilterSelect
                       placeholder='Select One...'
@@ -80,7 +80,7 @@ export default connect(
                     />
                   )}
                   {model[key] && model[key].helpText ? (
-                    <small className="text-muted">{model[key].helpText}</small>
+                    <small className='text-muted'>{model[key].helpText}</small>
                   ) : null}
                 </div>
               </div>

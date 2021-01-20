@@ -9,7 +9,7 @@ const useOutsideEventHandle = (event, ref, callback) => {
       if (ref.current && !ref.current.contains(event.target)) {
         callback();
       }
-    }
+    };
 
     // Bind the event listener
     document.addEventListener(event, handleEventOutside);

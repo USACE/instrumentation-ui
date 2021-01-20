@@ -32,7 +32,7 @@ const TabItem = ({ tab, changeTab, index, isActive }) => {
   const { title } = tab;
 
   return (
-    <li className={`nav-item pointer`}>
+    <li className={'nav-item pointer'}>
       <span
         className={`nav-link${isActive ? ' active' : ''}`}
         onClick={() => changeTab(title, index)}

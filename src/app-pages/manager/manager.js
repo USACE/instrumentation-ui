@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
@@ -20,7 +19,7 @@ const filterItems = (filter, items) => {
     return Object.values(item)
       .join(' ')
       .toUpperCase()
-      .indexOf(filter.toUpperCase()) !== -1
+      .indexOf(filter.toUpperCase()) !== -1;
   });
 
   return filtered;
@@ -52,7 +51,7 @@ export default connect(
       'Instrument Groups': filterItems(filter, groups),
       'All Instruments': filterItems(filter, instruments),
       'Collection Groups': filterItems(filter, collectionGroups),
-    }
+    };
 
     const handleAdd = () => {
       doModalOpen(forms[form]);
@@ -110,7 +109,7 @@ export default connect(
         <>
           {commonContent()}
           <Pager
-            itemsKey="collectionGroups"
+            itemsKey='collectionGroups'
             items={data[form]}
           >
             <CollectionGroupTable />

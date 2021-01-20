@@ -1,22 +1,22 @@
-import React from "react";
-import DatePicker from "react-datepicker";
-import { connect } from "redux-bundler-react";
-import { subDays } from "date-fns";
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import { connect } from 'redux-bundler-react';
+import { subDays } from 'date-fns';
 
 import Button from '../button';
-import Settings from "./settings";
-import VizTimeseries from "./viz-timeseries";
-import VizCorrelation from "./viz-correlation";
+import Settings from './settings';
+import VizTimeseries from './viz-timeseries';
+import VizCorrelation from './viz-correlation';
 
 export default connect(
-  "doChartEditorSetShowSettings",
-  "doChartEditorSetLayout",
-  "doChartEditorSetCorrelationDates",
-  "selectChartEditorShowSettings",
-  "selectChartEditorChartType",
-  "selectChartEditorLayout",
-  "selectChartEditorCorrelationMinDate",
-  "selectChartEditorCorrelationMaxDate",
+  'doChartEditorSetShowSettings',
+  'doChartEditorSetLayout',
+  'doChartEditorSetCorrelationDates',
+  'selectChartEditorShowSettings',
+  'selectChartEditorChartType',
+  'selectChartEditorLayout',
+  'selectChartEditorCorrelationMinDate',
+  'selectChartEditorCorrelationMaxDate',
   ({
     doChartEditorSetShowSettings,
     doChartEditorSetLayout,
@@ -29,20 +29,20 @@ export default connect(
   }) => {
     const now = new Date();
     const from =
-      chartType === "timeseries"
+      chartType === 'timeseries'
         ? layout.xaxis.range[0]
           ? layout.xaxis.range[0]
           : null
         : minDate;
     const to =
-      chartType === "timeseries"
+      chartType === 'timeseries'
         ? layout.xaxis.range[1]
           ? layout.xaxis.range[1]
           : null
         : maxDate;
 
     const updateChartDates = (f, t) => {
-      if (chartType === "timeseries") {
+      if (chartType === 'timeseries') {
         doChartEditorSetLayout({
           ...layout,
           xaxis: {
@@ -67,7 +67,7 @@ export default connect(
     // }, [chartType, from, to]);
 
     const setLifetime = () => {
-      if (chartType === "timeseries") {
+      if (chartType === 'timeseries') {
         doChartEditorSetLayout({
           ...layout,
           xaxis: {
@@ -81,13 +81,13 @@ export default connect(
     };
 
     return (
-      <div style={{ height: "100%" }}>
+      <div style={{ height: '100%' }}>
         <span
-          className="pointer"
+          className='pointer'
           style={{
-            position: "absolute",
-            top: "0px",
-            left: "5px",
+            position: 'absolute',
+            top: '0px',
+            left: '5px',
             zIndex: 999,
           }}
           onClick={() => {
@@ -96,31 +96,31 @@ export default connect(
         >
           <i
             style={{
-              fontSize: "1.5em",
+              fontSize: '1.5em',
               color: showSettings
-                ? "rgba(68, 68, 68, 0.6)"
-                : "rgba(68, 68, 68, 0.3)",
+                ? 'rgba(68, 68, 68, 0.6)'
+                : 'rgba(68, 68, 68, 0.3)',
             }}
-            className="mdi mdi-cog"
+            className='mdi mdi-cog'
           ></i>
         </span>
         <div
-          className="d-flex"
+          className='d-flex'
           style={{
-            position: "absolute",
-            top: "26px",
-            width: "100%",
+            position: 'absolute',
+            top: '26px',
+            width: '100%',
             zIndex: 9,
-            padding: "10px",
+            padding: '10px',
           }}
         >
-          <div className="form-group mr-2">
+          <div className='form-group mr-2'>
             <label>
               <small>Date From</small>
             </label>
             <div>
               <DatePicker
-                className="form-control form-control-sm"
+                className='form-control form-control-sm'
                 selected={from ? new Date(from) : null}
                 onChange={(val) => {
                   updateChartDates(val.toISOString(), to);
@@ -129,13 +129,13 @@ export default connect(
               />
             </div>
           </div>
-          <div className="form-group mr-2">
+          <div className='form-group mr-2'>
             <label>
               <small>Date To</small>
             </label>
             <div>
               <DatePicker
-                className="form-control form-control-sm"
+                className='form-control form-control-sm'
                 selected={to ? new Date(to) : null}
                 onChange={(val) => {
                   updateChartDates(from, val.toISOString());
@@ -144,12 +144,12 @@ export default connect(
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <label>
               <small>Presets</small>
             </label>
             <div>
-              <div className="btn-group">
+              <div className='btn-group'>
                 <Button
                   variant='info'
                   size='small'
@@ -193,7 +193,7 @@ export default connect(
         </div>
         {showSettings ? (
           <Settings />
-        ) : chartType === "timeseries" ? (
+        ) : chartType === 'timeseries' ? (
           <VizTimeseries />
         ) : (
           <VizCorrelation />

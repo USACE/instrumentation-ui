@@ -89,7 +89,7 @@ export default connect(
                   active={activeTimeseries === ts.id}
                   item={ts}
                   onClick={(item) => {
-                    setActiveTimeseries(activeTimeseries === ts.id ? null : item.id)
+                    setActiveTimeseries(activeTimeseries === ts.id ? null : item.id);
                   }}
                 />
               ))}

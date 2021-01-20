@@ -82,7 +82,7 @@ class ApiError extends Error {
 
     dataKeys.forEach(key => {
       this[key] = data[key];
-    })
+    });
   };
 };
 

@@ -72,7 +72,7 @@ const Dropdown = ({
       </div>
     </DropdownContext.Provider>
   );
-}
+};
 
 const dropdown = {
   Menu: Dropdown,

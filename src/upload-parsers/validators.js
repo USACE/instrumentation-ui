@@ -1,7 +1,7 @@
 exports.isNotNull = (val) => val !== null;
 
 exports.isNotEmpty = (val) => {
-  const empty = val === null || val === undefined || val === "";
+  const empty = val === null || val === undefined || val === '';
   return !empty;
 };
 

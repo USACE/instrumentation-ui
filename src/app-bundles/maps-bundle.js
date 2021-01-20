@@ -9,8 +9,8 @@ import ScaleBar from 'ol/control/ScaleLine';
 import BasemapPicker from '../ol-controls/basemap-picker';
 
 const actions = {
-  MAPS_INITIALIZED: `MAPS_INITIALIZED`,
-  MAPS_SHUTDOWN: `MAPS_SHUTDOWN`,
+  MAPS_INITIALIZED: 'MAPS_INITIALIZED',
+  MAPS_SHUTDOWN: 'MAPS_SHUTDOWN',
 };
 
 const MapsBundle = {

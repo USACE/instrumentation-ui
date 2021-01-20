@@ -1,16 +1,15 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, Children, cloneElement } from "react";
-import { classnames } from "../utils";
+import React, { useState, Children, cloneElement } from 'react';
+import { classnames } from '../utils';
 
 const Page = ({ pageNo, isCurrent, onClick }) => {
   const pageClass = classnames({
-    "page-item": true,
+    'page-item': true,
     active: isCurrent,
   });
 
   return (
     <li className={pageClass} onClick={onClick}>
-      <a className="page-link" aria-label={`Goto page ${pageNo}`}>
+      <a className='page-link' aria-label={`Goto page ${pageNo}`}>
         {pageNo + 1}
       </a>
     </li>
@@ -27,8 +26,8 @@ const createPage = (currentPage, setPage, number) => (
 );
 
 const Ellipsis = () => (
-  <li className="page-item">
-    <span className="page-link">…</span>
+  <li className='page-item'>
+    <span className='page-link'>…</span>
   </li>
 );
 
@@ -55,7 +54,7 @@ const determinePagesToShow = (pages, currentPage, setPage) => {
   }
 
   return null;
-}
+};
 
 const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
   const [currentPage, setPage] = useState(0);
@@ -85,15 +84,15 @@ const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
   };
   const props = { [itemsKey]: pages[currentPage] };
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       {Children.map(children, (C, i) => {
         return cloneElement(C, { key: i, ...props });
       })}
-      <div className="d-flex justify-content-between noselect pointer">
+      <div className='d-flex justify-content-between noselect pointer'>
         <div>
           <select
-            title="Page Size"
-            className="form-control"
+            title='Page Size'
+            className='form-control'
             value={currentPageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
@@ -105,9 +104,9 @@ const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
             <option value={30}>30</option>
           </select>
         </div>
-        <ul className="pagination">
-          <li className="page-item" onClick={pageDown}>
-            <a className="page-link" aria-label={`Go to previous page`}>
+        <ul className='pagination'>
+          <li className='page-item' onClick={pageDown}>
+            <a className='page-link' aria-label={'Go to previous page'}>
               «
             </a>
           </li>
@@ -123,8 +122,8 @@ const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
             createPage(currentPage, setPage, pages.length - 1)
           )}
 
-          <li className="page-item" onClick={pageUp}>
-            <a className="page-link" aria-label={`Go to next page`}>
+          <li className='page-item' onClick={pageUp}>
+            <a className='page-link' aria-label={'Go to next page'}>
               »
             </a>
           </li>

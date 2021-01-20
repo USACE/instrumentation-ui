@@ -1,22 +1,22 @@
-import createRestBundle from "./create-rest-bundle";
-import { createSelector } from "redux-bundler";
+import createRestBundle from './create-rest-bundle';
+import { createSelector } from 'redux-bundler';
 
 export default createRestBundle({
-  name: "alertConfigs",
-  uid: "id",
+  name: 'alertConfigs',
+  uid: 'id',
   prefetch: false,
   staleAfter: 10000,
   persist: false,
-  routeParam: "id",
-  getTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs", // "/:" disables any accidental trigger of a fetch
-  putTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
-  postTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs",
-  deleteTemplate: "/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id",
-  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "INSTRUMENTS_FETCH_FINISHED"],
-  urlParamSelectors: ["selectProjectsIdByRoute", "selectInstrumentsIdByRoute"],
+  routeParam: 'id',
+  getTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs', // "/:" disables any accidental trigger of a fetch
+  putTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
+  postTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs',
+  deleteTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'INSTRUMENTS_FETCH_FINISHED'],
+  urlParamSelectors: ['selectProjectsIdByRoute', 'selectInstrumentsIdByRoute'],
   addons: {
     selectAlertConfigsByInstrumentId: createSelector(
-      "selectAlertConfigsItems",
+      'selectAlertConfigsItems',
       (alerts) => {
         if (!alerts || !alerts.length) return {};
         const out = {};
@@ -28,8 +28,8 @@ export default createRestBundle({
       }
     ),
     selectAlertConfigsByRouteByInstrumentId: createSelector(
-      "selectInstrumentsByRoute",
-      "selectAlertConfigsByInstrumentId",
+      'selectInstrumentsByRoute',
+      'selectAlertConfigsByInstrumentId',
       (instruments, alertsByInstrumentId) => {
         if (
           !instruments ||

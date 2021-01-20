@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
-import RoleFilter from "../../app-components/role-filter";
+import RoleFilter from '../../app-components/role-filter';
 
 const NoteEditor = connect(
-  "selectInstrumentsByRoute",
+  'selectInstrumentsByRoute',
   ({ instrumentsByRoute: instrument, note, onSave, onCancel }) => {
     if (!instrument) return null;
 
     const [id] = useState(note.id || null);
-    const [title, setTitle] = useState(note.title || "");
-    const [body, setBody] = useState(note.body || "");
+    const [title, setTitle] = useState(note.title || '');
+    const [body, setBody] = useState(note.body || '');
 
     const handleSave = () => {
       onSave({
@@ -24,20 +24,20 @@ const NoteEditor = connect(
     };
 
     return (
-      <div style={{ margin: "1em", paddingBottom: "1em" }}>
-        <div className="form-group">
+      <div style={{ margin: '1em', paddingBottom: '1em' }}>
+        <div className='form-group'>
           <input
-            className="form-control"
-            type="text"
-            placeholder="Title"
+            className='form-control'
+            type='text'
+            placeholder='Title'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <textarea
-            className="form-control"
-            placeholder="Note..."
+            className='form-control'
+            placeholder='Note...'
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={5}
@@ -64,7 +64,7 @@ const NoteItem = ({ note, editable, save, del }) => {
   const [isEditing, setEditing] = useState(false);
   const date = new Date(note.time);
   return (
-    <li className="list-group-item">
+    <li className='list-group-item'>
       {isEditing ? (
         <NoteEditor
           note={note}
@@ -76,7 +76,7 @@ const NoteItem = ({ note, editable, save, del }) => {
         />
       ) : (
         <>
-          <div className="d-flex justify-content-between">
+          <div className='d-flex justify-content-between'>
             <strong>{note.title}</strong>
             <div>
               <small>
@@ -94,7 +94,7 @@ const NoteItem = ({ note, editable, save, del }) => {
               ) : null}
             </div>
           </div>
-          <p style={{ whiteSpace: "pre-wrap" }}>{note.body}</p>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{note.body}</p>
         </>
       )}
     </li>
@@ -102,11 +102,11 @@ const NoteItem = ({ note, editable, save, del }) => {
 };
 
 export default connect(
-  "selectProjectsByRoute",
-  "selectInstrumentNotesItems",
-  "selectAuthEdipi",
-  "doInstrumentNotesSave",
-  "doInstrumentNotesDelete",
+  'selectProjectsByRoute',
+  'selectInstrumentNotesItems',
+  'selectAuthEdipi',
+  'doInstrumentNotesSave',
+  'doInstrumentNotesDelete',
   ({
     projectsByRoute: project,
     instrumentNotesItems: notes,
@@ -122,11 +122,11 @@ export default connect(
     const sorted = notes.sort();
 
     return (
-      <div className="card">
-        <div className="card-header">
+      <div className='card'>
+        <div className='card-header'>
           <strong>Notes</strong>
         </div>
-        <ul className="list-group list-group-flush">
+        <ul className='list-group list-group-flush'>
           {sorted.map((note, i) => {
             return (
               <NoteItem
@@ -138,10 +138,10 @@ export default connect(
               />
             );
           })}
-          <li className="list-group-item">
+          <li className='list-group-item'>
             {isAdding ? (
               <NoteEditor
-                key={"editor"}
+                key={'editor'}
                 note={{}}
                 onSave={(newNote) => {
                   setAdding(false);

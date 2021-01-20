@@ -1,31 +1,31 @@
 /* eslint-disable no-mixed-operators */
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import { connect } from "redux-bundler-react";
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import { connect } from 'redux-bundler-react';
 
-import DomainSelect from "../../app-components/domain-select";
-import Map from "../../app-components/classMap";
-import { ModalFooter, ModalHeader } from "../../app-components/modal";
+import DomainSelect from '../../app-components/domain-select';
+import Map from '../../app-components/classMap';
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default connect(
-  "doModalClose",
-  "doInstrumentsSave",
-  "doInstrumentDrawUpdateLoc",
-  "doInstrumentDrawOnMapClose",
-  "doProjSetDisplayProjection",
-  "doProjTransformFromLonLat",
-  "doProjTransformToLonLat",
-  "doInstrumentsDelete",
-  "doUpdateUrlWithHomepage",
-  "selectRouteParams",
-  "selectInstrumentDrawLon",
-  "selectInstrumentDrawLat",
-  "selectInstrumentDrawReady",
-  "selectProjDisplayProjection",
-  "selectProjOptions",
-  "selectProjectsByRoute",
+  'doModalClose',
+  'doInstrumentsSave',
+  'doInstrumentDrawUpdateLoc',
+  'doInstrumentDrawOnMapClose',
+  'doProjSetDisplayProjection',
+  'doProjTransformFromLonLat',
+  'doProjTransformToLonLat',
+  'doInstrumentsDelete',
+  'doUpdateUrlWithHomepage',
+  'selectRouteParams',
+  'selectInstrumentDrawLon',
+  'selectInstrumentDrawLat',
+  'selectInstrumentDrawReady',
+  'selectProjDisplayProjection',
+  'selectProjOptions',
+  'selectProjectsByRoute',
   ({
     doModalClose,
     doInstrumentsSave,
@@ -46,12 +46,12 @@ export default connect(
     item = {},
     isEdit = true,
   }) => {
-    const [name, setName] = useState((item && item.name) || "");
-    const [type_id, setTypeId] = useState((item && item.type_id) || "");
-    const [station, setStation] = useState((item && item.station) || "");
-    const [offset, setOffset] = useState((item && item.offset) || "");
+    const [name, setName] = useState((item && item.name) || '');
+    const [type_id, setTypeId] = useState((item && item.type_id) || '');
+    const [station, setStation] = useState((item && item.station) || '');
+    const [offset, setOffset] = useState((item && item.offset) || '');
     const [project_id] = useState((item && item.project_id) || project.id);
-    const [status_id, setStatusId] = useState((item && item.status_id) || "");
+    const [status_id, setStatusId] = useState((item && item.status_id) || '');
     const [status_time, setStatusTime] = useState(new Date());
 
     const projected =
@@ -156,13 +156,13 @@ export default connect(
           item,
           () => {
             doModalClose();
-            if (routeParams.hasOwnProperty("instrumentSlug"))
-              doUpdateUrlWithHomepage("/manager");
+            if (routeParams.hasOwnProperty('instrumentSlug'))
+              doUpdateUrlWithHomepage('/manager');
           },
           true
         );
       }
-    }
+    };
 
     const currentProj = projOptions[projDisplayProjection];
     const units = currentProj.getUnits();
@@ -182,40 +182,40 @@ export default connect(
     };
 
     return (
-      <div className="modal-content" style={{ overflowY: "auto" }}>
-        <form id="instrument-form" onSubmit={handleSave}>
+      <div className='modal-content' style={{ overflowY: 'auto' }}>
+        <form id='instrument-form' onSubmit={handleSave}>
           <ModalHeader title={`${isEdit ? 'Edit' : 'Add'} Instrument`} />
-          <section className="modal-body">
-            <div className="mb-3" style={{ position: "relative", height: 300 }}>
+          <section className='modal-body'>
+            <div className='mb-3' style={{ position: 'relative', height: 300 }}>
               <Map
-                mapKey="inst-edit"
+                mapKey='inst-edit'
                 options={{ center: [-80.79, 26.94], zoom: 9 }}
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Name</label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="form-control"
-                type="text"
-                placeholder="Name"
+                className='form-control'
+                type='text'
+                placeholder='Name'
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Type</label>
-              <DomainSelect value={type_id} onChange={(val) => setTypeId(val)} domain="instrument_type" />
+              <DomainSelect value={type_id} onChange={(val) => setTypeId(val)} domain='instrument_type' />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Status</label>
-              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain="status" />
+              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain='status' />
             </div>
             {statusHasChanged ? (
-              <div className="form-group">
+              <div className='form-group'>
                 <label>Status current as of</label>
-                <div className="control">
+                <div className='control'>
                   <DatePicker
-                    className="form-control"
+                    className='form-control'
                     selected={status_time}
                     onChange={(val) => setStatusTime(val)}
                     showTimeInput
@@ -223,36 +223,36 @@ export default connect(
                 </div>
               </div>
             ) : null}
-            <div className="form-group">
+            <div className='form-group'>
               <label>Station</label>
               <input
                 value={station}
                 onChange={(e) => setStation(e.target.value)}
-                className="form-control"
-                type="number"
-                placeholder="Station"
+                className='form-control'
+                type='number'
+                placeholder='Station'
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Offset</label>
               <input
                 value={offset}
                 onChange={(e) => setOffset(e.target.value)}
-                className="form-control"
-                type="number"
-                placeholder="Offset"
+                className='form-control'
+                type='number'
+                placeholder='Offset'
               />
-              <small className="form-text text-muted">
+              <small className='form-text text-muted'>
                 Offset should be positive on land side, negative on water side
               </small>
             </div>
 
-            <div className="form-group">
+            <div className='form-group'>
               <label>Use Projection</label>
               <select
                 onChange={handleSetDisplayProjection}
                 value={projDisplayProjection}
-                className="form-control"
+                className='form-control'
               >
                 {Object.keys(projOptions).map((key, i) => {
                   return (
@@ -263,38 +263,38 @@ export default connect(
                 })}
               </select>
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>
                 {`${
-                  units === "degrees" ? "Longitude" : "X coordinate"
+                  units === 'degrees' ? 'Longitude' : 'X coordinate'
                 } in ${units}`}
               </label>
               <input
-                data-key="x"
+                data-key='x'
                 value={x}
                 onChange={(e) => setX(e.target.value)}
                 onBlur={handleLocUpdate}
-                className="form-control"
-                type="number"
+                className='form-control'
+                type='number'
                 placeholder={`${
-                  units === "degrees" ? "Longitude" : "X coordinate"
+                  units === 'degrees' ? 'Longitude' : 'X coordinate'
                 } in ${units}`}
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>{`${
-                units === "degrees" ? "Latitude" : "Y coordinate"
+                units === 'degrees' ? 'Latitude' : 'Y coordinate'
               } in ${units}`}</label>
 
               <input
-                data-key="y"
+                data-key='y'
                 value={y}
                 onChange={(e) => setY(e.target.value)}
                 onBlur={handleLocUpdate}
-                className="form-control"
-                type="number"
+                className='form-control'
+                type='number'
                 placeholder={`${
-                  units === "degrees" ? "Latitude" : "Y coordinate"
+                  units === 'degrees' ? 'Latitude' : 'Y coordinate'
                 } in ${units}`}
               />
             </div>

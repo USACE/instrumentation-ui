@@ -1,16 +1,16 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
 
-import Button from "../../app-components/button";
-import InstrumentForm from "./instrument-form";
-import RoleFilter from "../../app-components/role-filter";
+import Button from '../../app-components/button';
+import InstrumentForm from './instrument-form';
+import RoleFilter from '../../app-components/role-filter';
 
 const Table = connect(
-  "doModalOpen",
-  "selectProjectsByRoute",
+  'doModalOpen',
+  'selectProjectsByRoute',
   ({ projectsByRoute: project, doModalOpen, instruments, tools }) => {
     return (
-      <table className="table is-fullwidth">
+      <table className='table is-fullwidth'>
         <thead>
           <tr>
             <th>Status</th>
@@ -29,13 +29,13 @@ const Table = connect(
                     {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
                   </td>) : <td />
                 }
-                <td style={{ width: "30%" }}>
+                <td style={{ width: '30%' }}>
                   <a href={`/${project.slug}/instruments/${instrument.slug}`}>
                     {instrument.name}
                   </a>
                 </td>
                 <td>{instrument.type}</td>
-                <td style={{ width: "200px" }}>
+                <td style={{ width: '200px' }}>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <Button
                       variant='info'
@@ -44,7 +44,7 @@ const Table = connect(
                       title='Edit'
                       className='mr-3'
                       handleClick={() => doModalOpen(InstrumentForm, { item: instrument })}
-                      icon={<i className="mdi mdi-pencil" />}
+                      icon={<i className='mdi mdi-pencil' />}
                     />
                     {tools && (
                       tools.map((Tool, i) => <Tool key={i} item={instrument} />)

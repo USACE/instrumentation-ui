@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import { ModalFooter, ModalHeader } from "../../app-components/modal";
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 export default connect(
-  "doModalClose",
-  "doInstrumentGroupInstrumentsSave",
-  "selectInstrumentsItemsObject",
-  "selectInstrumentGroupInstrumentsItemsObject",
+  'doModalClose',
+  'doInstrumentGroupInstrumentsSave',
+  'selectInstrumentsItemsObject',
+  'selectInstrumentGroupInstrumentsItemsObject',
   ({
     doModalClose,
     doInstrumentGroupInstrumentsSave,
     instrumentsItemsObject: instruments,
     instrumentGroupInstrumentsItemsObject: groupInstruments,
   }) => {
-    const [instrumentSlug, setInstrumentSlug] = useState("");
+    const [instrumentSlug, setInstrumentSlug] = useState('');
 
     const handleSelect = (e) => {
       setInstrumentSlug(e.target.value);
@@ -38,19 +38,19 @@ export default connect(
       });
 
     return (
-      <div className="modal-content">
-        <form id="instrument-picker" onSubmit={handleSave}>
+      <div className='modal-content'>
+        <form id='instrument-picker' onSubmit={handleSave}>
           <ModalHeader title='Choose Instrument' />
-          <section className="modal-body">
-            <div className="form-group">
+          <section className='modal-body'>
+            <div className='form-group'>
               <label>Type</label>
               <select
-                className="form-control"
+                className='form-control'
                 value={instrumentSlug}
                 onChange={handleSelect}
               >
                 {instrumentSlug ? null : (
-                  <option value="">Select one...</option>
+                  <option value=''>Select one...</option>
                 )}
                 {options.map((opt, i) => {
                   return (

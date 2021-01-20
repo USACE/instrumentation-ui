@@ -41,7 +41,7 @@ function checkRoles(roles, tokenRolesJoined, orgsActiveSlug) {
   for (let i = 0; i < roles.length; i++) {
     let role = roles[i];
     role = role.replace(
-      `:ORG.`,
+      ':ORG.',
       `${orgsActiveSlug ? orgsActiveSlug.toUpperCase() : ''}.`
     );
 
@@ -268,7 +268,7 @@ const createRestBundle = (opts) => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
-              _abortReason: `User is not allowed to run this query`,
+              _abortReason: 'User is not allowed to run this query',
             },
           });
           return;
@@ -289,7 +289,7 @@ const createRestBundle = (opts) => {
             payload: {
               _isLoading: false,
               _lastResource: url,
-              _abortReason: `don't have all the params we need`,
+              _abortReason: 'don\'t have all the params we need',
             },
           });
 
@@ -306,7 +306,7 @@ const createRestBundle = (opts) => {
                 ...{
                   _isLoading: false,
                   _lastResource: url,
-                  _abortReason: `don't have all the params we need`,
+                  _abortReason: 'don\'t have all the params we need',
                 },
               },
             });
@@ -319,7 +319,7 @@ const createRestBundle = (opts) => {
             type: actions.FETCH_ABORT,
             payload: {
               _isLoading: false,
-              _abortReason: `we're not stale enough`,
+              _abortReason: 'we\'re not stale enough',
             },
           });
           return;

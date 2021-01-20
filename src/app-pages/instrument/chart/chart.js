@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
 
 export default connect(() => {
   return (

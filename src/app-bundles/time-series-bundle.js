@@ -1,25 +1,25 @@
-import createRestBundle from "./create-rest-bundle";
-import { createSelector } from "redux-bundler";
+import createRestBundle from './create-rest-bundle';
+import { createSelector } from 'redux-bundler';
 
 export default createRestBundle({
-  name: "instrumentTimeseries",
-  uid: "id",
+  name: 'instrumentTimeseries',
+  uid: 'id',
   prefetch: true,
   staleAfter: 10000,
   persist: false,
-  routeParam: "",
-  getTemplate: "/timeseries",
-  putTemplate: "/:",
-  postTemplate: "/timeseries",
-  deleteTemplate: "/timeseries/:item.id",
-  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN"],
+  routeParam: '',
+  getTemplate: '/timeseries',
+  putTemplate: '/:',
+  postTemplate: '/timeseries',
+  deleteTemplate: '/timeseries/:item.id',
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: [
-    "INSTRUMENTCONSTANTS_SAVE_FINISHED",
-    "INSTRUMENTS_FETCH_FINISHED",
+    'INSTRUMENTCONSTANTS_SAVE_FINISHED',
+    'INSTRUMENTS_FETCH_FINISHED',
   ],
   urlParamSelectors: [],
   reduceFurther: (state, { type, payload }) => {
-    if (type === "INSTRUMENTTIMESERIES_SET_ACTIVE_ID") {
+    if (type === 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID') {
       return Object.assign({}, state, payload);
     } else {
       return state;
@@ -28,7 +28,7 @@ export default createRestBundle({
   addons: {
     doInstrumentTimeseriesSetActiveId: (id) => ({ dispatch }) => {
       dispatch({
-        type: "INSTRUMENTTIMESERIES_SET_ACTIVE_ID",
+        type: 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
         payload: {
           _activeId: id,
         },
@@ -40,14 +40,14 @@ export default createRestBundle({
     },
 
     selectInstrumentTimeseriesActiveIdParam: createSelector(
-      "selectInstrumentTimeseriesActiveId",
+      'selectInstrumentTimeseriesActiveId',
       (id) => {
         if (!id) return null;
         return { timeseriesId: id };
       }
     ),
     selectInstrumentTimeseriesByInstrumentId: createSelector(
-      "selectInstrumentTimeseriesItems",
+      'selectInstrumentTimeseriesItems',
       (timeseries) => {
         if (!timeseries || !timeseries.length) return {};
         const out = {};
@@ -59,7 +59,7 @@ export default createRestBundle({
       }
     ),
     selectInstrumentTimeseriesByProjectId: createSelector(
-      "selectInstrumentTimeseriesItems",
+      'selectInstrumentTimeseriesItems',
       (timeseries) => {
         if (!timeseries || !timeseries.length) return {};
         const out = {};
@@ -71,10 +71,10 @@ export default createRestBundle({
       }
     ),
     selectInstrumentTimeseriesItemsByRoute: createSelector(
-      "selectInstrumentsByRoute",
-      "selectProjectsByRoute",
-      "selectInstrumentTimeseriesByInstrumentId",
-      "selectInstrumentTimeseriesByProjectId",
+      'selectInstrumentsByRoute',
+      'selectProjectsByRoute',
+      'selectInstrumentTimeseriesByInstrumentId',
+      'selectInstrumentTimeseriesByProjectId',
       (
         instrument,
         project,

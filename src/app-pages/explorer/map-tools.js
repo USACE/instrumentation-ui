@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import AboutButton from "./about-button";
+import AboutButton from './about-button';
 import Button from '../../app-components/button';
 
 export default connect(
-  "doExploreMapInteractionsReset",
-  "doExploreMapInteractionsSelectMode",
+  'doExploreMapInteractionsReset',
+  'doExploreMapInteractionsSelectMode',
   ({ doExploreMapInteractionsReset, doExploreMapInteractionsSelectMode }) => {
     const [active, setActive] = useState(false);
 
     useEffect(() => {
       if (active) {
-        if (typeof doExploreMapInteractionsSelectMode === "function")
+        if (typeof doExploreMapInteractionsSelectMode === 'function')
           doExploreMapInteractionsSelectMode();
       } else {
-        if (typeof doExploreMapInteractionsReset === "function")
+        if (typeof doExploreMapInteractionsReset === 'function')
           doExploreMapInteractionsReset();
       }
     }, [
@@ -25,7 +25,7 @@ export default connect(
     ]);
 
     return (
-      <div style={{ position: "absolute", left: 10, top: 10, right: 10 }}>
+      <div style={{ position: 'absolute', left: 10, top: 10, right: 10 }}>
         <Button
           className={`${active ? 'active' : ''} mr-2`}
           title='Select by box'

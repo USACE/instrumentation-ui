@@ -20,7 +20,7 @@ export default connect(
       e.preventDefault();
       e.stopPropagation();
 
-      doModalOpen(AlertConfigSettings, { item: a })
+      doModalOpen(AlertConfigSettings, { item: a });
     };
 
     const alertListItem = (a, i) => {

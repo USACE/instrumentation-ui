@@ -44,7 +44,7 @@ const timeseriesParser = {
       type: 'domain',
       domainGroup: 'parameter',
       required: true,
-      helpText: `Acceptable data values include 'pressure', 'temperature', 'elevation', 'length', 'precipitation', or 'voltage' others will be ignored`,
+      helpText: 'Acceptable data values include \'pressure\', \'temperature\', \'elevation\', \'length\', \'precipitation\', or \'voltage\' others will be ignored',
     },
     unit_id: {
       label: 'Unit',
@@ -52,7 +52,7 @@ const timeseriesParser = {
       domainGroup: 'unit',
       required: true,
       useFilterComponent: true,
-      helpText: `Acceptable data values include 'inches', 'feet', 'volts', 'millibar', or 'inches mercury (Hg)' others will be ignored`,
+      helpText: 'Acceptable data values include \'inches\', \'feet\', \'volts\', \'millibar\', or \'inches mercury (Hg)\' others will be ignored',
     },
   },
 };

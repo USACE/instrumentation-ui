@@ -1,3 +1,6 @@
+/* eslint-disable */
+// @TODO - come back to this file and clean it.
+
 import React from "react";
 import { connect } from "redux-bundler-react";
 import { fromLonLat } from "ol/proj";
@@ -41,3 +44,5 @@ export default connect(
   "selectMapsObject",
   Map
 );
+
+/* eslint-enable */

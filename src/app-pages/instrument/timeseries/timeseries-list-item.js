@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
-import { connect } from "redux-bundler-react";
-import { classnames } from "../../../utils";
-import RoleFilter from "../../../app-components/role-filter";
-import TimeseriesForm from "./timeseries-form";
+import React, { useRef } from 'react';
+import { connect } from 'redux-bundler-react';
+import { classnames } from '../../../utils';
+import RoleFilter from '../../../app-components/role-filter';
+import TimeseriesForm from './timeseries-form';
 
 export default connect(
-  "selectProjectsByRoute",
-  "doModalOpen",
+  'selectProjectsByRoute',
+  'doModalOpen',
   ({ projectsByRoute: project, doModalOpen, item, onClick, active }) => {
     const li = useRef(null);
     if (!item) return null;
     const itemClass = classnames({
-      "list-group-item": true,
+      'list-group-item': true,
       active: active,
     });
     return (
@@ -24,12 +24,12 @@ export default connect(
       >
         <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
           <button
-            className="float-right btn btn-sm btn-outline-info"
+            className='float-right btn btn-sm btn-outline-info'
             onClick={() => {
               doModalOpen(TimeseriesForm, { item: item });
             }}
           >
-            <i className="mdi mdi-pencil"></i>
+            <i className='mdi mdi-pencil'></i>
           </button>
         </RoleFilter>
         <div>{item.name}</div>

@@ -1,13 +1,13 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
-import SettingsTimeseries from "./settings-timeseries";
-import SettingsCorrelation from "./settings-correlation";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
+import SettingsTimeseries from './settings-timeseries';
+import SettingsCorrelation from './settings-correlation';
 
 export default connect(
-  "doChartEditorSetChartType",
-  "doChartEditorSetLayout",
-  "selectChartEditorChartType",
-  "selectChartEditorLayout",
+  'doChartEditorSetChartType',
+  'doChartEditorSetLayout',
+  'selectChartEditorChartType',
+  'selectChartEditorLayout',
   ({
     doChartEditorSetChartType,
     doChartEditorSetLayout,
@@ -15,18 +15,18 @@ export default connect(
     chartEditorLayout: layout,
   }) => {
     return (
-      <div style={{ marginTop: "6em", padding: "10px" }}>
-        <div className="mb-2">
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
+      <div style={{ marginTop: '6em', padding: '10px' }}>
+        <div className='mb-2'>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group'>
                 <label>
                   <small>Chart Type</small>
                 </label>
-                <div className="select is-small" style={{ width: "100%" }}>
+                <div className='select is-small' style={{ width: '100%' }}>
                   <select
-                    className="form-control form-control-sm"
-                    style={{ width: "100%" }}
+                    className='form-control form-control-sm'
+                    style={{ width: '100%' }}
                     value={chartType}
                     onChange={(e) => {
                       doChartEditorSetChartType(e.target.value);
@@ -36,20 +36,20 @@ export default connect(
                           ...layout.xaxis,
                           ...{
                             type:
-                              e.target.value === "timeseries" ? "date" : "-",
+                              e.target.value === 'timeseries' ? 'date' : '-',
                           },
                         },
                       });
                     }}
                   >
-                    <option value="timeseries">Timeseries</option>
-                    <option value="correlation">Correlation Plot</option>
+                    <option value='timeseries'>Timeseries</option>
+                    <option value='correlation'>Correlation Plot</option>
                   </select>
                 </div>
               </div>
             </div>
-            <div className="col">
-              <div className="form-group">
+            <div className='col'>
+              <div className='form-group'>
                 <label>
                   <small>Chart Title</small>
                 </label>
@@ -64,15 +64,15 @@ export default connect(
                       },
                     });
                   }}
-                  className="form-control form-control-sm"
-                  type="text"
-                  placeholder="Title"
+                  className='form-control form-control-sm'
+                  type='text'
+                  placeholder='Title'
                 />
               </div>
             </div>
           </div>
         </div>
-        {chartType === "timeseries" ? (
+        {chartType === 'timeseries' ? (
           <SettingsTimeseries />
         ) : (
           <SettingsCorrelation />

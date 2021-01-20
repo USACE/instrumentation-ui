@@ -10,7 +10,7 @@ import './userProfile.css';
 const urlify = str => str.toLowerCase().split(' ').join('-');
 
 const buildProjectContent = (projects = []) => {
-  if (!projects.length) return <p>No Projects!</p>
+  if (!projects.length) return <p>No Projects!</p>;
 
   return (
     <div>

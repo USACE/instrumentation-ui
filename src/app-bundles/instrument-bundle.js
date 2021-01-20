@@ -1,40 +1,40 @@
-import createRestBundle from "./create-rest-bundle";
-import Layer from "ol/layer/Vector";
-import Source from "ol/source/Vector";
-import GeoJSON from "ol/format/GeoJSON";
-import { createSelector } from "redux-bundler";
-import Style from "ol/style/Style";
-import Text from "ol/style/Text";
-import Fill from "ol/style/Fill";
-import Stroke from "ol/style/Stroke";
-import Circle from "ol/geom/Circle";
+import createRestBundle from './create-rest-bundle';
+import Layer from 'ol/layer/Vector';
+import Source from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
+import { createSelector } from 'redux-bundler';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Circle from 'ol/geom/Circle';
 
 const geoJSON = new GeoJSON();
 
 export default createRestBundle({
-  name: "instruments",
-  uid: "slug",
+  name: 'instruments',
+  uid: 'slug',
   prefetch: true,
   staleAfter: 10000,
   persist: false,
-  sortBy: "name",
-  routeParam: "instrumentSlug",
-  getTemplate: "/projects/:projectId/instruments",
-  putTemplate: "/projects/:projectId/instruments/:item.id",
-  postTemplate: "/projects/:projectId/instruments",
-  deleteTemplate: "/projects/:projectId/instruments/:item.id",
-  fetchActions: ["URL_UPDATED", "AUTH_LOGGED_IN", "PROJECTS_FETCH_FINISHED"],
+  sortBy: 'name',
+  routeParam: 'instrumentSlug',
+  getTemplate: '/projects/:projectId/instruments',
+  putTemplate: '/projects/:projectId/instruments/:item.id',
+  postTemplate: '/projects/:projectId/instruments',
+  deleteTemplate: '/projects/:projectId/instruments/:item.id',
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
-    "INSTRUMENTS_SAVE_FINISHED",
-    "INSTRUMENTS_DELETE_FINISHED",
-    "INSTRUMENTSTATUS_SAVE_FINISHED",
-    "INSTRUMENTZ_SAVE_FINISHED",
+    'INSTRUMENTS_SAVE_FINISHED',
+    'INSTRUMENTS_DELETE_FINISHED',
+    'INSTRUMENTSTATUS_SAVE_FINISHED',
+    'INSTRUMENTZ_SAVE_FINISHED',
   ],
-  urlParamSelectors: ["selectProjectsIdByRoute"],
+  urlParamSelectors: ['selectProjectsIdByRoute'],
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {
       dispatch({
-        type: "INSTRUMENTS_INITIALIZE_LAYER_START",
+        type: 'INSTRUMENTS_INITIALIZE_LAYER_START',
         payload: {
           _shouldInitializeLayer: false,
         },
@@ -48,26 +48,26 @@ export default createRestBundle({
           return new Style({
             geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
             fill: new Fill({
-              color: "#000000",
+              color: '#000000',
             }),
             stroke: new Stroke({
-              color: "#ffffff",
+              color: '#ffffff',
               width: 1,
             }),
             text: new Text({
               fill: new Fill({
-                color: "#000000",
+                color: '#000000',
               }),
-              font: "16px sans-serif",
+              font: '16px sans-serif',
               offsetX: 12,
               offsetY: -12,
               padding: [2, 2, 2, 2],
               stroke: new Stroke({
-                color: "#ffffff",
+                color: '#ffffff',
                 width: 2,
               }),
-              text: f.get("name"),
-              textAlign: "left",
+              text: f.get('name'),
+              textAlign: 'left',
             }),
           });
         },
@@ -75,7 +75,7 @@ export default createRestBundle({
       map.addLayer(lyr);
 
       dispatch({
-        type: "INSTRUMENTS_INITIALIZE_LAYER_FINISH",
+        type: 'INSTRUMENTS_INITIALIZE_LAYER_FINISH',
         payload: {
           _layer: lyr,
           _shouldLoadData: true,
@@ -85,7 +85,7 @@ export default createRestBundle({
 
     doInstrumentsLoadData: () => ({ dispatch, store }) => {
       dispatch({
-        type: "INSTRUMENTS_LOAD_DATA_START",
+        type: 'INSTRUMENTS_LOAD_DATA_START',
         payload: {
           _shouldLoadData: false,
         },
@@ -106,7 +106,7 @@ export default createRestBundle({
     },
 
     selectInstrumentsItemsObjectById: createSelector(
-      "selectInstrumentsItems",
+      'selectInstrumentsItems',
       (items) => {
         return items.reduce((out, instrument) => {
           out[instrument.id] = instrument;
@@ -118,13 +118,13 @@ export default createRestBundle({
     selectInstrumentsLayer: (state) => state.instruments._layer,
 
     selectInstrumentsItemsGeoJSON: createSelector(
-      "selectInstrumentsItems",
+      'selectInstrumentsItems',
       (items) => {
         return {
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: items.map((item) => {
             const feature = {
-              type: "Feature",
+              type: 'Feature',
               geometry: { ...item.geometry },
               properties: { ...item },
             };
@@ -136,12 +136,12 @@ export default createRestBundle({
     ),
 
     selectInstrumentsByRouteGeoJSON: createSelector(
-      "selectInstrumentsByRoute",
+      'selectInstrumentsByRoute',
       (item) => {
         if (!item) return null;
 
         const feature = {
-          type: "Feature",
+          type: 'Feature',
           geometry: { ...item.geometry },
           properties: { ...item },
         };
@@ -149,14 +149,14 @@ export default createRestBundle({
         delete feature.properties.geometry;
 
         return {
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: [feature],
         };
       }
     ),
 
     selectInstrumentsIdByRoute: createSelector(
-      "selectInstrumentsByRoute",
+      'selectInstrumentsByRoute',
       (instrument) => {
         if (instrument && instrument.id) return { instrumentId: instrument.id };
         return null;
@@ -164,7 +164,7 @@ export default createRestBundle({
     ),
 
     selectInstrumentsNames: createSelector(
-      "selectInstrumentsItems",
+      'selectInstrumentsItems',
       (items) => {
         return items.map((item) => {
           return item.name;
@@ -174,24 +174,24 @@ export default createRestBundle({
 
     reactInstrumentsShouldInitializeLayer: (state) => {
       if (state.instruments._shouldInitializeLayer)
-        return { actionCreator: "doInstrumentsInitializeLayer" };
+        return { actionCreator: 'doInstrumentsInitializeLayer' };
     },
 
     reactInstrumentsShouldLoadData: (state) => {
       if (state.instruments._shouldLoadData)
-        return { actionCreator: "doInstrumentsLoadData" };
+        return { actionCreator: 'doInstrumentsLoadData' };
     },
   },
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-      case "MAP_INITIALIZED":
+      case 'MAP_INITIALIZED':
         return Object.assign({}, state, {
           _shouldInitializeLayer: true,
         });
-      case "INSTRUMENTS_INITIALIZE_LAYER_START":
-      case "INSTRUMENTS_INITIALIZE_LAYER_FINISH":
-      case "INSTRUMENTS_LOAD_DATA_START":
-      case "INSTRUMENTS_LOAD_DATA_FINISH":
+      case 'INSTRUMENTS_INITIALIZE_LAYER_START':
+      case 'INSTRUMENTS_INITIALIZE_LAYER_FINISH':
+      case 'INSTRUMENTS_LOAD_DATA_START':
+      case 'INSTRUMENTS_LOAD_DATA_FINISH':
         return Object.assign({}, state, payload);
       default:
         return state;

@@ -1,15 +1,15 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
-import Chart from "./chart";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
+import Chart from './chart';
 
 export default connect(
-  "doChartEditorSetLayout",
-  "doChartEditorSetData",
-  "doChartEditorSetFrames",
-  "selectChartEditorCorrelationData",
-  "selectChartEditorLayout",
-  "selectChartEditorFrames",
-  "selectChartEditorConfig",
+  'doChartEditorSetLayout',
+  'doChartEditorSetData',
+  'doChartEditorSetFrames',
+  'selectChartEditorCorrelationData',
+  'selectChartEditorLayout',
+  'selectChartEditorFrames',
+  'selectChartEditorConfig',
   ({
     doChartEditorSetLayout,
     doChartEditorSetData,
