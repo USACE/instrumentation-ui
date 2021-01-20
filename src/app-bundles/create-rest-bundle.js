@@ -554,48 +554,28 @@ const createRestBundle = (opts) => {
         });
       },
 
-      [selectAbortReason]: (state) => {
-        return state[config.name]._abortReason;
-      },
+      [selectAbortReason]: (state) => state[config.name]._abortReason,
 
-      [selectForceFetch]: (state) => {
-        return state[config.name]._forceFetch;
-      },
+      [selectForceFetch]: (state) => state[config.name]._forceFetch,
 
-      [selectFetchCount]: (state) => {
-        return state[config.name]._fetchCount;
-      },
+      [selectFetchCount]: (state) => state[config.name]._fetchCount,
 
-      [selectLastFetch]: (state) => {
-        return state[config.name]._lastFetch;
-      },
+      [selectLastFetch]: (state) => state[config.name]._lastFetch,
 
-      [selectLastResource]: (state) => {
-        return state[config.name]._lastResource;
-      },
+      [selectLastResource]: (state) => state[config.name]._lastResource,
 
-      [selectState]: (state) => {
-        return state[config.name];
-      },
+      [selectState]: (state) => state[config.name],
 
-      [selectIsLoading]: (state) => {
-        return state[config.name]._isLoading;
-      },
+      [selectIsLoading]: (state) => state[config.name]._isLoading,
 
-      [selectIsSaving]: (state) => {
-        return state[config.name]._isSaving;
-      },
+      [selectIsSaving]: (state) => state[config.name]._isSaving,
 
-      [selectPageSize]: (state) => {
-        return state[config.name]._pageSize;
-      },
+      [selectPageSize]: (state) => state[config.name]._pageSize,
 
       [selectIsStale]: createSelector(
         'selectAppTime',
         selectLastFetch,
-        (now, lastFetch) => {
-          return now - new Date(lastFetch) > config.staleAfter;
-        }
+        (now, lastFetch) => now - new Date(lastFetch) > config.staleAfter
       ),
 
       [selectFlags]: createSelector(selectState, (state) => {
@@ -671,21 +651,13 @@ const createRestBundle = (opts) => {
         }
       ),
 
-      [selectGetTemplate]: () => {
-        return config.getTemplate;
-      },
+      [selectGetTemplate]: () => config.getTemplate,
 
-      [selectPutTemplate]: () => {
-        return config.putTemplate;
-      },
+      [selectPutTemplate]: () => config.putTemplate,
 
-      [selectPostTemplate]: () => {
-        return config.postTemplate;
-      },
+      [selectPostTemplate]: () => config.postTemplate,
 
-      [selectDeleteTemplate]: () => {
-        return config.deleteTemplate;
-      },
+      [selectDeleteTemplate]: () => config.deleteTemplate,
 
       [selectGetUrl]: createSelector(
         selectGetTemplate,
@@ -743,9 +715,7 @@ const createRestBundle = (opts) => {
         }
       ),
 
-      [selectAllowRoles]: (state) => {
-        return state[config.name]._allowRoles;
-      },
+      [selectAllowRoles]: (state) => state[config.name]._allowRoles,
 
       [selectIsAllowedRole]: createSelector(
         selectAllowRoles,
@@ -753,9 +723,7 @@ const createRestBundle = (opts) => {
         checkRoles
       ),
 
-      [selectDisallowRoles]: (state) => {
-        return state[config.name]._disallowRoles;
-      },
+      [selectDisallowRoles]: (state) => state[config.name]._disallowRoles,
 
       [selectIsDisallowedRole]: createSelector(
         selectDisallowRoles,
@@ -763,13 +731,9 @@ const createRestBundle = (opts) => {
         checkRoles
       ),
 
-      [selectSortBy]: (state) => {
-        return state[config.name]._sortBy;
-      },
+      [selectSortBy]: (state) => state[config.name]._sortBy,
 
-      [selectSortAsc]: (state) => {
-        return state[config.name]._sortAsc;
-      },
+      [selectSortAsc]: (state) => state[config.name]._sortAsc,
 
       [reactShouldFetch]: (state) => {
         if (state[config.name]._shouldFetch) return { actionCreator: doFetch };

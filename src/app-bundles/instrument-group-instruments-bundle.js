@@ -26,8 +26,7 @@ export default createRestBundle({
   addons: {
     selectInstrumentGroupInstrumentsItemsGeoJSON: createSelector(
       'selectInstrumentGroupInstrumentsItems',
-      (items) => {
-        return {
+      (items) => ({
           type: 'FeatureCollection',
           features: items.map((item) => {
             const feature = {
@@ -38,8 +37,7 @@ export default createRestBundle({
             delete feature.properties.geometry;
             return feature;
           }),
-        };
-      }
+        })
     ),
   },
 });

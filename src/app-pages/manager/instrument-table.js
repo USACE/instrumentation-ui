@@ -8,8 +8,7 @@ import RoleFilter from '../../app-components/role-filter';
 const Table = connect(
   'doModalOpen',
   'selectProjectsByRoute',
-  ({ projectsByRoute: project, doModalOpen, instruments, tools }) => {
-    return (
+  ({ projectsByRoute: project, doModalOpen, instruments, tools }) => (
       <table className='table is-fullwidth'>
         <thead>
           <tr>
@@ -20,8 +19,7 @@ const Table = connect(
           </tr>
         </thead>
         <tbody>
-          {instruments.map((instrument, i) => {
-            return (
+          {instruments.map((instrument, i) => (
               <tr key={i}>
                 {instrument.status ? (
                   <td title={`Instrument is ${instrument.status}`}>
@@ -52,12 +50,10 @@ const Table = connect(
                   </RoleFilter>
                 </td>
               </tr>
-            );
-          })}
+            ))}
         </tbody>
       </table>
-    );
-  }
+    )
 );
 
 export default Table;

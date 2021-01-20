@@ -13,15 +13,13 @@ export default connect(
     item,
   }) => {
     const statusItems = status
-      .map((s) => {
-        return {
+      .map((s) => ({
           status: s.status,
           text: s.status
             ? s.status.charAt(0).toUpperCase() + s.status.slice(1)
             : 'Saving...',
           date: new Date(s.time),
-        };
-      })
+        }))
       .sort((a, b) => {
         if (a.date < b.date) return 1;
         if (a.date > b.date) return -1;

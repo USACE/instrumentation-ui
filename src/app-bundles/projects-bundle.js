@@ -26,17 +26,13 @@ export default createRestBundle({
     ),
     selectProjectsItemsWithLinks: createSelector(
       'selectProjectsItems',
-      (projects) => {
-        return projects.map((p) => {
-          return {
+      (projects) => projects.map((p) => ({
             img: p.image,
             title: p.name,
             subtitle: 'Instrumentation Browser',
             href: `/${p.slug}/manager`,
             content: '',
-          };
-        });
-      }
+          }))
     ),
   },
 });

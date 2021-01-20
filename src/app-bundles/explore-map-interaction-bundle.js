@@ -166,9 +166,7 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  selectExploreMapInteractionsVersion: (state) => {
-    return state.exploreMapInteractions.version;
-  },
+  selectExploreMapInteractionsVersion: (state) => state.exploreMapInteractions.version,
 
   selectExploreMapSelectedInstruments: (state) => {
     const select = state.exploreMapInteractions.select;
@@ -176,21 +174,15 @@ const exploreMapInteractionBundle = {
       return select
         .getFeatures()
         .getArray()
-        .map((f) => {
-          return f.getProperties();
-        });
+        .map((f) => f.getProperties());
     } else {
       return [];
     }
   },
 
-  selectExploreMapInteractionsSelect: (state) => {
-    return state.exploreMapInteractions.select;
-  },
+  selectExploreMapInteractionsSelect: (state) => state.exploreMapInteractions.select,
 
-  selectExploreMapInteractionsDragBox: (state) => {
-    return state.exploreMapInteractions.dragBox;
-  },
+  selectExploreMapInteractionsDragBox: (state) => state.exploreMapInteractions.dragBox,
 
   reactExploreMapInteractionsShouldInitialize: (state) => {
     if (state.exploreMapInteractions._shouldInitialize)

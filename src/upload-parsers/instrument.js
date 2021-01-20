@@ -40,9 +40,7 @@ const instrumentParser = {
       label: 'Name',
       type: 'string',
       required: true,
-      parse: (val) => {
-        return val;
-      },
+      parse: (val) => val,
       validate: (val, state) => {
         const existingInstruments = Object.keys(state.instruments);
         return existingInstruments.indexOf(val.toLowerCase()) === -1;
@@ -100,9 +98,7 @@ const instrumentParser = {
       required: false,
       template: '',
       helpText: 'Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.',
-      parse: (val) => {
-        return Number(val.replace('+', ''));
-      },
+      parse: (val) => Number(val.replace('+', '')),
       validate: isNumeric,
     },
     offset: {

@@ -14,9 +14,7 @@ export default createRestBundle({
   addons: {
     selectProfileAlertSubscriptions: createSelector(
       'selectProfileAlertSubscriptionsItems',
-      (subscriptions) => {
-        return subscriptions || [];
-      }
+      (subscriptions) => subscriptions || []
     ),
   },
 });

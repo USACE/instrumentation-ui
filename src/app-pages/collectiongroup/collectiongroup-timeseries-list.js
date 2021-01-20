@@ -90,8 +90,7 @@ const CollectionGroupTimeseriesList = ({
   items,
   handleItemDelete,
   handleItemSaveValue,
-}) => {
-  return (
+}) => (
     <div className='w-100 list-group'>
       {items.map((item, idx) => (
         <TimeseriesListEntry
@@ -103,6 +102,5 @@ const CollectionGroupTimeseriesList = ({
       ))}
     </div>
   );
-};
 
 export default CollectionGroupTimeseriesList;

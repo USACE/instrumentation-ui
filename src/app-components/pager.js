@@ -63,9 +63,7 @@ const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
   if (items.length < currentPageSize) {
     return (
       <>
-        {Children.map(children, (C, i) => {
-          return cloneElement(C, { key: i, [itemsKey]: items });
-        })}
+        {Children.map(children, (C, i) => cloneElement(C, { key: i, [itemsKey]: items }))}
       </>
     );
   }
@@ -85,9 +83,7 @@ const Pagination = ({ items, pageSize, children, itemsKey = 'items' }) => {
   const props = { [itemsKey]: pages[currentPage] };
   return (
     <div style={{ width: '100%' }}>
-      {Children.map(children, (C, i) => {
-        return cloneElement(C, { key: i, ...props });
-      })}
+      {Children.map(children, (C, i) => cloneElement(C, { key: i, ...props }))}
       <div className='d-flex justify-content-between noselect pointer'>
         <div>
           <select

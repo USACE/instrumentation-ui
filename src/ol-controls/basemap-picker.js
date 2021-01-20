@@ -117,14 +117,12 @@ class BasemapControl extends Control {
   constructor(props) {
     const options = Object.assign(
       {
-        basemaps: basemaps.map((b) => {
-          return new XYZ({
+        basemaps: basemaps.map((b) => new XYZ({
             url: b.url,
             crossOrigin: true,
             attributions: b.attributions,
             maxZoom: b.maxZoom,
-          });
-        }),
+          })),
         activeIdx: 0,
       },
       props

@@ -103,8 +103,7 @@ export default connect(
               />
             </RoleFilter>
             <ul className='list-group'>
-              {constants.map((id, i) => {
-                return (
+              {constants.map((id, i) => (
                   <ConstantListItem
                     key={i}
                     active={activeConstant === id}
@@ -114,8 +113,7 @@ export default connect(
                       setActiveConstant(item.id);
                     }}
                   />
-                );
-              })}
+                ))}
             </ul>
           </div>
           <div className='col'>

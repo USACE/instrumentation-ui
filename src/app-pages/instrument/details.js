@@ -14,13 +14,11 @@ import RoleFilter from '../../app-components/role-filter';
 import Settings from './settings';
 import NoAlerts from './alert/no-alerts';
 
-const sortAlertsByDate = alerts => {
-  return alerts.sort((a, b) => {
+const sortAlertsByDate = alerts => alerts.sort((a, b) => {
     if (a.create_date > b.create_date) return -1;
     if (b.create_date > a.create_date) return 1;
     return 0;
   });
-};
 
 export default connect(
   'doModalOpen',

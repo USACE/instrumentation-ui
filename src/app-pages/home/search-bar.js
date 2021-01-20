@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Searchbar = ({ value, placeholder, onChange }) => {
-  return (
+const Searchbar = ({ value, placeholder, onChange }) => (
     <div className='form-group'>
       <div className='input-group'>
         <input
@@ -23,6 +22,5 @@ const Searchbar = ({ value, placeholder, onChange }) => {
       </div>
     </div>
   );
-};
 
 export default Searchbar;

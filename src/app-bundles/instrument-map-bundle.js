@@ -63,8 +63,7 @@ const instrumentMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: true,
-      style: (f, r) => {
-        return new Style({
+      style: (f, r) => new Style({
           geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
           fill: new Fill({
             color: '#000000',
@@ -88,8 +87,7 @@ const instrumentMapBundle = {
             text: f.get('name'),
             textAlign: 'left',
           }),
-        });
-      },
+        }),
     });
 
     dispatch({
@@ -133,9 +131,7 @@ const instrumentMapBundle = {
     });
   },
 
-  selectInstrumentMapLayer: (state) => {
-    return state.instrumentMap.layer;
-  },
+  selectInstrumentMapLayer: (state) => state.instrumentMap.layer,
 
   reactInstrumentMapShouldInitialize: (state) => {
     if (state.instrumentMap._shouldInitialize)

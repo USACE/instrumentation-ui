@@ -13,8 +13,7 @@ export default connect(
     doChartEditorSetLayout,
     chartEditorChartType: chartType,
     chartEditorLayout: layout,
-  }) => {
-    return (
+  }) => (
       <div style={{ marginTop: '6em', padding: '10px' }}>
         <div className='mb-2'>
           <div className='row'>
@@ -78,6 +77,5 @@ export default connect(
           <SettingsCorrelation />
         )}
       </div>
-    );
-  }
+    )
 );

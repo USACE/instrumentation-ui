@@ -58,8 +58,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
       <div style={{ position: 'relative' }}>
         {!timeseries
           ? 'No timeseries data...'
-          : timeseries.map((ts, i) => {
-              return (
+          : timeseries.map((ts, i) => (
                 <TimeseriesCheckbox
                   key={i}
                   instrument={instrument}
@@ -67,8 +66,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
                   chartSeries={series[ts.id]}
                   onChange={onChange}
                 />
-              );
-            })}
+              ))}
       </div>
     </div>
   );
@@ -84,8 +82,7 @@ export default connect(
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     state,
     dispatch,
-  }) => {
-    return (
+  }) => (
       <div>
         {instruments.length
           ? instruments
@@ -94,8 +91,7 @@ export default connect(
                 if (a.name < b.name) return -1;
                 return 0;
               })
-              .map((instrument, i) => {
-                return (
+              .map((instrument, i) => (
                   <InstrumentControl
                     key={i}
                     instrument={instrument}
@@ -108,10 +104,8 @@ export default connect(
                       });
                     }}
                   />
-                );
-              })
+                ))
           : 'Select Instruments on the Map'}
       </div>
-    );
-  }
+    )
 );

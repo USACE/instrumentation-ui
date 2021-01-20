@@ -12,8 +12,7 @@ export default connect(
   'selectChartColor',
   'doChartUpdateWidth',
   'doChartUpdateColor',
-  ({ doChartUpdateType, doChartUpdateWidth, doChartUpdateColor, chartType, chartColor }) => {
-    return (
+  ({ doChartUpdateType, doChartUpdateWidth, doChartUpdateColor, chartType, chartColor }) => (
       <div className='panel'>
         <div
           className='panel-heading'
@@ -67,7 +66,6 @@ export default connect(
           </div>
         </div>
       </div>
-    );
-  }
+    )
 );
 

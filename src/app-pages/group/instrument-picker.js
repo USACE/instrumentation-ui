@@ -28,9 +28,7 @@ export default connect(
 
     const currentMembers = Object.keys(groupInstruments);
     const options = Object.values(instruments)
-      .filter((inst) => {
-        return currentMembers.indexOf(inst.id) === -1;
-      })
+      .filter((inst) => currentMembers.indexOf(inst.id) === -1)
       .sort((a, b) => {
         if (a.name > b.name) return 1;
         if (a.name < b.name) return -1;
@@ -52,13 +50,11 @@ export default connect(
                 {instrumentSlug ? null : (
                   <option value=''>Select one...</option>
                 )}
-                {options.map((opt, i) => {
-                  return (
+                {options.map((opt, i) => (
                     <option key={i} value={opt.slug}>
                       {opt.name}
                     </option>
-                  );
-                })}
+                  ))}
               </select>
             </div>
           </section>

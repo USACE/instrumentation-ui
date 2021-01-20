@@ -13,9 +13,7 @@ export default createRestBundle({
   addons: {
     selectProfileAlerts: createSelector(
       'selectProfileAlertsItems',
-      (alerts) => {
-        return alerts || [];
-      }
+      (alerts) => alerts || []
     ),
 
     selectProfileAlertsByInstrumentId: createSelector(

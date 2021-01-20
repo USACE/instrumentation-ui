@@ -67,35 +67,23 @@ const projectionBundle = {
   doProjTransformFromLonLat: (coordinate, destination) => ({
     dispatch,
     store,
-  }) => {
-    return fromLonLat(coordinate, destination);
-  },
+  }) => fromLonLat(coordinate, destination),
 
-  doProjTransformToLonLat: (coordinate, source) => ({ dispatch, store }) => {
-    return toLonLat(coordinate, source);
-  },
+  doProjTransformToLonLat: (coordinate, source) => ({ dispatch, store }) => toLonLat(coordinate, source),
 
   doProjTransform: (coordinate, source, destination) => ({
     dispatch,
     store,
-  }) => {
-    return transform(coordinate, source, destination);
-  },
+  }) => transform(coordinate, source, destination),
 
   doProjTransformExtent: (extent, source, destination) => ({
     dispatch,
     store,
-  }) => {
-    return transformExtent(extent, source, destination);
-  },
+  }) => transformExtent(extent, source, destination),
 
-  selectProjOptions: (state) => {
-    return state.proj.options;
-  },
+  selectProjOptions: (state) => state.proj.options,
 
-  selectProjDisplayProjection: (state) => {
-    return state.proj.displayProjection;
-  },
+  selectProjDisplayProjection: (state) => state.proj.displayProjection,
 };
 
 export default projectionBundle;

@@ -44,8 +44,7 @@ export default createRestBundle({
       const lyr = new Layer({
         source: new Source(),
         declutter: true,
-        style: (f, r) => {
-          return new Style({
+        style: (f, r) => new Style({
             geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
             fill: new Fill({
               color: '#000000',
@@ -69,8 +68,7 @@ export default createRestBundle({
               text: f.get('name'),
               textAlign: 'left',
             }),
-          });
-        },
+          }),
       });
       map.addLayer(lyr);
 
@@ -107,20 +105,17 @@ export default createRestBundle({
 
     selectInstrumentsItemsObjectById: createSelector(
       'selectInstrumentsItems',
-      (items) => {
-        return items.reduce((out, instrument) => {
+      (items) => items.reduce((out, instrument) => {
           out[instrument.id] = instrument;
           return out;
-        }, {});
-      }
+        }, {})
     ),
 
     selectInstrumentsLayer: (state) => state.instruments._layer,
 
     selectInstrumentsItemsGeoJSON: createSelector(
       'selectInstrumentsItems',
-      (items) => {
-        return {
+      (items) => ({
           type: 'FeatureCollection',
           features: items.map((item) => {
             const feature = {
@@ -131,8 +126,7 @@ export default createRestBundle({
             delete feature.properties.geometry;
             return feature;
           }),
-        };
-      }
+        })
     ),
 
     selectInstrumentsByRouteGeoJSON: createSelector(
@@ -165,11 +159,7 @@ export default createRestBundle({
 
     selectInstrumentsNames: createSelector(
       'selectInstrumentsItems',
-      (items) => {
-        return items.map((item) => {
-          return item.name;
-        });
-      }
+      (items) => items.map((item) => item.name)
     ),
 
     reactInstrumentsShouldInitializeLayer: (state) => {

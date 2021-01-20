@@ -65,9 +65,7 @@ const MapsBundle = {
     });
   },
 
-  selectMapsState: (state) => {
-    return state.maps;
-  },
+  selectMapsState: (state) => state.maps,
 
   selectMapsObject: createSelector('selectMapsState', (state) => {
     const items = {};
@@ -85,13 +83,9 @@ const MapsBundle = {
     return flags;
   }),
 
-  selectMapsGeoProjection: (state) => {
-    return state.maps._geoProjection;
-  },
+  selectMapsGeoProjection: (state) => state.maps._geoProjection,
 
-  selectMapsWebProjection: (state) => {
-    return state.maps._webProjection;
-  },
+  selectMapsWebProjection: (state) => state.maps._webProjection,
 };
 
 export default MapsBundle;

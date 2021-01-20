@@ -80,8 +80,7 @@ const exploreMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: false,
-      style: (f, r) => {
-        return new Style({
+      style: (f, r) => new Style({
           geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
           fill: new Fill({
             color: '#ffffff',
@@ -105,8 +104,7 @@ const exploreMapBundle = {
             text: f.get('name'),
             textAlign: 'left',
           }),
-        });
-      },
+        }),
     });
 
     dispatch({
@@ -151,13 +149,9 @@ const exploreMapBundle = {
     });
   },
 
-  selectExploreMapKey: (state) => {
-    return state.exploreMap._mapKey;
-  },
+  selectExploreMapKey: (state) => state.exploreMap._mapKey,
 
-  selectExploreMapLayer: (state) => {
-    return state.exploreMap.layer;
-  },
+  selectExploreMapLayer: (state) => state.exploreMap.layer,
 
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)

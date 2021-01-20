@@ -16,8 +16,7 @@ export default connect(
     chartEditorLayout: layout,
     chartEditorShowToday: showToday,
     chartEditorShowRainfall: showRainfall,
-  }) => {
-    return (
+  }) => (
       <div className='row'>
         <div className='col'>
           <div>Settings</div>
@@ -97,6 +96,5 @@ export default connect(
         </div>
         <div className='col'></div>
       </div>
-    );
-  }
+    )
 );

@@ -73,9 +73,7 @@ const chartsBundle = {
     });
   },
 
-  selectCharts: (state) => {
-    return state.charts;
-  },
+  selectCharts: (state) => state.charts,
 };
 
 export default chartsBundle;

@@ -35,9 +35,7 @@ export default createRestBundle({
       });
     },
 
-    selectInstrumentTimeseriesActiveId: (state) => {
-      return state.instrumentTimeseries._activeId;
-    },
+    selectInstrumentTimeseriesActiveId: (state) => state.instrumentTimeseries._activeId,
 
     selectInstrumentTimeseriesActiveIdParam: createSelector(
       'selectInstrumentTimeseriesActiveId',

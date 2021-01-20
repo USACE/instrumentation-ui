@@ -254,13 +254,11 @@ export default connect(
                 value={projDisplayProjection}
                 className='form-control'
               >
-                {Object.keys(projOptions).map((key, i) => {
-                  return (
+                {Object.keys(projOptions).map((key, i) => (
                     <option key={i} value={key}>
                       {key}
                     </option>
-                  );
-                })}
+                  ))}
               </select>
             </div>
             <div className='form-group'>

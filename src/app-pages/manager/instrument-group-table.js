@@ -8,8 +8,7 @@ import RoleFilter from '../../app-components/role-filter';
 const Table = connect(
   'doModalOpen',
   'selectProjectsByRoute',
-  ({ projectsByRoute: project, doModalOpen, groups }) => {
-    return (
+  ({ projectsByRoute: project, doModalOpen, groups }) => (
       <table className='table' style={{ width: '100%' }}>
         <thead>
           <tr>
@@ -19,8 +18,7 @@ const Table = connect(
           </tr>
         </thead>
         <tbody>
-          {groups.map((group, i) => {
-            return (
+          {groups.map((group, i) => (
               <tr key={i}>
                 <td style={{ width: '15%' }}>
                   <a href={`/${project.slug}/groups/${group.slug}`}>
@@ -40,12 +38,10 @@ const Table = connect(
                   </RoleFilter>
                 </td>
               </tr>
-            );
-          })}
+            ))}
         </tbody>
       </table>
-    );
-  }
+    )
 );
 
 export default Table;

@@ -1,10 +1,6 @@
-exports.classnames = (opts) => {
-  return Object.keys(opts)
-    .map((key) => {
-      return !!opts[key] ? key : '';
-    })
+exports.classnames = (opts) => Object.keys(opts)
+    .map((key) => !!opts[key] ? key : '')
     .join(' ');
-};
 
 exports.formatBytes = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -87,9 +83,7 @@ exports.seriesStyles = {
   },
 };
 
-const sum = (p, c) => {
-  return p + c;
-};
+const sum = (p, c) => p + c;
 
 const rSquared = function (x, y) {
   const calcs = {

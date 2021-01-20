@@ -8,12 +8,10 @@ export default connect(
   ({
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
-  }) => {
-    return (
+  }) => (
       <Chart
         version={exploreMapInteractionsVersion}
         instruments={instruments}
       />
-    );
-  }
+    )
 );

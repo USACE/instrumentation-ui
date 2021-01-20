@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Logout = () => {
-  return (
+const Logout = () => (
     <div>
       <div>
         <h2>404 Not found</h2>
@@ -9,6 +8,5 @@ const Logout = () => {
       </div>
     </div>
   );
-};
 
 export default Logout;

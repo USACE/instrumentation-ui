@@ -54,8 +54,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
     <div className='mb-2 ml-2'>
       <div className='control'>{instrument.name}</div>
       <div>
-        {timeseries.map((ts, i) => {
-          return (
+        {timeseries.map((ts, i) => (
             <TimeseriesCheckbox
               key={i}
               instrument={instrument}
@@ -63,8 +62,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
               timeseries={ts}
               onChange={onChange}
             />
-          );
-        })}
+          ))}
       </div>
     </div>
   );
@@ -124,8 +122,7 @@ export default connect(
               <div className='col-3'>
                 {Object.keys(instruments)
                   .sort()
-                  .map((instrumentId, i) => {
-                    return (
+                  .map((instrumentId, i) => (
                       <InstrumentControl
                         key={i}
                         instrument={instruments[instrumentId]}
@@ -138,8 +135,7 @@ export default connect(
                           });
                         }}
                       />
-                    );
-                  })}
+                    ))}
               </div>
               <div className='col-9'>
                 <TimeSeries data={chartSeries} />

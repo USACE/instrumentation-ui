@@ -7,11 +7,9 @@ import './css/mdi/css/materialdesignicons.min.css';
 import './css/ms/css/mapskin.min.css';
 import './css/index.css';
 
-export default connect('selectRoute', ({ route: Route }) => {
-  return (
+export default connect('selectRoute', ({ route: Route }) => (
     <div>
       <Route />
       <Modal />
     </div>
-  );
-});
+  ));
