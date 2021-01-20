@@ -16,21 +16,21 @@ const exploreMapInteractionBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'EXPLOREMAPINTERACTIONS_INITIALIZE_START':
-      case 'EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH':
-      case 'EXPLOREMAPINTERACTIONS_RESET_START':
-      case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
-        return Object.assign({}, state, payload);
-      case 'MAPS_INITIALIZED':
-        if (payload.hasOwnProperty('exploreMap')) {
-          return Object.assign({}, state, {
-            _shouldInitialize: true,
-          });
-        } else {
+        case 'EXPLOREMAPINTERACTIONS_INITIALIZE_START':
+        case 'EXPLOREMAPINTERACTIONS_INITIALIZE_FINISH':
+        case 'EXPLOREMAPINTERACTIONS_RESET_START':
+        case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
+          return Object.assign({}, state, payload);
+        case 'MAPS_INITIALIZED':
+          if (payload.hasOwnProperty('exploreMap')) {
+            return Object.assign({}, state, {
+              _shouldInitialize: true,
+            });
+          } else {
+            return state;
+          }
+        default:
           return state;
-        }
-      default:
-        return state;
       }
     };
   },

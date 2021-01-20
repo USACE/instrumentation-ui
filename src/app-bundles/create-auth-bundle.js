@@ -36,13 +36,13 @@ const createAuthBundle = (opts) => {
 
       return (state = initialState, { type, payload }) => {
         switch (type) {
-        case 'AUTH_LOGGED_IN':
-        case 'AUTH_LOGGED_OUT':
-        case 'AUTH_ERROR':
-        case 'AUTH_VERIFY_TOKEN':
-          return Object.assign({}, state, payload);
-        default:
-          return state;
+          case 'AUTH_LOGGED_IN':
+          case 'AUTH_LOGGED_OUT':
+          case 'AUTH_ERROR':
+          case 'AUTH_VERIFY_TOKEN':
+            return Object.assign({}, state, payload);
+          default:
+            return state;
         }
       };
     },

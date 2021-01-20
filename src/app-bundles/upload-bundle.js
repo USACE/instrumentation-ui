@@ -46,21 +46,21 @@ const uploadBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'UPLOAD_CLEAR':
-      case 'UPLOAD_SETTINGS_CLEAR':
-      case 'UPLOAD_QUEUE_CSV':
-      case 'UPLOAD_PARSE_CSV_START':
-      case 'UPLOAD_PARSE_CSV_FINISH':
-      case 'UPLOAD_SET_IGNORE_ROWS':
-      case 'UPLOAD_SET_PARSER':
-      case 'UPLOAD_POST_START':
-      case 'UPLOAD_POST_HAS_ERRORS':
-      case 'UPLOAD_SET_FIELD_MAP':
-        return Object.assign({}, state, payload);
-      case 'UPLOAD_POST_FINISH':
-        return Object.assign({}, initialData);
-      default:
-        return state;
+        case 'UPLOAD_CLEAR':
+        case 'UPLOAD_SETTINGS_CLEAR':
+        case 'UPLOAD_QUEUE_CSV':
+        case 'UPLOAD_PARSE_CSV_START':
+        case 'UPLOAD_PARSE_CSV_FINISH':
+        case 'UPLOAD_SET_IGNORE_ROWS':
+        case 'UPLOAD_SET_PARSER':
+        case 'UPLOAD_POST_START':
+        case 'UPLOAD_POST_HAS_ERRORS':
+        case 'UPLOAD_SET_FIELD_MAP':
+          return Object.assign({}, state, payload);
+        case 'UPLOAD_POST_FINISH':
+          return Object.assign({}, initialData);
+        default:
+          return state;
       }
     };
   },

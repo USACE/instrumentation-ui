@@ -24,11 +24,11 @@ const MapsBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case actions.MAPS_INITIALIZED:
-      case actions.MAPS_SHUTDOWN:
-        return Object.assign({}, state, payload);
-      default:
-        return state;
+        case actions.MAPS_INITIALIZED:
+        case actions.MAPS_SHUTDOWN:
+          return Object.assign({}, state, payload);
+        default:
+          return state;
       }
     };
   },

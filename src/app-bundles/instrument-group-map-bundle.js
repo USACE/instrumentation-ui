@@ -22,33 +22,33 @@ const instrumentGroupMapBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'INSTRUMENTGROUPINSTRUMENTS_FETCH_FINISHED':
-        return Object.assign({}, state, {
-          _shouldAddData: true,
-        });
-      case 'MAPS_INITIALIZED':
-        if (payload.hasOwnProperty('groupMap')) {
+        case 'INSTRUMENTGROUPINSTRUMENTS_FETCH_FINISHED':
           return Object.assign({}, state, {
-            _mapLoaded: true,
+            _shouldAddData: true,
           });
-        } else {
+        case 'MAPS_INITIALIZED':
+          if (payload.hasOwnProperty('groupMap')) {
+            return Object.assign({}, state, {
+              _mapLoaded: true,
+            });
+          } else {
+            return state;
+          }
+        case 'MAPS_SHUTDOWN':
+          if (payload.hasOwnProperty('groupMap')) {
+            return Object.assign({}, state, {
+              _mapLoaded: false,
+            });
+          } else {
+            return state;
+          }
+        case 'INSTRUMENTGROUPMAP_INITIALIZE_START':
+        case 'INSTRUMENTGROUPMAP_INITIALIZE_FINISH':
+        case 'INSTRUMENTGROUPMAP_ADD_DATA_START':
+        case 'INSTRUMENTGROUPMAP_ADD_DATA_FINISH':
+          return Object.assign({}, state, payload);
+        default:
           return state;
-        }
-      case 'MAPS_SHUTDOWN':
-        if (payload.hasOwnProperty('groupMap')) {
-          return Object.assign({}, state, {
-            _mapLoaded: false,
-          });
-        } else {
-          return state;
-        }
-      case 'INSTRUMENTGROUPMAP_INITIALIZE_START':
-      case 'INSTRUMENTGROUPMAP_INITIALIZE_FINISH':
-      case 'INSTRUMENTGROUPMAP_ADD_DATA_START':
-      case 'INSTRUMENTGROUPMAP_ADD_DATA_FINISH':
-        return Object.assign({}, state, payload);
-      default:
-        return state;
       }
     };
   },

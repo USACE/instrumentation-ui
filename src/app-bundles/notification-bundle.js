@@ -8,12 +8,12 @@ const notificationBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'NOTIFICATIONS_FIRE':
-        return Object.assign({}, state, payload);
-      case 'NOTIFICATIONS_CLEAR':
-        return Object.assign({}, state, { options: null });
-      default:
-        return state;
+        case 'NOTIFICATIONS_FIRE':
+          return Object.assign({}, state, payload);
+        case 'NOTIFICATIONS_CLEAR':
+          return Object.assign({}, state, { options: null });
+        default:
+          return state;
       }
     };
   },

@@ -174,17 +174,17 @@ export default createRestBundle({
   },
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-    case 'MAP_INITIALIZED':
-      return Object.assign({}, state, {
-        _shouldInitializeLayer: true,
-      });
-    case 'INSTRUMENTS_INITIALIZE_LAYER_START':
-    case 'INSTRUMENTS_INITIALIZE_LAYER_FINISH':
-    case 'INSTRUMENTS_LOAD_DATA_START':
-    case 'INSTRUMENTS_LOAD_DATA_FINISH':
-      return Object.assign({}, state, payload);
-    default:
-      return state;
+      case 'MAP_INITIALIZED':
+        return Object.assign({}, state, {
+          _shouldInitializeLayer: true,
+        });
+      case 'INSTRUMENTS_INITIALIZE_LAYER_START':
+      case 'INSTRUMENTS_INITIALIZE_LAYER_FINISH':
+      case 'INSTRUMENTS_LOAD_DATA_START':
+      case 'INSTRUMENTS_LOAD_DATA_FINISH':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
     }
   },
 });

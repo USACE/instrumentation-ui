@@ -9,12 +9,12 @@ const exploreDataBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'EXPLORE_DATA_CLEAR':
-        return Object.assign({}, initialData);
-      case 'EXPLORE_DATA_LOAD':
-        return Object.assign({}, state, payload);
-      default:
-        return state;
+        case 'EXPLORE_DATA_CLEAR':
+          return Object.assign({}, initialData);
+        case 'EXPLORE_DATA_LOAD':
+          return Object.assign({}, state, payload);
+        default:
+          return state;
       }
     };
   },

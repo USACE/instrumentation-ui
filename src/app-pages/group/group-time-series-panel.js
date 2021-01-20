@@ -74,10 +74,10 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
 // a bundle.
 const reducer = (series, { type, payload }) => {
   switch (type) {
-  case 'UPDATE_SERIES':
-    return Object.assign({}, series, payload);
-  default:
-    return series;
+    case 'UPDATE_SERIES':
+      return Object.assign({}, series, payload);
+    default:
+      return series;
   }
 };
 

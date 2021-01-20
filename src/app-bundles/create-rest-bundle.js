@@ -224,30 +224,30 @@ const createRestBundle = (opts) => {
           }
 
           switch (type) {
-          case actions.ADDON_ACTION:
-          case actions.SAVE_STARTED:
-          case actions.SAVE_FINISHED:
-          case actions.FETCH_STARTED:
-          case actions.FETCH_ABORT:
-          case actions.DELETE_STARTED:
-          case actions.DELETE_FINISHED:
-          case actions.PAGE_SIZE_UPDATED:
-          case actions.SORT_BY_UPDATED:
-          case actions.SORT_ASC_UPDATED:
-          case actions.ERROR:
-            return Object.assign({}, state, payload);
-          case actions.FETCH_FINISHED:
-          case actions.UPDATED_ITEM:
-            return Object.assign({}, payload);
-          default:
-            if (
-              config.reduceFurther &&
+            case actions.ADDON_ACTION:
+            case actions.SAVE_STARTED:
+            case actions.SAVE_FINISHED:
+            case actions.FETCH_STARTED:
+            case actions.FETCH_ABORT:
+            case actions.DELETE_STARTED:
+            case actions.DELETE_FINISHED:
+            case actions.PAGE_SIZE_UPDATED:
+            case actions.SORT_BY_UPDATED:
+            case actions.SORT_ASC_UPDATED:
+            case actions.ERROR:
+              return Object.assign({}, state, payload);
+            case actions.FETCH_FINISHED:
+            case actions.UPDATED_ITEM:
+              return Object.assign({}, payload);
+            default:
+              if (
+                config.reduceFurther &&
                 typeof config.reduceFurther === 'function'
-            ) {
-              return config.reduceFurther(state, { type, payload });
-            } else {
-              return state;
-            }
+              ) {
+                return config.reduceFurther(state, { type, payload });
+              } else {
+                return state;
+              }
           }
         };
       },

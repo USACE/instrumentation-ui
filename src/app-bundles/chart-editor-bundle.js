@@ -67,11 +67,11 @@ const chartEditorBundle = {
 
   getReducer: () => (state = initialData, { type, payload }) => {
     switch (type) {
-    case 'CHART_EDITOR_UPDATE':
-    case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
-      return { ...state, ...payload };
-    default:
-      return state;
+      case 'CHART_EDITOR_UPDATE':
+      case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
+        return { ...state, ...payload };
+      default:
+        return state;
     }
   },
 

@@ -18,7 +18,10 @@
     "indent": [
       "error",
       2,
-      { "VariableDeclarator": "first" }
+      {
+        "VariableDeclarator": "first",
+        "SwitchCase": 1
+      }
     ]
   }
 }

@@ -34,37 +34,37 @@ const exploreMapBundle = {
     return (state = initialData, { type, payload }) => {
       if (process.env.NODE_ENV === 'development') console.log(type, payload);
       switch (type) {
-      case 'INSTRUMENTS_FETCH_FINISHED':
-        return Object.assign({}, state, {
-          _instrumentsLoaded: true,
-        });
-      case 'INSTRUMENTGROUPS_FETCH_FINISHED':
-        return Object.assign({}, state, {
-          _groupsLoaded: true,
-        });
-      case 'MAPS_INITIALIZED':
-        if (payload.hasOwnProperty(initialData._mapKey)) {
+        case 'INSTRUMENTS_FETCH_FINISHED':
           return Object.assign({}, state, {
-            _mapLoaded: true,
+            _instrumentsLoaded: true,
           });
-        } else {
-          return state;
-        }
-      case 'MAPS_SHUTDOWN':
-        if (payload.hasOwnProperty(initialData._mapKey)) {
+        case 'INSTRUMENTGROUPS_FETCH_FINISHED':
           return Object.assign({}, state, {
-            _mapLoaded: false,
+            _groupsLoaded: true,
           });
-        } else {
+        case 'MAPS_INITIALIZED':
+          if (payload.hasOwnProperty(initialData._mapKey)) {
+            return Object.assign({}, state, {
+              _mapLoaded: true,
+            });
+          } else {
+            return state;
+          }
+        case 'MAPS_SHUTDOWN':
+          if (payload.hasOwnProperty(initialData._mapKey)) {
+            return Object.assign({}, state, {
+              _mapLoaded: false,
+            });
+          } else {
+            return state;
+          }
+        case 'EXPLOREMAP_INITIALIZE_START':
+        case 'EXPLOREMAP_INITIALIZE_FINISH':
+        case 'EXPLOREMAP_ADD_DATA_START':
+        case 'EXPLOREMAP_ADD_DATA_FINISH':
+          return Object.assign({}, state, payload);
+        default:
           return state;
-        }
-      case 'EXPLOREMAP_INITIALIZE_START':
-      case 'EXPLOREMAP_INITIALIZE_FINISH':
-      case 'EXPLOREMAP_ADD_DATA_START':
-      case 'EXPLOREMAP_ADD_DATA_FINISH':
-        return Object.assign({}, state, payload);
-      default:
-        return state;
       }
     };
   },

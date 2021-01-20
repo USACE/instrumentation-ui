@@ -64,11 +64,11 @@ export default createRestBundle({
 
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-    case 'COLLECTIONGROUP_REMOVE_TIMESERIES_START':
-    case 'COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH':
-      return Object.assign({}, state, payload);
-    default:
-      return state;
+      case 'COLLECTIONGROUP_REMOVE_TIMESERIES_START':
+      case 'COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH':
+        return Object.assign({}, state, payload);
+      default:
+        return state;
     }
   },
 });

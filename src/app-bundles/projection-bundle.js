@@ -47,10 +47,10 @@ const projectionBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-      case 'PROJ_SET_DISPLAY_PROJECTION':
-        return Object.assign({}, state, payload);
-      default:
-        return state;
+        case 'PROJ_SET_DISPLAY_PROJECTION':
+          return Object.assign({}, state, payload);
+        default:
+          return state;
       }
     };
   },
