@@ -102,25 +102,17 @@ const createAuthBundle = (opts) => {
       }
     },
 
-    selectAuthRedirectOnLogout: (state) => {
-      return state.auth.redirectOnLogout;
-    },
+    selectAuthRedirectOnLogout: (state) => state.auth.redirectOnLogout,
 
     selectAuthIsMocked: (state) => state.auth.mock,
 
-    selectAuthUrl: (state) => {
-      return state.auth.url;
-    },
+    selectAuthUrl: (state) => state.auth.url,
 
     // select parts of the token itself
 
-    selectAuthTokenRaw: (state) => {
-      return state.auth.token;
-    },
+    selectAuthTokenRaw: (state) => state.auth.token,
 
-    selectAuthTokenMockRaw: (state) => {
-      return state.auth.mockToken;
-    },
+    selectAuthTokenMockRaw: (state) => state.auth.mockToken,
 
     selectAuthTokenHeader: createSelector('selectAuthTokenRaw', (token) => {
       if (!token) return {};
@@ -161,12 +153,10 @@ const createAuthBundle = (opts) => {
       return payload.roles;
     }),
 
-    selectAuthGroups: createSelector('selectAuthRoles', (roles) => {
-      return roles.map((role) => {
-        const roleArr = role.split('.');
-        return roleArr[0];
-      });
-    }),
+    selectAuthGroups: createSelector('selectAuthRoles', (roles) => roles.map((role) => {
+      const roleArr = role.split('.');
+      return roleArr[0];
+    })),
 
     selectAuthGroupRoles: createSelector('selectAuthRoles', (roles) => {
       const groupRoles = {};
@@ -179,9 +169,7 @@ const createAuthBundle = (opts) => {
       return groupRoles;
     }),
 
-    selectAuthIsLoggedIn: (state) => {
-      return !!state.auth.token;
-    },
+    selectAuthIsLoggedIn: (state) => !!state.auth.token,
 
     reactAuthShouldVerifyToken: (state) => {
       if (state.auth.shouldVerifyToken)

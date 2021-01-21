@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
-export default connect("doAuthLogout", ({ doAuthLogout }) => {
+export default connect('doAuthLogout', ({ doAuthLogout }) => {
   useEffect(() => {
     doAuthLogout();
   });

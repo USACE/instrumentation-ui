@@ -26,7 +26,7 @@ const AlertEntry = connect(
     const toggleRead = (...params) => {
       isRead
         ? doAlertUnreadSave(...params)
-        : doAlertReadSave(...params)
+        : doAlertReadSave(...params);
     };
 
     return (
@@ -44,7 +44,7 @@ const AlertEntry = connect(
               </div>
               <p className='mb-1'>{item.body}</p>
               {isHovered && (
-                <div className="btn-group float-right" role="group" aria-label="Alert Controls" style={{ marginTop: '-17px', marginRight: '-21px' }}>
+                <div className='btn-group float-right' role='group' aria-label='Alert Controls' style={{ marginTop: '-17px', marginRight: '-21px' }}>
                   <Button
                     variant='info'
                     size='small'

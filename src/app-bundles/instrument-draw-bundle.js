@@ -179,33 +179,19 @@ const instrumentDrawBundle = {
     source.addFeature(feature);
   },
 
-  selectInstrumentDrawInteraction: (state) => {
-    return state.instrumentDraw.draw;
-  },
+  selectInstrumentDrawInteraction: (state) => state.instrumentDraw.draw,
 
-  selectInstrumentDrawModify: (state) => {
-    return state.instrumentDraw.modify;
-  },
+  selectInstrumentDrawModify: (state) => state.instrumentDraw.modify,
 
-  selectInstrumentDrawReady: (state) => {
-    return state.instrumentDraw._ready;
-  },
+  selectInstrumentDrawReady: (state) => state.instrumentDraw._ready,
 
-  selectInstrumentDrawMap: (state) => {
-    return state.instrumentDraw.map;
-  },
+  selectInstrumentDrawMap: (state) => state.instrumentDraw.map,
 
-  selectInstrumentDrawLayer: (state) => {
-    return state.instrumentDraw.layer;
-  },
+  selectInstrumentDrawLayer: (state) => state.instrumentDraw.layer,
 
-  selectInstrumentDrawLon: (state) => {
-    return state.instrumentDraw.lon;
-  },
+  selectInstrumentDrawLon: (state) => state.instrumentDraw.lon,
 
-  selectInstrumentDrawLat: (state) => {
-    return state.instrumentDraw.lat;
-  },
+  selectInstrumentDrawLat: (state) => state.instrumentDraw.lat,
 
   reactInstrumentDrawShouldInitialize: (state) => {
     if (state.instrumentDraw._shouldInitialize)

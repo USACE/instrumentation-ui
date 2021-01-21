@@ -22,7 +22,7 @@ export default connect(
 
       if (type) {
         const parser = uploadParsers.find((p) => p.name === type);
-        doUploadSetSelectedParser(parser)
+        doUploadSetSelectedParser(parser);
       }
 
       return () => doUploadClear();

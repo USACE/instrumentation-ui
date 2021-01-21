@@ -246,9 +246,7 @@ const uploadBundle = {
         if (row.errors.length) return i + 1;
         return null;
       })
-      .filter((row) => {
-        return !!row;
-      })
+      .filter((row) => !!row)
       .join(',');
     dispatch({
       type: 'UPLOAD_SET_IGNORE_ROWS',
@@ -269,17 +267,15 @@ const uploadBundle = {
     const keys = Object.keys(json[Math.round(json.length / 2)]);
     return [
       { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
-      ...keys.map((key) => {
-        return {
-          headerName: key.toUpperCase(),
-          field: key,
-          resizable: true,
-          sortable: true,
-          filter: false,
-          editable: false,
-          cellStyle: (params) => cellStyle(params, key),
-        };
-      }),
+      ...keys.map((key) => ({
+        headerName: key.toUpperCase(),
+        field: key,
+        resizable: true,
+        sortable: true,
+        filter: false,
+        editable: false,
+        cellStyle: (params) => cellStyle(params, key),
+      })),
     ];
   }),
 
@@ -306,17 +302,15 @@ const uploadBundle = {
       const keys = Object.keys(parser.model);
       return [
         { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
-        ...keys.map((key) => {
-          return {
-            headerName: key.toUpperCase(),
-            field: key,
-            resizable: true,
-            sortable: true,
-            filter: false,
-            editable: false,
-            cellStyle: (params) => cellStyle(params, key),
-          };
-        }),
+        ...keys.map((key) => ({
+          headerName: key.toUpperCase(),
+          field: key,
+          resizable: true,
+          sortable: true,
+          filter: false,
+          editable: false,
+          cellStyle: (params) => cellStyle(params, key),
+        })),
       ];
     }
   ),
@@ -356,9 +350,7 @@ const uploadBundle = {
                 // If field is a domain, set value to primary key of domain
                 if (config.type === 'domain') {
                   const foundDomainItem = domains[config.domainGroup].filter(
-                    (d) => {
-                      return d.value.toUpperCase() === data.toUpperCase();
-                    }
+                    (d) => d.value.toUpperCase() === data.toUpperCase()
                   );
                   if (foundDomainItem[0]) {
                     parsedRow[key] = foundDomainItem[0].id;
@@ -437,9 +429,7 @@ const uploadBundle = {
 
   selectUploadFileSize: createSelector('selectUploadCsv', (csv) => !csv ? null : formatBytes(csv.size)),
 
-  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) => {
-    return !csv ? null : new Date(csv.lastModified).toLocaleString();
-  }),
+  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) => !csv ? null : new Date(csv.lastModified).toLocaleString()),
 
   selectUploadFileData: createSelector(
     'selectUploadFileName',
@@ -447,15 +437,13 @@ const uploadBundle = {
     'selectUploadFileType',
     'selectUploadFileLastModified',
     'selectUploadJson',
-    (name, size, type, lastModified, json) => {
-      return {
-        name: name,
-        type: type,
-        size: size,
-        lastModified: lastModified,
-        totalRows: json ? json.length : 0,
-      };
-    }
+    (name, size, type, lastModified, json) => ({
+      name: name,
+      type: type,
+      size: size,
+      lastModified: lastModified,
+      totalRows: json ? json.length : 0,
+    })
   ),
 
   selectUploadHasFile: createSelector('selectUploadCsv', (csv) => !!csv),

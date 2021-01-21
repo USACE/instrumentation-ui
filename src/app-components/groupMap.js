@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
 export default connect(
-  "doGroupMapInitialize",
+  'doGroupMapInitialize',
   ({ doGroupMapInitialize, height, layers }) => {
     let mapEl = null;
 

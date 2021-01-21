@@ -1,13 +1,13 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
-import Chart from "./chart";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
+import Chart from './chart';
 
 export default connect(
-  "selectChartEditorTimeseriesData",
-  "selectChartEditorLayout",
-  "selectChartEditorConfig",
-  "selectChartEditorShowRainfall",
-  "selectChartEditorShowToday",
+  'selectChartEditorTimeseriesData',
+  'selectChartEditorLayout',
+  'selectChartEditorConfig',
+  'selectChartEditorShowRainfall',
+  'selectChartEditorShowToday',
   ({
     chartEditorTimeseriesData: data,
     chartEditorLayout: layout,
@@ -20,16 +20,16 @@ export default connect(
       layout.grid = {
         rows: 2,
         columns: 1,
-        subplots: [["xy"], ["xy2"]],
-        roworder: "bottom to top",
+        subplots: [['xy'], ['xy2']],
+        roworder: 'bottom to top',
       };
     }
     if (showToday) {
       layout.shapes = [
         {
-          type: "rect",
-          xref: "x",
-          yref: "paper",
+          type: 'rect',
+          xref: 'x',
+          yref: 'paper',
           x0: new Date(),
           y0: 0,
           x1: new Date(),
@@ -37,7 +37,7 @@ export default connect(
           opacity: 0.7,
           line: {
             width: 2,
-            color: "#fc032c",
+            color: '#fc032c',
           },
         },
       ];

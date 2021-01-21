@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
 export default connect(
-  "doMapInitialize",
+  'doMapInitialize',
   ({ doMapInitialize, height, layers }) => {
     let mapEl = null;
 
@@ -16,7 +16,7 @@ export default connect(
 
     return (
       <div
-        style={{ position: "absolute", top: 0, right: 0, left: 0, bottom: 0 }}
+        style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}
         ref={(el) => {
           mapEl = el;
         }}

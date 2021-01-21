@@ -37,9 +37,7 @@ const rainfallBundle = {
     fetch(
       `${apiRoot}/timeseries/${tsId}/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`
     )
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((rainfall) => {
         dispatch({
           type: 'RAINFALL_LOAD_FINISHED',
@@ -50,9 +48,7 @@ const rainfallBundle = {
       });
   },
 
-  selectRainfallItems: (state) => {
-    return state.rainfall.items;
-  },
+  selectRainfallItems: (state) => state.rainfall.items,
 
   selectRainfallData: createSelector('selectRainfallItems', (items) => {
     const chartData = [];

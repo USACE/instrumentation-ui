@@ -24,13 +24,9 @@ const exploreChartSyncBundle = {
     });
   },
 
-  selectExploreChartSyncXmin: (state) => {
-    return state.exploreChartSync.xMin;
-  },
+  selectExploreChartSyncXmin: (state) => state.exploreChartSync.xMin,
 
-  selectExploreChartSyncXmax: (state) => {
-    return state.exploreChartSync.xMax;
-  },
+  selectExploreChartSyncXmax: (state) => state.exploreChartSync.xMax,
 };
 
 export default exploreChartSyncBundle;

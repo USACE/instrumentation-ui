@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { connect } from "redux-bundler-react";
-import { seriesStyles } from "../../utils";
-import LineStyle from "./line-style";
+import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
+import { seriesStyles } from '../../utils';
+import LineStyle from './line-style';
 
 let styleIterator = 0;
 
@@ -23,12 +23,12 @@ const TimeseriesCheckbox = ({
   return (
     <>
       <label
-        className="checkbox label is-small"
-        style={{ paddingLeft: "3.5rem" }}
+        className='checkbox label is-small'
+        style={{ paddingLeft: '3.5rem' }}
       >
         <input
-          type="checkbox"
-          style={{ marginRight: ".8em" }}
+          type='checkbox'
+          style={{ marginRight: '.8em' }}
           checked={
             chartSeries && chartSeries.active ? chartSeries.active : false
           }
@@ -43,7 +43,7 @@ const TimeseriesCheckbox = ({
           }}
         />
         {`${timeseries.name} (${timeseries.parameter} in ${timeseries.unit})`}
-        {""}
+        {''}
       </label>
       <LineStyle style={style} onChange={setStyle} />
     </>
@@ -53,65 +53,59 @@ const TimeseriesCheckbox = ({
 const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
   if (!series) return null;
   return (
-    <div className="mb-2">
-      <label className="label is-small">{instrument.name}</label>
-      <div style={{ position: "relative" }}>
+    <div className='mb-2'>
+      <label className='label is-small'>{instrument.name}</label>
+      <div style={{ position: 'relative' }}>
         {!timeseries
-          ? "No timeseries data..."
-          : timeseries.map((ts, i) => {
-              return (
-                <TimeseriesCheckbox
-                  key={i}
-                  instrument={instrument}
-                  timeseries={ts}
-                  chartSeries={series[ts.id]}
-                  onChange={onChange}
-                />
-              );
-            })}
+          ? 'No timeseries data...'
+          : timeseries.map((ts, i) => (
+            <TimeseriesCheckbox
+              key={i}
+              instrument={instrument}
+              timeseries={ts}
+              chartSeries={series[ts.id]}
+              onChange={onChange}
+            />
+          ))}
       </div>
     </div>
   );
 };
 
 export default connect(
-  "selectExploreMapSelectedInstruments",
-  "selectExploreMapInteractionsVersion",
-  "selectInstrumentTimeseriesByInstrumentId",
+  'selectExploreMapSelectedInstruments',
+  'selectExploreMapInteractionsVersion',
+  'selectInstrumentTimeseriesByInstrumentId',
   ({
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion: version,
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     state,
     dispatch,
-  }) => {
-    return (
-      <div>
-        {instruments.length
-          ? instruments
-              .sort((a, b) => {
-                if (a.name > b.name) return 1;
-                if (a.name < b.name) return -1;
-                return 0;
-              })
-              .map((instrument, i) => {
-                return (
-                  <InstrumentControl
-                    key={i}
-                    instrument={instrument}
-                    timeseries={timeseriesByInstrumentId[instrument.id]}
-                    series={state.series}
-                    onChange={(e) => {
-                      dispatch({
-                        type: "SET_SERIES",
-                        payload: e,
-                      });
-                    }}
-                  />
-                );
-              })
-          : "Select Instruments on the Map"}
-      </div>
-    );
-  }
+  }) => (
+    <div>
+      {instruments.length
+        ? instruments
+          .sort((a, b) => {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+          })
+          .map((instrument, i) => (
+            <InstrumentControl
+              key={i}
+              instrument={instrument}
+              timeseries={timeseriesByInstrumentId[instrument.id]}
+              series={state.series}
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET_SERIES',
+                  payload: e,
+                });
+              }}
+            />
+          ))
+        : 'Select Instruments on the Map'}
+    </div>
+  )
 );

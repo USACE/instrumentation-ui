@@ -9,7 +9,7 @@ const formatTime = t => {
   catch (_e) {
     return undefined;
   }
-}
+};
 
 const timeseriesMeasurementParser = {
   name: 'Timeseries Measurement',

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import { ModalFooter, ModalHeader } from "../../app-components/modal";
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 export default connect(
-  "doModalClose",
-  "doCollectionGroupSave",
-  "doUpdateUrlWithHomepage",
-  "doCollectionGroupDelete",
-  "selectRouteParams",
-  "selectProjectsByRoute",
+  'doModalClose',
+  'doCollectionGroupSave',
+  'doUpdateUrlWithHomepage',
+  'doCollectionGroupDelete',
+  'selectRouteParams',
+  'selectProjectsByRoute',
   ({
     doModalClose,
     doCollectionGroupSave,
@@ -19,7 +19,7 @@ export default connect(
     projectsByRoute: project,
     item,
   }) => {
-    const [name, setName] = useState((item && item.name) || "");
+    const [name, setName] = useState((item && item.name) || '');
     const [project_id] = useState((item && item.project_id) || project.id);
 
     const handleSave = (e) => {
@@ -42,28 +42,28 @@ export default connect(
           item,
           () => {
             doModalClose();
-            if (routeParams.hasOwnProperty("projectSlug")) {
+            if (routeParams.hasOwnProperty('projectSlug')) {
               doUpdateUrlWithHomepage(`/${routeParams.projectSlug}/manager`);
             }
           },
           true,
         );
       }
-    }
+    };
 
     return (
-      <div className="modal-content" style={{ overflowY: "auto" }}>
-        <form id="collection-group-form" onSubmit={handleSave}>
+      <div className='modal-content' style={{ overflowY: 'auto' }}>
+        <form id='collection-group-form' onSubmit={handleSave}>
           <ModalHeader title='Edit Collection Group' />
-          <section className="modal-body">
-            <div className="form-group">
+          <section className='modal-body'>
+            <div className='form-group'>
               <label>Name</label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="form-control"
-                type="text"
-                placeholder="Group name..."
+                className='form-control'
+                type='text'
+                placeholder='Group name...'
               />
             </div>
           </section>

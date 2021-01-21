@@ -1,10 +1,10 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
 
 import Select from './select';
 
 export default connect(
-  "selectDomainsItemsByGroup",
+  'selectDomainsItemsByGroup',
   ({ value, onChange, domain, domainsItemsByGroup }) => {
     const options = domainsItemsByGroup[domain].map(item => (
       { value: item.id, text: item.value }

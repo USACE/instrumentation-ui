@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SketchPicker } from "react-color";
+import React, { useState, useEffect } from 'react';
+import { SketchPicker } from 'react-color';
 
 export default ({ style, onChange }) => {
   const [showPicker, setShowPicker] = useState(false);
@@ -9,39 +9,37 @@ export default ({ style, onChange }) => {
   useEffect(() => {
     style.line.color = color;
     onChange(style);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [color, onChange]);
 
   useEffect(() => {
     style.line.width = width;
     onChange(style);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, onChange]);
 
   return (
-    <div style={{ position: "absolute", top: "-8px" }}>
+    <div style={{ position: 'absolute', top: '-8px' }}>
       <div
-        style={{ height: "15px", width: "20px" }}
+        style={{ height: '15px', width: '20px' }}
         onClick={() => {
           if (width >= 1) {
             setWidth(width + 1);
           }
         }}
       >
-        <span style={{ position: "relative", top: "-3px" }}>
-          <i className="mdi mdi-chevron-up"></i>
+        <span style={{ position: 'relative', top: '-3px' }}>
+          <i className='mdi mdi-chevron-up'></i>
         </span>
       </div>
       <div
-        style={{ height: "15px", width: "20px" }}
+        style={{ height: '15px', width: '20px' }}
         onClick={() => {
           if (width > 1) {
             setWidth(width - 1);
           }
         }}
       >
-        <span style={{ position: "relative", top: "-5px" }}>
-          <i className="mdi mdi-chevron-down"></i>
+        <span style={{ position: 'relative', top: '-5px' }}>
+          <i className='mdi mdi-chevron-down'></i>
         </span>
       </div>
       <div
@@ -49,20 +47,20 @@ export default ({ style, onChange }) => {
           setShowPicker(!showPicker);
         }}
         style={{
-          position: "relative",
-          top: "-28px",
-          left: "20px",
-          right: "0px",
-          height: "25px",
-          width: "24px",
-          paddingRight: "3px",
-          cursor: "pointer",
+          position: 'relative',
+          top: '-28px',
+          left: '20px',
+          right: '0px',
+          height: '25px',
+          width: '24px',
+          paddingRight: '3px',
+          cursor: 'pointer',
         }}
       >
         <div
           style={{
-            position: "relative",
-            top: "12px",
+            position: 'relative',
+            top: '12px',
             borderBottom: `solid ${width}px ${color}`,
           }}
         ></div>
@@ -70,18 +68,18 @@ export default ({ style, onChange }) => {
       {showPicker ? (
         <div
           style={{
-            position: "absolute",
-            zIndex: "2",
-            top: "32px",
+            position: 'absolute',
+            zIndex: '2',
+            top: '32px',
           }}
         >
           <div
             style={{
-              position: "fixed",
-              top: "0px",
-              right: "0px",
-              bottom: "0px",
-              left: "0px",
+              position: 'fixed',
+              top: '0px',
+              right: '0px',
+              bottom: '0px',
+              left: '0px',
             }}
             onClick={() => {
               setShowPicker(false);

@@ -31,7 +31,7 @@ const AlertNoteForm = ({ item }) => {
         showCancelButton
       />
     </div>
-  )
+  );
 };
 
 export default AlertNoteForm;

@@ -1,20 +1,20 @@
-import React, { useRef } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useRef } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import Button from "../../../app-components/button";
-import ConstantForm from "./constant-form";
-import RoleFilter from "../../../app-components/role-filter";
-import { classnames } from "../../../utils";
+import Button from '../../../app-components/button';
+import ConstantForm from './constant-form';
+import RoleFilter from '../../../app-components/role-filter';
+import { classnames } from '../../../utils';
 
 export default connect(
-  "selectProjectsByRoute",
-  "doModalOpen",
+  'selectProjectsByRoute',
+  'doModalOpen',
   ({ projectsByRoute: project, doModalOpen, item, onClick, active }) => {
     if (!item) return null;
 
     const li = useRef(null);
     const itemClass = classnames({
-      "list-group-item": true,
+      'list-group-item': true,
       active,
     });
 

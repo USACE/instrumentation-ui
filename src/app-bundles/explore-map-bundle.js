@@ -80,33 +80,31 @@ const exploreMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: false,
-      style: (f, r) => {
-        return new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+      style: (f, r) => new Style({
+        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+        fill: new Fill({
+          color: '#ffffff',
+        }),
+        stroke: new Stroke({
+          color: statusColors[f.getProperties()['status']],
+          width: 3,
+        }),
+        text: new Text({
           fill: new Fill({
-            color: '#ffffff',
+            color: '#000000',
           }),
+          font: '10px sans-serif',
+          offsetX: 12,
+          offsetY: -12,
+          padding: [2, 2, 2, 2],
           stroke: new Stroke({
-            color: statusColors[f.getProperties()['status']],
-            width: 3,
+            color: '#ffffff',
+            width: 2,
           }),
-          text: new Text({
-            fill: new Fill({
-              color: '#000000',
-            }),
-            font: '10px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
-            stroke: new Stroke({
-              color: '#ffffff',
-              width: 2,
-            }),
-            text: f.get('name'),
-            textAlign: 'left',
-          }),
-        });
-      },
+          text: f.get('name'),
+          textAlign: 'left',
+        }),
+      }),
     });
 
     dispatch({
@@ -151,13 +149,9 @@ const exploreMapBundle = {
     });
   },
 
-  selectExploreMapKey: (state) => {
-    return state.exploreMap._mapKey;
-  },
+  selectExploreMapKey: (state) => state.exploreMap._mapKey,
 
-  selectExploreMapLayer: (state) => {
-    return state.exploreMap.layer;
-  },
+  selectExploreMapLayer: (state) => state.exploreMap.layer,
 
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)

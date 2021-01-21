@@ -63,33 +63,31 @@ const instrumentMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: true,
-      style: (f, r) => {
-        return new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+      style: (f, r) => new Style({
+        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+        fill: new Fill({
+          color: '#000000',
+        }),
+        stroke: new Stroke({
+          color: '#ffffff',
+          width: 1,
+        }),
+        text: new Text({
           fill: new Fill({
             color: '#000000',
           }),
+          font: '16px sans-serif',
+          offsetX: 12,
+          offsetY: -12,
+          padding: [2, 2, 2, 2],
           stroke: new Stroke({
             color: '#ffffff',
-            width: 1,
+            width: 2,
           }),
-          text: new Text({
-            fill: new Fill({
-              color: '#000000',
-            }),
-            font: '16px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
-            stroke: new Stroke({
-              color: '#ffffff',
-              width: 2,
-            }),
-            text: f.get('name'),
-            textAlign: 'left',
-          }),
-        });
-      },
+          text: f.get('name'),
+          textAlign: 'left',
+        }),
+      }),
     });
 
     dispatch({
@@ -133,9 +131,7 @@ const instrumentMapBundle = {
     });
   },
 
-  selectInstrumentMapLayer: (state) => {
-    return state.instrumentMap.layer;
-  },
+  selectInstrumentMapLayer: (state) => state.instrumentMap.layer,
 
   reactInstrumentMapShouldInitialize: (state) => {
     if (state.instrumentMap._shouldInitialize)

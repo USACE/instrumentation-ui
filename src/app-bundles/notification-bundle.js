@@ -26,9 +26,7 @@ const notificationBundle = {
     dispatch({ type: 'NOTIFICATIONS_CLEAR' });
   },
 
-  selectNotification: (state) => {
-    return state.notification.options;
-  },
+  selectNotification: (state) => state.notification.options,
 };
 
 export default notificationBundle;

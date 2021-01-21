@@ -1,15 +1,15 @@
-import React from "react";
-import { connect } from "redux-bundler-react";
-import AlertEditor from "./alert/alert-editor";
-import Constants from "./constants/constants";
-import FormulaEditor from "./formula/formula";
-import Timeseries from "./timeseries/timeseries";
-import Chart from "./chart/chart";
+import React from 'react';
+import { connect } from 'redux-bundler-react';
+import AlertEditor from './alert/alert-editor';
+import Constants from './constants/constants';
+import FormulaEditor from './formula/formula';
+import Timeseries from './timeseries/timeseries';
+import Chart from './chart/chart';
 import Tab from '../../app-components/tab';
 
 export default connect(
-  "selectTimeseriesMeasurementsItemsObject",
-  "selectInstrumentsByRoute",
+  'selectTimeseriesMeasurementsItemsObject',
+  'selectInstrumentsByRoute',
   ({
     timeseriesMeasurementsItemsObject: measurements,
     instrumentsByRoute: instrument,
@@ -32,7 +32,7 @@ export default connect(
     }];
 
     return (
-      <div className="card">
+      <div className='card'>
         <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
       </div>
     );

@@ -38,9 +38,7 @@ const exploreDataBundle = {
       },
       body: JSON.stringify(instrumentIds),
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         dispatch({
           type: 'EXPLORE_DATA_LOAD',
@@ -49,9 +47,7 @@ const exploreDataBundle = {
       });
   },
 
-  selectExploreData: (state) => {
-    return state.exploreData;
-  },
+  selectExploreData: (state) => state.exploreData,
 
   selectExploreDataByInstrumentId: createSelector(
     'selectExploreData',
@@ -64,13 +60,11 @@ const exploreDataBundle = {
       Object.keys(data).forEach((instrumentId) => {
         out[instrumentId] = {
           ...instrumentsById[instrumentId],
-          timeseries: data[instrumentId].map((ts) => {
-            return {
-              ...timeseriesItems[ts.timeseries_id],
-              items: ts.items,
-              style: seriesStyles[styleIter++ % 11],
-            };
-          }),
+          timeseries: data[instrumentId].map((ts) => ({
+            ...timeseriesItems[ts.timeseries_id],
+            items: ts.items,
+            style: seriesStyles[styleIter++ % 11],
+          })),
         };
       });
       return out;

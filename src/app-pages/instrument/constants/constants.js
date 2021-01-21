@@ -51,24 +51,24 @@ export default connect(
       ...keys
         .filter(key => key !== 'id')
         .map(key => ({
-            headerName: key.toUpperCase(),
-            field: key,
-            resizable: true,
-            sortable: false,
-            filter: true,
-            editable: true,
-            cellEditor: key === 'time' ? 'dateEditor' : undefined,
-            valueFormatter:
+          headerName: key.toUpperCase(),
+          field: key,
+          resizable: true,
+          sortable: false,
+          filter: true,
+          editable: true,
+          cellEditor: key === 'time' ? 'dateEditor' : undefined,
+          valueFormatter:
               key === 'time'
                 ? (config) => {
                   const d = new Date(config.value);
                   return format(d, 'MMMM d, yyyy h:mm aa zzzz');
                 }
                 : undefined,
-            onCellValueChanged: (e) => {
-              console.log(e);
-            },
-          })),
+          onCellValueChanged: (e) => {
+            console.log(e);
+          },
+        })),
     ];
 
     const addNew = () => {
@@ -103,19 +103,17 @@ export default connect(
               />
             </RoleFilter>
             <ul className='list-group'>
-              {constants.map((id, i) => {
-                return (
-                  <ConstantListItem
-                    key={i}
-                    active={activeConstant === id}
-                    item={timeseries[id]}
-                    onClick={(item) => {
-                      if (activeConstant === id) return setActiveConstant(null);
-                      setActiveConstant(item.id);
-                    }}
-                  />
-                );
-              })}
+              {constants.map((id, i) => (
+                <ConstantListItem
+                  key={i}
+                  active={activeConstant === id}
+                  item={timeseries[id]}
+                  onClick={(item) => {
+                    if (activeConstant === id) return setActiveConstant(null);
+                    setActiveConstant(item.id);
+                  }}
+                />
+              ))}
             </ul>
           </div>
           <div className='col'>
@@ -135,7 +133,7 @@ export default connect(
             <div
               className='ag-theme-balham'
               style={{
-                height: `200px`,
+                height: '200px',
                 width: '100%',
               }}
             >

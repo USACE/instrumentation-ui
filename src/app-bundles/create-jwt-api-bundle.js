@@ -1,6 +1,4 @@
-const arrayIze = (thing) => {
-  return !thing || Array.isArray(thing) ? thing : [thing];
-};
+const arrayIze = (thing) => !thing || Array.isArray(thing) ? thing : [thing];
 
 const shouldSkipToken = (method, path, unless) => {
   let skip = false;
@@ -82,7 +80,7 @@ class ApiError extends Error {
 
     dataKeys.forEach(key => {
       this[key] = data[key];
-    })
+    });
   };
 };
 

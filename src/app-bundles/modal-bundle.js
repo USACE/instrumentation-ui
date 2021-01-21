@@ -32,15 +32,9 @@ const ModalBundle = {
       },
     });
   },
-  selectModalContent: (state) => {
-    return state.modal.content;
-  },
-  selectModalProps: (state) => {
-    return state.modal.props;
-  },
-  selectModalSize: (state) => {
-    return state.modal.size;
-  },
+  selectModalContent: (state) => state.modal.content,
+  selectModalProps: (state) => state.modal.props,
+  selectModalSize: (state) => state.modal.size,
 };
 
 export default ModalBundle;

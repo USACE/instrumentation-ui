@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import DatePicker from "react-datepicker";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import DatePicker from 'react-datepicker';
 
 export default class DateEditor extends Component {
   constructor(props) {
@@ -38,13 +38,13 @@ export default class DateEditor extends Component {
   render() {
     return (
       <DatePicker
-        ref="container"
-        className="form-control"
+        ref='container'
+        className='form-control'
         selected={this.state.value}
         onChange={(value) => {
           this.setState({ value });
         }}
-        dateFormat="MMMM d, yyyy h:mm aa zzzz"
+        dateFormat='MMMM d, yyyy h:mm aa zzzz'
         showTimeInput
       />
     );

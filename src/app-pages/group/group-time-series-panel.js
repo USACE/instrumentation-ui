@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { connect } from "redux-bundler-react";
-import TimeSeries from "./group-time-series-chart";
-import { seriesStyles } from "../../utils";
+import React, { useState, useEffect, useReducer } from 'react';
+import { connect } from 'redux-bundler-react';
+import TimeSeries from './group-time-series-chart';
+import { seriesStyles } from '../../utils';
 
 let styleIterator = 0;
 
@@ -18,9 +18,9 @@ const TimeseriesCheckbox = ({
 
   return (
     <>
-      <label className="checkbox" style={{ paddingLeft: "3.5rem" }}>
+      <label className='checkbox' style={{ paddingLeft: '3.5rem' }}>
         <input
-          type="checkbox"
+          type='checkbox'
           checked={checked}
           onChange={(e) => {
             onChange({
@@ -33,14 +33,14 @@ const TimeseriesCheckbox = ({
           }}
         />
         {`${timeseries.name} (${timeseries.parameter} in ${timeseries.unit})`}
-        {""}
+        {''}
       </label>
       <div
         style={{
-          position: "relative",
+          position: 'relative',
           right: 0,
-          top: "-12px",
-          width: "40px",
+          top: '-12px',
+          width: '40px',
           borderBottom: `solid ${style.line.width} ${style.line.color}`,
         }}
       />
@@ -51,20 +51,18 @@ const TimeseriesCheckbox = ({
 const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
   if (!series || !timeseries || !instrument) return null;
   return (
-    <div className="mb-2 ml-2">
-      <div className="control">{instrument.name}</div>
+    <div className='mb-2 ml-2'>
+      <div className='control'>{instrument.name}</div>
       <div>
-        {timeseries.map((ts, i) => {
-          return (
-            <TimeseriesCheckbox
-              key={i}
-              instrument={instrument}
-              checked={series[ts.id] && series[ts.id].active}
-              timeseries={ts}
-              onChange={onChange}
-            />
-          );
-        })}
+        {timeseries.map((ts, i) => (
+          <TimeseriesCheckbox
+            key={i}
+            instrument={instrument}
+            checked={series[ts.id] && series[ts.id].active}
+            timeseries={ts}
+            onChange={onChange}
+          />
+        ))}
       </div>
     </div>
   );
@@ -76,7 +74,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
 // a bundle.
 const reducer = (series, { type, payload }) => {
   switch (type) {
-    case "UPDATE_SERIES":
+    case 'UPDATE_SERIES':
       return Object.assign({}, series, payload);
     default:
       return series;
@@ -84,10 +82,10 @@ const reducer = (series, { type, payload }) => {
 };
 
 export default connect(
-  "doInstrumentTimeseriesSetActiveId",
-  "selectInstrumentGroupInstrumentsItemsObject",
-  "selectTimeseriesMeasurementsItemsObject",
-  "selectInstrumentTimeseriesByInstrumentId",
+  'doInstrumentTimeseriesSetActiveId',
+  'selectInstrumentGroupInstrumentsItemsObject',
+  'selectTimeseriesMeasurementsItemsObject',
+  'selectInstrumentTimeseriesByInstrumentId',
   ({
     doInstrumentTimeseriesSetActiveId,
     instrumentGroupInstrumentsItemsObject: instruments,
@@ -97,12 +95,12 @@ export default connect(
     const [series, dispatch] = useReducer(reducer, {});
 
     useEffect(() => {
-      if (!series) return undefined;
-      Object.keys(series).forEach((key) => {
-        if (!measurements.hasOwnProperty(key))
-          doInstrumentTimeseriesSetActiveId(key);
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (series) {
+        Object.keys(series).forEach((key) => {
+          if (!measurements.hasOwnProperty(key))
+            doInstrumentTimeseriesSetActiveId(key);
+        });
+      }
     }, [series, doInstrumentTimeseriesSetActiveId]);
 
     const chartSeries = {};
@@ -114,34 +112,32 @@ export default connect(
     });
 
     return (
-      <div className="card mt-3 mb-5">
-        <div className="card-header">
+      <div className='card mt-3 mb-5'>
+        <div className='card-header'>
           <strong>Timeseries</strong>
         </div>
-        <div className="card-body">
-          <div className="container">
-            <div className="row">
-              <div className="col-3">
+        <div className='card-body'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-3'>
                 {Object.keys(instruments)
                   .sort()
-                  .map((instrumentId, i) => {
-                    return (
-                      <InstrumentControl
-                        key={i}
-                        instrument={instruments[instrumentId]}
-                        timeseries={timeseriesByInstrumentId[instrumentId]}
-                        series={series}
-                        onChange={(e) => {
-                          dispatch({
-                            type: "UPDATE_SERIES",
-                            payload: e,
-                          });
-                        }}
-                      />
-                    );
-                  })}
+                  .map((instrumentId, i) => (
+                    <InstrumentControl
+                      key={i}
+                      instrument={instruments[instrumentId]}
+                      timeseries={timeseriesByInstrumentId[instrumentId]}
+                      series={series}
+                      onChange={(e) => {
+                        dispatch({
+                          type: 'UPDATE_SERIES',
+                          payload: e,
+                        });
+                      }}
+                    />
+                  ))}
               </div>
-              <div className="col-9">
+              <div className='col-9'>
                 <TimeSeries data={chartSeries} />
               </div>
             </div>

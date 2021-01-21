@@ -1,14 +1,12 @@
 import React from 'react';
 
-const Logout = () => {
-  return (
+const Logout = () => (
+  <div>
     <div>
-      <div>
-        <h2>404 Not found</h2>
-        <p>We couldn't find what you were looking for.</p>
-      </div>
+      <h2>404 Not found</h2>
+      <p>We couldn't find what you were looking for.</p>
     </div>
-  );
-};
+  </div>
+);
 
 export default Logout;

@@ -36,7 +36,7 @@ const AlertConfigSettings = connect(
       } else {
         doAlertUnsubscribeSave(item, null, true, true);
       }
-    }
+    };
 
     const saveSettings = () => {
       if (configSettings.name !== item.name) {
@@ -59,7 +59,7 @@ const AlertConfigSettings = connect(
     const deleteConfig = () => {
       doAlertConfigsDelete(item, null, true);
       doModalClose();
-    }
+    };
 
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>

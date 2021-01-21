@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { connect } from "redux-bundler-react";
+import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import { ModalFooter, ModalHeader } from "../../app-components/modal";
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 export default connect(
-  "doModalClose",
-  "doInstrumentGroupsSave",
-  "doInstrumentGroupsDelete",
-  "doUpdateUrlWithHomepage",
-  "selectRouteParams",
-  "selectProjectsByRoute",
+  'doModalClose',
+  'doInstrumentGroupsSave',
+  'doInstrumentGroupsDelete',
+  'doUpdateUrlWithHomepage',
+  'selectRouteParams',
+  'selectProjectsByRoute',
   ({
     doModalClose,
     doInstrumentGroupsSave,
@@ -19,8 +19,8 @@ export default connect(
     projectsByRoute: project,
     item,
   }) => {
-    const [name, setName] = useState((item && item.name) || "");
-    const [description, setDesc] = useState((item && item.description) || "");
+    const [name, setName] = useState((item && item.name) || '');
+    const [description, setDesc] = useState((item && item.description) || '');
     const [project_id] = useState((item && item.project_id) || project.id);
 
     const handleSave = (e) => {
@@ -44,8 +44,8 @@ export default connect(
           item,
           () => {
             doModalClose();
-            if (routeParams.hasOwnProperty("groupSlug"))
-              doUpdateUrlWithHomepage("/manager");
+            if (routeParams.hasOwnProperty('groupSlug'))
+              doUpdateUrlWithHomepage('/manager');
           },
           true
         );
@@ -53,32 +53,32 @@ export default connect(
     };
 
     return (
-      <div className="modal-content" style={{ overflowY: "auto" }}>
-        <form id="instrument-group-form" onSubmit={handleSave}>
+      <div className='modal-content' style={{ overflowY: 'auto' }}>
+        <form id='instrument-group-form' onSubmit={handleSave}>
           <ModalHeader title='Edit Instrument Group' />
-          <section className="modal-body">
-            <div className="form-group">
+          <section className='modal-body'>
+            <div className='form-group'>
               <label>Name</label>
               <input
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                className="form-control"
-                type="text"
-                placeholder="Text input"
+                className='form-control'
+                type='text'
+                placeholder='Text input'
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Description</label>
               <input
                 value={description}
                 onChange={(e) => {
                   setDesc(e.target.value);
                 }}
-                className="form-control"
-                type="text"
-                placeholder="Text input"
+                className='form-control'
+                type='text'
+                placeholder='Text input'
               />
             </div>
           </section>

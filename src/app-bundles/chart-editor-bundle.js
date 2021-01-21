@@ -65,16 +65,14 @@ const initialData = {
 const chartEditorBundle = {
   name: 'chartEditor',
 
-  getReducer: () => {
-    return (state = initialData, { type, payload }) => {
-      switch (type) {
-        case 'CHART_EDITOR_UPDATE':
-        case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
-          return { ...state, ...payload };
-        default:
-          return state;
-      }
-    };
+  getReducer: () => (state = initialData, { type, payload }) => {
+    switch (type) {
+      case 'CHART_EDITOR_UPDATE':
+      case 'CHART_EDITOR_TRIGGER_MEASURE_LOAD':
+        return { ...state, ...payload };
+      default:
+        return state;
+    }
   },
 
   doChartEditorSetShowSettings: (showSettings) => ({ dispatch }) => {
@@ -216,65 +214,35 @@ const chartEditorBundle = {
     store.doExploreDataLoad(idsToLoad);
   },
 
-  selectChartEditorShowSettings: (state) => {
-    return state.chartEditor.showSettings;
-  },
+  selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,
 
-  selectChartEditorChartType: (state) => {
-    return state.chartEditor.chartType;
-  },
+  selectChartEditorChartType: (state) => state.chartEditor.chartType,
 
-  selectChartEditorSeries: (state) => {
-    return state.chartEditor.series;
-  },
+  selectChartEditorSeries: (state) => state.chartEditor.series,
 
-  selectChartEditorCorrelationSeriesX: (state) => {
-    return state.chartEditor.correlationSeriesX;
-  },
+  selectChartEditorCorrelationSeriesX: (state) => state.chartEditor.correlationSeriesX,
 
-  selectChartEditorCorrelationSeriesY: (state) => {
-    return state.chartEditor.correlationSeriesY;
-  },
+  selectChartEditorCorrelationSeriesY: (state) => state.chartEditor.correlationSeriesY,
 
-  selectChartEditorCorrelationMinDate: (state) => {
-    return state.chartEditor.correlationMinDate;
-  },
+  selectChartEditorCorrelationMinDate: (state) => state.chartEditor.correlationMinDate,
 
-  selectChartEditorCorrelationMaxDate: (state) => {
-    return state.chartEditor.correlationMaxDate;
-  },
+  selectChartEditorCorrelationMaxDate: (state) => state.chartEditor.correlationMaxDate,
 
-  selectChartEditorShowToday: (state) => {
-    return state.chartEditor.showToday;
-  },
+  selectChartEditorShowToday: (state) => state.chartEditor.showToday,
 
-  selectChartEditorShowRainfall: (state) => {
-    return state.chartEditor.showRainfall;
-  },
+  selectChartEditorShowRainfall: (state) => state.chartEditor.showRainfall,
 
-  selectChartEditorExactMatchesOnly: (state) => {
-    return state.chartEditor.exactMatchesOnly;
-  },
+  selectChartEditorExactMatchesOnly: (state) => state.chartEditor.exactMatchesOnly,
 
-  selectChartEditorLayout: (state) => {
-    return state.chartEditor.layout;
-  },
+  selectChartEditorLayout: (state) => state.chartEditor.layout,
 
-  selectChartEditorData: (state) => {
-    return state.chartEditor.data;
-  },
+  selectChartEditorData: (state) => state.chartEditor.data,
 
-  selectChartEditorFrames: (state) => {
-    return state.chartEditor.frames;
-  },
+  selectChartEditorFrames: (state) => state.chartEditor.frames,
 
-  selectChartEditorConfig: (state) => {
-    return state.chartEditor.config;
-  },
+  selectChartEditorConfig: (state) => state.chartEditor.config,
 
-  selectChartEditorSelectionVersion: (state) => {
-    return state.chartEditor.selectionVersion;
-  },
+  selectChartEditorSelectionVersion: (state) => state.chartEditor.selectionVersion,
 
   selectChartEditorTimeseriesData: createSelector(
     'selectExploreDataByInstrumentId',
@@ -291,12 +259,10 @@ const chartEditorBundle = {
           const x = [];
           const y = [];
           items
-            .map((item) => {
-              return {
-                time: Object.keys(item)[0],
-                value: Object.values(item)[0],
-              };
-            })
+            .map((item) => ({
+              time: Object.keys(item)[0],
+              value: Object.values(item)[0],
+            }))
             .sort((a, b) => {
               if (a.time > b.time) return 1;
               if (a.time < b.time) return -1;
@@ -349,18 +315,16 @@ const chartEditorBundle = {
       });
 
       let xItems = [],
-        yItems = [];
+          yItems = [];
       if (
         itemsByTimeseriesId[correlationSeriesX] &&
         itemsByTimeseriesId[correlationSeriesY]
       ) {
         xItems = itemsByTimeseriesId[correlationSeriesX]
-          .map((item) => {
-            return {
-              time: Object.keys(item)[0],
-              value: Object.values(item)[0],
-            };
-          })
+          .map((item) => ({
+            time: Object.keys(item)[0],
+            value: Object.values(item)[0],
+          }))
           .filter((item) => {
             if (minDate) {
               if (item.time < minDate) return false;
@@ -376,12 +340,10 @@ const chartEditorBundle = {
             return 0;
           });
         yItems = itemsByTimeseriesId[correlationSeriesY]
-          .map((item) => {
-            return {
-              time: Object.keys(item)[0],
-              value: Object.values(item)[0],
-            };
-          })
+          .map((item) => ({
+            time: Object.keys(item)[0],
+            value: Object.values(item)[0],
+          }))
           .filter((item) => {
             if (minDate) {
               if (item.time < minDate) return false;
@@ -481,9 +443,7 @@ const chartEditorBundle = {
     'selectExploreMapSelectedInstruments',
     (pastVersion, newVersion, instruments) => {
       if (newVersion > pastVersion) {
-        const instrumentIds = instruments.map((instrument) => {
-          return instrument.id;
-        });
+        const instrumentIds = instruments.map((instrument) => instrument.id);
         if (instrumentIds.length) {
           return {
             actionCreator: 'doChartEditorTriggerExploreDataLoad',

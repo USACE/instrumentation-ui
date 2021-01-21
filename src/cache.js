@@ -1,5 +1,5 @@
-import { getConfiguredCache } from "money-clip";
-import pkg from "../package.json";
+import { getConfiguredCache } from 'money-clip';
+import pkg from '../package.json';
 
 const cacheKey = `${pkg.name}-${pkg.version}`;
 

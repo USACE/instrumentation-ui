@@ -19,7 +19,7 @@ const parseStupidCoords = (stupid) => {
 
 const instrumentParser = {
   name: 'Instruments',
-  url: `/projects/:projectId/instruments`,
+  url: '/projects/:projectId/instruments',
   postProcess: (rows) => {
     // convert lat and lon to geojson geometry
     rows.forEach((row) => {
@@ -40,9 +40,7 @@ const instrumentParser = {
       label: 'Name',
       type: 'string',
       required: true,
-      parse: (val) => {
-        return val;
-      },
+      parse: (val) => val,
       validate: (val, state) => {
         const existingInstruments = Object.keys(state.instruments);
         return existingInstruments.indexOf(val.toLowerCase()) === -1;
@@ -56,7 +54,7 @@ const instrumentParser = {
       domainGroup: 'status',
       required: true,
       template: '',
-      helpText: `Acceptable data values include 'active', 'inactive', 'lost', 'destroyed', or 'abandoned' and are case-insensitive, all others will be ignored`,
+      helpText: 'Acceptable data values include \'active\', \'inactive\', \'lost\', \'destroyed\', or \'abandoned\' and are case-insensitive, all others will be ignored',
     },
     type_id: {
       label: 'Type',
@@ -64,7 +62,7 @@ const instrumentParser = {
       domainGroup: 'instrument_type',
       required: true,
       template: '',
-      helpText: `Acceptable data values include 'Piezometer' or 'Staff Gage' others will be ignored`,
+      helpText: 'Acceptable data values include \'Piezometer\' or \'Staff Gage\' others will be ignored',
     },
     lon: {
       label: 'Lon.',
@@ -99,10 +97,8 @@ const instrumentParser = {
       type: 'number',
       required: false,
       template: '',
-      helpText: `Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.`,
-      parse: (val) => {
-        return Number(val.replace('+', ''));
-      },
+      helpText: 'Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.',
+      parse: (val) => Number(val.replace('+', '')),
       validate: isNumeric,
     },
     offset: {

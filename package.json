@@ -41,6 +41,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.jsx --fix",
     "deploy-dev": "aws s3 rm s3://corpsmap-appz/instrumentation --recursive && aws s3 cp ./build/ s3://corpsmap-appz/instrumentation --recursive",
     "deploy-test": "aws s3 rm s3://rsgis-apps/instrumentation --recursive && aws s3 cp ./build/ s3://rsgis-apps/instrumentation --recursive",
     "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
@@ -60,5 +62,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-plugin-react": "^7.22.0"
   }
 }
