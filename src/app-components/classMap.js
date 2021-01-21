@@ -1,48 +1,49 @@
-/* eslint-disable */
-// @TODO - come back to this file and clean it.
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { connect } from 'redux-bundler-react';
+import { fromLonLat } from 'ol/proj';
+import debounce from 'lodash.debounce';
 
-import React from "react";
-import { connect } from "redux-bundler-react";
-import { fromLonLat } from "ol/proj";
-import debounce from "lodash.debounce";
+const Map = connect(
+  'doMapsInitialize',
+  'doMapsShutdown',
+  'selectMapsObject',
+  ({
+    doMapsInitialize,
+    doMapsShutdown,
+    mapsObject,
+    mapKey,
+    options,
+  }) => {
+    const el = useRef(null);
 
-class Map extends React.Component {
-  componentDidMount() {
-    const { mapKey, options, doMapsInitialize } = this.props;
-    // assume our options.center values are lon lat
-    if (options && options.center) options.center = fromLonLat(options.center);
-    doMapsInitialize(mapKey, this.el, options);
-    this.ro = new ResizeObserver(this.updateSize);
-    this.ro.observe(this.el);
-  }
+    const updateSize = debounce(() => {
+      if (mapsObject[mapKey]) mapsObject[mapKey].updateSize();
+    }, 200);
 
-  componentWillUnmount() {
-    const { mapKey, doMapsShutdown } = this.props;
-    doMapsShutdown(mapKey);
-  }
+    const ro = new ResizeObserver(updateSize);
 
-  updateSize = debounce(() => {
-    const { mapKey, mapsObject } = this.props;
-    if (mapsObject[mapKey]) mapsObject[mapKey].updateSize();
-  }, 200);
+    useLayoutEffect(() => {
+      let newOptions = options;
+      if (options && options.center) {
+        newOptions = {
+          ...options,
+          center: fromLonLat(options.center)
+        };
+      }
+      
+      doMapsInitialize(mapKey, el.current, newOptions);
+      ro.observe(el.current);
+    }, []);
 
-  render() {
+    useEffect(() => () => doMapsShutdown(mapKey), [doMapsShutdown, mapKey]);
+
     return (
       <div
-        style={{ position: "absolute", top: 0, right: 0, left: 0, bottom: 0 }}
-        ref={(el) => {
-          this.el = el;
-        }}
+        style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}
+        ref={el}
       />
     );
   }
-}
-
-export default connect(
-  "doMapsInitialize",
-  "doMapsShutdown",
-  "selectMapsObject",
-  Map
 );
 
-/* eslint-enable */
+export default Map;

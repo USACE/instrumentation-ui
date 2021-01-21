@@ -27,6 +27,15 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run lint`
+
+Executes [eslint](https://github.com/eslint/eslint) against the internal configuration. All errors will be shown in the terminal. It is also possible to setup your preferred code editor to display errors visually inline.
+
+### `npm run lint:fix`
+
+Fixes any errors found in `npm run lint` that it can.
+<br /><br />_Note: not all errors can be automatically fixed, though most can be if they are simple character replacements or indenting._
+
 ### `npm eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
