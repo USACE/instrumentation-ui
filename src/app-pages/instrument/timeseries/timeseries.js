@@ -55,7 +55,7 @@ export default connect(
           headerName: key.toUpperCase(),
           field: key,
           resizable: true,
-          sortable: false,
+          sortable: true,
           filter: true,
           editable: false,
         })),
