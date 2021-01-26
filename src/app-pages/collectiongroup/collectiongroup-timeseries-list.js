@@ -26,7 +26,8 @@ const TimeseriesListEntry = ({
                 variant='link'
                 className='text-secondary h-100'
                 handleClick={() => handleItemDelete(item)}
-                icon={<i className='mdi mdi-delete' />}
+                icon={<i className='mdi mdi-delete-outline text-danger' />}
+                title='Remove from group'
               />
             </RoleFilter>
           </div>
