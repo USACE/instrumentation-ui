@@ -140,11 +140,14 @@ export default connect(
         </ul>
         <p className='text-info'>Unit can be one of the following:</p>
         <ul>
-          <li>Inches</li>
+          {domainsItemsByGroup.unit.map((t, idx) => (
+            <li key={idx}>{t.value}</li>
+          ))}
+          {/* <li>Inches</li>
           <li>Feet</li>
           <li>Volts</li>
           <li>Millibar</li>
-          <li>Inches mercury (Hg)</li>
+          <li>Inches mercury (Hg)</li> */}
         </ul>
       </div>
     );
