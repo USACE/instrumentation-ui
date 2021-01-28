@@ -5,21 +5,25 @@ import Chart from '../../app-components/chart/chart';
 import MultiSelect from '../../app-components/multi-select';
 import Navbar from '../../app-components/navbar';
 
+const formatOptions = timeseries => (
+  timeseries.map(ts => ({
+    text: `${ts.instrument} - ${ts.name}`,
+    value: ts.id,
+  })).sort((a, b) => (
+    a.text < b.text
+      ? -1
+      : a.text > b.text
+        ? 1
+        : 0
+  ))
+);
+
 const ChartSettings = connect(
   'selectInstrumentTimeseriesItemsByRoute',
   ({
     instrumentTimeseriesItemsByRoute: timeseries,
   }) => {
-    const options = timeseries.map(ts => ({
-      text: `${ts.instrument} - ${ts.name}`,
-      value: ts.id,
-    })).sort((a, b) => (
-      a.text < b.text
-        ? -1
-        : a.text > b.text
-          ? 1
-          : 0
-    ));
+    const options = formatOptions(timeseries);
 
     return (
       <>
