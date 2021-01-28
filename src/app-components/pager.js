@@ -50,7 +50,7 @@ const determinePagesToShow = (pages, currentPage, setPage) => {
     if (currentPage < pages.length - 3) ret.push(<Ellipsis  key='ellipsis-3' />);
     return ret;
   } else if (pages.length >= 3) {
-    return pages.slice(1, pages.length - 1).map((_page, i) => createPage(currentPage, setPage, i + i));
+    return pages.slice(1, pages.length - 1).map((_page, i) => createPage(currentPage, setPage, i + 1));
   }
 
   return null;
