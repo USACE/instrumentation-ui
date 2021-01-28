@@ -46,9 +46,33 @@ const csvSampleInstruments = [
   ],
 ];
 
-const csvSampleTimeseries = [['Coming Soon...']];
+const csvSampleTimeseries = [
+  [
+    'Instrument',
+    'Name',
+    'Parameter',
+    'Unit'
+  ],
+  [
+    'My Example Piezometer 1A',
+    'My Example Timeseries 1A',
+    'Precipitation',
+    'Inches'
+  ],
+  [
+    'My Example Piezometer 1A',
+    'My Example Timeseries 1B',
+    'Voltage',
+    'Volts'
+  ]
+];
 
-const csvSampleTimeseriesMeasurements = [['Coming Soon...']];
+const csvSampleTimeseriesMeasurements = [
+  ['Timeseries', 'Date', 'Reading'],
+  ['My Example Timeseries 1A', '3/31/19 0:00', '2557.495189'],
+  ['My Example Timeseries 1A', '3/31/19 1:00', '2557.496789'],
+  ['My Example Timeseries 1A', '3/31/19 2:00', '2557.504244'],
+];
 
 const DownloadCSVButton = ({ csvContent, filename }) => {
   // Used as a reference:
@@ -106,7 +130,24 @@ export default connect(
       </div>
     );
     const NotesProjects = ({ props }) => <></>;
-    const NotesTimeseries = ({ props }) => <></>;
+    const NotesTimeseries = ({ props }) => (
+      <div>
+        <p className='text-info'>Parameter can be one of the following:</p>
+        <ul>
+          {domainsItemsByGroup.parameter.map((t, idx) => (
+            <li key={idx}>{t.value}</li>
+          ))}
+        </ul>
+        <p className='text-info'>Unit can be one of the following:</p>
+        <ul>
+          <li>Inches</li>
+          <li>Feet</li>
+          <li>Volts</li>
+          <li>Millibar</li>
+          <li>Inches mercury (Hg)</li>
+        </ul>
+      </div>
+    );
     const NotesTimeseriesMeasurements = ({ props }) => <></>;
 
     const CSV = ({ arr }) => (
