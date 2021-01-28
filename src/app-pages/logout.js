@@ -5,5 +5,6 @@ export default connect('doAuthLogout', ({ doAuthLogout }) => {
   useEffect(() => {
     doAuthLogout();
   });
+
   return <p>Logging out</p>;
 });

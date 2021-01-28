@@ -36,6 +36,7 @@ const Dropdown = ({
   buttonClasses = [],
   menuClasses = [],
   withToggleArrow = true,
+  closeOnSelect = true,
   buttonContent = null,
   customContent = null,
   children = null,
@@ -56,7 +57,7 @@ const Dropdown = ({
   };
 
   return (
-    <DropdownContext.Provider value={{ closeDropdown: () => setIsOpen(false) }}>
+    <DropdownContext.Provider value={{ closeDropdown: () => closeOnSelect ? setIsOpen(false) : () => {} }}>
       <div className={dropdownClass} id={id}>
         {customContent
           ? React.cloneElement(customContent, commonProps)

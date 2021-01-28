@@ -32,9 +32,8 @@ const Chart = ({
       plotRef.current.resizeHandler();
     });
     ro.observe(containerRef.current);
-    return () => {
-      ro.disconnect();
-    };
+    
+    return () => ro.disconnect();
   }, [containerRef, plotRef]);
 
   // pull any annotations from series and add to layout
@@ -58,9 +57,7 @@ const Chart = ({
         style={{ width: '100%', height: '100%' }}
         onInitialized={updateState}
         onUpdate={updateState}
-        onClick={(e) => {
-          console.log(e);
-        }}
+        onClick={(e) => console.log(e)}
       />
     </div>
   );
