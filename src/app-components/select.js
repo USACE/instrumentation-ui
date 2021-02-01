@@ -29,6 +29,7 @@ const Select = ({
   placeholderText = 'Select an option...',
   className = '',
   options = [],
+  ...customProps
 }) => {
   const [currentOption, setCurrentOption] = useState(defaultOption);
   const previousOption = usePrevious(currentOption);
@@ -53,6 +54,7 @@ const Select = ({
 
   return (
     <select
+      {...customProps}
       className={`custom-select ${className}`}
       onChange={(e) => handleChange(e)}
       title={title}

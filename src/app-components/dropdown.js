@@ -27,7 +27,6 @@ const DropdownItem = ({
         )
     )}
   </DropdownContext.Consumer>
-  
 );
 
 const Dropdown = ({
