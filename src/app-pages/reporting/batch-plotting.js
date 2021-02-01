@@ -7,7 +7,7 @@ import MultiSelect from '../../app-components/multi-select';
 import Navbar from '../../app-components/navbar';
 import Select from '../../app-components/select';
 
-import './reporting.css';
+import './reporting.scss';
 
 const formatOptions = timeseries => (
   timeseries.map(ts => ({

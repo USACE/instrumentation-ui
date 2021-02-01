@@ -23,7 +23,7 @@ const Table = connect(
           <tr key={i}>
             {instrument.status ? (
               <td title={`Instrument is ${instrument.status}`}>
-                <i className={`mdi mdi-circle status-icon-${instrument.status} pr-2`} />
+                <i className={`mdi mdi-circle status-icon ${instrument.status} pr-2`} />
                 {instrument.status.charAt(0).toUpperCase() + instrument.status.slice(1)}
               </td>) : <td />
             }
