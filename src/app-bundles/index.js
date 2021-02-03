@@ -11,6 +11,11 @@ import createJwtApiBundle from './create-jwt-api-bundle';
 import cache from '../cache';
 import pkg from '../../package.json';
 
+import alertReadBundle from './alert-read-bundle';
+import alertSubscribeBundle from './alert-subscribe-bundle';
+import alertUnreadBundle from './alert-unread-bundle';
+import alertUnsubscribeBundle from './alert-unsubscribe-bundle';
+import batchPlotConfigurationsBundle from './batch-plot-configurations-bundle';
 import chartEditorBundle from './chart-editor-bundle';
 import chartsBundle from './charts-bundle';
 import collectionGroupBundle from './collection-group-bundle';
@@ -21,21 +26,23 @@ import exploreDataBundle from './explore-data-bundle';
 import exploreMapBundle from './explore-map-bundle';
 import exploreMapInteractionBundle from './explore-map-interaction-bundle';
 import homeDataBundle from './home-data-bundle';
-import instrumentBundle from './instrument-bundle';
+import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 import instrumentAlertsBundle from './instrument-alerts-bundle';
-import instrumentMapBundle from './instrument-map-bundle';
+import instrumentBundle from './instrument-bundle';
+import instrumentConstantsBundle from './instrument-constants-bundle';
 import instrumentDrawBundle from './instrument-draw-bundle';
 import instrumentGroupBundle from './instrument-group-bundle';
-import instrumentGroupMapBundle from './instrument-group-map-bundle';
 import instrumentGroupInstrumentsBundle from './instrument-group-instruments-bundle';
+import instrumentGroupMapBundle from './instrument-group-map-bundle';
+import instrumentMapBundle from './instrument-map-bundle';
 import instrumentNotesBundle from './instrument-notes-bundle';
 import instrumentStatusBundle from './instrument-status-bundle';
-import instrumentConstantsBundle from './instrument-constants-bundle';
 import mapsBundle from './maps-bundle';
 import modalBundle from './modal-bundle';
 import nestedUrlBundle from './nested-url-bundle';
 import notificationBundle from './notification-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
+import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
@@ -44,12 +51,6 @@ import routesBundle from './routes-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
-import alertReadBundle from './alert-read-bundle';
-import alertUnreadBundle from './alert-unread-bundle';
-import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
-import alertSubscribeBundle from './alert-subscribe-bundle';
-import alertUnsubscribeBundle from './alert-unsubscribe-bundle';
-import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 
 // Mock Token User
 const mockTokenUser =
@@ -93,6 +94,7 @@ export default composeBundles(
   alertSubscribeBundle,
   alertUnreadBundle,
   alertUnsubscribeBundle,
+  batchPlotConfigurationsBundle,
   chartEditorBundle,
   chartsBundle,
   collectionGroupBundle,
@@ -103,17 +105,17 @@ export default composeBundles(
   exploreMapBundle,
   exploreMapInteractionBundle,
   homeDataBundle,
-  instrumentBundle,
   instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
-  instrumentMapBundle,
+  instrumentBundle,
+  instrumentConstantsBundle,
   instrumentDrawBundle,
   instrumentGroupBundle,
   instrumentGroupMapBundle,
   instrumentGroupInstrumentsBundle,
+  instrumentMapBundle,
   instrumentNotesBundle,
   instrumentStatusBundle,
-  instrumentConstantsBundle,
   mapsBundle,
   modalBundle,
   nestedUrlBundle,
@@ -121,8 +123,8 @@ export default composeBundles(
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
-  projectsBundle,
   projectionBundle,
+  projectsBundle,
   rainfallBundle,
   routesBundle,
   timeseriesBundle,
