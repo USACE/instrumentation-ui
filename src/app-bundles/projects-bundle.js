@@ -32,6 +32,7 @@ export default createRestBundle({
         subtitle: 'Instrumentation Browser',
         href: `/${p.slug}/manager`,
         content: '',
+        instrument_count: p.instrument_count
       }))
     ),
   },

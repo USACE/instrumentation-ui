@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const ProjectCard = ({ project }) => {
-  const { img, title, subtitle, href } = project;
+  const { img, title, subtitle, href, instrument_count } = project;
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = (e) => {
@@ -10,16 +10,13 @@ const ProjectCard = ({ project }) => {
 
     setIsFavorite(!isFavorite);
   };
-
   return (
     <>
       <a href={href} tabIndex={0}>
         <div className='card mb-5' style={{ maxWidth: '300px' }}>
           <button className='favorite' onClick={toggleFavorite}>
             <span
-              className={`mdi ${
-                isFavorite ? 'mdi-star gold' : 'mdi-star-outline'
-              }`}
+              className={`mdi ${isFavorite ? 'mdi-star gold' : 'mdi-star-outline'}`}
             />
           </button>
           {img ? (
@@ -33,6 +30,7 @@ const ProjectCard = ({ project }) => {
           <div className='card-body'>
             <h5 className='card-title overflow-ellipsis'>{title}</h5>
             <h6 className='card-subtitle text-muted'>{subtitle}</h6>
+            <h6 className='card-subtitle text-muted mt-2'>Instruments: <span className='font-weight-bold'>{instrument_count}</span></h6>
           </div>
         </div>
       </a>
