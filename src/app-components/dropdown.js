@@ -1,5 +1,7 @@
 import React, { createContext, useRef, useState } from 'react';
+
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
+import useWindowListener from '../customHooks/useWindowListener';
 
 const defaultVal = { closeDropdown: () => {}};
 const DropdownContext = createContext(defaultVal);
@@ -39,6 +41,7 @@ const Dropdown = ({
   buttonContent = null,
   customContent = null,
   children = null,
+  closeWithEscape = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -48,6 +51,12 @@ const Dropdown = ({
   const menuClass = ['dropdown-menu', isOpen && 'show', ...menuClasses].join(' ');
 
   useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
+
+  useWindowListener('keydown', (e) => {
+    if (closeWithEscape && (e.key === 'Esc' || e.key === 'Escape') && isOpen) {
+      setIsOpen(false);
+    }
+  });
 
   const commonProps = {
     onClick: () => setIsOpen(!isOpen),

@@ -31,8 +31,9 @@ const MultiSelect = ({
   onChange = () => {},
   options = [],
   withSelectAllOption = false,
+  initialValues = []
 }) => {
-  const [currentSelections, setCurrentSelections] = useState([]);
+  const [currentSelections, setCurrentSelections] = useState(initialValues);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const handleSelectAll = () => {
