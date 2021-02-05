@@ -20,6 +20,16 @@ const formatOptions = timeseries => (
   ))
 );
 
+const configNameExists = (newConfigName = '', currentConfigurations = []) => {
+  console.log('Top of function');
+  const found = currentConfigurations.find(elem => (
+    newConfigName.trim() === elem.text.trim()
+  ));
+
+  console.log('found?: ', found);
+  return !!found;
+};
+
 const ChartSettings = connect(
   'selectInstrumentTimeseriesItemsByRoute',
   'selectBatchPlotConfigurationsItems',
@@ -34,7 +44,7 @@ const ChartSettings = connect(
     const [newConfigName, setNewConfigName] = useState('');
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [isInputError, setIsInputError] = useState(false);
+    const [inputError, setInputError] = useState('');
     const timeseries = formatOptions(instrumentTimeseries);
 
     const configurations = batchPlotConfigurationsItems.map(config => ({
@@ -44,11 +54,14 @@ const ChartSettings = connect(
 
     const handleSave = () => {
       if (!newConfigName) {
-        setIsInputError(true);
+        setInputError('Please provide a configuration name.');
+      } else if (configNameExists(newConfigName, configurations)) {
+        console.log('hmmm');
+        setInputError('Configuration name already exists. Please use a different name.');
       } else {
         doBatchPlotConfigurationsSave({
           ...isEditMode && { id: selectedConfiguration },
-          name: newConfigName,
+          name: newConfigName.trim(),
           timeseries_id: selectedTimeseries
         });
         setIsPanelOpen(false);
@@ -57,7 +70,7 @@ const ChartSettings = connect(
 
     const handleEditClick = () => {
       const currentItem = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
-      console.log('currentItem: ', currentItem);
+
       if (currentItem) {
         setIsEditMode(true);
         setNewConfigName(currentItem.name);
@@ -75,15 +88,9 @@ const ChartSettings = connect(
       if (!isPanelOpen) {
         setNewConfigName('');
         setSelectedTimeseries([]);
-        setIsInputError(false);
+        setInputError('');
       }
-    }, [isPanelOpen, setNewConfigName, setSelectedTimeseries, setIsInputError]);
-
-    useEffect(() => {
-      if (isInputError && newConfigName) {
-        setIsInputError(false);
-      }
-    }, [isInputError, setIsInputError, newConfigName]);
+    }, [isPanelOpen, setNewConfigName, setSelectedTimeseries, setInputError]);
 
     return (
       <div className='card w-100'>
@@ -124,14 +131,17 @@ const ChartSettings = connect(
               <div className='input-container'>
                 <input
                   type='text'
-                  className={`form-control${isInputError ? ' is-invalid' : ''}`}
+                  className={`form-control${inputError ? ' is-invalid' : ''}`}
                   placeholder='Enter configuration name...'
                   value={newConfigName}
-                  onChange={(e) => setNewConfigName(e.target.value)}
+                  onChange={(e) => {
+                    if (inputError) setInputError('');
+                    setNewConfigName(e.target.value);
+                  }}
                 />
-                {isInputError && (
+                {inputError && (
                   <div className='invalid-feedback'>
-                    Please provide a configuration name.
+                    {inputError}
                   </div>
                 )}
               </div>
