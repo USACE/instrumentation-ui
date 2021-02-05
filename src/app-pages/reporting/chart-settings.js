@@ -48,6 +48,7 @@ const ChartSettings = connect(
 
     const configurations = batchPlotConfigurationsItems.map(config => ({
       text: config.name,
+      // @TODO - set to `config.id`
       value: config.name,
     }));
 
