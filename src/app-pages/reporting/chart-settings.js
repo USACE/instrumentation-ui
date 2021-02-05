@@ -53,7 +53,7 @@ const ChartSettings = connect(
     }));
 
     const handleSave = () => {
-      if (!newConfigName) {
+      if (!newConfigName || !newConfigName.trim()) {
         setInputError('Please provide a configuration name.');
       } else if (configNameExists(newConfigName, configurations)) {
         console.log('hmmm');
