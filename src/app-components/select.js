@@ -18,6 +18,7 @@ const Option = ({ value, text = '' }) => (
  * @param {string} className Classes to provide to the `<select>` element.
  * @param {array} options A list of options `{ value: string, text: string }` or `{ value: string }` provided within the select element.
  * @param {string} value The value the `<select>` should set. Should only be set if you have a use case to override the internal state. Not needed for the component to function.
+ * @param {boolean} isDisabled Whether or not the select is disabled and should apply the correct styles. Defaulted to `false`.
  */
 const Select = ({
   title = '',
@@ -29,6 +30,7 @@ const Select = ({
   placeholderText = 'Select an option...',
   className = '',
   options = [],
+  isDisabled = false,
   ...customProps
 }) => {
   const [currentOption, setCurrentOption] = useState(defaultOption);
@@ -59,6 +61,7 @@ const Select = ({
       onChange={(e) => handleChange(e)}
       title={title}
       value={currentOption}
+      disabled={isDisabled}
     >
       {showPlaceholder && placeholderOption}
       {options.map(option => <Option value={option.value} text={option.text} key={option.value} />)}

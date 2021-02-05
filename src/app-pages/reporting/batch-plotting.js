@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Chart from '../../app-components/chart/chart';
+import BatchPlotChart from './batch-plot-chart';
 import ChartSettings from './chart-settings';
 import Navbar from '../../app-components/navbar';
+import PlottingContext from './plotting-context';
 
 import './reporting.scss';
 
@@ -12,14 +13,16 @@ const BatchPlotting = connect(
   ({
     // reference selectors here
   }) => {
-    const [currentValue, setCurrentValue] = useState(null);
+    const [selectedConfiguration, setSelectedConfiguration] = useState(null);
 
     return (
       <>
         <Navbar theme='primary' fixed />
         <section className='container-fluid page-body'>
-          <ChartSettings />
-          <Chart />
+          <PlottingContext.Provider value={{ selectedConfiguration, setSelectedConfiguration }}>
+            <ChartSettings />
+            <BatchPlotChart />
+          </PlottingContext.Provider>
         </section>
       </>
     );

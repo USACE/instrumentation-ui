@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
 import MultiSelect from '../../app-components/multi-select';
+import PlottingContext from './plotting-context';
 import Select from '../../app-components/select';
 
 import './reporting.scss';
@@ -37,7 +38,7 @@ const ChartSettings = connect(
     batchPlotConfigurationsItems,
     doBatchPlotConfigurationsSave,
   }) => {
-    const [selectedConfiguration, setSelectedConfiguration] = useState(null);
+    const { selectedConfiguration, setSelectedConfiguration } = useContext(PlottingContext);
     const [selectedTimeseries, setSelectedTimeseries] = useState([]);
     const [newConfigName, setNewConfigName] = useState('');
     const [inputError, setInputError] = useState('');
@@ -97,7 +98,7 @@ const ChartSettings = connect(
         <div className='d-flex justify-content-around'>
           <div className='left-panel'>
             <Select
-              disabled={isPanelOpen}
+              isDisabled={isPanelOpen}
               style={{ maxWidth: '350px' }}
               className='mr-2'
               placeholderText='Select a configuration...'
