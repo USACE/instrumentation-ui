@@ -21,12 +21,10 @@ const formatOptions = timeseries => (
 );
 
 const configNameExists = (newConfigName = '', currentConfigurations = []) => {
-  console.log('Top of function');
   const found = currentConfigurations.find(elem => (
     newConfigName.trim() === elem.text.trim()
   ));
 
-  console.log('found?: ', found);
   return !!found;
 };
 
@@ -39,12 +37,12 @@ const ChartSettings = connect(
     batchPlotConfigurationsItems,
     doBatchPlotConfigurationsSave,
   }) => {
-    const [selectedTimeseries, setSelectedTimeseries] = useState([]);
     const [selectedConfiguration, setSelectedConfiguration] = useState(null);
+    const [selectedTimeseries, setSelectedTimeseries] = useState([]);
     const [newConfigName, setNewConfigName] = useState('');
+    const [inputError, setInputError] = useState('');
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [inputError, setInputError] = useState('');
     const timeseries = formatOptions(instrumentTimeseries);
 
     const configurations = batchPlotConfigurationsItems.map(config => ({
@@ -56,7 +54,6 @@ const ChartSettings = connect(
       if (!newConfigName || !newConfigName.trim()) {
         setInputError('Please provide a configuration name.');
       } else if (configNameExists(newConfigName, configurations)) {
-        console.log('hmmm');
         setInputError('Configuration name already exists. Please use a different name.');
       } else {
         doBatchPlotConfigurationsSave({
