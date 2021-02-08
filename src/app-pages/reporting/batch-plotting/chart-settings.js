@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../app-components/button';
-import MultiSelect from '../../app-components/multi-select';
+import Button from '../../../app-components/button';
+import MultiSelect from '../../../app-components/multi-select';
 import PlottingContext from './plotting-context';
-import Select from '../../app-components/select';
+import Select from '../../../app-components/select';
 
-import './reporting.scss';
+import '../reporting.scss';
 
 const formatOptions = timeseries => (
   timeseries.map(ts => ({

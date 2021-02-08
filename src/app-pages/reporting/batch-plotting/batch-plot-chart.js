@@ -1,23 +1,60 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Chart from '../../app-components/chart/chart';
+import Chart from '../../../app-components/chart/chart';
 import PlottingContext from './plotting-context';
+
+const getStyle = _index => ({
+  mode: 'lines+markers',
+  marker: {
+    size: 8,
+  },
+  line: {
+    // color: colors[index],
+    width: 2,
+  }
+});
 
 const BatchPlotChart = connect(
   'doTimeseriesMeasurementsFetchById',
   'doInstrumentTimeseriesSetActiveId',
   'selectTimeseriesMeasurementsItems',
   'selectBatchPlotConfigurationsItems',
+  'selectInstrumentTimeseriesItemsObject',
   ({
     doTimeseriesMeasurementsFetchById,
     doInstrumentTimeseriesSetActiveId,
     timeseriesMeasurementsItems,
     batchPlotConfigurationsItems,
+    instrumentTimeseriesItemsObject,
   }) => {
     const { selectedConfiguration } = useContext(PlottingContext);
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
+    const [chartData, setChartData] = useState([]);
+
+    const generateNewChartData = () => {
+      const data = measurements.map((elem, i) => {
+        if (elem) {
+          const style = getStyle(i);
+          const { items = [] } = elem;
+          const { name, unit } = instrumentTimeseriesItemsObject[elem.timeseries_id];
+
+          const sortedItems = (items || []).slice().sort((a, b) => b.time - a.time);
+
+          return {
+            ...style,
+            name: `${name} (${unit})` || '',
+            x: sortedItems.map(item => item.time),
+            y: sortedItems.map(item => item.value)
+          };
+        }
+
+        return null;
+      });
+
+      setChartData(data);
+    };
 
     useEffect(() => {
       const config = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
@@ -33,12 +70,21 @@ const BatchPlotChart = connect(
       setMeasurements(measurementItems);
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
-    useEffect(() => {
-      console.log('current measurements: ', measurements);
-    }, [measurements]);
+    useEffect(() => generateNewChartData(), [measurements]);
 
     return (
-      <Chart />
+      <div className='card w-100 mt-4'>
+        <div className='card-header'>
+          <strong>Plot</strong>
+        </div>
+        <Chart
+          data={chartData}
+          layout={{
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'Measurement' }
+          }}
+        />
+      </div>
     );
   }
 );

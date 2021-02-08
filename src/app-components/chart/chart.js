@@ -40,7 +40,7 @@ const Chart = ({
   layout.annotations = [];
   if (data && data.length) {
     data.forEach((series) => {
-      if (series.hasOwnProperty('annotations'))
+      if (series && series.hasOwnProperty('annotations'))
         layout.annotations = [...layout.annotations, ...series.annotations];
     });
   }

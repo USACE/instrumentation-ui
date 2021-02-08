@@ -25,7 +25,7 @@ export default createRestBundle({
     doTimeseriesMeasurementsFetchById: ({
       timeseriesId
     }) => ({ dispatch, store, apiGet }) => {
-      dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START' });
+      dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START', payload: {} });
 
       const url = `/timeseries/${timeseriesId}/measurements?after=${afterDate}&before=${beforeDate}`;
       const flags = store['selectTimeseriesMeasurementsFlags']();
@@ -50,7 +50,7 @@ export default createRestBundle({
             },
           },
         });
-        dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START_FINISHED' });
+        dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START_FINISHED', payload: {} });
       });
     },
   },
