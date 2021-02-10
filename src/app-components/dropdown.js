@@ -52,7 +52,7 @@ const Dropdown = ({
 
   useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
 
-  useWindowListener('keydown', (e) => {
+  useWindowListener('keyup', (e) => {
     if (closeWithEscape && (e.key === 'Esc' || e.key === 'Escape') && isOpen) {
       setIsOpen(false);
     }
