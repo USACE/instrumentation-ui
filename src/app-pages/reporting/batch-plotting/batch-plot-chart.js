@@ -37,10 +37,10 @@ const BatchPlotChart = connect(
       const data = measurements.map((elem, i) => {
         if (elem) {
           const style = getStyle(i);
-          const { items = [] } = elem;
+          const { items } = elem;
           const { name, unit } = instrumentTimeseriesItemsObject[elem.timeseries_id];
 
-          const sortedItems = (items || []).slice().sort((a, b) => b.time - a.time);
+          const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
 
           return {
             ...style,

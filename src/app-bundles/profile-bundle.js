@@ -31,7 +31,7 @@ export default createRestBundle({
       'selectPathnameMinusHomepage',
       'selectProfileActive',
       'selectProfileIsLoading',
-      (isLoggedIn, path, profileIsLoading, profile) => {
+      (isLoggedIn, path, profile, profileIsLoading) => {
         if (isLoggedIn && !profileIsLoading) {
           if (!profile) {
             if (path !== '/signup')
