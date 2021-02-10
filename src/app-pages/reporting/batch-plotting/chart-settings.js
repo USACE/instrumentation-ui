@@ -92,86 +92,81 @@ const ChartSettings = connect(
     }, [isPanelOpen, setNewConfigName, setSelectedTimeseries, setInputError]);
 
     return (
-      <div className='card w-100'>
-        <div className='card-header'>
-          <strong>Plot Configuration</strong>
+      <div className='d-flex justify-content-around'>
+        <div className='left-panel'>
+          <Select
+            isDisabled={isPanelOpen}
+            style={{ maxWidth: '350px' }}
+            className='mr-2'
+            placeholderText='Select a configuration...'
+            options={configurations}
+            onChange={val => setSelectedConfiguration(val)}
+          />
+          <Button
+            isDisabled={!selectedConfiguration || isPanelOpen}
+            isOutline
+            size='small'
+            variant='info'
+            className='mr-2'
+            title='Edit Selected Configuration'
+            icon={<i className='mdi mdi-pencil' />}
+            handleClick={() => handleEditClick()}
+          />
+          <Button
+            isDisabled={isPanelOpen}
+            isOutline
+            size='small'
+            variant='success'
+            text='+ Create New'
+            handleClick={() => handleNewClick()}
+          />
         </div>
-        <div className='d-flex justify-content-around'>
-          <div className='left-panel'>
-            <Select
-              isDisabled={isPanelOpen}
-              style={{ maxWidth: '350px' }}
-              className='mr-2'
-              placeholderText='Select a configuration...'
-              options={configurations}
-              onChange={val => setSelectedConfiguration(val)}
-            />
-            <Button
-              isDisabled={!selectedConfiguration || isPanelOpen}
-              isOutline
-              size='small'
-              variant='info'
-              className='mr-2'
-              title='Edit Selected Configuration'
-              icon={<i className='mdi mdi-pencil' />}
-              handleClick={() => handleEditClick()}
-            />
-            <Button
-              isDisabled={isPanelOpen}
-              isOutline
-              size='small'
-              variant='success'
-              text='+ Create New'
-              handleClick={() => handleNewClick()}
-            />
-          </div>
-          {isPanelOpen && (
-            <div className='right-panel'>
-              <div className='input-container'>
-                <input
-                  type='text'
-                  className={`form-control${inputError ? ' is-invalid' : ''}`}
-                  placeholder='Enter configuration name...'
-                  value={newConfigName}
-                  onChange={(e) => {
-                    if (inputError) setInputError('');
-                    setNewConfigName(e.target.value);
-                  }}
-                />
-                {inputError && (
-                  <div className='invalid-feedback'>
-                    {inputError}
-                  </div>
-                )}
-              </div>
-              <div>
-                <MultiSelect
-                  withSelectAllOption
-                  menuClasses='dropdown-menu-right'
-                  text={`Select Options (${(selectedTimeseries || []).length} selected)`}
-                  options={timeseries}
-                  onChange={val => setSelectedTimeseries(val)}
-                  initialValues={selectedTimeseries}
-                />
-                <div className='panel-actions'>
-                  <Button
-                    variant='secondary'
-                    size='small'
-                    text='Cancel'
-                    className='mr-2'
-                    handleClick={() => setIsPanelOpen(false)}
-                  />
-                  <Button
-                    variant='success'
-                    size='small'
-                    text='Save'
-                    handleClick={handleSave}
-                  />
+        {isPanelOpen && (
+          <div className='right-panel'>
+            <div className='input-container'>
+              <input
+                type='text'
+                className={`form-control${inputError ? ' is-invalid' : ''}`}
+                placeholder='Enter configuration name...'
+                value={newConfigName}
+                onChange={(e) => {
+                  if (inputError) setInputError('');
+                  setNewConfigName(e.target.value);
+                }}
+              />
+              {inputError && (
+                <div className='invalid-feedback'>
+                  {inputError}
                 </div>
+              )}
+            </div>
+            <div>
+              <MultiSelect
+                withSelectAllOption
+                menuClasses='dropdown-menu-right'
+                text={`Select Options (${(selectedTimeseries || []).length} selected)`}
+                options={timeseries}
+                onChange={val => setSelectedTimeseries(val)}
+                initialValues={selectedTimeseries}
+              />
+              <div className='panel-actions'>
+                <Button
+                  variant='secondary'
+                  size='small'
+                  text='Cancel'
+                  className='mr-2'
+                  handleClick={() => setIsPanelOpen(false)}
+                />
+                <Button
+                  variant='success'
+                  size='small'
+                  text='Save'
+                  handleClick={handleSave}
+                />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }

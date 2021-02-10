@@ -15,8 +15,18 @@ const BatchPlotting = () => {
       <Navbar theme='primary' fixed />
       <section className='container-fluid page-body'>
         <PlottingContext.Provider value={{ selectedConfiguration, setSelectedConfiguration }}>
-          <ChartSettings />
-          <BatchPlotChart />
+          <div className='card w-100'>
+            <div className='card-header'>
+              <strong>Plot Configuration</strong>
+            </div>
+            <ChartSettings />
+          </div>
+          <div className='card w-100 mt-4'>
+            <div className='card-header'>
+              <strong>Plot</strong>
+            </div>
+            <BatchPlotChart />
+          </div>
         </PlottingContext.Provider>
       </section>
     </>

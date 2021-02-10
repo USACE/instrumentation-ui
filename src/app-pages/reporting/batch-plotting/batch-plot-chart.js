@@ -73,18 +73,13 @@ const BatchPlotChart = connect(
     useEffect(() => generateNewChartData(), [measurements]);
 
     return (
-      <div className='card w-100 mt-4'>
-        <div className='card-header'>
-          <strong>Plot</strong>
-        </div>
-        <Chart
-          data={chartData}
-          layout={{
-            xaxis: { title: 'Date' },
-            yaxis: { title: 'Measurement' }
-          }}
-        />
-      </div>
+      <Chart
+        data={chartData}
+        layout={{
+          xaxis: { title: 'Date' },
+          yaxis: { title: 'Measurement' }
+        }}
+      />
     );
   }
 );
