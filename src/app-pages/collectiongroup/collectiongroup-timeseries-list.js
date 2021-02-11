@@ -49,7 +49,7 @@ const TimeseriesListEntry = ({
             </small>
           </div>
           <div className='text-secondary font-weight-light font-italic'>
-            {item.latest_time != null ? formatDistanceToNow(parseISO(item.latest_time)) + ' ago' : 'No Data Found'}
+            {item.latest_time ? formatDistanceToNow(parseISO(item.latest_time)) + ' ago' : 'No Data Found'}
           </div>
         </div>
         {/* Column 3 */}
