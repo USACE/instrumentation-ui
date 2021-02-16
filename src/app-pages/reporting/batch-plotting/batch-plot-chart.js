@@ -10,7 +10,6 @@ const getStyle = _index => ({
     size: 8,
   },
   line: {
-    // color: colors[index],
     width: 2,
   }
 });
@@ -77,7 +76,15 @@ const BatchPlotChart = connect(
         data={chartData}
         layout={{
           xaxis: { title: 'Date' },
-          yaxis: { title: 'Measurement' }
+          yaxis: { title: 'Measurement' },
+          autosize: true,
+          dragmode: 'pan',
+        }}
+        config={{
+          responsive: true,
+          displaylogo: false,
+          displayModeBar: true,
+          scrollZoom: true,
         }}
       />
     );

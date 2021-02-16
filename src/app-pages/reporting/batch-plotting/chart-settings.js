@@ -78,6 +78,14 @@ const ChartSettings = connect(
       }
     };
 
+    const handleDeleteClick = () => {
+      const currentItem = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
+
+      if (currentItem) {
+        console.log('delete: ', currentItem);
+      }
+    };
+
     const handleNewClick = () => {
       setIsEditMode(false);
       setIsPanelOpen(true);
@@ -102,16 +110,30 @@ const ChartSettings = connect(
             options={configurations}
             onChange={val => setSelectedConfiguration(val)}
           />
-          <Button
-            isDisabled={!selectedConfiguration || isPanelOpen}
-            isOutline
-            size='small'
-            variant='info'
-            className='mr-2'
-            title='Edit Selected Configuration'
-            icon={<i className='mdi mdi-pencil' />}
-            handleClick={() => handleEditClick()}
-          />
+          {selectedConfiguration && (
+            <>
+              <Button
+                isDisabled={isPanelOpen}
+                isOutline
+                size='small'
+                variant='info'
+                className='mr-2'
+                title='Edit Selected Configuration'
+                icon={<i className='mdi mdi-pencil' />}
+                handleClick={() => handleEditClick()}
+              />
+              <Button
+                isDisabled={isPanelOpen}
+                isOutline
+                size='small'
+                variant='danger'
+                className='mr-2'
+                title='Delete Selected Configuration'
+                icon={<i className='mdi mdi-trash-can' />}
+                handleClick={() => handleDeleteClick()}
+              />
+            </>
+          )}
           <Button
             isDisabled={isPanelOpen}
             isOutline
