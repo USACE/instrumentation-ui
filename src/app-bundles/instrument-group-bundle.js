@@ -4,6 +4,7 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'instrumentGroups',
   uid: 'slug',
+  sortBy: 'slug',
   prefetch: true,
   staleAfter: 10000,
   persist: false,

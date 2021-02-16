@@ -29,9 +29,9 @@ export default createRestBundle({
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
       'selectPathnameMinusHomepage',
-      'selectProfileActive',
       'selectProfileIsLoading',
-      (isLoggedIn, path, profile, profileIsLoading) => {
+      'selectProfileActive',
+      (isLoggedIn, path, profileIsLoading, profile) => {
         if (isLoggedIn && !profileIsLoading) {
           if (!profile) {
             if (path !== '/signup')
