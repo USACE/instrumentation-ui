@@ -55,6 +55,7 @@ const commonFetch = (root, path, options, callback) => {
     .then(response => {
       if (callback && typeof callback === 'function') {
         callback(null, response.json);
+        return;
       }
     })
     .catch(response => {

@@ -1,5 +1,7 @@
 import React, { createContext, useRef, useState } from 'react';
+
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
+import useWindowListener from '../customHooks/useWindowListener';
 
 const defaultVal = { closeDropdown: () => {}};
 const DropdownContext = createContext(defaultVal);
@@ -27,7 +29,6 @@ const DropdownItem = ({
         )
     )}
   </DropdownContext.Consumer>
-  
 );
 
 const Dropdown = ({
@@ -36,9 +37,11 @@ const Dropdown = ({
   buttonClasses = [],
   menuClasses = [],
   withToggleArrow = true,
+  closeOnSelect = true,
   buttonContent = null,
   customContent = null,
   children = null,
+  closeWithEscape = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -49,6 +52,12 @@ const Dropdown = ({
 
   useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
 
+  useWindowListener('keyup', (e) => {
+    if (closeWithEscape && (e.key === 'Esc' || e.key === 'Escape') && isOpen) {
+      setIsOpen(false);
+    }
+  });
+
   const commonProps = {
     onClick: () => setIsOpen(!isOpen),
     'aria-haspopup': true,
@@ -56,7 +65,7 @@ const Dropdown = ({
   };
 
   return (
-    <DropdownContext.Provider value={{ closeDropdown: () => setIsOpen(false) }}>
+    <DropdownContext.Provider value={{ closeDropdown: () => closeOnSelect ? setIsOpen(false) : () => {} }}>
       <div className={dropdownClass} id={id}>
         {customContent
           ? React.cloneElement(customContent, commonProps)

@@ -69,7 +69,7 @@ const NavItem = connect(
   }
 );
 
-export default connect(
+const Navbar = connect(
   'doAuthLogin',
   'selectAuthIsLoggedIn',
   'selectProjectsByRoute',
@@ -128,6 +128,13 @@ export default connect(
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                 </RoleFilter>
+                <Dropdown.Menu
+                  dropdownClasses={['nav-item pointer']}
+                  menuClasses={['dropdown-menu-right']}
+                  customContent={<span className='nav-link'>Reporting</span>}
+                >
+                  <Dropdown.Item href={`/${project.slug}/batch-plotting`}>Batch Plotting</Dropdown.Item>
+                </Dropdown.Menu>
               </>
             ) : null}
             {window.location.pathname === '/instrumentation/help' ? (
@@ -146,3 +153,5 @@ export default connect(
     );
   }
 );
+
+export default Navbar;

@@ -252,6 +252,7 @@ const createRestBundle = (opts) => {
         };
       },
 
+      // 
       [doFetch]: () => ({ dispatch, store, apiGet }) => {
         dispatch({
           type: actions.FETCH_STARTED,

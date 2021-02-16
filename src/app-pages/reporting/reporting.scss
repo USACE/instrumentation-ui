@@ -1,0 +1,32 @@
+.page-body {
+  margin-top: 6rem;
+  position: relative;
+}
+
+.right-panel {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  border-left: 1px solid #D8D8D8;
+  padding: 15px;
+
+  * {
+    flex: 1;
+  }
+
+  .input-container {
+    margin-right: 10px;
+    flex: 3;
+  }
+}
+
+.left-panel {
+  flex: 1;
+  padding: 15px;
+}
+
+.panel-actions {
+  margin: 10px 0 0 0;
+  display: block;
+  float: right;
+}

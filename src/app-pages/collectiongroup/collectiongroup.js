@@ -51,33 +51,32 @@ export default connect(
       const success = {
         level: 'success',
         title: `Saved ${instrument} | ${name} `,
-        message: `${value} ${unit}  @  ${date.toISOString()}
-        `,
+        message: `${value} ${unit}  @  ${date.toISOString()}`,
       };
       const fail = {
         level: 'error',
         title: 'Missing Value',
         message: 'Enter a value before clicking add',
       };
+
       if (!value) {
         doNotificationFire(fail);
-        return;
+      } else {
+        doTimeseriesMeasurementsSave(
+          {
+            timeseries_id: id,
+            items: [
+              {
+                time: date.toISOString(),
+                value: parseFloat(value),
+              },
+            ],
+          },
+          doNotificationFire(success),
+          false,
+          true
+        );
       }
-      doTimeseriesMeasurementsSave(
-        {
-          timeseries_id: id,
-          items: [
-            {
-              time: date.toISOString(),
-              value: parseFloat(value),
-            },
-          ],
-        },
-        false,
-        false,
-        true
-      );
-      doNotificationFire(success);
     };
 
     return (
@@ -90,11 +89,7 @@ export default connect(
                 <h4 className='py-4'>{detail.name}</h4>
                 <RoleFilter
                   allowRoles={[`${project.slug.toUpperCase()}.*`]}
-                  alt={() => (
-                    <span className='p-2'>
-                      <LoginMessage />
-                    </span>
-                  )}
+                  alt={() => <LoginMessage className='p-2' />}
                 >
                   <Button
                     variant='link'
@@ -130,9 +125,7 @@ export default connect(
                         />
                         <div>
                           <strong className='h5 p-0 m-0'>Timeseries</strong>
-                          <RoleFilter
-                            allowRoles={[`${project.slug.toUpperCase()}.*`]}
-                          >
+                          <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                             <Button
                               variant='link'
                               size='small'
