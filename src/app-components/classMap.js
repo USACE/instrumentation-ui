@@ -32,11 +32,17 @@ const Map = forwardRef(({
       };
     }
     
-    doMapsInitialize(mapKey, el.current, newOptions);
-    ro.observe(el.current);
+    if (doMapsInitialize && typeof doMapsInitialize === 'function') {
+      doMapsInitialize(mapKey, el.current, newOptions);
+      ro.observe(el.current);
+    }
   }, []);
 
-  useEffect(() => () => doMapsShutdown(mapKey), [doMapsShutdown, mapKey]);
+  useEffect(() => () => {
+    if (doMapsShutdown && typeof doMapsShutdown === 'function') {
+      doMapsShutdown(mapKey);
+    };
+  }, [doMapsShutdown, mapKey]);
 
   return (
     <div

@@ -24,6 +24,9 @@ export default connect(
   'doModalOpen',
   'doAlertsFetch',
   'doInstrumentTimeseriesSetActiveId',
+  'doMapsInitialize',
+  'doMapsShutdown',
+  'selectMapsObject',
   'selectProjectsByRoute',
   'selectAlertsByRouteByInstrumentId',
   'selectInstrumentsByRoute',
@@ -34,6 +37,9 @@ export default connect(
     doModalOpen,
     doAlertsFetch,
     doInstrumentTimeseriesSetActiveId,
+    doMapsInitialize,
+    doMapsShutdown,
+    mapsObject,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
@@ -123,7 +129,12 @@ export default connect(
             <div className='col'>
               <div className='card h-100' style={{ position: 'relative' }}>
                 <div className='card-body'>
-                  <Map mapKey='instrumentMap' />
+                  <Map
+                    mapKey='instrumentMap'
+                    mapsObject={mapsObject}
+                    doMapsInitialize={doMapsInitialize}
+                    doMapsShutdown={doMapsShutdown}
+                  />
                 </div>
               </div>
             </div>

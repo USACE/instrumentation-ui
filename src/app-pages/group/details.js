@@ -15,11 +15,17 @@ import TimeseriesPanel from './group-time-series-panel';
 
 export default connect(
   'doModalOpen',
+  'doMapsInitialize',
+  'doMapsShutdown',
+  'selectMapsObject',
   'selectProjectsByRoute',
   'selectInstrumentGroupsByRoute',
   'selectInstrumentGroupInstrumentsItems',
   ({
     doModalOpen,
+    doMapsInitialize,
+    doMapsShutdown,
+    mapsObject,
     projectsByRoute: project,
     instrumentGroupsByRoute: group,
     instrumentGroupInstrumentsItems: instruments,
@@ -65,7 +71,12 @@ export default connect(
                 style={{ position: 'relative', height: '100%' }}
               >
                 <div className='card-body'>
-                  <Map mapKey='groupMap' />
+                  <Map
+                    mapKey='groupMap'
+                    mapsObject={mapsObject}
+                    doMapsInitialize={doMapsInitialize}
+                    doMapsShutdown={doMapsShutdown}
+                  />
                 </div>
               </div>
             </div>

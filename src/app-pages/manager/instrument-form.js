@@ -14,6 +14,8 @@ export default connect(
   'doInstrumentsSave',
   'doInstrumentDrawUpdateLoc',
   'doInstrumentDrawOnMapClose',
+  'doMapsInitialize',
+  'doMapsShutdown',
   'doProjSetDisplayProjection',
   'doProjTransformFromLonLat',
   'doProjTransformToLonLat',
@@ -23,6 +25,7 @@ export default connect(
   'selectInstrumentDrawLon',
   'selectInstrumentDrawLat',
   'selectInstrumentDrawReady',
+  'selectMapsObject',
   'selectProjDisplayProjection',
   'selectProjOptions',
   'selectProjectsByRoute',
@@ -31,6 +34,8 @@ export default connect(
     doInstrumentsSave,
     doInstrumentDrawUpdateLoc,
     doInstrumentDrawOnMapClose,
+    doMapsInitialize,
+    doMapsShutdown,
     doProjSetDisplayProjection,
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
@@ -40,6 +45,7 @@ export default connect(
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
+    mapsObject,
     projDisplayProjection,
     projOptions,
     projectsByRoute: project,
@@ -190,6 +196,9 @@ export default connect(
               <Map
                 mapKey='inst-edit'
                 options={{ center: [-80.79, 26.94], zoom: 9 }}
+                mapsObject={mapsObject}
+                doMapsInitialize={doMapsInitialize}
+                doMapsShutdown={doMapsShutdown}
               />
             </div>
             <div className='form-group'>
