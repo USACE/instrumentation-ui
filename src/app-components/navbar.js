@@ -48,7 +48,7 @@ const NavItem = connect(
     const cls = classnames({
       pointer: true,
       'nav-item': true,
-      active: pathname.indexOf(href) !== -1,
+      active: pathname.indexOf(href) !== -1 && href !== '/',
     });
     if (href) {
       return (
