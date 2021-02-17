@@ -6,14 +6,25 @@ import Navbar from '../../app-components/navbar';
 import Tab from '../../app-components/tab';
 
 import './userProfile.css';
+import MultiSelect from '../../app-components/multi-select';
 
 const urlify = str => str.toLowerCase().split(' ').join('-');
 
 const buildProjectContent = (projects = []) => {
-  if (!projects.length) return <p>No Projects!</p>;
+  if (projects.length) return <p>No Projects!</p>;
 
   return (
     <div>
+      <MultiSelect
+        isFilterable
+        menuClasses='overflow-menu'
+        options={[
+          { value: 1 },
+          { value: 2 },
+          { value: 3 },
+          { value: 4 },
+        ]}
+      />
       Favorited Project List goes here!
     </div>
   );
@@ -75,7 +86,7 @@ const UserProfile = connect(
             </div>
             <div className='col-8'>
               <div className='card p-0 mt-2'>
-                <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0' />
+                <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0 overflow-visible' />
               </div>
             </div>
           </div>

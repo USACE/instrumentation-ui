@@ -1,9 +1,14 @@
 .user-container {
   background-color: #e6e6e6;
+  min-height: 100vh;
 }
 
 .limit-height {
   max-height: 80vh;
   overflow-x: auto;
   margin-bottom: 20px;
+}
+
+.overflow-visible {
+  overflow: visible !important;
 }

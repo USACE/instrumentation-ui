@@ -1,4 +1,4 @@
-import React, { createContext, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 import useWindowListener from '../customHooks/useWindowListener';
@@ -42,6 +42,7 @@ const Dropdown = ({
   customContent = null,
   children = null,
   closeWithEscape = true,
+  onToggle = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -57,6 +58,10 @@ const Dropdown = ({
       setIsOpen(false);
     }
   });
+
+  useEffect(() => {
+    onToggle(isOpen);
+  }, [isOpen, onToggle]);
 
   const commonProps = {
     onClick: () => setIsOpen(!isOpen),

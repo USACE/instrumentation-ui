@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import Button from './button';
 import Dropdown from './dropdown';
 
 const reduceSelections = (selection, currentSelections) => {
@@ -24,6 +25,16 @@ const generateOption = (option, handleClick, optionIsSelected, i) => {
   );
 };
 
+const FilterInput = () => (
+  <input
+    className='form-control'
+    autoFocus
+    placeholder='Filter List...'
+    // THIS IS BEING OVERRIDDEN BY DROPDOWN, FIGURE OUT A LOOPHOLE
+    onClick={e => e.stopPropagation()}
+  />
+);
+
 const MultiSelect = ({
   text = 'Select Options',
   className = '',
@@ -31,10 +42,12 @@ const MultiSelect = ({
   onChange = () => {},
   options = [],
   withSelectAllOption = false,
-  initialValues = []
+  initialValues = [],
+  isFilterable = false,
 }) => {
   const [currentSelections, setCurrentSelections] = useState(initialValues);
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelectAll = () => {
     if (isAllSelected) {
@@ -57,11 +70,13 @@ const MultiSelect = ({
 
   return (
     <Dropdown.Menu
+      customContent={isFilterable && isDropdownOpen && <FilterInput />}
       dropdownClasses={[className]}
       menuClasses={[menuClasses]}
       buttonContent={<span>{text}&nbsp;</span>}
       buttonClasses={['btn-outline-info']}
       closeOnSelect={false}
+      onToggle={isOpen => setIsDropdownOpen(isOpen)}
     >
       {withSelectAllOption && (
         generateOption({ text: 'Select All' }, handleSelectAll, isAllSelected, 'all')
