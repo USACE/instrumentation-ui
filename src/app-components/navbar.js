@@ -73,6 +73,7 @@ const Navbar = connect(
   'doAuthLogin',
   'selectAuthIsLoggedIn',
   'selectProjectsByRoute',
+  'selectPathname',
   ({
     doAuthLogin,
     authIsLoggedIn,
@@ -81,6 +82,7 @@ const Navbar = connect(
     hideBrand,
     brand = null,
     projectsByRoute: project,
+    pathname,
   }) => {
     const navClass = classnames({
       navbar: true,
@@ -94,16 +96,30 @@ const Navbar = connect(
       'navbar-light': theme === 'light',
       'bg-light': theme === 'light',
     });
-    if (!brand && project && project.name) brand = project.name;
+
+    const isReportingActive = project && [
+      `/${project.slug}/batch-plotting`
+    ].some(path => pathname.indexOf(path) !== -1);
+
     return (
       <nav className={navClass}>
         {hideBrand ? null : (
-          <a className='navbar-brand' href={'/'}>
+          <span className='navbar-brand'>
             <strong>
-              <i className='mdi mdi-pulse pr-2'></i>
-              {brand}
+              <a href='/' className='text-white'>
+                <i className='mdi mdi-pulse pr-2'></i>
+                {brand || 'Home'}
+              </a>
             </strong>
-          </a>
+            {project && project.name && (
+              <>
+                <i className='mdi mdi-chevron-right pl-2 pr-2' />
+                <span className='text-white default-cursor'>
+                  {project.name}
+                </span>
+              </>
+            )}
+          </span>
         )}
         <button
           className='navbar-toggler'
@@ -122,14 +138,14 @@ const Navbar = connect(
                 <NavItem href={`/${project.slug}/manager`}>
                   Inventory Manager
                 </NavItem>
-                <NavItem hidden={false} href={`/${project.slug}/explore`}>
+                <NavItem href={`/${project.slug}/explore`}>
                   Explorer
                 </NavItem>
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                 </RoleFilter>
                 <Dropdown.Menu
-                  dropdownClasses={['nav-item pointer']}
+                  dropdownClasses={[`nav-item pointer${isReportingActive ? ' active': '' }`]}
                   menuClasses={['dropdown-menu-right']}
                   customContent={<span className='nav-link'>Reporting</span>}
                 >

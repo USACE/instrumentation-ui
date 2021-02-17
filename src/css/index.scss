@@ -29,6 +29,10 @@ $error-color: #f04124;
   cursor: pointer;
 }
 
+.default-cursor {
+  cursor: default;
+}
+
 .not-allowed {
   cursor: not-allowed !important;
 }
@@ -47,6 +51,11 @@ footer.modal-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.nav-item.active {
+  border-top: solid 2px white;
+  font-weight: 700;
 }
 
 .timeline-list-item {
