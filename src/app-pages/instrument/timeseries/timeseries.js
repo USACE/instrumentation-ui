@@ -40,6 +40,7 @@ export default connect(
 
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
+      ts.instrument_id === instrument.id &&
       instrument.constants.indexOf(ts.id) === -1
     ));
 
