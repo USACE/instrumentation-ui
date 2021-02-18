@@ -68,7 +68,7 @@ footer.modal-footer {
     left: -8px;
     top: 2px;
     position: relative;
-    content: "";
+    content: '';
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -122,6 +122,34 @@ footer.modal-footer {
   }
 }
 
+.legend-icon {
+  &.active {
+    stroke: $success-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.inactive {
+    stroke: $inactive-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.abandoned {
+    stroke: $inactive-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.destroyed {
+    stroke: $error-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.lost {
+    stroke: $warning-color;
+    stroke-width: 3;
+    fill: white;
+  }
+}
+
 .sketch-picker {
   z-index: 99999;
 }
@@ -152,7 +180,7 @@ footer.modal-footer {
 }
 
 .gold {
-  color: #FFD700;
+  color: #ffd700;
 }
 
 .text-dark {
