@@ -64,7 +64,7 @@ footer.modal-footer {
   padding-left: 0;
   padding-bottom: 10px;
 
-  ::before {
+  &::before {
     left: -8px;
     top: 2px;
     position: relative;
@@ -79,23 +79,23 @@ footer.modal-footer {
     border: 3px solid #69b6d5;
   }
 
-  .active::before {
+  &.active::before {
     border-color: $success-color;
   }
 
-  .inactive::before {
+  &.inactive::before {
     border-color: $inactive-color;
   }
 
-  .abandoned::before {
+  &.abandoned::before {
     border-color: $inactive-color;
   }
 
-  .destroyed::before {
+  &.destroyed::before {
     border-color: $error-color;
   }
 
-  .lost::before {
+  &.lost::before {
     border-color: $warning-color;
   }
 }
