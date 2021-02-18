@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { classArray } from '../utils';
+
 /**
  * 
  * @param {string} size - one of `['small', 'large']` to size the button to your needs
@@ -28,13 +30,13 @@ const Button = ({
   ...customProps
 }) => {
   const elem = href ? 'a' : 'button';
-  const classes = [
+  const classes = classArray([
     'btn',
     size && size === 'small' ? 'btn-sm' : size === 'large' ? 'btn-lg' : '',
     `btn-${isOutline ? 'outline-' : ''}${variant}`,
     isDisabled && 'disabled not-allowed',
     className,
-  ].filter(e => e).join(' ');
+  ]);
 
   const buttonProps = {
     className: classes,

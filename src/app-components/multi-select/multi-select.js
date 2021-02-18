@@ -1,39 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import Button from './button';
-import Dropdown from './dropdown';
-
-const reduceSelections = (selection, currentSelections) => {
-  const final = [...currentSelections];
-  const idx = currentSelections.findIndex(elem => elem === selection);
-
-  idx < 0 ? final.push(selection) : final.splice(idx, 1);
-
-  return final;
-};
-
-const generateOption = (option, handleClick, optionIsSelected, i) => {
-  const icon = optionIsSelected ? 'mdi-check-box-outline' : 'mdi-checkbox-blank-outline';
-
-  return (
-    <Dropdown.Item key={i} onClick={(_e) => handleClick()}>
-      <span className={optionIsSelected ? 'text-info' : 'text-dark'}>
-        <i className={`mdi ${icon}`}/>&nbsp;
-        {option.text || option.value}
-      </span>
-    </Dropdown.Item>
-  );
-};
-
-const FilterInput = () => (
-  <input
-    className='form-control'
-    autoFocus
-    placeholder='Filter List...'
-    // THIS IS BEING OVERRIDDEN BY DROPDOWN, FIGURE OUT A LOOPHOLE
-    onClick={e => e.stopPropagation()}
-  />
-);
+import Dropdown from '../dropdown';
+import { DropdownButton, FilterInput } from './subcomponents';
+import { generateOption, reduceSelections } from './helper';
 
 const MultiSelect = ({
   text = 'Select Options',
@@ -48,6 +17,8 @@ const MultiSelect = ({
   const [currentSelections, setCurrentSelections] = useState(initialValues);
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef();
+  const inputRef = useRef(null);
 
   const handleSelectAll = () => {
     if (isAllSelected) {
@@ -70,13 +41,32 @@ const MultiSelect = ({
 
   return (
     <Dropdown.Menu
-      customContent={isFilterable && isDropdownOpen && <FilterInput />}
+      ref={dropdownRef}
+      customContent={(
+        <>
+          <DropdownButton
+            handleClick={() => {
+              if (dropdownRef && dropdownRef.current) {
+                if (!isDropdownOpen) dropdownRef.current.toggleDropdown();
+              }
+            }}
+            text={text}
+            isHidden={isFilterable && isDropdownOpen}
+          />
+          <FilterInput
+            isHidden={!isFilterable || (isFilterable && !isDropdownOpen)}
+            ref={inputRef}
+          />
+        </>
+      )}
       dropdownClasses={[className]}
       menuClasses={[menuClasses]}
-      buttonContent={<span>{text}&nbsp;</span>}
-      buttonClasses={['btn-outline-info']}
       closeOnSelect={false}
       onToggle={isOpen => setIsDropdownOpen(isOpen)}
+      containerRefs={[inputRef]}
+      customElementProps={{
+        onClick: () => {},
+      }}
     >
       {withSelectAllOption && (
         generateOption({ text: 'Select All' }, handleSelectAll, isAllSelected, 'all')

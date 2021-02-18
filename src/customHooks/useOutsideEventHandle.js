@@ -6,8 +6,19 @@ import { useEffect } from 'react';
 const useOutsideEventHandle = (event, ref, callback) => {
   useEffect(() => {
     const handleEventOutside = event => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        callback();
+      if (Array.isArray(ref)) {
+        // console.log('trying, one sec...');
+        let contained = false;
+        ref.forEach(r => {
+          // console.log('r.current is...', r.current);
+          if (r.current && r.current.contains(event.target)) contained = true;
+        });
+
+        if (!contained) callback();
+      } else {
+        if (ref.current && !ref.current.contains(event.target)) {
+          callback();
+        }
       }
     };
 
