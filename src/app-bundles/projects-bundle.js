@@ -26,13 +26,14 @@ export default createRestBundle({
     ),
     selectProjectsItemsWithLinks: createSelector(
       'selectProjectsItems',
-      (projects) => projects.map((p) => ({
-        img: p.image,
-        title: p.name,
-        subtitle: 'Instrumentation Browser',
-        href: `/${p.slug}/manager`,
-        content: '',
-      }))
+      (projects) =>
+        projects.map((p) => ({
+          img: p.image,
+          title: p.name,
+          subtitle: 'Instrumentation Browser',
+          href: `/${p.slug}/explore`,
+          content: '',
+        }))
     ),
   },
 });

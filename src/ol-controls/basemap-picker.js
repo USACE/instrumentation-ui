@@ -6,6 +6,24 @@ import './basemap-picker.css';
 
 const basemaps = [
   {
+    id: 'CartoDBPositron',
+    name: 'CartoDB Positron',
+    url:
+      'https://cartodb-basemaps-{a-c}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+    attributions:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributionss">CartoDB</a>',
+    maxZoom: 19,
+  },
+  {
+    id: 'CartoDBDarkMatter',
+    name: 'CartoDB Dark Matter',
+    url:
+      'https://cartodb-basemaps-{a-c}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
+    attributions:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributionss">CartoDB</a>',
+    maxZoom: 19,
+  },
+  {
     id: 'OpenStreetMap',
     name: 'OpenStreetMap',
     url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -93,36 +111,21 @@ const basemaps = [
     attributions:
       'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
   },
-  {
-    id: 'CartoDBDarkMatter',
-    name: 'CartoDB Dark Matter',
-    url:
-      'https://cartodb-basemaps-{a-c}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
-    attributions:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributionss">CartoDB</a>',
-    maxZoom: 19,
-  },
-  {
-    id: 'CartoDBPositron',
-    name: 'CartoDB Positron',
-    url:
-      'https://cartodb-basemaps-{a-c}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
-    attributions:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributionss">CartoDB</a>',
-    maxZoom: 19,
-  },
 ];
 
 class BasemapControl extends Control {
   constructor(props) {
     const options = Object.assign(
       {
-        basemaps: basemaps.map((b) => new XYZ({
-          url: b.url,
-          crossOrigin: true,
-          attributions: b.attributions,
-          maxZoom: b.maxZoom,
-        })),
+        basemaps: basemaps.map(
+          (b) =>
+            new XYZ({
+              url: b.url,
+              crossOrigin: true,
+              attributions: b.attributions,
+              maxZoom: b.maxZoom,
+            })
+        ),
         activeIdx: 0,
       },
       props
