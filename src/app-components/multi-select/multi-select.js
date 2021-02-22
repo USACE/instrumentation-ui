@@ -49,6 +49,7 @@ const MultiSelect = ({
     }
   };
 
+  /** Execute callback when new values are selected and check if all were selected to update the UI (if necessary) */
   useEffect(() => {
     if (onChange && typeof onChange === 'function') onChange(currentSelections);
     if (withSelectAllOption) {
@@ -60,6 +61,7 @@ const MultiSelect = ({
     }
   }, [onChange, currentSelections, withSelectAllOption, setIsAllSelected]);
 
+  /** Update dropdown list of item when input component value changes. Only runs if `isFilterable` is true. */
   useEffect(() => {
     if (isFilterable) {
       if (previuosInputValue !== inputValue) {

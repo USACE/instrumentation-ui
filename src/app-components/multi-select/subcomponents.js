@@ -28,11 +28,19 @@ export const FilterInput = forwardRef(({
 }, ref) => {
   const [inputValue, setInputValue] = useState('');
 
+  /** Execute callback function when input value changes */
   useEffect(() => {
     if (onChange && typeof onChange === 'function') {
       onChange(inputValue);
     }
   }, [inputValue, onChange]);
+
+  /** Clear input when dropdown is closed */
+  useEffect(() => {
+    if (isHidden) {
+      setInputValue('');
+    }
+  }, [isHidden]);
 
   return (
     <div className='input-group' ref={ref} style={{ maxWidth: '400px' }}>
