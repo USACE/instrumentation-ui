@@ -18,13 +18,27 @@ const MultiSelect = ({
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef();
-  const inputRef = useRef(null);
+  const inputRef = useRef();
 
   const handleSelectAll = () => {
     if (isAllSelected) {
       setCurrentSelections([]);
     } else {
       setCurrentSelections(options.map(elem => elem.value));
+    }
+  };
+
+  const handleOpen = () => {
+    console.log('opening!');
+    if (dropdownRef && dropdownRef.current) {
+      if (!isDropdownOpen) dropdownRef.current.openDropdown();
+    }
+  };
+
+  const handleClose = () => {
+    console.log('closing!');
+    if (dropdownRef && dropdownRef.current) {
+      if (isDropdownOpen) dropdownRef.current.closeDropdown();
     }
   };
 
@@ -37,7 +51,7 @@ const MultiSelect = ({
         setIsAllSelected(false);
       }
     }
-  }, [onChange, currentSelections, setIsAllSelected]);
+  }, [onChange, currentSelections, withSelectAllOption, setIsAllSelected]);
 
   return (
     <Dropdown.Menu
@@ -45,15 +59,13 @@ const MultiSelect = ({
       customContent={(
         <>
           <DropdownButton
-            handleClick={() => {
-              if (dropdownRef && dropdownRef.current) {
-                if (!isDropdownOpen) dropdownRef.current.toggleDropdown();
-              }
-            }}
+            handleClick={handleOpen}
             text={text}
             isHidden={isFilterable && isDropdownOpen}
           />
           <FilterInput
+            onChange={(val) => console.log('input changed! ', val)}
+            handleClose={handleClose}
             isHidden={!isFilterable || (isFilterable && !isDropdownOpen)}
             ref={inputRef}
           />
