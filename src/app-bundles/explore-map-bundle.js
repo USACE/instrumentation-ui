@@ -133,7 +133,6 @@ const exploreMapBundle = {
     const data = store.selectInstrumentsItemsGeoJSON();
     map.removeLayer(lyr);
     src.clear();
-    console.log(data);
     const features = geoJSON.readFeatures(data, {
       featureProjection: webProjection,
       dataProjection: geoProjection,
@@ -155,7 +154,7 @@ const exploreMapBundle = {
   selectExploreMapKey: (state) => state.exploreMap._mapKey,
 
   selectExploreMapLayer: (state) => state.exploreMap.layer,
-  selectExploreMapLoaded: (state) => state.exploreMap._instrumentsLoaded,
+
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)
       return { actionCreator: 'doExploreMapInitialize' };
