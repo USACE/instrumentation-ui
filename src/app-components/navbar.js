@@ -89,9 +89,11 @@ const Navbar = connect(
       `bg-${theme}`,
     ]);
 
-    const isReportingActive = project && [
-      `/${project.slug}/batch-plotting`
-    ].some(path => pathname.indexOf(path) !== -1);
+    const isReportingActive =
+      project &&
+      [`/${project.slug}/batch-plotting`].some(
+        (path) => pathname.indexOf(path) !== -1
+      );
 
     return (
       <nav className={navClass}>
@@ -127,21 +129,23 @@ const Navbar = connect(
           <ul className='navbar-nav'>
             {project ? (
               <>
+                <NavItem href={`/${project.slug}/explore`}>Explorer</NavItem>
                 <NavItem href={`/${project.slug}/manager`}>
                   Inventory Manager
-                </NavItem>
-                <NavItem href={`/${project.slug}/explore`}>
-                  Explorer
                 </NavItem>
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                 </RoleFilter>
                 <Dropdown.Menu
-                  dropdownClasses={[`nav-item pointer${isReportingActive ? ' active': '' }`]}
+                  dropdownClasses={[
+                    `nav-item pointer${isReportingActive ? ' active' : ''}`,
+                  ]}
                   menuClasses={['dropdown-menu-right']}
                   customContent={<span className='nav-link'>Reporting</span>}
                 >
-                  <Dropdown.Item href={`/${project.slug}/batch-plotting`}>Batch Plotting</Dropdown.Item>
+                  <Dropdown.Item href={`/${project.slug}/batch-plotting`}>
+                    Batch Plotting
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </>
             ) : null}
@@ -150,11 +154,13 @@ const Navbar = connect(
             ) : (
               <NavItem href='/help'>Help</NavItem>
             )}
-            {authIsLoggedIn ? (
-              <ProfileMenu />
-            ) : (
-              <NavItem handler={doAuthLogin}>Login</NavItem>
-            )}
+            <div className='mx-2'>
+              {authIsLoggedIn ? (
+                <ProfileMenu />
+              ) : (
+                <NavItem handler={doAuthLogin}>Login</NavItem>
+              )}
+            </div>
           </ul>
         </div>
       </nav>
