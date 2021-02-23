@@ -1,13 +1,20 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-
+const status = {
+  'abandoned': 4,
+  'active': 1,
+  'destroyed': 5,
+  'inactive': 3,
+  'lost': 2
+};
 export default connect(
   'selectDomainsItemsByGroup',
   ({ domainsItemsByGroup: domains }) => {
     domains.status.forEach((x) => {
       x.title = x.value[0].toUpperCase() + x.value.substr(1).toLowerCase();
+      x.order = status[x.value];
     });
-    domains.status.sort((a, b) => (a.value > b.value ? 1 : -1));
+    domains.status.sort((a, b) => a.order > b.order ? 1 : -1);
     return (
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
         <div className='card' style={{ opacity: 0.8 }}>
