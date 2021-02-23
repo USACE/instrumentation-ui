@@ -54,6 +54,8 @@ const exploreMapBundle = {
           if (payload.hasOwnProperty(initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: false,
+              _instrumentsLoaded: false,
+              _groupsLoaded: false,
             });
           } else {
             return state;
@@ -80,33 +82,33 @@ const exploreMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: false,
-      style: (f, r) => new Style({
-        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
-        fill: new Fill({
-          color: '#ffffff',
-        }),
-        stroke: new Stroke({
-          color: statusColors[f.getProperties()['status']],
-          width: 3,
-        }),
-        text: new Text({
+      style: (f, r) =>
+        new Style({
+          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
           fill: new Fill({
-            color: '#000000',
-          }),
-          font: '10px sans-serif',
-          offsetX: 12,
-          offsetY: -12,
-          padding: [2, 2, 2, 2],
-          stroke: new Stroke({
             color: '#ffffff',
-            width: 2,
           }),
-          text: f.get('name'),
-          textAlign: 'left',
+          stroke: new Stroke({
+            color: statusColors[f.getProperties()['status']],
+            width: 3,
+          }),
+          text: new Text({
+            fill: new Fill({
+              color: '#000000',
+            }),
+            font: '10px sans-serif',
+            offsetX: 12,
+            offsetY: -12,
+            padding: [2, 2, 2, 2],
+            stroke: new Stroke({
+              color: '#ffffff',
+              width: 2,
+            }),
+            text: f.get('name'),
+            textAlign: 'left',
+          }),
         }),
-      }),
     });
-
     dispatch({
       type: 'EXPLOREMAP_INITIALIZE_FINISH',
       payload: {
@@ -131,6 +133,7 @@ const exploreMapBundle = {
     const data = store.selectInstrumentsItemsGeoJSON();
     map.removeLayer(lyr);
     src.clear();
+    console.log(data);
     const features = geoJSON.readFeatures(data, {
       featureProjection: webProjection,
       dataProjection: geoProjection,
@@ -152,7 +155,7 @@ const exploreMapBundle = {
   selectExploreMapKey: (state) => state.exploreMap._mapKey,
 
   selectExploreMapLayer: (state) => state.exploreMap.layer,
-
+  selectExploreMapLoaded: (state) => state.exploreMap._instrumentsLoaded,
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)
       return { actionCreator: 'doExploreMapInitialize' };
