@@ -11,12 +11,10 @@ import useWindowListener from '../../customHooks/useWindowListener';
 
 export default connect(
   'selectExploreMapKey',
-  'selectExploreMapLayer',
   'doMapsInitialize',
   'doMapsShutdown',
   'selectMapsObject',
   ({
-    exploreMapLayer: layer,
     exploreMapKey: mapKey,
     doMapsInitialize,
     doMapsShutdown,
@@ -66,7 +64,7 @@ export default connect(
                 mapsObject={mapsObject}
               />
               <MapTools />
-              <MapLegend layer={layer} />
+              <MapLegend />
             </Panel>
             <Panel>
               <Visualizations />
