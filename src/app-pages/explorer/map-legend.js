@@ -28,8 +28,8 @@ export default connect(
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
         <div className='card' style={{ opacity: 0.8 }}>
           <div className='card-body'>
-            {statuses.map((x, i) => (
-              <p className='mb-2 mt-2' key={i}>
+            {statuses.map(x => (
+              <p className='mb-2 mt-2' key={x.title}>
                 <svg width='15' height='15' className='mr-2'>
                   <circle
                     className={`legend-icon ${x.value}`}
