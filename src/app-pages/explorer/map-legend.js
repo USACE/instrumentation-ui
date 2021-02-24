@@ -20,7 +20,6 @@ export default connect(
           };
         });
         newStatuses.sort((a, b) => (a.order > b.order ? 1 : -1));
-        console.log(newStatuses);
         setStatuses(newStatuses);
       }
     }, [domains, setStatuses]);
