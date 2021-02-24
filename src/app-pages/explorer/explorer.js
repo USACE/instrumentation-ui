@@ -4,6 +4,7 @@ import Panel from './panel';
 import Navbar from '../../app-components/navbar';
 import Map from '../../app-components/classMap';
 import MapTools from './map-tools';
+import MapLegend from './map-legend';
 import Visualizations from './explorer-visualizations';
 import PanelGroup from 'react-panelgroup';
 import useWindowListener from '../../customHooks/useWindowListener';
@@ -22,11 +23,14 @@ export default connect(
     const [landscapeMode, setLandscapeMode] = useState(false);
     const mapRef = useRef();
 
-    const toggleLandscape = useCallback(e => {
-      if (e.keyCode === 86 && e.shiftKey) {
-        setLandscapeMode(!landscapeMode);
-      }
-    }, [setLandscapeMode, landscapeMode]);
+    const toggleLandscape = useCallback(
+      (e) => {
+        if (e.keyCode === 86 && e.shiftKey) {
+          setLandscapeMode(!landscapeMode);
+        }
+      },
+      [setLandscapeMode, landscapeMode]
+    );
 
     useWindowListener('keydown', toggleLandscape);
 
@@ -46,7 +50,9 @@ export default connect(
             borderColor='#ccc'
             spacing={2}
             direction={landscapeMode ? 'column' : 'row'}
-            onUpdate={(_data) => mapRef && mapRef.current && mapRef.current.updateSize()}
+            onUpdate={(_data) =>
+              mapRef && mapRef.current && mapRef.current.updateSize()
+            }
           >
             <Panel>
               <Map
@@ -58,6 +64,7 @@ export default connect(
                 mapsObject={mapsObject}
               />
               <MapTools />
+              <MapLegend />
             </Panel>
             <Panel>
               <Visualizations />
