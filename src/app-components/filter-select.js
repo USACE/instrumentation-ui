@@ -34,7 +34,7 @@ const FilterSelect = ({
       const newSet = items.filter(elem => {
         const val = getDisplay(elem);
 
-        return (val.toLowerCase()).indexOf(inputVal.toLowerCase()) !== -1;
+        return (String(val).toLowerCase()).indexOf(inputVal.toLowerCase()) !== -1;
       });
 
       setFilteredList(newSet);

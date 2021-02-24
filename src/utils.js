@@ -2,6 +2,8 @@ exports.classnames = (opts) => Object.keys(opts)
   .map((key) => !!opts[key] ? key : '')
   .join(' ');
 
+exports.classArray = (arr) => arr.filter(e => e).join(' ');
+
 exports.formatBytes = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) return 'n/a';

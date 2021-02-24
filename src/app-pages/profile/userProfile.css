@@ -1,5 +1,6 @@
 .user-container {
   background-color: #e6e6e6;
+  min-height: 100vh;
 }
 
 .limit-height {

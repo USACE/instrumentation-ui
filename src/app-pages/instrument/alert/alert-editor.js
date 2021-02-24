@@ -5,6 +5,7 @@ import AlertForm from './alert-editor-form';
 import AlertFormModal from '../../manager/alert-form';
 import AlertConfigSettings from '../../manager/alert-config-form';
 import Button from '../../../app-components/button';
+import { classArray } from '../../../utils';
 
 export default connect(
   'selectAlertConfigsByRouteByInstrumentId',
@@ -24,11 +25,11 @@ export default connect(
     };
 
     const alertListItem = (a, i) => {
-      const classes = [
+      const classes = classArray([
         'list-group-item',
         'list-group-item-action',
         a && selectedAlert && a.id === selectedAlert.id ? 'active' : '',
-      ].join(' ');
+      ]);
 
       return (
         <li

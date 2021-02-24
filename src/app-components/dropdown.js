@@ -1,7 +1,8 @@
-import React, { createContext, useRef, useState } from 'react';
+import React, { createContext, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 import useWindowListener from '../customHooks/useWindowListener';
+import { classArray } from '../utils';
 
 const defaultVal = { closeDropdown: () => {}};
 const DropdownContext = createContext(defaultVal);
@@ -31,7 +32,7 @@ const DropdownItem = ({
   </DropdownContext.Consumer>
 );
 
-const Dropdown = ({
+const Dropdown = forwardRef(({
   id = 'dropdown',
   dropdownClasses = [],
   buttonClasses = [],
@@ -42,15 +43,28 @@ const Dropdown = ({
   customContent = null,
   children = null,
   closeWithEscape = true,
-}) => {
+  containerRefs = [],
+  onToggle = () => {},
+  customElementProps = {},
+}, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const dropdownClass = ['dropdown', ...dropdownClasses].join(' ');
-  const buttonClass = ['btn', withToggleArrow && 'dropdown-toggle', ...buttonClasses].join(' ');
-  const menuClass = ['dropdown-menu', isOpen && 'show', ...menuClasses].join(' ');
+  const dropdownClass = classArray(['dropdown', ...dropdownClasses]);
+  const buttonClass = classArray(['btn', withToggleArrow && 'dropdown-toggle', ...buttonClasses]);
+  const menuClass = classArray(['dropdown-menu', isOpen && 'show', ...menuClasses]);
 
-  useOutsideEventHandle('click', menuRef, isOpen ? () => setIsOpen(false) : () => { });
+  useImperativeHandle(ref, () => ({
+    openDropdown: () => setIsOpen(true),
+    closeDropdown: () => setIsOpen(false),
+    toggleDropdown: () => setIsOpen(!isOpen),
+  }));
+
+  useOutsideEventHandle(
+    'click',
+    [menuRef, ...containerRefs],
+    isOpen ? () => setIsOpen(false) : () => { }
+  );
 
   useWindowListener('keyup', (e) => {
     if (closeWithEscape && (e.key === 'Esc' || e.key === 'Escape') && isOpen) {
@@ -58,10 +72,15 @@ const Dropdown = ({
     }
   });
 
+  useEffect(() => {
+    onToggle(isOpen);
+  }, [isOpen, onToggle]);
+
   const commonProps = {
     onClick: () => setIsOpen(!isOpen),
     'aria-haspopup': true,
     'aria-expanded': isOpen,
+    ...customElementProps,
   };
 
   return (
@@ -70,18 +89,18 @@ const Dropdown = ({
         {customContent
           ? React.cloneElement(customContent, commonProps)
           : (
-            <button className={buttonClass} type='button' id={`${id}MenuButton`} title='Toggle Dropdown' {...commonProps}>
+            <button className={buttonClass} id={`${id}MenuButton`} title='Toggle Dropdown' {...commonProps}>
               {buttonContent}
             </button>
           )
         }
-        <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'scroll' }}>
+        <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'auto' }}>
           {children}
         </div>
       </div>
     </DropdownContext.Provider>
   );
-};
+});
 
 const dropdown = {
   Menu: Dropdown,

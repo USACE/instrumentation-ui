@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from './button';
+import { classArray } from '../utils';
 
 export default connect(
   'doUploadQueueCsv',
@@ -26,11 +27,11 @@ export default connect(
       doUploadQueueCsv(inputEl.current.files[0]);
     };
 
-    const iconClassNames = [
+    const iconClassNames = classArray([
       'mdi',
       `${icon}`,
       'pr-2',
-    ].join(' ');
+    ]);
 
     return (
       <>

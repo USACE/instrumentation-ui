@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-import { classnames } from '../utils';
+import { classArray } from '../utils';
 import Dropdown from './dropdown';
 import RoleFilter from './role-filter';
 
@@ -41,32 +41,28 @@ const ProfileMenu = connect(
 const NavItem = connect(
   'selectPathname',
   ({ pathname, href, handler, children, hidden }) => {
-    if (hidden) return null;
+    const cls = classArray([
+      'pointer',
+      'nav-item',
+      pathname.indexOf(href) !== -1 && href !== '/' && 'active',
+    ]);
+
     const handleClick = (e) => {
       if (handler && typeof handler === 'function') handler(e);
     };
-    const cls = classnames({
-      'mx-2': true,
-      pointer: true,
-      'nav-item': true,
-      active: pathname.indexOf(href) !== -1 && href !== '/',
-    });
-    if (href) {
-      return (
+
+    return !hidden ?
+      handler ? (
+        <li className={cls} onClick={handleClick}>
+          <span className='nav-link'>{children}</span>
+        </li>
+      ) : (
         <li className={cls}>
           <a className='nav-link' href={href}>
             {children}
           </a>
         </li>
-      );
-    }
-    if (handler) {
-      return (
-        <li className={cls} onClick={handleClick}>
-          <span className='nav-link'>{children}</span>
-        </li>
-      );
-    }
+      ) : null;
   }
 );
 
@@ -85,18 +81,13 @@ const Navbar = connect(
     projectsByRoute: project,
     pathname,
   }) => {
-    const navClass = classnames({
-      navbar: true,
-      'fixed-top': fixed,
-      'navbar-expand-lg': true,
-      'navbar-dark':
-        theme === 'primary' || theme === 'dark' || theme === 'transparent',
-      'bg-primary': theme === 'primary',
-      'bg-dark': theme === 'dark',
-      'bg-transparent': theme === 'transparent',
-      'navbar-light': theme === 'light',
-      'bg-light': theme === 'light',
-    });
+    const navClass = classArray([
+      'navbar',
+      'navbar-expand-lg',
+      fixed && 'fixed-top',
+      theme === 'light' ? 'navbar-light' : 'navbar-dark',
+      `bg-${theme}`,
+    ]);
 
     const isReportingActive =
       project &&

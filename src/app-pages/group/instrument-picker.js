@@ -2,28 +2,24 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import { ModalFooter, ModalHeader } from '../../app-components/modal';
+import MultiSelect from '../../app-components/multi-select';
 
 export default connect(
-  'doModalClose',
   'doInstrumentGroupInstrumentsSave',
   'selectInstrumentsItemsObject',
   'selectInstrumentGroupInstrumentsItemsObject',
   ({
-    doModalClose,
     doInstrumentGroupInstrumentsSave,
     instrumentsItemsObject: instruments,
     instrumentGroupInstrumentsItemsObject: groupInstruments,
   }) => {
-    const [instrumentSlug, setInstrumentSlug] = useState('');
+    const [instrumentSlugs, setInstrumentSlugs] = useState([]);
 
-    const handleSelect = (e) => {
-      setInstrumentSlug(e.target.value);
-    };
-
-    const handleSave = (e) => {
-      e.preventDefault();
-      const instrument = instruments[instrumentSlug];
-      doInstrumentGroupInstrumentsSave(instrument, doModalClose, true, true);
+    const handleSave = (_e) => {
+      instrumentSlugs.forEach(instrumentSlug => {
+        const instrument = instruments[instrumentSlug];
+        doInstrumentGroupInstrumentsSave(instrument, null, true, true);
+      });
     };
 
     const currentMembers = Object.keys(groupInstruments);
@@ -36,35 +32,25 @@ export default connect(
       });
 
     return (
-      <div className='modal-content'>
-        <form id='instrument-picker' onSubmit={handleSave}>
-          <ModalHeader title='Choose Instrument' />
-          <section className='modal-body'>
-            <div className='form-group'>
-              <label>Type</label>
-              <select
-                className='form-control'
-                value={instrumentSlug}
-                onChange={handleSelect}
-              >
-                {instrumentSlug ? null : (
-                  <option value=''>Select one...</option>
-                )}
-                {options.map((opt, i) => (
-                  <option key={i} value={opt.slug}>
-                    {opt.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </section>
-          <ModalFooter
-            saveIsSubmit
-            customClosingLogic
-            saveText='Save changes'
-            onCancel={() => doModalClose()}
+      <div className='modal-content overflow-visible'>
+        <ModalHeader title='Choose Instruments' />
+        <section className='modal-body overflow-visible'>
+          <MultiSelect
+            text={`Select Instruments (${instrumentSlugs.length} selected)`}
+            isFilterable
+            withSelectAllOption
+            onChange={val => setInstrumentSlugs(val)}
+            options={options.map(opt => ({
+              text: opt.name,
+              value: opt.slug,
+            }))}
           />
-        </form>
+        </section>
+        <ModalFooter
+          showCancelButton
+          saveText='Add'
+          onSave={() => handleSave()}
+        />
       </div>
     );
   }
