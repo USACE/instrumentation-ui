@@ -117,7 +117,7 @@ const MultiSelect = ({
         </>
       ) : (
         <p className='text-dark mx-3 my-1'>
-          {isFilterable ? 'No Items Match Your Search' : 'No Options Provided'}
+          {isFilterable && options.length ? 'No Items Match Your Search' : 'No Options Provided'}
         </p>
       )}
     </Dropdown.Menu>

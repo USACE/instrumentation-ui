@@ -6,7 +6,6 @@ import Navbar from '../../app-components/navbar';
 import Tab from '../../app-components/tab';
 
 import './userProfile.css';
-import MultiSelect from '../../app-components/multi-select';
 
 const urlify = str => str.toLowerCase().split(' ').join('-');
 
@@ -15,16 +14,6 @@ const buildProjectContent = (projects = []) => {
 
   return (
     <div>
-      <MultiSelect
-        isFilterable
-        menuClasses='overflow-menu'
-        options={[
-          { value: 1 },
-          { value: 2 },
-          { value: 3 },
-          { value: 4 },
-        ]}
-      />
       Favorited Project List goes here!
     </div>
   );
