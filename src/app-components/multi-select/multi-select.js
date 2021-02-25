@@ -14,6 +14,7 @@ const MultiSelect = ({
   text = 'Select Options ',
   className = '',
   menuClasses = '',
+  buttonSize = '',
   onChange = () => {},
   options = [],
   withSelectAllOption = false,
@@ -85,6 +86,7 @@ const MultiSelect = ({
             handleClick={handleOpen}
             text={text}
             isHidden={isFilterable && isDropdownOpen}
+            buttonSize={buttonSize}
           />
           <FilterInput
             onChange={val => setInputValue(val)}

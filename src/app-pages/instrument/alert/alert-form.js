@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { ModalFooter, ModalHeader } from '../../app-components/modal';
+import { ModalFooter, ModalHeader } from '../../../app-components/modal';
 
 export default connect(
   'selectInstrumentsByRoute',

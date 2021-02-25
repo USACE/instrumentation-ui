@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import AlertForm from './alert-editor-form';
-import AlertFormModal from '../../manager/alert-form';
-import AlertConfigSettings from '../../manager/alert-config-form';
+import AlertFormModal from './alert-form';
+import AlertConfigSettings from './alert-config-form';
 import Button from '../../../app-components/button';
 import { classArray } from '../../../utils';
 

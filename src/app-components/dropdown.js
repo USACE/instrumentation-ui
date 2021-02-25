@@ -7,7 +7,7 @@ import { classArray } from '../utils';
 const defaultVal = { closeDropdown: () => {}};
 const DropdownContext = createContext(defaultVal);
 
-const DropdownItem = ({
+const Item = ({
   onClick = () => { },
   href = null,
   className = '',
@@ -32,7 +32,7 @@ const DropdownItem = ({
   </DropdownContext.Consumer>
 );
 
-const Dropdown = forwardRef(({
+const Menu = forwardRef(({
   id = 'dropdown',
   dropdownClasses = [],
   buttonClasses = [],
@@ -102,9 +102,9 @@ const Dropdown = forwardRef(({
   );
 });
 
-const dropdown = {
-  Menu: Dropdown,
-  Item: DropdownItem,
+const Dropdown = {
+  Menu,
+  Item,
 };
 
-export default dropdown;
+export default Dropdown;

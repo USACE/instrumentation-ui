@@ -15,10 +15,12 @@ import SearchBar from '../home/search-bar';
 import Tab from '../../app-components/tab';
 
 const filterItems = (filter, items) => {
-  const filtered = items.filter((item) => Object.values(item)
-    .join(' ')
-    .toUpperCase()
-    .indexOf(filter.toUpperCase()) !== -1);
+  const filtered = items.filter(item => (
+    Object.values(item)
+      .join(' ')
+      .toUpperCase()
+      .indexOf(filter.toUpperCase()) !== -1
+  ));
 
   return filtered;
 };
