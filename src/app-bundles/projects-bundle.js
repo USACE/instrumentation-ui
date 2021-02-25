@@ -33,6 +33,8 @@ export default createRestBundle({
           subtitle: 'Instrumentation Browser',
           href: `/${p.slug}/explore`,
           content: '',
+          instrument_count: p.instrument_count,
+          instrument_group_count: p.instrument_group_count
         }))
     ),
   },
