@@ -27,8 +27,9 @@ export default connect(
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
         <div className='card' style={{ opacity: 0.8 }}>
           <div className='card-body'>
+            <h6><strong>Instrument Status</strong></h6>
             {statuses.map(x => (
-              <p className='mb-2 mt-2' key={x.title}>
+              <p className='mb-2 ml-3' key={x.title}>
                 <svg width='15' height='15' className='mr-2'>
                   <circle
                     className={`legend-icon ${x.value}`}
