@@ -1,1 +1,2 @@
-export { default } from './pagination.js';
+export { default } from './pagination';
+export { handlePageChange } from './helper';

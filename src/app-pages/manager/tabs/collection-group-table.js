@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import CollectionGroupForm from '../forms/collection-group-form';
 import RoleFilter from '../../../app-components/role-filter';
-import Pagination from '../../../app-components/pagination';
+import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import Button from '../../../app-components/button';
 
 const Table = connect(
@@ -16,13 +16,6 @@ const Table = connect(
   }) => {
     const [upperLimit, setUpperLimit] = useState(collectionGroups.length);
     const [lowerLimit, setLowerLimit] = useState(0);
-
-    const handlePageChange = (newPage, pageSize) => {
-      const lowerLimit = newPage * pageSize;
-      const upperLimit = (newPage + 1) * pageSize;
-      setUpperLimit(upperLimit);
-      setLowerLimit(lowerLimit);
-    };
 
     return (
       <>
@@ -63,7 +56,7 @@ const Table = connect(
         </table>
         <Pagination
           itemCount={collectionGroups.length}
-          handlePageChange={handlePageChange}
+          handlePageChange={(newPage, pageSize) => handlePageChange({ newPage, pageSize, setUpperLimit, setLowerLimit })}
         />
       </>
     );

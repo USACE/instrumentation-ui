@@ -3,8 +3,8 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import InstrumentGroupForm from '../forms/instrument-group-form';
+import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import RoleFilter from '../../../app-components/role-filter';
-import Pagination from '../../../app-components/pagination';
 
 const Table = connect(
   'doModalOpen',
@@ -16,13 +16,6 @@ const Table = connect(
   }) => {
     const [upperLimit, setUpperLimit] = useState(groups.length);
     const [lowerLimit, setLowerLimit] = useState(0);
-
-    const handlePageChange = (newPage, pageSize) => {
-      const lowerLimit = newPage * pageSize;
-      const upperLimit = (newPage + 1) * pageSize;
-      setUpperLimit(upperLimit);
-      setLowerLimit(lowerLimit);
-    };
 
     return (
       <>
@@ -65,7 +58,7 @@ const Table = connect(
         </table>
         <Pagination
           itemCount={groups.length}
-          handlePageChange={handlePageChange}
+          handlePageChange={(newPage, pageSize) => handlePageChange({ newPage, pageSize, setUpperLimit, setLowerLimit })}
         />
       </>
     );

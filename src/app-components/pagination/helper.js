@@ -3,6 +3,18 @@ import React from 'react';
 import Page from './page';
 import Ellipsis from './ellipsis';
 
+export const handlePageChange = ({
+  newPage,
+  pageSize,
+  setUpperLimit,
+  setLowerLimit,
+}) => {
+  const lowerLimit = newPage * pageSize;
+  const upperLimit = (newPage + 1) * pageSize;
+  setUpperLimit(upperLimit);
+  setLowerLimit(lowerLimit);
+};
+
 export const createPage = (currentPage, setPage, number) => (
   <Page
     key={`page-${number}`}
