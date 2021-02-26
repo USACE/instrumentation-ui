@@ -31,8 +31,15 @@ const Table = connect(
     const [statusFilter, setStatusFilter] = useState(initialStatusOptions);
     const [typeFilter, setTypeFilter] = useState(initialTypeOptions);
     const [filteredInstruments, setFilteredInstruments] = useState(instruments);
-    const [upperLimit, setUpperLimit] = useState(0);
+    const [upperLimit, setUpperLimit] = useState(filteredInstruments.length);
     const [lowerLimit, setLowerLimit] = useState(0);
+
+    const handlePageChange = (newPage, pageSize) => {
+      const lowerLimit = newPage * pageSize;
+      const upperLimit = (newPage + 1) * pageSize;
+      setUpperLimit(upperLimit);
+      setLowerLimit(lowerLimit);
+    };
 
     // If a filter changes, filter the current instruments based on user selection
     useEffect(() => {
@@ -48,13 +55,6 @@ const Table = connect(
     useEffect(() => {
       setFilteredInstruments(instruments);
     }, [instruments, setFilteredInstruments]);
-
-    const handlePageChange = (newPage, pageSize) => {
-      const lowerLimit = newPage * pageSize;
-      const upperLimit = (newPage + 1) * pageSize;
-      setUpperLimit(upperLimit);
-      setLowerLimit(lowerLimit);
-    };
 
     return (
       <>
@@ -134,7 +134,7 @@ const Table = connect(
         </table>
         <Pagination
           itemCount={filteredInstruments.length}
-          handlePageChange={(newPage, pageSize) => handlePageChange(newPage, pageSize)}
+          handlePageChange={handlePageChange}
         />
       </>
     );

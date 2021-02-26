@@ -10,6 +10,8 @@ const Pagination = ({
   handlePageChange = () => {},
   defaultItemsPerPage = '10',
 }) => {
+  if (itemCount < 10) return null;
+
   const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(Math.ceil(itemCount / itemsPerPage));

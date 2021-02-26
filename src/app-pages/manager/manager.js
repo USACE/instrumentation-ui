@@ -9,7 +9,6 @@ import InstrumentGroupTable from './tabs/instrument-group-table';
 import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Navbar from '../../app-components/navbar';
-import Pager from '../../app-components/pager';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
 import Tab from '../../app-components/tab';
@@ -82,12 +81,7 @@ export default connect(
       content: (
         <>
           {commonContent()}
-          <Pager
-            itemsKey='groups'
-            items={data[form]}
-          >
-            <InstrumentGroupTable />
-          </Pager>
+          <InstrumentGroupTable groups={data[form]} />
         </>
       ),
     }, {
@@ -103,12 +97,7 @@ export default connect(
       content: (
         <>
           {commonContent()}
-          <Pager
-            itemsKey='collectionGroups'
-            items={data[form]}
-          >
-            <CollectionGroupTable />
-          </Pager>
+          <CollectionGroupTable collectionGroups={data[form]} />
         </>
       )
     }];

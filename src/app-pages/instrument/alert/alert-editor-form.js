@@ -62,9 +62,11 @@ export default connect(
             }}
           />
         </div>
-        <div className='text-right mt-5'>
-          <small>{`Last Updated at ${alert.update_date}`}</small>
-        </div>
+        {alert.update_date && (
+          <div className='text-right mt-3'>
+            <small>{`Last Updated at ${alert.update_date}`}</small>
+          </div>
+        )}
       </div>
     );
   }
