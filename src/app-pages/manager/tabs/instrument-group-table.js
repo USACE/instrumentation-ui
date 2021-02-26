@@ -48,9 +48,10 @@ const Table = connect(
                     <td style={{ width: '200px' }}>
                       <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                         <Button
-                          variant='info'
-                          size='small'
                           isOutline
+                          size='small'
+                          variant='info'
+                          title='Edit'
                           handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
                           icon={<i className='mdi mdi-pencil' />}
                         />

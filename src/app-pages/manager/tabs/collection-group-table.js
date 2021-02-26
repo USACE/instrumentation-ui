@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import CollectionGroupForm from '../forms/collection-group-form';
 import RoleFilter from '../../../app-components/role-filter';
 import Pagination from '../../../app-components/pagination';
+import Button from '../../../app-components/button';
 
 const Table = connect(
   'doModalOpen',
@@ -44,14 +45,14 @@ const Table = connect(
                     </td>
                     <td style={{ width: '200px' }}>
                       <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                        <button
-                          onClick={() => {
-                            doModalOpen(CollectionGroupForm, { item: g });
-                          }}
-                          className='btn btn-sm btn-outline-info'
-                        >
-                          <i className='mdi mdi-pencil'></i>
-                        </button>
+                        <Button
+                          isOutline
+                          size='small'
+                          variant='info'
+                          title='Edit'
+                          handleClick={() => doModalOpen(CollectionGroupForm, { item: g })}
+                          icon={<i className='mdi mdi-pencil' />}
+                        />
                       </RoleFilter>
                     </td>
                   </tr>
