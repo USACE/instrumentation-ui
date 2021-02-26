@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../app-components/button';
-import InstrumentGroupForm from './instrument-group-form';
-import RoleFilter from '../../app-components/role-filter';
+import Button from '../../../app-components/button';
+import InstrumentGroupForm from '../forms/instrument-group-form';
+import RoleFilter from '../../../app-components/role-filter';
 
 const Table = connect(
   'doModalOpen',
   'selectProjectsByRoute',
-  ({ projectsByRoute: project, doModalOpen, groups }) => (
+  ({
+    doModalOpen,
+    projectsByRoute: project,
+    groups,
+  }) => (
     <table className='table' style={{ width: '100%' }}>
       <thead>
         <tr>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import CollectionGroupTable from './collection-group-table';
-import CollectionGroupForm from './collection-group-form';
-import InstrumentForm from './instrument-form';
-import InstrumentGroupForm from './instrument-group-form';
-import InstrumentGroupTable from './instrument-group-table';
-import InstrumentTable from './instrument-table';
+import CollectionGroupTable from './tabs/collection-group-table';
+import CollectionGroupForm from './forms/collection-group-form';
+import InstrumentForm from './forms/instrument-form';
+import InstrumentGroupForm from './forms/instrument-group-form';
+import InstrumentGroupTable from './tabs/instrument-group-table';
+import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Navbar from '../../app-components/navbar';
 import Pager from '../../app-components/pager';
@@ -95,12 +95,7 @@ export default connect(
       content: (
         <>
           {commonContent()}
-          <Pager
-            itemsKey='instruments'
-            items={data[form]}
-          >
-            <InstrumentTable />
-          </Pager>
+          <InstrumentTable instruments={data[form]} />
         </>
       ),
     }, {

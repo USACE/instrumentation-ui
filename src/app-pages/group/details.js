@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
-import InstrumentForm from '../manager/instrument-form';
-import InstrumentGroupForm from '../manager/instrument-group-form';
+import InstrumentForm from '../manager/forms/instrument-form';
+import InstrumentGroupForm from '../manager/forms/instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
-import InstrumentTable from '../manager/instrument-table';
+import InstrumentTable from '../manager/tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import Navbar from '../../app-components/navbar';

@@ -5,7 +5,7 @@ import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
-import InstrumentForm from '../manager/instrument-form';
+import InstrumentForm from '../manager/forms/instrument-form';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import Navbar from '../../app-components/navbar';
