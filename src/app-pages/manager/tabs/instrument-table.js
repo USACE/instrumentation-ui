@@ -7,7 +7,7 @@ import MultiSelect from '../../../app-components/multi-select/multi-select';
 import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import RoleFilter from '../../../app-components/role-filter';
 
-const titlize = str => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+const titlize = str => str ? str.charAt(0).toUpperCase() + str.slice(1) : 'N/A';
 
 const Table = connect(
   'doModalOpen',
@@ -19,10 +19,7 @@ const Table = connect(
     tools,
   }) => {
     /** -- START -- Build Dynamic Dropdown options from current instruments (only show options that are available) */
-    const statusOptions = [
-      ...new Set(instruments.map(instrument => titlize(instrument.status)))
-    ] .filter(e => e)
-      .map(status => ({ value: status }));
+    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status }));
     const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type }));
     const initialStatusOptions = statusOptions.map(o => o.value);
     const initialTypeOptions = typeOptions.map(o => o.value);
