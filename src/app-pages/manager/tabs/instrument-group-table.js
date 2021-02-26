@@ -14,7 +14,7 @@ const Table = connect(
     projectsByRoute: project,
     groups,
   }) => {
-    const [upperLimit, setUpperLimit] = useState(groups.length);
+    const [upperLimit, setUpperLimit] = useState(10);
     const [lowerLimit, setLowerLimit] = useState(0);
 
     return (
