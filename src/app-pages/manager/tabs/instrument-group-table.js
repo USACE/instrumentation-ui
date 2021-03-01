@@ -31,7 +31,7 @@ const Table = connect(
             {groups.map((group, i) => {
               if (i >= lowerLimit && i < upperLimit) {
                 return (
-                  <tr key={i}>
+                  <tr key={group.id}>
                     <td style={{ width: '15%' }}>
                       <a href={`/${project.slug}/groups/${group.slug}`}>
                         {group.name}
