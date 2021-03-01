@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { roundToNearestMinutes } from 'date-fns';
 
 import Button from '../../app-components/button';
-import collectionGroupForm from '../manager/collection-group-form';
+import collectionGroupForm from '../manager/forms/collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import LoginMessage from '../../app-components/login-message';
 import Navbar from '../../app-components/navbar';

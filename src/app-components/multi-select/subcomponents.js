@@ -6,9 +6,11 @@ export const DropdownButton = ({
   isHidden = false,
   variant = 'info',
   handleClick = () => {},
+  buttonSize = '',
   text,
 }) => (
   <Button
+    size={buttonSize}
     style={{
       display: isHidden ? 'none' : 'initial',
     }}

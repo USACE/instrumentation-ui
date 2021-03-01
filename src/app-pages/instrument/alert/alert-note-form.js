@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 
-import { ModalFooter, ModalHeader } from '../../app-components/modal';
+import { ModalFooter, ModalHeader } from '../../../app-components/modal';
 
 const AlertNoteForm = ({ item }) => {
   const { name, body, create_date, note = '' } = item;

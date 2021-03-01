@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { formatDistance } from 'date-fns';
 
-import AlertNoteForm from '../../manager/alert-note-form';
+import AlertNoteForm from './alert-note-form';
 import Button from '../../../app-components/button';
 
 const AlertEntry = connect(
