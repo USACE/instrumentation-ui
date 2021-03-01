@@ -87,7 +87,7 @@ const Table = connect(
             {filteredInstruments.map((instrument, i) => {
               if (i >= lowerLimit && i < upperLimit) {
                 return (
-                  <tr key={i}>
+                  <tr key={instrument.id}>
                     {instrument.status ? (
                       <td title={`Instrument is ${instrument.status}`}>
                         <i className={`mdi mdi-circle status-icon ${instrument.status} pr-2`} />
