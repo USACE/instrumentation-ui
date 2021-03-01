@@ -28,7 +28,7 @@ const Table = connect(
     const [statusFilter, setStatusFilter] = useState(initialStatusOptions);
     const [typeFilter, setTypeFilter] = useState(initialTypeOptions);
     const [filteredInstruments, setFilteredInstruments] = useState(instruments);
-    const [upperLimit, setUpperLimit] = useState(filteredInstruments.length);
+    const [upperLimit, setUpperLimit] = useState(10);
     const [lowerLimit, setLowerLimit] = useState(0);
 
     // If a filter changes, filter the current instruments based on user selection
