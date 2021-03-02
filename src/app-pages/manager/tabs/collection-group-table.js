@@ -30,7 +30,7 @@ const Table = connect(
             {collectionGroups.map((g, i) => {
               if (i >= lowerLimit && i < upperLimit) {
                 return (
-                  <tr key={i}>
+                  <tr key={g.id}>
                     <td className='w-75'>
                       <a href={`/${project.slug}/collection-groups/${g.slug}`}>
                         {g.name}
