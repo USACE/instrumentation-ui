@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'redux-bundler-react';
 
 import BatchPlotChart from './batch-plot-chart';
 import ChartSettings from './chart-settings';
@@ -7,7 +8,6 @@ import Navbar from '../../../app-components/navbar';
 import PlottingContext from './plotting-context';
 
 import '../reporting.scss';
-import { connect } from 'redux-bundler-react';
 
 const BatchPlotting = connect(
   'doMapsInitialize',
