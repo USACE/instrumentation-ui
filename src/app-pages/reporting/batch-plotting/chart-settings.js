@@ -7,6 +7,7 @@ import PlottingContext from './plotting-context';
 import Select from '../../../app-components/select';
 
 import '../reporting.scss';
+import DeleteButton from '../../../app-components/delete-confirm';
 
 const formatOptions = timeseries => (
   timeseries.map(ts => ({
@@ -32,10 +33,12 @@ const configNameExists = (newConfigName = '', currentConfigurations = []) => {
 const ChartSettings = connect(
   'selectInstrumentTimeseriesItemsByRoute',
   'selectBatchPlotConfigurationsItems',
+  'selectProjectsIdByRoute',
   'doBatchPlotConfigurationsSave',
   ({
     instrumentTimeseriesItemsByRoute: instrumentTimeseries,
     batchPlotConfigurationsItems,
+    projectsIdByRoute: project,
     doBatchPlotConfigurationsSave,
   }) => {
     const { selectedConfiguration, setSelectedConfiguration } = useContext(PlottingContext);
@@ -61,7 +64,8 @@ const ChartSettings = connect(
         doBatchPlotConfigurationsSave({
           ...isEditMode && { id: selectedConfiguration },
           name: newConfigName.trim(),
-          timeseries_id: selectedTimeseries
+          timeseries_id: selectedTimeseries,
+          project_id: project.projectId,
         });
         setIsPanelOpen(false);
       }
@@ -122,15 +126,15 @@ const ChartSettings = connect(
                 icon={<i className='mdi mdi-pencil' />}
                 handleClick={() => handleEditClick()}
               />
-              <Button
+              <DeleteButton
                 isDisabled={isPanelOpen}
                 isOutline
                 size='small'
-                variant='danger'
                 className='mr-2'
                 title='Delete Selected Configuration'
-                icon={<i className='mdi mdi-trash-can' />}
-                handleClick={() => handleDeleteClick()}
+                deleteText=''
+                deleteIcon={<i className='mdi mdi-trash-can' />}
+                handleDelete={() => handleDeleteClick()}
               />
             </>
           )}

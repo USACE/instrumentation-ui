@@ -49,11 +49,14 @@ const BatchPlotting = connect(
                   <div className='card-header'>
                     <strong>Cross Section</strong>
                   </div>
-                  <p>Cross section</p>
+                  <div className='card-body'>
+                    <p>Cross section</p>
+
+                  </div>
                 </div>
               </div>
             </div>
-            <div className='card w-100 mt-4'>
+            <div className='card w-100 my-4'>
               <div className='card-header'>
                 <strong>Plot</strong>
               </div>

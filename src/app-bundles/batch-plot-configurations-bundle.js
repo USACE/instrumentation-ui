@@ -11,6 +11,7 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/plot_configurations/:item.id',
   postTemplate: '/projects/:projectId/plot_configurations',
   deleteTemplate: '/projects/:projectId/plot_configurations/:item.id',
-  fetchActions: ['URL_UPDATED'],
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'PROJECTS_FETCH_FINISHED'],
+  forceFetchActions: [],
   urlParamSelectors: ['selectProjectsIdByRoute'],
 });
