@@ -79,6 +79,7 @@ const BatchPlotChart = connect(
           yaxis: { title: 'Measurement' },
           autosize: true,
           dragmode: 'pan',
+          height: 600,
         }}
         config={{
           responsive: true,

@@ -31,17 +31,26 @@ const BatchPlotting = connect(
               </div>
               <ChartSettings />
             </div>
-            <div className='card w-50 mt-4' style={{ minHeight: '400px' }}>
-              <div className='card-header'>
-                <strong>Map</strong>
+            <div className='row mt-4'>
+              <div className='col'>
+                <div className='card' style={{ minHeight: '400px' }}>
+                  <div className='card-body'>
+                    <Map
+                      mapKey='batchPlotMap'
+                      doMapsInitialize={doMapsInitialize}
+                      doMapsShutdown={doMapsShutdown}
+                      mapsObject={mapsObject}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className='card-body'>
-                <Map
-                  mapKey='batchPlotMap'
-                  doMapsInitialize={doMapsInitialize}
-                  doMapsShutdown={doMapsShutdown}
-                  mapsObject={mapsObject}
-                />
+              <div className='col'>
+                <div className='card h-100'>
+                  <div className='card-header'>
+                    <strong>Cross Section</strong>
+                  </div>
+                  <p>Cross section</p>
+                </div>
               </div>
             </div>
             <div className='card w-100 mt-4'>
