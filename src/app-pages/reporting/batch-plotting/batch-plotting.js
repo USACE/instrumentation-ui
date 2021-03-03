@@ -27,7 +27,7 @@ const BatchPlotting = connect(
           <PlottingContext.Provider value={{ selectedConfiguration, setSelectedConfiguration }}>
             <div className='card w-100'>
               <div className='card-header'>
-                <strong>Plot Configuration</strong>
+                <strong>Plot Data Configuration</strong>
               </div>
               <ChartSettings />
             </div>
@@ -50,8 +50,7 @@ const BatchPlotting = connect(
                     <strong>Cross Section</strong>
                   </div>
                   <div className='card-body'>
-                    <p>Cross section</p>
-
+                    <p>Cross section - Currently Under Construction</p>
                   </div>
                 </div>
               </div>

@@ -75,8 +75,16 @@ const BatchPlotChart = connect(
       <Chart
         data={chartData}
         layout={{
-          xaxis: { title: 'Date' },
-          yaxis: { title: 'Measurement' },
+          xaxis: {
+            title: 'Date',
+            showline: true,
+            mirror: true,
+          },
+          yaxis: {
+            title: 'Measurement',
+            showline: true,
+            mirror: true,
+          },
           autosize: true,
           dragmode: 'pan',
           height: 600,
