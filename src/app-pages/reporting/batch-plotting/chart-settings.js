@@ -35,11 +35,13 @@ const ChartSettings = connect(
   'selectBatchPlotConfigurationsItems',
   'selectProjectsIdByRoute',
   'doBatchPlotConfigurationsSave',
+  'doBatchPlotConfigurationsDelete',
   ({
     instrumentTimeseriesItemsByRoute: instrumentTimeseries,
     batchPlotConfigurationsItems,
     projectsIdByRoute: project,
     doBatchPlotConfigurationsSave,
+    doBatchPlotConfigurationsDelete,
   }) => {
     const { selectedConfiguration, setSelectedConfiguration } = useContext(PlottingContext);
     const [selectedTimeseries, setSelectedTimeseries] = useState([]);
@@ -51,14 +53,13 @@ const ChartSettings = connect(
 
     const configurations = batchPlotConfigurationsItems.map(config => ({
       text: config.name,
-      // @TODO - set to `config.id`
-      value: config.name,
+      value: config.id,
     }));
 
     const handleSave = () => {
       if (!newConfigName || !newConfigName.trim()) {
         setInputError('Please provide a configuration name.');
-      } else if (configNameExists(newConfigName, configurations)) {
+      } else if (configNameExists(newConfigName, configurations) && !isEditMode) {
         setInputError('Configuration name already exists. Please use a different name.');
       } else {
         doBatchPlotConfigurationsSave({
@@ -72,7 +73,7 @@ const ChartSettings = connect(
     };
 
     const handleEditClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
+      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === selectedConfiguration);
 
       if (currentItem) {
         setIsEditMode(true);
@@ -83,10 +84,10 @@ const ChartSettings = connect(
     };
 
     const handleDeleteClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
+      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === selectedConfiguration);
 
       if (currentItem) {
-        console.log('delete: ', currentItem);
+        doBatchPlotConfigurationsDelete(currentItem);
       }
     };
 

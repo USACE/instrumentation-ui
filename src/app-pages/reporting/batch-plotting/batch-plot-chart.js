@@ -56,7 +56,7 @@ const BatchPlotChart = connect(
     };
 
     useEffect(() => {
-      const config = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
+      const config = batchPlotConfigurationsItems.find(elem => elem.id === selectedConfiguration);
       setTimeseriesId((config || {}).timeseries_id || []);
     }, [selectedConfiguration, batchPlotConfigurationsItems, setTimeseriesId]);
 
