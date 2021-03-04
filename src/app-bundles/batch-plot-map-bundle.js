@@ -57,6 +57,7 @@ const batchPlotMapBundle = {
     dispatch({
       type: 'BATCHPLOTMAP_INITIALIZE_START',
       payload: {
+        layer: new Layer({}),
         _shouldInitialize: false,
       },
     });
