@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import BatchPlotChart from './batch-plot-chart';
@@ -45,7 +45,10 @@ const BatchPlotting = connect(
                 <strong>Cross Section</strong>
               </div>
               <div className='card-body'>
-                <p>Cross section - Currently Under Construction</p>
+                <div className='text-center text-muted pt-4'>
+                  <i className='mdi mdi-account-hard-hat' style={{ fontSize: '64px' }} />
+                  <h5>Currently Under Construction</h5>
+                </div>
               </div>
             </div>
           </div>

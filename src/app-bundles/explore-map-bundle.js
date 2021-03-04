@@ -96,7 +96,7 @@ const exploreMapBundle = {
             fill: new Fill({
               color: '#000000',
             }),
-            font: '10px sans-serif',
+            font: '16px sans-serif',
             offsetX: 12,
             offsetY: -12,
             padding: [2, 2, 2, 2],
