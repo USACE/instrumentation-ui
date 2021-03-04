@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Dropdown from '../dropdown';
+import Icon from '../icon';
 
 export const reduceSelections = (selection, currentSelections) => {
   const final = [...currentSelections];
@@ -12,12 +13,12 @@ export const reduceSelections = (selection, currentSelections) => {
 };
 
 export const generateOption = (option, handleClick, optionIsSelected, i) => {
-  const icon = optionIsSelected ? 'mdi-check-box-outline' : 'mdi-checkbox-blank-outline';
+  const icon = optionIsSelected ? 'check-box-outline' : 'checkbox-blank-outline';
 
   return (
     <Dropdown.Item key={i} onClick={(_e) => handleClick()}>
       <span className={optionIsSelected ? 'text-info' : 'text-dark'}>
-        <i className={`mdi ${icon}`}/>&nbsp;
+        <Icon icon={icon} />&nbsp;
         {option.text || option.value}
       </span>
     </Dropdown.Item>

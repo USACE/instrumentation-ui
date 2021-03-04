@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import BatchPlotChart from './batch-plot-chart';
 import ChartSettings from './chart-settings';
+import Icon from '../../../app-components/icon';
 import Map from '../../../app-components/classMap';
 import Navbar from '../../../app-components/navbar';
 
@@ -46,7 +47,7 @@ const BatchPlotting = connect(
               </div>
               <div className='card-body'>
                 <div className='text-center text-muted pt-4'>
-                  <i className='mdi mdi-account-hard-hat' style={{ fontSize: '64px' }} />
+                  <Icon icon='account-hard-hat' style={{ fontSize: '64px' }} />
                   <h5>Currently Under Construction</h5>
                 </div>
               </div>

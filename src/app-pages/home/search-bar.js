@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Icon from '../../app-components/icon';
+
 const Searchbar = ({ value, placeholder, onChange }) => (
   <div className='form-group'>
     <div className='input-group'>
@@ -16,7 +18,7 @@ const Searchbar = ({ value, placeholder, onChange }) => (
           className='input-group-text pointer'
           onClick={() => onChange('')}
         >
-          <i className='mdi mdi-close'></i>
+          <Icon icon='close' />
         </span>
       </div>
     </div>

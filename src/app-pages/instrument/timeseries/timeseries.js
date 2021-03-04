@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { AgGridReact } from 'ag-grid-react';
 
 import Button from '../../../app-components/button';
+import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
@@ -80,7 +81,7 @@ export default connect(
                 className='mb-2'
                 handleClick={() => doModalOpen(TimeseriesForm)}
                 text='New Timeseries'
-                icon={<i className='mdi mdi-plus mr-1' />}
+                icon={<Icon icon='plus' className='mr-1' />}
               />
             </RoleFilter>
             <ul className='list-group limit-item-list'>
@@ -106,7 +107,7 @@ export default connect(
                 href={`/${project.slug}/upload?type=Timeseries Measurement`}
                 text='Upload to this timeseries'
                 title='Upload'
-                icon={<i className='mdi mdi-upload mr-1' />}
+                icon={<Icon icon='upload' className='mr-1' />}
               />
             </div>
             <div

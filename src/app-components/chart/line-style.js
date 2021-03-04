@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SketchPicker } from 'react-color';
 
+import Icon from '../icon';
+
 export default ({ style, onChange }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [color, setColor] = useState(style.line.color);
@@ -27,7 +29,7 @@ export default ({ style, onChange }) => {
         }}
       >
         <span style={{ position: 'relative', top: '-3px' }}>
-          <i className='mdi mdi-chevron-up'></i>
+          <Icon icon='chevron-up' />
         </span>
       </div>
       <div
@@ -39,7 +41,7 @@ export default ({ style, onChange }) => {
         }}
       >
         <span style={{ position: 'relative', top: '-5px' }}>
-          <i className='mdi mdi-chevron-down'></i>
+          <Icon icon='chevron-down' />
         </span>
       </div>
       <div

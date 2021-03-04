@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import AboutButton from './about-button';
 import Button from '../../app-components/button';
+import Icon from '../../app-components/icon';
 
 export default connect(
   'doExploreMapInteractionsReset',
@@ -30,7 +31,7 @@ export default connect(
           className={`${active ? 'active' : ''} mr-2`}
           title='Select by box'
           handleClick={() => setActive(!active)}
-          icon={<i className='ms ms-select-box' />}
+          icon={<Icon icon='selection-drag' />}
         />
         <AboutButton />
       </div>

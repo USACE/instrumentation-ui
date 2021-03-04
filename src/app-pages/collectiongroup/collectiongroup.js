@@ -5,6 +5,7 @@ import { roundToNearestMinutes } from 'date-fns';
 import Button from '../../app-components/button';
 import collectionGroupForm from '../manager/forms/collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
+import Icon from '../../app-components/icon';
 import LoginMessage from '../../app-components/login-message';
 import Navbar from '../../app-components/navbar';
 import Notifications from '../../app-components/notifications';
@@ -117,11 +118,10 @@ export default connect(
                       }}
                     >
                       <div className='d-flex flex-row align-items-center'>
-                        <i
-                          onClick={(e) => setIsShown(!isShown)}
-                          className={`mdi mdi-24px mr-2 ${
-                            isShown ? 'mdi-chevron-up' : 'mdi-chevron-down'
-                          }`}
+                        <Icon
+                          icon={isShown ? 'chevron-up' : 'chevron-down'}
+                          className='mdi-24px mr-2'
+                          onClick={(_e) => setIsShown(!isShown)}
                         />
                         <div>
                           <strong className='h5 p-0 m-0'>Timeseries</strong>
@@ -134,7 +134,7 @@ export default connect(
                                 e.stopPropagation();
                               }}
                               text='Add'
-                              icon={<i className='mdi mdi-plus' />}
+                              icon={<Icon icon='plus' />}
                             />
                           </RoleFilter>
                         </div>

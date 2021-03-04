@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
-import { classnames } from '../../../utils';
+
+import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
+import { classnames } from '../../../utils';
 
 export default connect(
   'selectProjectsByRoute',
@@ -29,7 +31,7 @@ export default connect(
               doModalOpen(TimeseriesForm, { item: item });
             }}
           >
-            <i className='mdi mdi-pencil'></i>
+            <Icon icon='pencil' />
           </button>
         </RoleFilter>
         <div>{item.name}</div>

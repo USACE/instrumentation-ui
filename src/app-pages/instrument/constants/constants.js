@@ -7,6 +7,7 @@ import Button from '../../../app-components/button';
 import ConstantListItem from './constant-list-item';
 import ConstantForm from './constant-form';
 import DateEditor from './date-editor';
+import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -99,7 +100,7 @@ export default connect(
                 isOutline
                 text='New Constant'
                 handleClick={() => doModalOpen(ConstantForm)}
-                icon={<i className='mdi mdi-plus mr-1' />}
+                icon={<Icon icon='plus' className='mr-1' />}
               />
             </RoleFilter>
             <ul className='list-group'>
@@ -126,7 +127,7 @@ export default connect(
                   isDisabled={!activeConstant}
                   text='Add Value'
                   handleClick={addNew}
-                  icon={<i className='mdi mdi-plus mr-1' />}
+                  icon={<Icon icon='plus' className='mr-1' />}
                 />
               </RoleFilter>
             </div>

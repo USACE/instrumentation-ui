@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from './button';
-import { classArray } from '../utils';
+import Icon from './icon';
 
 export default connect(
   'doUploadQueueCsv',
@@ -11,7 +11,7 @@ export default connect(
     doUploadQueueCsv,
     doUploadSettingsClear,
     text = 'Choose File',
-    icon = 'mdi-cloud-upload',
+    icon = 'cloud-upload',
     buttonClass = '',
     clearSettings = true,
   }) => {
@@ -27,12 +27,6 @@ export default connect(
       doUploadQueueCsv(inputEl.current.files[0]);
     };
 
-    const iconClassNames = classArray([
-      'mdi',
-      `${icon}`,
-      'pr-2',
-    ]);
-
     return (
       <>
         <Button
@@ -41,7 +35,7 @@ export default connect(
           variant='success'
           size='small'
           text={text}
-          icon={<i className={iconClassNames} />}
+          icon={<Icon icon={icon} className='pr-2' />}
         />
         <input
           accept='.csv'

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
+import Icon from '../../../app-components/icon';
 import InstrumentForm from '../forms/instrument-form';
 import MultiSelect from '../../../app-components/multi-select/multi-select';
 import Pagination, { handlePageChange } from '../../../app-components/pagination';
@@ -59,7 +60,7 @@ const Table = connect(
                     buttonSize='small'
                     className='d-inline pl-3'
                     options={statusOptions}
-                    text={<span><i className='mdi mdi-filter' />({statusFilter.length})</span>}
+                    text={<span><Icon icon='filter' />({statusFilter.length})</span>}
                     initialValues={initialStatusOptions}
                     onChange={val => setStatusFilter(val)}
                   />
@@ -74,7 +75,7 @@ const Table = connect(
                     buttonSize='small'
                     className='d-inline pl-3'
                     options={typeOptions}
-                    text={<span><i className='mdi mdi-filter' />({typeFilter.length})</span>}
+                    text={<span><Icon icon='filter' />({typeFilter.length})</span>}
                     initialValues={initialTypeOptions}
                     onChange={val => setTypeFilter(val)}
                   />
@@ -90,7 +91,7 @@ const Table = connect(
                   <tr key={instrument.id}>
                     {instrument.status ? (
                       <td title={`Instrument is ${instrument.status}`}>
-                        <i className={`mdi mdi-circle status-icon ${instrument.status} pr-2`} />
+                        <Icon icon='circle' className={`status-icon ${instrument.status} pr-2`} />
                         {titlize(instrument.status)}
                       </td>) : <td />
                     }
@@ -109,7 +110,7 @@ const Table = connect(
                           title='Edit'
                           className='mr-3'
                           handleClick={() => doModalOpen(InstrumentForm, { item: instrument })}
-                          icon={<i className='mdi mdi-pencil' />}
+                          icon={<Icon icon='pencil' />}
                         />
                         {tools && (
                           tools.map((Tool, i) => <Tool key={i} item={instrument} />)

@@ -4,9 +4,10 @@ import { connect } from 'redux-bundler-react';
 import { subDays } from 'date-fns';
 
 import Button from '../button';
+import Icon from '../icon';
 import Settings from './settings';
-import VizTimeseries from './viz-timeseries';
 import VizCorrelation from './viz-correlation';
+import VizTimeseries from './viz-timeseries';
 
 export default connect(
   'doChartEditorSetShowSettings',
@@ -94,15 +95,15 @@ export default connect(
             doChartEditorSetShowSettings(!showSettings);
           }}
         >
-          <i
+          <Icon
+            icon='cog'
             style={{
               fontSize: '1.5em',
               color: showSettings
                 ? 'rgba(68, 68, 68, 0.6)'
                 : 'rgba(68, 68, 68, 0.3)',
             }}
-            className='mdi mdi-cog'
-          ></i>
+          />
         </span>
         <div
           className='d-flex'

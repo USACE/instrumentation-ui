@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
+import Icon from '../../../app-components/icon';
 import InstrumentGroupForm from '../forms/instrument-group-form';
 import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import RoleFilter from '../../../app-components/role-filter';
@@ -46,7 +47,7 @@ const Table = connect(
                           variant='info'
                           title='Edit'
                           handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
-                          icon={<i className='mdi mdi-pencil' />}
+                          icon={<Icon icon='pencil' />}
                         />
                       </RoleFilter>
                     </td>

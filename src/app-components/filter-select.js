@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Dropdown from './dropdown';
+import Icon from './icon';
 import usePrevious from '../customHooks/usePrevious';
 
 const getDisplay = elem => {
@@ -61,7 +62,7 @@ const FilterSelect = ({
                 className='input-group-text pointer'
                 onClick={() => setInputVal('')}
               >
-                <i className='mdi mdi-close'></i>
+                <Icon icon='close' />
               </span>
             </div>
           )}
