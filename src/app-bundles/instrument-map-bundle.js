@@ -52,6 +52,7 @@ const instrumentMapBundle = {
       }
     };
   },
+
   doInstrumentMapInitialize: () => ({ dispatch, store }) => {
     dispatch({
       type: 'INSTRUMENTMAP_INITIALIZE_START',

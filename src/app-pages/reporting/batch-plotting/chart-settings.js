@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
+import DeleteButton from '../../../app-components/delete-confirm';
 import MultiSelect from '../../../app-components/multi-select';
-import PlottingContext from './plotting-context';
 import Select from '../../../app-components/select';
+import usePrevious from '../../../customHooks/usePrevious';
 
 import '../reporting.scss';
-import DeleteButton from '../../../app-components/delete-confirm';
 
 const formatOptions = timeseries => (
   timeseries.map(ts => ({
@@ -34,22 +34,26 @@ const ChartSettings = connect(
   'selectInstrumentTimeseriesItemsByRoute',
   'selectBatchPlotConfigurationsItems',
   'selectProjectsIdByRoute',
+  'selectBatchPlotConfigurationsActiveId',
   'doBatchPlotConfigurationsSave',
   'doBatchPlotConfigurationsDelete',
+  'doBatchPlotConfigurationsSetActiveId',
   ({
     instrumentTimeseriesItemsByRoute: instrumentTimeseries,
     batchPlotConfigurationsItems,
     projectsIdByRoute: project,
+    batchPlotConfigurationsActiveId,
     doBatchPlotConfigurationsSave,
     doBatchPlotConfigurationsDelete,
+    doBatchPlotConfigurationsSetActiveId,
   }) => {
-    const { selectedConfiguration, setSelectedConfiguration } = useContext(PlottingContext);
     const [selectedTimeseries, setSelectedTimeseries] = useState([]);
     const [newConfigName, setNewConfigName] = useState('');
     const [inputError, setInputError] = useState('');
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const timeseries = formatOptions(instrumentTimeseries);
+    const previousConfigId = usePrevious(batchPlotConfigurationsActiveId);
 
     const configurations = batchPlotConfigurationsItems.map(config => ({
       text: config.name,
@@ -63,7 +67,7 @@ const ChartSettings = connect(
         setInputError('Configuration name already exists. Please use a different name.');
       } else {
         doBatchPlotConfigurationsSave({
-          ...isEditMode && { id: selectedConfiguration },
+          ...isEditMode && { id: batchPlotConfigurationsActiveId },
           name: newConfigName.trim(),
           timeseries_id: selectedTimeseries,
           project_id: project.projectId,
@@ -73,7 +77,7 @@ const ChartSettings = connect(
     };
 
     const handleEditClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === selectedConfiguration);
+      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === batchPlotConfigurationsActiveId);
 
       if (currentItem) {
         setIsEditMode(true);
@@ -84,7 +88,7 @@ const ChartSettings = connect(
     };
 
     const handleDeleteClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === selectedConfiguration);
+      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === batchPlotConfigurationsActiveId);
 
       if (currentItem) {
         doBatchPlotConfigurationsDelete(currentItem);
@@ -94,6 +98,12 @@ const ChartSettings = connect(
     const handleNewClick = () => {
       setIsEditMode(false);
       setIsPanelOpen(true);
+    };
+
+    const handleSelectChange = val => {
+      if (val && val !== previousConfigId) {
+        doBatchPlotConfigurationsSetActiveId(val);
+      }
     };
 
     useEffect(() => {
@@ -113,9 +123,9 @@ const ChartSettings = connect(
             className='mr-2'
             placeholderText='Select a configuration...'
             options={configurations}
-            onChange={val => setSelectedConfiguration(val)}
+            onChange={handleSelectChange}
           />
-          {selectedConfiguration && (
+          {batchPlotConfigurationsActiveId && (
             <>
               <Button
                 isDisabled={isPanelOpen}

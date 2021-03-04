@@ -16,6 +16,7 @@ import alertSubscribeBundle from './alert-subscribe-bundle';
 import alertUnreadBundle from './alert-unread-bundle';
 import alertUnsubscribeBundle from './alert-unsubscribe-bundle';
 import batchPlotConfigurationsBundle from './batch-plot-configurations-bundle';
+import batchPlotMapBundle from './batch-plot-map-bundle';
 import chartEditorBundle from './chart-editor-bundle';
 import chartsBundle from './charts-bundle';
 import collectionGroupBundle from './collection-group-bundle';
@@ -95,6 +96,7 @@ export default composeBundles(
   alertUnreadBundle,
   alertUnsubscribeBundle,
   batchPlotConfigurationsBundle,
+  batchPlotMapBundle,
   chartEditorBundle,
   chartsBundle,
   collectionGroupBundle,

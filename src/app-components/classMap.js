@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, forwardRef, useImperativeHandle } from 'react';
-import { fromLonLat } from 'ol/proj';
 import debounce from 'lodash.debounce';
+import { fromLonLat } from 'ol/proj';
 
 const Map = forwardRef(({
   doMapsInitialize,
