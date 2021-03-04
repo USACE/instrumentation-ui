@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Chart from '../../../app-components/chart/chart';
-import PlottingContext from './plotting-context';
 
 const getStyle = _index => ({
   mode: 'lines+markers',
@@ -15,19 +14,20 @@ const getStyle = _index => ({
 });
 
 const BatchPlotChart = connect(
-  'doTimeseriesMeasurementsFetchById',
   'doInstrumentTimeseriesSetActiveId',
-  'selectTimeseriesMeasurementsItems',
+  'doTimeseriesMeasurementsFetchById',
+  'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItems',
   'selectInstrumentTimeseriesItemsObject',
+  'selectTimeseriesMeasurementsItems',
   ({
-    doTimeseriesMeasurementsFetchById,
     doInstrumentTimeseriesSetActiveId,
-    timeseriesMeasurementsItems,
+    doTimeseriesMeasurementsFetchById,
+    batchPlotConfigurationsActiveId,
     batchPlotConfigurationsItems,
     instrumentTimeseriesItemsObject,
+    timeseriesMeasurementsItems,
   }) => {
-    const { selectedConfiguration } = useContext(PlottingContext);
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
@@ -37,15 +37,16 @@ const BatchPlotChart = connect(
         if (elem) {
           const style = getStyle(i);
           const { items } = elem;
-          const { name, unit } = instrumentTimeseriesItemsObject[elem.timeseries_id];
+          const { instrument, name, unit } = instrumentTimeseriesItemsObject[elem.timeseries_id];
 
           const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
 
           return {
             ...style,
-            name: `${name} (${unit})` || '',
+            name: `${instrument} - ${name} (${unit})` || '',
             x: sortedItems.map(item => item.time),
-            y: sortedItems.map(item => item.value)
+            y: sortedItems.map(item => item.value),
+            showlegend: true,
           };
         }
 
@@ -56,9 +57,9 @@ const BatchPlotChart = connect(
     };
 
     useEffect(() => {
-      const config = batchPlotConfigurationsItems.find(elem => elem.name === selectedConfiguration);
+      const config = batchPlotConfigurationsItems.find(elem => elem.id === batchPlotConfigurationsActiveId);
       setTimeseriesId((config || {}).timeseries_id || []);
-    }, [selectedConfiguration, batchPlotConfigurationsItems, setTimeseriesId]);
+    }, [batchPlotConfigurationsActiveId, batchPlotConfigurationsItems, setTimeseriesId]);
 
     useEffect(() => {
       timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id }));
@@ -75,10 +76,19 @@ const BatchPlotChart = connect(
       <Chart
         data={chartData}
         layout={{
-          xaxis: { title: 'Date' },
-          yaxis: { title: 'Measurement' },
+          xaxis: {
+            title: 'Date',
+            showline: true,
+            mirror: true,
+          },
+          yaxis: {
+            title: 'Measurement',
+            showline: true,
+            mirror: true,
+          },
           autosize: true,
           dragmode: 'pan',
+          height: 600,
         }}
         config={{
           responsive: true,

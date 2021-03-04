@@ -51,6 +51,11 @@ $error-color: #f04124;
   text-overflow: ellipsis;
 }
 
+.card-header {
+  background-color: #f7f7f7 !important;
+  z-index: 2;
+}
+
 footer.modal-footer {
   display: flex;
   align-items: center;

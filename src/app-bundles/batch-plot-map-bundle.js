@@ -9,8 +9,8 @@ import Circle from 'ol/geom/Circle';
 
 const geoJSON = new GeoJSON();
 
-const instrumentGroupMapBundle = {
-  name: 'instrumentGroupMap',
+const batchPlotMapBundle = {
+  name: 'batchPlotMap',
   getReducer: () => {
     const initialData = {
       layer: null,
@@ -21,30 +21,31 @@ const instrumentGroupMapBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'INSTRUMENTGROUPINSTRUMENTS_FETCH_FINISHED':
+        case 'BATCHPLOTCONFIGURATIONS_FETCH_FINISHED':
           return Object.assign({}, state, {
             _shouldAddData: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('groupMap')) {
+          if (payload.hasOwnProperty('batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: true,
+              _shouldAddData: true,
             });
           } else {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('groupMap')) {
+          if (payload.hasOwnProperty('batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
           } else {
             return state;
           }
-        case 'INSTRUMENTGROUPMAP_INITIALIZE_START':
-        case 'INSTRUMENTGROUPMAP_INITIALIZE_FINISH':
-        case 'INSTRUMENTGROUPMAP_ADD_DATA_START':
-        case 'INSTRUMENTGROUPMAP_ADD_DATA_FINISH':
+        case 'BATCHPLOTMAP_INITIALIZE_START':
+        case 'BATCHPLOTMAP_INITIALIZE_FINISH':
+        case 'BATCHPLOTMAP_ADD_DATA_START':
+        case 'BATCHPLOTMAP_ADD_DATA_FINISH':
           return Object.assign({}, state, payload);
         default:
           return state;
@@ -52,10 +53,11 @@ const instrumentGroupMapBundle = {
     };
   },
 
-  doInstrumentGroupMapInitialize: () => ({ dispatch, store }) => {
+  doBatchPlotMapInitialize: () => ({ dispatch, store }) => {
     dispatch({
-      type: 'INSTRUMENTGROUPMAP_INITIALIZE_START',
+      type: 'BATCHPLOTMAP_INITIALIZE_START',
       payload: {
+        layer: new Layer({}),
         _shouldInitialize: false,
       },
     });
@@ -91,26 +93,26 @@ const instrumentGroupMapBundle = {
     });
 
     dispatch({
-      type: 'INSTRUMENTGROUPMAP_INITIALIZE_FINISH',
+      type: 'BATCHPLOTMAP_INITIALIZE_FINISH',
       payload: {
         layer: lyr,
       },
     });
   },
 
-  doInstrumentGroupMapAddData: () => ({ dispatch, store }) => {
+  doBatchPlotMapAddData: () => ({ dispatch, store }) => {
     dispatch({
-      type: 'INSTRUMENTGROUPMAP_ADD_DATA_START',
+      type: 'BATCHPLOTMAP_ADD_DATA_START',
       payload: {
         _shouldAddData: false,
       },
     });
     const geoProjection = store.selectMapsGeoProjection();
     const webProjection = store.selectMapsWebProjection();
-    const map = store.selectMapsObject()['groupMap'];
-    const lyr = store.selectInstrumentGroupMapLayer();
+    const map = store.selectMapsObject()['batchPlotMap'];
+    const lyr = store.selectBatchPlotMapLayer();
     const src = lyr.getSource();
-    const data = store.selectInstrumentGroupInstrumentsItemsGeoJSON();
+    const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
     map.removeLayer(lyr);
     src.clear();
     const features = geoJSON.readFeatures(data, {
@@ -127,24 +129,21 @@ const instrumentGroupMapBundle = {
       });
     }
     dispatch({
-      type: 'INSTRUMENTGROUPMAP_ADD_DATA_FINISH',
+      type: 'BATCHPLOTMAP_ADD_DATA_FINISH',
     });
   },
 
-  selectInstrumentGroupMapLayer: (state) => state.instrumentGroupMap.layer,
+  selectBatchPlotMapLayer: (state) => state.batchPlotMap.layer,
 
-  reactInstrumentGroupMapShouldInitialize: (state) => {
-    if (state.instrumentGroupMap._shouldInitialize)
-      return { actionCreator: 'doInstrumentGroupMapInitialize' };
+  reactBatchPlotMapShouldInitialize: (state) => {
+    if (state.batchPlotMap._shouldInitialize)
+      return { actionCreator: 'doBatchPlotMapInitialize' };
   },
 
-  reactInstrumentGroupMapShouldAddData: (state) => {
-    if (
-      state.instrumentGroupMap._shouldAddData &&
-      state.instrumentGroupMap._mapLoaded
-    )
-      return { actionCreator: 'doInstrumentGroupMapAddData' };
+  reactBatchPlotMapShouldAddData: (state) => {
+    if (state.batchPlotMap._mapLoaded && state.batchPlotMap._shouldAddData)
+      return { actionCreator: 'doBatchPlotMapAddData' };
   },
 };
 
-export default instrumentGroupMapBundle;
+export default batchPlotMapBundle;
