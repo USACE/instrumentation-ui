@@ -4,6 +4,7 @@ import { formatDistance } from 'date-fns';
 
 import AlertNoteForm from './alert-note-form';
 import Button from '../../../app-components/button';
+import Icon from '../../../app-components/icon';
 
 const AlertEntry = connect(
   'selectProfileAlertsByInstrumentId',
@@ -52,7 +53,7 @@ const AlertEntry = connect(
                     isDisabled={!userAlert}
                     handleClick={() => toggleRead(item, null, true, true)}
                     title={`Mark as ${isRead ? 'Unread' : 'Read'}`}
-                    icon={<i className={`mdi ${isRead ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}`} />}
+                    icon={<Icon icon={isRead ? 'eye-off-outline' : 'eye-outline'} />}
                   />
                   <Button
                     variant='info'
@@ -60,7 +61,7 @@ const AlertEntry = connect(
                     isOutline
                     handleClick={() => doModalOpen(AlertNoteForm, { item })}
                     title='Add/Edit Note'
-                    icon={<i className='mdi mdi-note-plus-outline' />}
+                    icon={<Icon icon='note-plus-outline' />}
                   />
                   <Button
                     variant='danger'
@@ -69,7 +70,7 @@ const AlertEntry = connect(
                     isDisabled={!userAlert}
                     handleClick={() => console.log('delete instrument alert')}
                     title='Delete Alert'
-                    icon={<i className='mdi mdi-trash-can-outline' />}
+                    icon={<Icon icon='trash-can-outline' />}
                   />
                 </div>
               )}

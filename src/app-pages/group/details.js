@@ -12,6 +12,7 @@ import Map from '../../app-components/classMap';
 import Navbar from '../../app-components/navbar';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesPanel from './group-time-series-panel';
+import Icon from '../../app-components/icon';
 
 export default connect(
   'doModalOpen',
@@ -58,7 +59,7 @@ export default connect(
                       isOutline
                       text='Edit'
                       handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
-                      icon={<i className='mdi mdi-pencil pr-2' />}
+                      icon={<Icon icon='pencil' className='pr-2' />}
                     />
                   </RoleFilter>
                 </div>
@@ -102,7 +103,7 @@ export default connect(
                     isOutline
                     text='Add New Instrument'
                     handleClick={() => doModalOpen(InstrumentForm, { addToGroup: group, isEdit: false })}
-                    icon={<i className='mdi mdi-map-marker-plus pr-2' />}
+                    icon={<Icon icon='map-marker-plus' className='pr-2' />}
                   />
                   <Button
                     variant='info'
@@ -110,7 +111,7 @@ export default connect(
                     isOutline
                     text='Add Existing Instrument'
                     handleClick={() => doModalOpen(InstrumentPicker)}
-                    icon={<i className='mdi mdi-map-marker pr-2' />}
+                    icon={<Icon icon='map-marker' className='pr-2' />}
                   />
                 </div>
               </RoleFilter>

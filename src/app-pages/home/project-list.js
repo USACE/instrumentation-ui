@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import ProjectCard from './project-card';
+import Icon from '../../app-components/icon';
 import FilterSelect from '../../app-components/filter-select';
+import ProjectCard from './project-card';
 
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
@@ -45,7 +46,7 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
       <div className='pb-2 noselect overflow-ellipsis'>
         {item.children && !!item.children.length && (
           <span onClick={() => setExpanded(!expanded)} >
-            <i className={`mdi mdi-chevron-${expanded ? 'down' : 'right'} pr-2`} />
+            <Icon icon={`chevron-${expanded ? 'down' : 'right'}`} className='pr-2' />
           </span>
         )}{' '}
         <span className='pr-2'>{item.abbr}</span>

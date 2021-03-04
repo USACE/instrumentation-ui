@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import Button from '../../app-components/button';
+import Icon from '../../app-components/icon';
 import RoleFilter from '../../app-components/role-filter';
 
 const TimeseriesListEntry = ({
@@ -26,7 +27,7 @@ const TimeseriesListEntry = ({
                 variant='link'
                 className='text-secondary h-100'
                 handleClick={() => handleItemDelete(item)}
-                icon={<i className='mdi mdi-delete-outline text-danger' />}
+                icon={<Icon icon='delete-outline' className='text-danger' />}
                 title='Remove from group'
               />
             </RoleFilter>
@@ -70,7 +71,7 @@ const TimeseriesListEntry = ({
                   setValue('');
                 }}
                 text='Add'
-                icon={<i className='mdi mdi-plus' />}
+                icon={<Icon icon='mdi-plus' />}
               />
             </div>
           </div>

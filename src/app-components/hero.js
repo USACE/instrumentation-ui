@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Icon from './icon';
 import bg1 from '../img/bg-1.jpg';
 
 const Hero = () => (
@@ -19,7 +20,7 @@ const Hero = () => (
     >
       <div>
         <h1 className='text-light'>
-          <i className='mdi mdi-pulse pr-2'></i>MIDAS
+          <Icon icon='pulse' className='pr-2' />MIDAS
         </h1>
       </div>
 

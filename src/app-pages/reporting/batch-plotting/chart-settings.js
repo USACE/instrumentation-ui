@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import DeleteButton from '../../../app-components/delete-confirm';
+import Icon from '../../../app-components/icon';
 import MultiSelect from '../../../app-components/multi-select';
 import Select from '../../../app-components/select';
 import usePrevious from '../../../customHooks/usePrevious';
@@ -134,7 +135,7 @@ const ChartSettings = connect(
                 variant='info'
                 className='mr-2'
                 title='Edit Selected Configuration'
-                icon={<i className='mdi mdi-pencil' />}
+                icon={<Icon icon='pencil' />}
                 handleClick={() => handleEditClick()}
               />
               <DeleteButton
@@ -144,7 +145,7 @@ const ChartSettings = connect(
                 className='mr-2'
                 title='Delete Selected Configuration'
                 deleteText=''
-                deleteIcon={<i className='mdi mdi-trash-can' />}
+                deleteIcon={<Icon icon='trash-can' />}
                 handleDelete={() => handleDeleteClick()}
               />
             </>

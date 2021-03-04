@@ -39,7 +39,7 @@ export default connect(
             isOutline
             title='Remove from Group'
             handleClick={() => setIsConfirming(true)}
-            icon={<i className='mdi mdi-delete' />}
+            icon={<Icon icon='delete' />}
           />
         )}
       </>

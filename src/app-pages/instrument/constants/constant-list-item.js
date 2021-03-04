@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import ConstantForm from './constant-form';
+import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import { classnames } from '../../../utils';
 
@@ -33,7 +34,7 @@ export default connect(
             className='float-right'
             isOutline
             handleClick={() => doModalOpen(ConstantForm, { item: item })}
-            icon={<i className='mdi mdi-pencil' />}
+            icon={<Icon icon='pencil' />}
           />
         </RoleFilter>
         <div>{item.name}</div>

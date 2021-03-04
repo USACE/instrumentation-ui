@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
+import Icon from '../../app-components/icon';
 import RoleFilter from '../../app-components/role-filter';
 
 const NoteEditor = connect(
@@ -89,7 +90,7 @@ const NoteItem = ({ note, editable, save, del }) => {
                   className='ml-2'
                   text='Edit'
                   handleClick={() => setEditing(true)}
-                  icon={<i className='mdi mdi-pencil' />}
+                  icon={<Icon icon='pencil' />}
                 />
               ) : null}
             </div>

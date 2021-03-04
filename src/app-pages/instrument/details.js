@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
 import Dropdown from '../../app-components/dropdown';
+import Icon from '../../app-components/icon';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../manager/forms/instrument-form';
 import LoginMessage from '../../app-components/login-message';
@@ -88,7 +89,7 @@ export default connect(
                       size='small'
                       isOutline
                       text='Edit'
-                      icon={<i className='mdi mdi-pencil pr-2' />}
+                      icon={<Icon icon='pencil' className='pr-2' />}
                     />
                   </RoleFilter>
                 </div>
@@ -102,7 +103,7 @@ export default connect(
                   <Dropdown.Menu
                     dropdownClasses={['float-right', 'inline']}
                     buttonClasses={['btn-sm', 'btn-outline-info']}
-                    buttonContent={<i className='mdi mdi-cog-outline' />}
+                    buttonContent={<Icon icon='cog-outline' />}
                   >
                     <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
                     <Dropdown.Item>Mark All as Read</Dropdown.Item>
@@ -114,7 +115,7 @@ export default connect(
                     size='small'
                     isOutline
                     title='Refresh'
-                    icon={<i className='mdi mdi-refresh' />}
+                    icon={<Icon icon='mdi-refresh' />}
                   />
                 </div>
                 <div className='card-body' style={{ maxHeight: 400, overflow: 'auto' }}>

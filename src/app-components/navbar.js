@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-import { classArray } from '../utils';
+
 import Dropdown from './dropdown';
+import Icon from './icon';
 import RoleFilter from './role-filter';
+import { classArray } from '../utils';
 
 const getInitials = (name = '') => {
   let initials = ['U', 'N'];
@@ -101,13 +103,13 @@ const Navbar = connect(
           <span className='navbar-brand'>
             <strong>
               <a href='/' className='text-white'>
-                <i className='mdi mdi-pulse pr-2'></i>
+                <Icon icon='pulse' className='pr-2' />
                 {brand || 'Home'}
               </a>
             </strong>
             {project && project.name && (
               <>
-                <i className='mdi mdi-chevron-right pl-2 pr-2' />
+                <Icon icon='chevron-right' className='px-2' />
                 <span className='text-white default-cursor'>
                   {project.name}
                 </span>

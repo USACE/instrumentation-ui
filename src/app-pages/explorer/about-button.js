@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from '../../app-components/button';
+import Icon from '../../app-components/icon';
 
 const AboutButton = () => {
   const [show, setShow] = useState(false);
@@ -10,10 +11,10 @@ const AboutButton = () => {
       <Button
         className={show ? 'active' : ''}
         handleClick={() => setShow(!show)}
-        icon={<i className='ms ms-information' />}
+        icon={<Icon icon='information-outline' />}
       />
       {show ? (
-        <div className='card'>
+        <div className='card w-75'>
           <div className='card-body'>
             <p className='mb-2'>
               Select Instruments on the map to include their data in the
@@ -30,7 +31,7 @@ const AboutButton = () => {
               add instruments from multiple groups to the active selection.
             </p>
             <p className='mb-2'>
-              Use the select by box tool <i className='ms ms-select-box'></i> to
+              Use the select by box tool <Icon icon='selection-drag' /> to
               select instruments by drawing a box on the map. Note that the
               normal pan/zoom interactions are disabled while in select-by-box
               mode.

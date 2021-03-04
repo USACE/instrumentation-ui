@@ -5,6 +5,7 @@ import AlertForm from './alert-editor-form';
 import AlertFormModal from './alert-form';
 import AlertConfigSettings from './alert-config-form';
 import Button from '../../../app-components/button';
+import Icon from '../../../app-components/icon';
 import { classArray } from '../../../utils';
 
 export default connect(
@@ -39,7 +40,7 @@ export default connect(
         >
           {a.name}
           <span className='float-right pointer' style={{ zIndex: 111 }} onClick={(e) => openSettingsModal(e, a)} title='Open Configuration Settings'>
-            <i className='mdi mdi-cog-outline' />
+            <Icon icon='cog-outline' />
           </span>
         </li >
       );

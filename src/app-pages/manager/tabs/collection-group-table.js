@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import CollectionGroupForm from '../forms/collection-group-form';
-import RoleFilter from '../../../app-components/role-filter';
-import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import Button from '../../../app-components/button';
+import CollectionGroupForm from '../forms/collection-group-form';
+import Icon from '../../../app-components/icon';
+import Pagination, { handlePageChange } from '../../../app-components/pagination';
+import RoleFilter from '../../../app-components/role-filter';
 
 const Table = connect(
   'doModalOpen',
@@ -44,7 +45,7 @@ const Table = connect(
                           variant='info'
                           title='Edit'
                           handleClick={() => doModalOpen(CollectionGroupForm, { item: g })}
-                          icon={<i className='mdi mdi-pencil' />}
+                          icon={<Icon icon='pencil' />}
                         />
                       </RoleFilter>
                     </td>
