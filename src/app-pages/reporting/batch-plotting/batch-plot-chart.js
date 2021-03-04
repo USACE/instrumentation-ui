@@ -45,7 +45,8 @@ const BatchPlotChart = connect(
             ...style,
             name: `${instrument} - ${name} (${unit})` || '',
             x: sortedItems.map(item => item.time),
-            y: sortedItems.map(item => item.value)
+            y: sortedItems.map(item => item.value),
+            showlegend: true,
           };
         }
 
