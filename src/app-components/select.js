@@ -51,7 +51,9 @@ const Select = ({
 
   /** Execute parent's onChange function after our interal state has changed. */
   useEffect(() => {
-    onChange(currentOption);
+    if (currentOption) {
+      onChange(currentOption);
+    }
   }, [currentOption, onChange]);
 
   return (
