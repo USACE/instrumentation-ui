@@ -111,26 +111,33 @@ const batchPlotMapBundle = {
     const webProjection = store.selectMapsWebProjection();
     const map = store.selectMapsObject()['batchPlotMap'];
     const lyr = store.selectBatchPlotMapLayer();
-    const src = lyr.getSource();
-    const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
-    map.removeLayer(lyr);
-    src.clear();
-    const features = geoJSON.readFeatures(data, {
-      featureProjection: webProjection,
-      dataProjection: geoProjection,
-    });
-    src.addFeatures(features);
-    map.addLayer(lyr);
-    const view = map.getView();
-    if (features && features.length) {
-      view.fit(src.getExtent(), {
-        padding: [50, 50, 50, 50],
-        maxZoom: 16,
+
+    if (lyr) {
+      const src = lyr.getSource();
+      const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
+      map.removeLayer(lyr);
+      src.clear();
+      const features = geoJSON.readFeatures(data, {
+        featureProjection: webProjection,
+        dataProjection: geoProjection,
+      });
+      src.addFeatures(features);
+      map.addLayer(lyr);
+      const view = map.getView();
+      if (features && features.length) {
+        view.fit(src.getExtent(), {
+          padding: [50, 50, 50, 50],
+          maxZoom: 16,
+        });
+      }
+      dispatch({
+        type: 'BATCHPLOTMAP_ADD_DATA_FINISH',
+      });
+    } else {
+      dispatch({
+        type: 'BATCHPLOTMAP_NO_LAYER_READY',
       });
     }
-    dispatch({
-      type: 'BATCHPLOTMAP_ADD_DATA_FINISH',
-    });
   },
 
   selectBatchPlotMapLayer: (state) => state.batchPlotMap.layer,
