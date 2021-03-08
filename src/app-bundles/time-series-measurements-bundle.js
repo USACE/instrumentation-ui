@@ -1,5 +1,4 @@
 import createRestBundle from './create-rest-bundle';
-import { createSelector } from 'redux-bundler';
 
 const afterDate = '1900-01-01T00:00:00.00Z';
 const beforeDate = '2025-01-01T00:00:00.00Z';
