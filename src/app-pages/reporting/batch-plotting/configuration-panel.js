@@ -4,8 +4,6 @@ import { connect } from 'redux-bundler-react';
 import Button from '../../../app-components/button';
 import MultiSelect from '../../../app-components/multi-select';
 
-// @TODO: Edit needs to pull current selected configuration details
-
 // @TODO: Filter out unnecessary timeseries
 const filterTimeseries = timeseries => {
   const validTypes = [];
@@ -57,7 +55,7 @@ const ConfigurationPanel = connect(
     const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
     const timeseries = useMemo(() => formatOptions(filterTimeseries(instrumentTimeseries)), [instrumentTimeseries]);
     const [selectedTimeseries, setSelectedTimeseries] = useState((currentItem && isEditMode) && currentItem.timeseries_id || []);
-    const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || []);
+    const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || '');
     const [inputError, setInputError] = useState();
 
     const handleSave = () => {

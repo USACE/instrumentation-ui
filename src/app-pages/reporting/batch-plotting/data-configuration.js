@@ -10,7 +10,7 @@ import usePrevious from '../../../customHooks/usePrevious';
 
 import '../reporting.scss';
 
-const ChartSettings = connect(
+const DataConfiguration = connect(
   'selectBatchPlotConfigurationsItems',
   'selectBatchPlotConfigurationsObject',
   'selectBatchPlotConfigurationsActiveId',
@@ -120,4 +120,4 @@ const ChartSettings = connect(
   }
 );
 
-export default ChartSettings;
+export default DataConfiguration;
