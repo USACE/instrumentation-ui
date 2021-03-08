@@ -17,20 +17,24 @@ const BatchPlotChart = connect(
   'doInstrumentTimeseriesSetActiveId',
   'doTimeseriesMeasurementsFetchById',
   'selectBatchPlotConfigurationsActiveId',
-  'selectBatchPlotConfigurationsObject',
+  'selectBatchPlotConfigurationsItemsObject',
   'selectInstrumentTimeseriesItemsObject',
   'selectTimeseriesMeasurementsItems',
+  'selectTimeseriesMeasurementsItemsObject',
   ({
     doInstrumentTimeseriesSetActiveId,
     doTimeseriesMeasurementsFetchById,
     batchPlotConfigurationsActiveId,
-    batchPlotConfigurationsObject,
+    batchPlotConfigurationsItemsObject,
     instrumentTimeseriesItemsObject,
     timeseriesMeasurementsItems,
+    timeseriesMeasurementsItemsObject,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
+
+    console.log('test timeseriesMeasurementsItemsObject: ', timeseriesMeasurementsItemsObject);
 
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
@@ -57,9 +61,9 @@ const BatchPlotChart = connect(
     };
 
     useEffect(() => {
-      const config = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
+      const config = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
       setTimeseriesId((config || {}).timeseries_id || []);
-    }, [batchPlotConfigurationsActiveId, batchPlotConfigurationsObject, setTimeseriesId]);
+    }, [batchPlotConfigurationsActiveId, batchPlotConfigurationsItemsObject, setTimeseriesId]);
 
     useEffect(() => {
       timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id }));

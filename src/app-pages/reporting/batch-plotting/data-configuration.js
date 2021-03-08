@@ -12,13 +12,13 @@ import '../reporting.scss';
 
 const DataConfiguration = connect(
   'selectBatchPlotConfigurationsItems',
-  'selectBatchPlotConfigurationsObject',
+  'selectBatchPlotConfigurationsItemsObject',
   'selectBatchPlotConfigurationsActiveId',
   'doBatchPlotConfigurationsDelete',
   'doBatchPlotConfigurationsSetActiveId',
   ({
     batchPlotConfigurationsItems,
-    batchPlotConfigurationsObject,
+    batchPlotConfigurationsItemsObject,
     batchPlotConfigurationsActiveId,
     doBatchPlotConfigurationsDelete,
     doBatchPlotConfigurationsSetActiveId,
@@ -33,7 +33,7 @@ const DataConfiguration = connect(
     }));
 
     const handleEditClick = () => {
-      const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
+      const currentItem = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
 
       if (currentItem) {
         setIsEditMode(true);
@@ -42,7 +42,7 @@ const DataConfiguration = connect(
     };
 
     const handleDeleteClick = () => {
-      const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
+      const currentItem = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
 
       if (currentItem) {
         doBatchPlotConfigurationsDelete(currentItem);

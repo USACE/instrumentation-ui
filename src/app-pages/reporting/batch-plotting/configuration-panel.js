@@ -35,13 +35,13 @@ const configNameExists = (newConfigName = '', currentConfigurations = []) => {
 
 const ConfigurationPanel = connect(
   'doBatchPlotConfigurationsSave',
-  'selectBatchPlotConfigurationsObject',
+  'selectBatchPlotConfigurationsItemsObject',
   'selectBatchPlotConfigurationsActiveId',
   'selectInstrumentTimeseriesItemsByRoute',
   'selectProjectsIdByRoute',
   ({
     doBatchPlotConfigurationsSave,
-    batchPlotConfigurationsObject,
+    batchPlotConfigurationsItemsObject,
     batchPlotConfigurationsActiveId,
     instrumentTimeseriesItemsByRoute: instrumentTimeseries,
     projectsIdByRoute: project,
@@ -52,7 +52,7 @@ const ConfigurationPanel = connect(
   }) => {
     if (!isOpen) return null;
 
-    const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
+    const currentItem = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
     const timeseries = useMemo(() => formatOptions(filterTimeseries(instrumentTimeseries)), [instrumentTimeseries]);
     const [selectedTimeseries, setSelectedTimeseries] = useState((currentItem && isEditMode) && currentItem.timeseries_id || []);
     const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || '');
