@@ -4,6 +4,8 @@ import { connect } from 'redux-bundler-react';
 import Button from '../../../app-components/button';
 import MultiSelect from '../../../app-components/multi-select';
 
+// @TODO: Edit needs to pull current selected configuration details
+
 // @TODO: Filter out unnecessary timeseries
 const filterTimeseries = timeseries => {
   const validTypes = [];
@@ -35,11 +37,13 @@ const configNameExists = (newConfigName = '', currentConfigurations = []) => {
 
 const ConfigurationPanel = connect(
   'doBatchPlotConfigurationsSave',
+  'selectBatchPlotConfigurationsObject',
   'selectBatchPlotConfigurationsActiveId',
   'selectInstrumentTimeseriesItemsByRoute',
   'selectProjectsIdByRoute',
   ({
     doBatchPlotConfigurationsSave,
+    batchPlotConfigurationsObject,
     batchPlotConfigurationsActiveId,
     instrumentTimeseriesItemsByRoute: instrumentTimeseries,
     projectsIdByRoute: project,
@@ -48,10 +52,13 @@ const ConfigurationPanel = connect(
     configurations,
     closePanel,
   }) => {
-    const [selectedTimeseries, setSelectedTimeseries] = useState([]);
-    const [newConfigName, setNewConfigName] = useState('');
-    const [inputError, setInputError] = useState();
+    if (!isOpen) return null;
+
+    const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
     const timeseries = useMemo(() => formatOptions(filterTimeseries(instrumentTimeseries)), [instrumentTimeseries]);
+    const [selectedTimeseries, setSelectedTimeseries] = useState((currentItem && isEditMode) && currentItem.timeseries_id || []);
+    const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || []);
+    const [inputError, setInputError] = useState();
 
     const handleSave = () => {
       if (!newConfigName || !newConfigName.trim()) {

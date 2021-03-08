@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
@@ -12,11 +12,13 @@ import '../reporting.scss';
 
 const ChartSettings = connect(
   'selectBatchPlotConfigurationsItems',
+  'selectBatchPlotConfigurationsObject',
   'selectBatchPlotConfigurationsActiveId',
   'doBatchPlotConfigurationsDelete',
   'doBatchPlotConfigurationsSetActiveId',
   ({
     batchPlotConfigurationsItems,
+    batchPlotConfigurationsObject,
     batchPlotConfigurationsActiveId,
     doBatchPlotConfigurationsDelete,
     doBatchPlotConfigurationsSetActiveId,
@@ -31,7 +33,7 @@ const ChartSettings = connect(
     }));
 
     const handleEditClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === batchPlotConfigurationsActiveId);
+      const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
 
       if (currentItem) {
         setIsEditMode(true);
@@ -40,7 +42,7 @@ const ChartSettings = connect(
     };
 
     const handleDeleteClick = () => {
-      const currentItem = batchPlotConfigurationsItems.find(elem => elem.id === batchPlotConfigurationsActiveId);
+      const currentItem = batchPlotConfigurationsObject[batchPlotConfigurationsActiveId];
 
       if (currentItem) {
         doBatchPlotConfigurationsDelete(currentItem);
@@ -57,6 +59,11 @@ const ChartSettings = connect(
         doBatchPlotConfigurationsSetActiveId(val);
       }
     };
+
+    // Set active id to empty before we start. makes sure certain actions aren't available to the user that shouldn't be
+    useEffect(() => {
+      doBatchPlotConfigurationsSetActiveId('');
+    }, [doBatchPlotConfigurationsSetActiveId]);
 
     return (
       <div className='d-flex justify-content-around'>
@@ -102,14 +109,12 @@ const ChartSettings = connect(
             handleClick={() => handleNewClick()}
           />
         </div>
-        {isPanelOpen && (
-          <ConfigurationPanel
-            isOpen={isPanelOpen}
-            isEditMode={isEditMode}
-            configurations={configurations}
-            closePanel={() => setIsPanelOpen(false)}
-          />
-        )}
+        <ConfigurationPanel
+          isOpen={isPanelOpen}
+          isEditMode={isEditMode}
+          configurations={configurations}
+          closePanel={() => setIsPanelOpen(false)}
+        />
       </div>
     );
   }

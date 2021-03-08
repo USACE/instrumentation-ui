@@ -27,6 +27,16 @@ export default createRestBundle({
 
     selectBatchPlotConfigurationsActiveId: (state) => state.batchPlotConfigurations._activeBatchPlotConfigurationId,
 
+    selectBatchPlotConfigurationsObject: createSelector(
+      'selectBatchPlotConfigurationsItems',
+      (batchPlotConfigurations = []) => (
+        batchPlotConfigurations.reduce((accum, elem) => ({
+          ...accum,
+          [elem.id]: elem,
+        }), {})
+      )
+    ),
+
     selectInstrumentsByBatchPlotConfigurationsGeoJSON: createSelector(
       'selectInstrumentsItems',
       'selectBatchPlotConfigurationsItems',
