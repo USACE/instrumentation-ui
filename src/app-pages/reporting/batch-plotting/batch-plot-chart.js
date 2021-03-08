@@ -34,8 +34,6 @@ const BatchPlotChart = connect(
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
 
-    console.log('test timeseriesMeasurementsItemsObject: ', timeseriesMeasurementsItemsObject);
-
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
         if (elem) {
@@ -60,20 +58,28 @@ const BatchPlotChart = connect(
       setChartData(data);
     };
 
+    /** Load specific timeseries ids into state when new configurations are loaded */
     useEffect(() => {
       const config = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
       setTimeseriesId((config || {}).timeseries_id || []);
     }, [batchPlotConfigurationsActiveId, batchPlotConfigurationsItemsObject, setTimeseriesId]);
 
+    /** Fetch any timeseries measurements not currently in the store for plotting */
     useEffect(() => {
-      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id }));
+      timeseriesIds.forEach(id => {
+        if (!timeseriesMeasurementsItemsObject[id]) {
+          doTimeseriesMeasurementsFetchById({ timeseriesId: id });
+        }
+      });
     }, [timeseriesIds, doInstrumentTimeseriesSetActiveId]);
 
+    /** Extract specific measurements from the store that relate to our set timeseries */
     useEffect(() => {
       const measurementItems = timeseriesIds.map(id => timeseriesMeasurementsItems.find(elem => elem.timeseries_id === id));
       setMeasurements(measurementItems);
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
+    /** When we get new measurements, update chart data */
     useEffect(() => generateNewChartData(), [measurements]);
 
     return (
