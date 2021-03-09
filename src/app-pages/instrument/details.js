@@ -115,7 +115,7 @@ export default connect(
                     size='small'
                     isOutline
                     title='Refresh'
-                    icon={<Icon icon='mdi-refresh' />}
+                    icon={<Icon icon='refresh' />}
                   />
                 </div>
                 <div className='card-body' style={{ maxHeight: 400, overflow: 'auto' }}>
