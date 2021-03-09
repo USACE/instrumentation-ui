@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
+import Icon from '../../app-components/icon';
 
 export default connect(
   'doInstrumentGroupInstrumentsDelete',
