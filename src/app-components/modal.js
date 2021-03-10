@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from './button';
-import { classnames } from '../utils';
+import { classArray } from '../utils';
 
 const DeleteButton = connect(
   'doModalClose',
@@ -125,14 +125,13 @@ export default connect(
 
     document.body.classList.add('no-scroll');
 
-    const modalCls = classnames({
-      'modal-dialog': true,
-      'modal-dialog-scrollable': true,
-      'modal-dialog-centered': true,
-      'modal-sm': modalSize === 'sm',
-      'modal-lg': modalSize === 'lg',
-      'modal-xl': modalSize === 'xl',
-    });
+    const modalCls = classArray([
+      'modal-dialog',
+      'modal-dialog-scrollable',
+      'modal-dialog-centered',
+      `modal-${modalSize}`,
+    ]);
+
     return (
       <>
         <div

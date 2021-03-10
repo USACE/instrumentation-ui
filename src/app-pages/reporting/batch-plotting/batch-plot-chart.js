@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Chart from '../../../app-components/chart/chart';
+import ChartSettings from './batch-plot-chart-settings';
 
 const getStyle = _index => ({
   mode: 'lines+markers',
@@ -83,30 +84,34 @@ const BatchPlotChart = connect(
     useEffect(() => generateNewChartData(), [measurements]);
 
     return (
-      <Chart
-        data={chartData}
-        layout={{
-          xaxis: {
-            title: 'Date',
-            showline: true,
-            mirror: true,
-          },
-          yaxis: {
-            title: 'Measurement',
-            showline: true,
-            mirror: true,
-          },
-          autosize: true,
-          dragmode: 'pan',
-          height: 600,
-        }}
-        config={{
-          responsive: true,
-          displaylogo: false,
-          displayModeBar: true,
-          scrollZoom: true,
-        }}
-      />
+      <>
+        <Chart
+          data={chartData}
+          layout={{
+            xaxis: {
+              title: 'Date',
+              showline: true,
+              mirror: true,
+            },
+            yaxis: {
+              title: 'Measurement',
+              showline: true,
+              mirror: true,
+            },
+            autosize: true,
+            dragmode: 'pan',
+            height: 600,
+          }}
+          config={{
+            responsive: true,
+            displaylogo: false,
+            displayModeBar: true,
+            scrollZoom: true,
+          }}
+        />
+        <hr />
+        <ChartSettings />
+      </>
     );
   }
 );
