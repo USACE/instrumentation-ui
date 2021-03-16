@@ -34,6 +34,8 @@ const BatchPlotChart = connect(
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
+    const [withPrecipitation, setWithPrecipitation] = useState(false);
+    const [dateRange, setDateRange] = useState([]);
 
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
@@ -55,6 +57,12 @@ const BatchPlotChart = connect(
 
         return null;
       });
+
+      // if (withPrecipitation) {
+      //   data.push({
+      //     yaxis: 'y2',
+      //   });
+      // }
 
       setChartData(data);
     };
@@ -81,7 +89,7 @@ const BatchPlotChart = connect(
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
-    useEffect(() => generateNewChartData(), [measurements]);
+    useEffect(() => generateNewChartData(), [measurements, withPrecipitation]);
 
     return (
       <>
@@ -97,6 +105,12 @@ const BatchPlotChart = connect(
               title: 'Measurement',
               showline: true,
               mirror: true,
+              domain: [0, withPrecipitation ? 0.66 : 1],
+            },
+            ...withPrecipitation && {
+              yaxis2: {
+                domain: [0.66, 1],
+              },
             },
             autosize: true,
             dragmode: 'pan',
@@ -110,7 +124,11 @@ const BatchPlotChart = connect(
           }}
         />
         <hr />
-        <ChartSettings />
+        <ChartSettings
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          setWithPrecipitation={setWithPrecipitation}
+        />
       </>
     );
   }
