@@ -5,6 +5,7 @@ import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
 
 const getStyle = _index => ({
+  type: 'scatter',
   mode: 'lines+markers',
   marker: {
     size: 8,
@@ -58,9 +59,16 @@ const BatchPlotChart = connect(
         return null;
       });
 
+      /** Map through each instrument's timeseries labelled as 'Precipitation' */
       // if (withPrecipitation) {
       //   data.push({
+      //     type: 'bar',
       //     yaxis: 'y2',
+      //     // name: `${instrument} - ${name} (${unit})` || '',
+      //     name: 'Precipitation',
+      //     x: [new Date('05-21-2020'), new Date('06-22-2020'), new Date('07-21-2020')],
+      //     y: [1.2, 1, 1.1],
+      //     showlegend: true,
       //   });
       // }
 
@@ -109,6 +117,9 @@ const BatchPlotChart = connect(
             },
             ...withPrecipitation && {
               yaxis2: {
+                autorange: 'reversed',
+                showline: true,
+                mirror: true,
                 domain: [0.66, 1],
               },
             },
