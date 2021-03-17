@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { subDays, startOfDay, endOfDay, isEqual } from 'date-fns';
 
 import Button from '../../../app-components/button';
@@ -13,7 +13,9 @@ const BatchPlotChartSettings = ({
 }) => {
   const [from, to] = dateRange;
 
-  console.log('test from - to: ', from, ' - ', to);
+  useEffect(() => {
+    console.log('test from - to: ', from, ' - ', to);
+  }, [dateRange]);
 
   return (
     <div className='m-2'>

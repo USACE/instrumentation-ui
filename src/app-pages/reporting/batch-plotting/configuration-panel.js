@@ -4,12 +4,11 @@ import { connect } from 'redux-bundler-react';
 import Button from '../../../app-components/button';
 import MultiSelect from '../../../app-components/multi-select';
 
-// @TODO: Filter out unnecessary timeseries
 const filterTimeseries = timeseries => {
-  const validTypes = [];
-  console.log('test timeseries: ', timeseries);
+  const validTypes = ['elevation', 'stage', 'precipitation'];
+  const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
 
-  return timeseries;
+  return typeFiltered;
 };
 
 const formatOptions = timeseries => (

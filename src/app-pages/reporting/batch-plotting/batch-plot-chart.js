@@ -20,57 +20,81 @@ const BatchPlotChart = connect(
   'doTimeseriesMeasurementsFetchById',
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItemsObject',
-  'selectInstrumentTimeseriesItemsObject',
   'selectTimeseriesMeasurementsItems',
   'selectTimeseriesMeasurementsItemsObject',
+  'selectInstrumentTimeseriesItemsByRoute',
   ({
     doInstrumentTimeseriesSetActiveId,
     doTimeseriesMeasurementsFetchById,
     batchPlotConfigurationsActiveId,
     batchPlotConfigurationsItemsObject,
-    instrumentTimeseriesItemsObject,
     timeseriesMeasurementsItems,
     timeseriesMeasurementsItemsObject,
+    instrumentTimeseriesItemsByRoute,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [withPrecipitation, setWithPrecipitation] = useState(false);
     const [dateRange, setDateRange] = useState([]);
+    const [withPrecipitation, setWithPrecipitation] = useState(false);
 
+    /** @TODO breakout into simple functions */
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
         if (elem) {
           const style = getStyle(i);
-          const { items } = elem;
-          const { instrument, name, unit } = instrumentTimeseriesItemsObject[elem.timeseries_id];
+          const { items, timeseries_id } = elem;
+          const { instrument, name, unit } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
 
           const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
+          const { x, y } = sortedItems.reduce((accum, item) => ({
+            x: [...accum.x, item.time],
+            y: [...accum.y, item.value]
+          }), { x: [], y: []});
 
           return {
-            ...style,
+            ...style, x, y,
             name: `${instrument} - ${name} (${unit})` || '',
-            x: sortedItems.map(item => item.time),
-            y: sortedItems.map(item => item.value),
             showlegend: true,
           };
         }
-
-        return null;
       });
 
-      /** Map through each instrument's timeseries labelled as 'Precipitation' */
-      // if (withPrecipitation) {
-      //   data.push({
-      //     type: 'bar',
-      //     yaxis: 'y2',
-      //     // name: `${instrument} - ${name} (${unit})` || '',
-      //     name: 'Precipitation',
-      //     x: [new Date('05-21-2020'), new Date('06-22-2020'), new Date('07-21-2020')],
-      //     y: [1.2, 1, 1.1],
-      //     showlegend: true,
-      //   });
-      // }
+      if (withPrecipitation) {
+        const uniqueInstrumentIds = [...new Set(measurements.map(elem => {
+          if (elem) {
+            const { timeseries_id } = elem;
+            const { instrument_id } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
+            return instrument_id;
+          }
+        }))];
+
+        uniqueInstrumentIds.forEach(id => {
+          if (id) {
+            const timeseries = instrumentTimeseriesItemsByRoute.find(i => i.instrument_id === id && i.parameter === 'precipitation');
+            const measurement = timeseriesMeasurementsItems.find(elem => timeseries && timeseries.id === elem.timeseries_id);
+            
+            if (measurement) {
+              const { items, timeseries_id } = measurement;
+              const { instrument, name, unit } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
+
+              const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
+              const { x, y } = sortedItems.reduce((accum, item) => ({
+                x: [...accum.x, item.time],
+                y: [...accum.y, item.value]
+              }), { x: [], y: []});
+
+              data.push({
+                x, y,
+                type: 'bar',
+                yaxis: 'y2',
+                name: `${instrument} - ${name} (${unit})` || '',
+                showlegend: true,
+              });
+            }
+          }
+        });
+      }
 
       setChartData(data);
     };
@@ -135,11 +159,13 @@ const BatchPlotChart = connect(
           }}
         />
         <hr />
-        <ChartSettings
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          setWithPrecipitation={setWithPrecipitation}
-        />
+        {chartData.length && (
+          <ChartSettings
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            setWithPrecipitation={setWithPrecipitation}
+          />
+        )}
       </>
     );
   }
