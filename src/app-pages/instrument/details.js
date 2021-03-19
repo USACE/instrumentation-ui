@@ -32,8 +32,6 @@ export default connect(
   'selectAlertsByRouteByInstrumentId',
   'selectInstrumentsByRoute',
   'selectInstrumentTimeseriesByInstrumentId',
-  'selectTimeseriesMeasurementsItemsObject',
-  'selectInstrumentTimeseriesActiveId',
   ({
     doModalOpen,
     doAlertsFetch,
@@ -44,8 +42,6 @@ export default connect(
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
-    timeseriesMeasurementsItemsObject: measurements,
-    instrumentTimeseriesActiveId: activeId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
