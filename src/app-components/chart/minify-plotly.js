@@ -7,6 +7,7 @@ Plotly.register([
 
     List of available imports can be found here `node_modules/plotly.js/lib/index.js`
   */
+  require('plotly.js/lib/bar'),
 ]);
 
 module.exports = Plotly;

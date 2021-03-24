@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 
 import Button from './button';
 
-const DeleteButton = ({
+const DeleteConfirm = ({
   deleteText = 'Delete',
+  deleteTitle = 'Delete',
   deleteIcon = null,
   confirmText = 'Confirm',
+  confirmTitle = 'Confirm',
   confirmIcon = null,
   cancelText = 'Cancel',
+  cancelTitle = 'Cancel',
   cancelIcon = null,
   size = '',
   isOutline = false,
@@ -28,18 +31,20 @@ const DeleteButton = ({
         <Button
           size={size}
           isOutline={isOutline}
-          variant='danger'
-          text={confirmText}
-          icon={confirmIcon}
-          handleClick={onDelete}
+          variant='secondary'
+          text={cancelText}
+          title={cancelTitle}
+          icon={cancelIcon}
+          handleClick={() => setIsConfirming(false)}
         />
         <Button
           size={size}
           isOutline={isOutline}
-          variant='secondary'
-          text={cancelText}
-          icon={cancelIcon}
-          handleClick={() => setIsConfirming(false)}
+          variant='danger'
+          text={confirmText}
+          title={confirmTitle}
+          icon={confirmIcon}
+          handleClick={onDelete}
         />
       </div>
     ) : (
@@ -50,6 +55,7 @@ const DeleteButton = ({
         size={size}
         isOutline={isOutline}
         text={deleteText}
+        title={deleteTitle}
         icon={deleteIcon}
         handleClick={() => setIsConfirming(true)}
       />
@@ -57,4 +63,4 @@ const DeleteButton = ({
   );
 };
 
-export default DeleteButton;
+export default DeleteConfirm;

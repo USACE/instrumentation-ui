@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import BatchPlotChart from './batch-plot-chart';
-import ChartSettings from './chart-settings';
+import DataConfiguration from './data-configuration';
 import Icon from '../../../app-components/icon';
 import Map from '../../../app-components/classMap';
 import Navbar from '../../../app-components/navbar';
@@ -25,7 +25,7 @@ const BatchPlotting = connect(
           <div className='card-header'>
             <strong>Plot Data Configuration</strong>
           </div>
-          <ChartSettings />
+          <DataConfiguration />
         </div>
         <div className='row mt-4'>
           <div className='col col-sm-5'>

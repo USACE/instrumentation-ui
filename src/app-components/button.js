@@ -13,6 +13,7 @@ import { classArray } from '../utils';
  * @param {Element} icon - an icon to be displayed next to the text on the button
  * @param {boolean} isOutline - set to `true` to apply the outline styles to the button. default: `false` 
  * @param {boolean} isDisabled - set to `true` to apply the style for a disabled button. default: `false`
+ * @param {boolean} isActive - set to `true` to apply the style for an active button. default: `false`
  * @param {Function} handleClick - function to handle user interaction. ignored if an `href` is provided
  */
 const Button = ({
@@ -25,6 +26,7 @@ const Button = ({
   icon = null,
   isOutline = false,
   isDisabled = false,
+  isActive = false,
   handleClick = () => {},
   className = '',
   ...customProps
@@ -34,6 +36,7 @@ const Button = ({
     'btn',
     size && size === 'small' ? 'btn-sm' : size === 'large' ? 'btn-lg' : '',
     `btn-${isOutline ? 'outline-' : ''}${variant}`,
+    isActive && 'active',
     isDisabled && 'disabled not-allowed',
     className,
   ]);

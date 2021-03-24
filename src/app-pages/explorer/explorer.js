@@ -1,23 +1,24 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
+
 import Panel from './panel';
-import Navbar from '../../app-components/navbar';
-import Map from '../../app-components/classMap';
-import MapTools from './map-tools';
-import MapLegend from './map-legend';
-import Visualizations from './explorer-visualizations';
 import PanelGroup from 'react-panelgroup';
+import Map from '../../app-components/classMap';
+import MapLegend from './map-legend';
+import MapTools from './map-tools';
+import Navbar from '../../app-components/navbar';
+import Visualizations from './explorer-visualizations';
 import useWindowListener from '../../customHooks/useWindowListener';
 
 export default connect(
-  'selectExploreMapKey',
   'doMapsInitialize',
   'doMapsShutdown',
+  'selectExploreMapKey',
   'selectMapsObject',
   ({
-    exploreMapKey: mapKey,
     doMapsInitialize,
     doMapsShutdown,
+    exploreMapKey: mapKey,
     mapsObject,
   }) => {
     const [landscapeMode, setLandscapeMode] = useState(false);
