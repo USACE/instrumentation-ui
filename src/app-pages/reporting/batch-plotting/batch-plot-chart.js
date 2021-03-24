@@ -38,13 +38,12 @@ const BatchPlotChart = connect(
     const [dateRange, setDateRange] = useState([]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
 
-    /** @TODO breakout into simple functions */
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
         if (elem) {
           const style = getStyle(i);
           const { items, timeseries_id } = elem;
-          const { instrument, name, unit } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
+          const { instrument, name, unit, parameter } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
 
           const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
           const { x, y } = sortedItems.reduce((accum, item) => ({
@@ -52,49 +51,19 @@ const BatchPlotChart = connect(
             y: [...accum.y, item.value]
           }), { x: [], y: []});
 
-          return {
+          return parameter === 'precipitation' ? {
+            x, y,
+            type: 'bar',
+            yaxis: 'y2',
+            name: `${instrument} - ${name} (${unit})` || '',
+            showlegend: true,
+          } : {
             ...style, x, y,
             name: `${instrument} - ${name} (${unit})` || '',
             showlegend: true,
           };
         }
-      });
-
-      if (withPrecipitation) {
-        const uniqueInstrumentIds = [...new Set(measurements.map(elem => {
-          if (elem) {
-            const { timeseries_id } = elem;
-            const { instrument_id } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
-            return instrument_id;
-          }
-        }))];
-
-        uniqueInstrumentIds.forEach(id => {
-          if (id) {
-            const timeseries = instrumentTimeseriesItemsByRoute.find(i => i.instrument_id === id && i.parameter === 'precipitation');
-            const measurement = timeseriesMeasurementsItems.find(elem => timeseries && timeseries.id === elem.timeseries_id);
-            
-            if (measurement) {
-              const { items, timeseries_id } = measurement;
-              const { instrument, name, unit } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
-
-              const sortedItems = (items || []).slice().sort((a, b) => new Date(a.time) - new Date(b.time));
-              const { x, y } = sortedItems.reduce((accum, item) => ({
-                x: [...accum.x, item.time],
-                y: [...accum.y, item.value]
-              }), { x: [], y: []});
-
-              data.push({
-                x, y,
-                type: 'bar',
-                yaxis: 'y2',
-                name: `${instrument} - ${name} (${unit})` || '',
-                showlegend: true,
-              });
-            }
-          }
-        });
-      }
+      }).filter(e => e);
 
       setChartData(data);
     };
@@ -123,6 +92,15 @@ const BatchPlotChart = connect(
     /** When we get new measurements, update chart data */
     useEffect(() => generateNewChartData(), [measurements, withPrecipitation]);
 
+    /** When chart data chagnges, see if there is precip data to adjust plot */
+    useEffect(() => {
+      if (chartData.length && chartData.find(elem => elem && elem.yaxis === 'y2')) {
+        setWithPrecipitation(true);
+      } else {
+        setWithPrecipitation(false);
+      }
+    }, [chartData, setWithPrecipitation]);
+
     return (
       <>
         <Chart
@@ -141,6 +119,7 @@ const BatchPlotChart = connect(
             },
             ...withPrecipitation && {
               yaxis2: {
+                title: 'Rainfall',
                 autorange: 'reversed',
                 showline: true,
                 mirror: true,
@@ -158,13 +137,16 @@ const BatchPlotChart = connect(
             scrollZoom: true,
           }}
         />
-        <hr />
-        {chartData.length && (
-          <ChartSettings
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            setWithPrecipitation={setWithPrecipitation}
-          />
+        {/* @TODO - When API can handle further settings */}
+        {false && (
+          <>
+            <hr />
+            <ChartSettings
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              setWithPrecipitation={setWithPrecipitation}
+            />
+          </>
         )}
       </>
     );
