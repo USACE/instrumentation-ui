@@ -2,6 +2,7 @@ import { createRouteBundle } from 'redux-bundler';
 
 import BatchPlotting from '../app-pages/reporting/batch-plotting';
 import CollectionGroup from '../app-pages/collectiongroup/collectiongroup';
+import Dashboard from '../app-pages/dashboard';
 import Explorer from '../app-pages/explorer/explorer';
 import Group from '../app-pages/group/details';
 import Help from '../app-pages/help/help';
@@ -18,7 +19,9 @@ export default createRouteBundle(
   {
     '': Home,
     '/': Home,
-    '/help': Help,
+    // @TODO: put v that v back
+    // '/help': Help,
+    '/help': Dashboard,
     '/logout': Logout,
     '/signup': SignUp,
     '/profile': Profile,
