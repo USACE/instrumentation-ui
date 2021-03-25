@@ -1,0 +1,11 @@
+.app-card-header {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #c8cacb;
+  margin-bottom: 0;
+  padding: 13px 20px;
+  z-index: 2;
+
+  &:first-child {
+    border-radius: calc(.2rem - 1px) calc(.2rem - 1px) 0 ;
+  }
+}

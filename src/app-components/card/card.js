@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CardBody from './cardBody';
+import CardHeader from './cardHeader';
 import { classArray } from '../../utils';
 
 import './card.scss';
@@ -28,5 +29,6 @@ const Card = ({
 };
 
 Card.Body = CardBody;
+Card.Header = CardHeader;
 
 export default Card;
