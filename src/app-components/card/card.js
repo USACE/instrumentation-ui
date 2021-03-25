@@ -15,7 +15,7 @@ const Card = ({
   ...customProps
 }) => {
   const cardClassNames = classArray([
-    'card',
+    'app-card',
     variant,
     customProps.className,
   ]);
