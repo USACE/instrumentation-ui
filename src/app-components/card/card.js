@@ -1,6 +1,10 @@
 import React from 'react';
 
 import CardBody from './cardBody';
+<<<<<<< HEAD
+=======
+import CardHeader from './cardHeader';
+>>>>>>> develop
 import { classArray } from '../../utils';
 
 import './card.scss';
@@ -15,7 +19,11 @@ const Card = ({
   ...customProps
 }) => {
   const cardClassNames = classArray([
+<<<<<<< HEAD
     'card',
+=======
+    'app-card',
+>>>>>>> develop
     variant,
     customProps.className,
   ]);
@@ -28,5 +36,9 @@ const Card = ({
 };
 
 Card.Body = CardBody;
+<<<<<<< HEAD
+=======
+Card.Header = CardHeader;
+>>>>>>> develop
 
 export default Card;
