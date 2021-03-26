@@ -12,9 +12,7 @@ export default connect(
 
     return (
       <Card className='mb-3'>
-        <Card.Header>
-          <strong>File Info</strong>
-        </Card.Header>
+        <Card.Header text='File Info' />
         <Card.Body>
           <>
             {uploadHasFile ? (

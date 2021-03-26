@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'redux-bundler-react';
+
+import Card from '../../app-components/card';
 import TimeSeries from './group-time-series-chart';
 import { seriesStyles } from '../../utils';
 
@@ -112,11 +114,9 @@ export default connect(
     });
 
     return (
-      <div className='card mt-3 mb-5'>
-        <div className='card-header'>
-          <strong>Timeseries</strong>
-        </div>
-        <div className='card-body'>
+      <Card className='mt-3 mb-5'>
+        <Card.Header text='Timeseries' />
+        <Card.Body>
           <div className='container'>
             <div className='row'>
               <div className='col-3'>
@@ -142,8 +142,8 @@ export default connect(
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     );
   }
 );

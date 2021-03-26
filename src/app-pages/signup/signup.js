@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
+
+import Card from '../../app-components/card';
 import Navbar from '../../app-components/navbar';
 import ProfileForm from '../../app-components/profile-form';
 
@@ -40,11 +42,9 @@ export default connect(
             right: 0,
           }}
         >
-          <div
-            style={{ display: 'grid', placeItems: 'center', height: '100%' }}
-          >
-            <div className='card' style={{ maxWidth: '32em' }}>
-              <div className='card-body'>
+          <div style={{ display: 'grid', placeItems: 'center', height: '100%' }}>
+            <Card style={{ maxWidth: '32em' }}>
+              <Card.Body>
                 <h5>Create your profile to continue</h5>
                 <p>
                   <small>
@@ -70,8 +70,8 @@ export default connect(
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
         </section>
       </div>

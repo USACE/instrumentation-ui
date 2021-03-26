@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
 import Icon from '../../app-components/icon';
 
 const AboutButton = () => {
@@ -14,8 +15,8 @@ const AboutButton = () => {
         icon={<Icon icon='information-outline' />}
       />
       {show ? (
-        <div className='card w-75'>
-          <div className='card-body'>
+        <Card className='w-75'>
+          <Card.Body>
             <p className='mb-2'>
               Select Instruments on the map to include their data in the
               charting tools at the right.
@@ -39,8 +40,8 @@ const AboutButton = () => {
             <p className='mb-2'>
               Press <b>Shift</b>+<b>V</b> to toggle between landscape and portrait mode.
             </p>
-          </div>
-        </div>
+          </Card.Body>
+        </Card>
       ) : null}
     </>
   );

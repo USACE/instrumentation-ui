@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Card from '../../app-components/card';
+
 export default connect(
   'selectDomainsItemsByGroup',
   ({ domainsItemsByGroup: domains }) => {
@@ -9,6 +11,7 @@ export default connect(
     useEffect(() => {
       const { status } = domains;
       const statusOrder = ['Active', 'Lost', 'Inactive', 'Abandoned', 'Destroyed'];
+
       if (domains && status) {
         const newStatuses = status.map(s => {
           const title = s.value[0].toUpperCase() + s.value.substr(1).toLowerCase();
@@ -19,14 +22,16 @@ export default connect(
             order: statusOrder.indexOf(title),
           };
         });
+
         newStatuses.sort((a, b) => (a.order > b.order ? 1 : -1));
         setStatuses(newStatuses);
       }
     }, [domains, setStatuses]);
+
     return (
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
-        <div className='card' style={{ opacity: 0.8 }}>
-          <div className='card-body'>
+        <Card style={{ opacity: 0.8 }}>
+          <Card.Body>
             <h6><strong>Instrument Status</strong></h6>
             {statuses.map(x => (
               <p className='mb-2 ml-3' key={x.title}>
@@ -41,8 +46,8 @@ export default connect(
                 {x.title}
               </p>
             ))}
-          </div>
-        </div>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

@@ -9,6 +9,7 @@ export default connect(
     denyRoles = [],
     alt = null,
     children,
+    className,
   }) => {
     // set our default show value, false makes us find an allow role, true makes us deny
     // if you add both allow and deny we first see if you are allowed, then deny overrides

@@ -5,9 +5,11 @@ import { classArray } from '../../utils';
 import './cardHeader.scss';
 
 /**
+ * @param {string} text - Optionally provide text to be placed in the heading, styled appropriately. Overrides any children node
  * @param {Node} children - Child Node 
  */
 const CardHeader = ({
+  text = '',
   children,
   ...customProps
 }) =>  {
@@ -17,8 +19,11 @@ const CardHeader = ({
   ]);
 
   return (
-    <p className={cardHeaderClasses}>
-      {children}
+    <p {...customProps} className={cardHeaderClasses}>
+      {text
+        ? <strong>{text}</strong>
+        : children
+      }
     </p>
   );
 };

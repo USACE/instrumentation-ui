@@ -16,9 +16,7 @@ export default connect(
   'selectUploadFieldMap',
   ({ uploadHasFile, uploadJson, uploadSelectedParser, uploadFieldMap }) => (
     <Card>
-      <Card.Header>
-        <strong>Upload Settings</strong>
-      </Card.Header>
+      <Card.Header text='Upload Settings' />
       <Card.Body>
         {uploadHasFile && uploadJson && uploadJson.length ? (
           <>
