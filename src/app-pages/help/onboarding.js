@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
 import Tab from '../../app-components/tab';
 
 const csvSampleProjects = [
@@ -198,8 +199,8 @@ export default connect(
     ];
 
     return (
-      <div className='card'>
-        <div className='card-body'>
+      <Card>
+        <Card.Body>
           <p>
             <strong className='pr-3'>Q:</strong>I want to try the site with my
             own projects. How should I organize my dataset for upload?
@@ -215,8 +216,8 @@ export default connect(
           </p>
           <p></p>
           <Tab.Container tabs={tabs} />
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     );
   }
 );

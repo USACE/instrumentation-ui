@@ -12,9 +12,7 @@ const HelpPage = () => (
       <div className='container'>
         <h3 className='mt-3 mb-6'>Frequently Asked Questions</h3>
         <hr className='mb-6' />
-        <section>
-          <Onboarding />
-        </section>
+        <Onboarding />
       </div>
     </section>
   </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Card from '../../app-components/card';
 import FieldMapper from './field-mapper';
 import IgnoreRows from './ignore-rows';
 import ParserSelector from './parser-selector';
@@ -14,11 +15,11 @@ export default connect(
   'selectUploadSelectedParser',
   'selectUploadFieldMap',
   ({ uploadHasFile, uploadJson, uploadSelectedParser, uploadFieldMap }) => (
-    <div className='card'>
-      <p className='card-header'>
+    <Card>
+      <Card.Header>
         <strong>Upload Settings</strong>
-      </p>
-      <div className='card-body'>
+      </Card.Header>
+      <Card.Body>
         {uploadHasFile && uploadJson && uploadJson.length ? (
           <>
             <ParserSelector />
@@ -33,7 +34,7 @@ export default connect(
         ) : (
           <Empty />
         )}
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   )
 );
