@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+
 import AlertEditor from './alert/alert-editor';
+import Card from '../../app-components/card';
+import Chart from './chart/chart';
 import Constants from './constants/constants';
 import FormulaEditor from './formula/formula';
-import Timeseries from './timeseries/timeseries';
-import Chart from './chart/chart';
 import Tab from '../../app-components/tab';
+import Timeseries from './timeseries/timeseries';
 
 export default connect(
   'selectTimeseriesMeasurementsItemsObject',
@@ -32,9 +34,9 @@ export default connect(
     }];
 
     return (
-      <div className='card'>
+      <Card>
         <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
-      </div>
+      </Card>
     );
   }
 );

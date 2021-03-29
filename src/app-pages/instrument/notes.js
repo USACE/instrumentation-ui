@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
 import Icon from '../../app-components/icon';
 import RoleFilter from '../../app-components/role-filter';
 
@@ -123,10 +124,8 @@ export default connect(
     const sorted = notes.sort();
 
     return (
-      <div className='card'>
-        <div className='card-header'>
-          <strong>Notes</strong>
-        </div>
+      <Card>
+        <Card.Header text='Notes' />
         <ul className='list-group list-group-flush'>
           {sorted.map((note, i) => (
             <NoteItem
@@ -160,7 +159,7 @@ export default connect(
             )}
           </li>
         </ul>
-      </div>
+      </Card>
     );
   }
 );

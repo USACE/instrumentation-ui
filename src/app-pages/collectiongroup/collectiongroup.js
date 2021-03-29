@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { roundToNearestMinutes } from 'date-fns';
 
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
 import collectionGroupForm from '../manager/forms/collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import Icon from '../../app-components/icon';
@@ -107,9 +108,9 @@ export default connect(
               {/* CONFIGURATION DETAILS */}
               <div className='row'>
                 <div className='col'>
-                  <div className='card'>
-                    <div
-                      className='card-header bg-light p-2 px-3'
+                  <Card>
+                    <Card.Header
+                      className='bg-light p-2 px-3'
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -147,10 +148,10 @@ export default connect(
                           setDate={setDate}
                         />
                       </div>
-                    </div>
+                    </Card.Header>
 
                     {isShown ? (
-                      <div className='card-body'>
+                      <Card.Body>
                         <div style={{ maxHeight: '600px', overflow: 'auto' }}>
                           <TimeseriesList
                             items={detail.timeseries}
@@ -165,9 +166,9 @@ export default connect(
                             handleItemSaveValue={handleTimeseriesSaveValue}
                           />
                         </div>
-                      </div>
+                      </Card.Body>
                     ) : null}
-                  </div>
+                  </Card>
                 </div>
               </div>
             </section>

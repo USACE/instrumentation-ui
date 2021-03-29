@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Card from '../../app-components/card';
 import CollectionGroupTable from './tabs/collection-group-table';
 import CollectionGroupForm from './forms/collection-group-form';
 import InstrumentForm from './forms/instrument-form';
@@ -106,14 +107,14 @@ export default connect(
       <>
         <Navbar theme='primary' />
         <div className='container mt-3'>
-          <div className='card'>
+          <Card>
             <Tab.Container
               tabs={tabs}
               onTabChange={(title) => { setForm(title); setFilter(''); }}
               tabListClass='card-header pb-0'
               contentClass='card-body'
             />
-          </div>
+          </Card>
         </div>
       </>
     );
