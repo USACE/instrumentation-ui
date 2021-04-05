@@ -175,6 +175,10 @@ footer.modal-footer {
   overflow: visible;
 }
 
+.react-datepicker-popper {
+  z-index: 3 !important;
+}
+
 .alert-container.unread {
   border-left: 4px solid #0a59a3;
 }
