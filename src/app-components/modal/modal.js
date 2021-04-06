@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import { classArray } from '../../utils';
-
 
 const Modal = connect(
   'doModalClose',
   'selectModalContent',
   'selectModalProps',
   'selectModalSize',
-  ({ modalContent: ModalContent, doModalClose, modalProps, modalSize }) => {
+  ({
+    doModalClose,
+    modalContent: ModalContent,
+    modalProps,
+    modalSize,
+    closeWithEscape = false,
+  }) => {
     if (!ModalContent) {
       document.body.classList.remove('no-scroll');
-      return null;
     }
 
     document.body.classList.add('no-scroll');
@@ -24,19 +28,36 @@ const Modal = connect(
       `modal-${modalSize}`,
     ]);
 
+    const closeModalWithEscape = useCallback((e) => {
+      console.log(e.keyCode);
+      if (e.keyCode === 27) doModalClose();
+    }, [doModalClose]);
+
+    useEffect(() => {
+      if (closeWithEscape) {
+        document.addEventListener('keydown', closeModalWithEscape);
+
+        if (!ModalContent) {
+          document.removeEventListener('keydown', closeModalWithEscape);
+        }
+      }
+    }, [ModalContent, closeModalWithEscape]);
+
     return (
-      <>
-        <div
-          onClick={doModalClose}
-          className='modal fade show'
-          style={{ display: 'block', backgroundColor: '#ccc', opacity: 0.5 }}
-        ></div>
-        <div className='modal fade show' style={{ display: 'block' }}>
-          <div className={modalCls}>
-            <ModalContent {...modalProps} />
+      !!ModalContent && (
+        <>
+          <div
+            onClick={doModalClose}
+            className='modal fade show'
+            style={{ display: 'block', backgroundColor: '#ccc', opacity: 0.5 }}
+          />
+          <div className='modal fade show' style={{ display: 'block' }}>
+            <div className={modalCls}>
+              <ModalContent {...modalProps} />
+            </div>
           </div>
-        </div>
-      </>
+        </>
+      )
     );
   }
 );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+
 import Modal from './app-components/modal';
 
 import './css/bootstrap/css/bootstrap.water.min.css';
@@ -10,6 +11,6 @@ import './css/index.scss';
 export default connect('selectRoute', ({ route: Route }) => (
   <div>
     <Route />
-    <Modal />
+    <Modal closeWithEscape />
   </div>
 ));
