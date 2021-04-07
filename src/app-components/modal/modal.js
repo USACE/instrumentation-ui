@@ -19,7 +19,7 @@ const Modal = connect(
       document.body.classList.remove('no-scroll');
     }
 
-    document.body.classList.add('no-scroll');
+    // document.body.classList.add('no-scroll');
 
     const modalCls = classArray([
       'modal-dialog',
