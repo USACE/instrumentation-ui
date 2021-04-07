@@ -8,7 +8,6 @@ import createAuthBundle from './create-auth-bundle';
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from './create-jwt-api-bundle';
 import cache from '../cache';
-import pkg from '../../package.json';
 
 import alertReadBundle from './alert-read-bundle';
 import alertSubscribeBundle from './alert-subscribe-bundle';
