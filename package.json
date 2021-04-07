@@ -1,6 +1,5 @@
 {
   "name": "hhd-ui",
-  "homepage": "https://apps.rsgis.dev/instrumentation",
   "version": "0.4.4",
   "private": true,
   "dependencies": {
@@ -43,10 +42,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.jsx",
     "lint:fix": "eslint . --ext .js,.jsx --fix",
-    "deploy-dev": "aws s3 rm s3://corpsmap-appz/instrumentation --recursive && aws s3 cp ./build/ s3://corpsmap-appz/instrumentation --recursive",
-    "deploy-test": "aws s3 rm s3://rsgis-apps/instrumentation --recursive && aws s3 cp ./build/ s3://rsgis-apps/instrumentation --recursive",
-    "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
-    "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to $npm_package_homepage"
+    "deploy-develop": "aws s3 rm s3://cwbi-apps-develop/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-develop/midas --recursive",
+    "deploy-stable": "aws s3 rm s3://cwbi-apps-stable/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-stable/midas --recursive"
   },
   "eslintConfig": {
     "extends": "react-app"

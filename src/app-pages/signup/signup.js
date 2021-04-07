@@ -7,26 +7,26 @@ import ProfileForm from '../../app-components/profile-form';
 
 export default connect(
   'doProfileSave',
-  'doUpdateUrlWithHomepage',
+  'doUpdateUrl',
   'selectAuthIsLoggedIn',
   'selectProfileActive',
   ({
     doProfileSave,
-    doUpdateUrlWithHomepage,
+    doUpdateUrl,
     authIsLoggedIn: isLoggedIn,
     profileActive: profile,
   }) => {
     // If user already has a profile or is not logged in,
     // i.e. navigated directly to "/signup", redirect them back to home.
     if (profile || !isLoggedIn) {
-      doUpdateUrlWithHomepage(['/']);
+      doUpdateUrl(['/']);
     }
 
     const form = useRef();
     const handleSave = () => {
       if (form.current) {
         form.current.save();
-        doUpdateUrlWithHomepage(['/']);
+        doUpdateUrl(['/']);
       }
     };
     return (
@@ -42,7 +42,9 @@ export default connect(
             right: 0,
           }}
         >
-          <div style={{ display: 'grid', placeItems: 'center', height: '100%' }}>
+          <div
+            style={{ display: 'grid', placeItems: 'center', height: '100%' }}
+          >
             <Card style={{ maxWidth: '32em' }}>
               <Card.Body>
                 <h5>Create your profile to continue</h5>
