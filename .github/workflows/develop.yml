@@ -11,6 +11,12 @@ on:
       - new-develop
 jobs:
   build:
+    env:
+      REACT_APP_DISTRICT_SELECTOR: true
+      REACT_APP_ALERT_EDITOR: true
+      REACT_APP_FORMULA_EDITOR: true
+      REACT_APP_INSTRUMENT_CHART: true
+      REACT_APP_CROSS_SECTION: true
     runs-on: ubuntu-latest
     strategy:
       matrix:

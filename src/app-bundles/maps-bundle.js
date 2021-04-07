@@ -8,6 +8,8 @@ import ScaleBar from 'ol/control/ScaleLine';
 // import { OSM, Vector as VectorSource } from 'ol/source';
 import BasemapPicker from '../ol-controls/basemap-picker';
 
+import 'ol/ol.css';
+
 const actions = {
   MAPS_INITIALIZED: 'MAPS_INITIALIZED',
   MAPS_SHUTDOWN: 'MAPS_SHUTDOWN',

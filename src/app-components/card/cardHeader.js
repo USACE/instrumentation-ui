@@ -19,12 +19,12 @@ const CardHeader = ({
   ]);
 
   return (
-    <p {...customProps} className={cardHeaderClasses}>
+    <span {...customProps} className={cardHeaderClasses}>
       {text
         ? <strong>{text}</strong>
         : children
       }
-    </p>
+    </span>
   );
 };
 
