@@ -6,14 +6,14 @@ import { ModalFooter, ModalHeader } from '../../../app-components/modal';
 export default connect(
   'doModalClose',
   'doCollectionGroupSave',
-  'doUpdateUrlWithHomepage',
+  'doUpdateUrl',
   'doCollectionGroupDelete',
   'selectRouteParams',
   'selectProjectsByRoute',
   ({
     doModalClose,
     doCollectionGroupSave,
-    doUpdateUrlWithHomepage,
+    doUpdateUrl,
     doCollectionGroupDelete,
     routeParams,
     projectsByRoute: project,
@@ -43,10 +43,10 @@ export default connect(
           () => {
             doModalClose();
             if (routeParams.hasOwnProperty('projectSlug')) {
-              doUpdateUrlWithHomepage(`/${routeParams.projectSlug}/manager`);
+              doUpdateUrl(`/${routeParams.projectSlug}/manager`);
             }
           },
-          true,
+          true
         );
       }
     };

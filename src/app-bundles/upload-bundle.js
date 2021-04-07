@@ -163,15 +163,18 @@ const uploadBundle = {
     const parsedData = store.selectUploadDataParsed();
 
     let filteredData = parsedData
-      .filter(row => !row.ignore)
-      .map(row => {
+      .filter((row) => !row.ignore)
+      .map((row) => {
         delete row.ignore;
         delete row.errors;
         row.project_id = project.id;
         return row;
       });
 
-    if (selectedParser.prePostFilter && typeof selectedParser.prePostFilter === 'function') {
+    if (
+      selectedParser.prePostFilter &&
+      typeof selectedParser.prePostFilter === 'function'
+    ) {
       filteredData = selectedParser.prePostFilter(filteredData);
     }
 
@@ -181,7 +184,9 @@ const uploadBundle = {
       if (err) {
         console.error(err.message);
         store.doNotificationFire({
-          message: err ? `${err.name}: ${err.Detail}` : 'An unexpected error occured. Please try again later.',
+          message: err
+            ? `${err.name}: ${err.Detail}`
+            : 'An unexpected error occured. Please try again later.',
           level: 'error',
           autoDismiss: 0,
         });
@@ -206,7 +211,7 @@ const uploadBundle = {
                 level: 'success',
                 autoDismiss: 10,
                 onRemove: () => {
-                  store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+                  store.doUpdateUrl(`/${project.slug}/manager`);
                 },
               });
             }
@@ -222,7 +227,7 @@ const uploadBundle = {
               level: 'success',
               autoDismiss: 10,
               onRemove: () => {
-                store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
+                store.doUpdateUrl(`/${project.slug}/manager`);
               },
             });
           } else {
@@ -423,13 +428,21 @@ const uploadBundle = {
 
   selectUploadIsParsing: (state) => state.upload._isParsing,
 
-  selectUploadFileName: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.name),
+  selectUploadFileName: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : csv.name
+  ),
 
-  selectUploadFileType: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.type),
+  selectUploadFileType: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : csv.type
+  ),
 
-  selectUploadFileSize: createSelector('selectUploadCsv', (csv) => !csv ? null : formatBytes(csv.size)),
+  selectUploadFileSize: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : formatBytes(csv.size)
+  ),
 
-  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) => !csv ? null : new Date(csv.lastModified).toLocaleString()),
+  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : new Date(csv.lastModified).toLocaleString()
+  ),
 
   selectUploadFileData: createSelector(
     'selectUploadFileName',

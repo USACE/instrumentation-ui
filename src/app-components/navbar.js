@@ -151,7 +151,7 @@ const Navbar = connect(
                 </Dropdown.Menu>
               </>
             ) : null}
-            {window.location.pathname === '/instrumentation/help' ? (
+            {window.location.pathname === '/help' ? (
               <NavItem href='/'>Home</NavItem>
             ) : (
               <NavItem href='/help'>Help</NavItem>

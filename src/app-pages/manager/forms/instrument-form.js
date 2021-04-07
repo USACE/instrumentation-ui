@@ -20,7 +20,7 @@ export default connect(
   'doProjTransformFromLonLat',
   'doProjTransformToLonLat',
   'doInstrumentsDelete',
-  'doUpdateUrlWithHomepage',
+  'doUpdateUrl',
   'selectRouteParams',
   'selectInstrumentDrawLon',
   'selectInstrumentDrawLat',
@@ -40,7 +40,7 @@ export default connect(
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
     doInstrumentsDelete,
-    doUpdateUrlWithHomepage,
+    doUpdateUrl,
     routeParams,
     instrumentDrawLat,
     instrumentDrawLon,
@@ -163,7 +163,7 @@ export default connect(
           () => {
             doModalClose();
             if (routeParams.hasOwnProperty('instrumentSlug'))
-              doUpdateUrlWithHomepage('/manager');
+              doUpdateUrl('/manager');
           },
           true
         );
