@@ -10,8 +10,6 @@ const Pagination = ({
   handlePageChange = () => {},
   defaultItemsPerPage = '10',
 }) => {
-  if (itemCount < 10) return null;
-
   const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(Math.ceil(itemCount / itemsPerPage));
@@ -36,43 +34,45 @@ const Pagination = ({
   };
 
   return (
-    <div className='d-flex justify-content-between noselect pointer'>
-      <Select
-        title='Page Size'
-        className='pagination-select'
-        defaultOption={defaultItemsPerPage}
-        onChange={val => setItemsPerPage(val)}
-        options={[
-          { value: '10' },
-          { value: '20' },
-          { value: '30' },
-        ]}
-      />
-      <ul className='pagination'>
-        <li className='page-item' onClick={pageDown}>
-          <a className='page-link' aria-label={'Go to previous page'}>
-            «
-          </a>
-        </li>
+    itemCount > 10 && (
+      <div className='d-flex justify-content-between noselect pointer'>
+        <Select
+          title='Page Size'
+          className='pagination-select'
+          defaultOption={defaultItemsPerPage}
+          onChange={val => setItemsPerPage(val)}
+          options={[
+            { value: '10' },
+            { value: '20' },
+            { value: '30' },
+          ]}
+        />
+        <ul className='pagination'>
+          <li className='page-item' onClick={pageDown}>
+            <a className='page-link' aria-label={'Go to previous page'}>
+              «
+            </a>
+          </li>
 
-        {/* Always show Page 1 (index 0) */}
-        {createPage(currentPage, setCurrentPage, 0)}
+          {/* Always show Page 1 (index 0) */}
+          {createPage(currentPage, setCurrentPage, 0)}
 
-        {/* Determine middle pages to show */}
-        {determinePagesToShow(pageCount, currentPage, setCurrentPage)}
+          {/* Determine middle pages to show */}
+          {determinePagesToShow(pageCount, currentPage, setCurrentPage)}
 
-        {/* Show Last Page if more than 1 page (index pageCount - 1) */}
-        {pageCount > 1 && (
-          createPage(currentPage, setCurrentPage, pageCount - 1)
-        )}
+          {/* Show Last Page if more than 1 page (index pageCount - 1) */}
+          {pageCount > 1 && (
+            createPage(currentPage, setCurrentPage, pageCount - 1)
+          )}
 
-        <li className='page-item' onClick={pageUp}>
-          <a className='page-link' aria-label={'Go to next page'}>
-            »
-          </a>
-        </li>
-      </ul>
-    </div>
+          <li className='page-item' onClick={pageUp}>
+            <a className='page-link' aria-label={'Go to next page'}>
+              »
+            </a>
+          </li>
+        </ul>
+      </div>
+    )
   );
 };
 
