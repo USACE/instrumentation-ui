@@ -351,17 +351,21 @@ export default connect(
 
     const filterList = projects ? projects.map(p => ({ value: p.title })) : {};
 
+    const isProdReady = process.env.REACT_APP_DISTRICT_SELECTOR;
+
     return (
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-3'>
-            <FilterItemList
-              items={filters}
-              filter={filter}
-              setFilter={setFilter}
-            />
-          </div>
-          <div className='col-md-9'>
+          {isProdReady && (
+            <div className='col-md-3'>
+              <FilterItemList
+                items={filters}
+                filter={filter}
+                setFilter={setFilter}
+              />
+            </div>
+          )}
+          <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
             { projects.length ? (
               <>
                 <div className='mb-2'>
