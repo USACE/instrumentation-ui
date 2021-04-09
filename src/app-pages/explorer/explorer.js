@@ -6,7 +6,6 @@ import PanelGroup from 'react-panelgroup';
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
 import MapTools from './map-tools';
-import Navbar from '../../app-components/navbar';
 import Visualizations from './explorer-visualizations';
 import useWindowListener from '../../customHooks/useWindowListener';
 
@@ -37,7 +36,6 @@ export default connect(
 
     return (
       <>
-        <Navbar theme='primary' />
         <div
           style={{
             position: 'absolute',

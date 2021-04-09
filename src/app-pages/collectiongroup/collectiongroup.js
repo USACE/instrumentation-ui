@@ -8,7 +8,6 @@ import collectionGroupForm from '../manager/forms/collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import Icon from '../../app-components/icon';
 import LoginMessage from '../../app-components/login-message';
-import Navbar from '../../app-components/navbar';
 import Notifications from '../../app-components/notifications';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesList from './collectiongroup-timeseries-list';
@@ -82,7 +81,6 @@ export default connect(
 
     return (
       <div style={{ marginBottom: '200px' }}>
-        <Navbar theme='primary' fixed />
         {detail && (
           <section className='container' style={{ marginTop: '6rem' }}>
             <div className='d-flex flex-row align-items-center'>
