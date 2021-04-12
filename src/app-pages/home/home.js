@@ -14,6 +14,7 @@ export default connect(
         <Navbar theme='transparent' hideBrand={true} />
         <Hero />
       </section>
+      <h3>TEST MESSAGE THURSDAY APR08</h3>
       <section>
         <div className='d-flex justify-content-around'>
           {homeData
