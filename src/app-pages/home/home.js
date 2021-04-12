@@ -12,7 +12,6 @@ export default connect(
       <section>
         <Hero />
       </section>
-      <h3>TEST MESSAGE THURSDAY APR08</h3>
       <section>
         <div className='d-flex justify-content-around'>
           {homeData

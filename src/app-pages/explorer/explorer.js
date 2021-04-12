@@ -34,12 +34,14 @@ export default connect(
 
     useWindowListener('keydown', toggleLandscape);
 
+    const hasDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
+
     return (
       <>
         <div
           style={{
             position: 'absolute',
-            top: 71,
+            top: hasDevBanner ? 106 : 71,
             right: 0,
             left: 0,
             bottom: 0,

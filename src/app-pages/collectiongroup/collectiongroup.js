@@ -82,7 +82,7 @@ export default connect(
     return (
       <div style={{ marginBottom: '200px' }}>
         {detail && (
-          <section className='container' style={{ marginTop: '6rem' }}>
+          <section className='container'>
             <div className='d-flex flex-row align-items-center'>
               <h4 className='py-4'>{detail.name}</h4>
               <RoleFilter

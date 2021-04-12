@@ -29,7 +29,7 @@ export default connect(
 
     return (
       <>
-        <section className='container-fluid' style={{ marginTop: '6rem' }}>
+        <section className='container-fluid'>
           <div className='row'>
             <div className='col-4'>
               <FileDetails />

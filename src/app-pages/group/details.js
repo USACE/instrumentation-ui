@@ -35,7 +35,7 @@ export default connect(
 
     return (
       <>
-        <section className='container' style={{ marginTop: '6rem' }}>
+        <section className='container'>
           <div className='row'>
             <div className='col'>
               <Card style={{ height: '300px' }}>

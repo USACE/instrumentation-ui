@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Dropdown from './dropdown';
-import Icon from './icon';
-import RoleFilter from './role-filter';
-import { classArray } from '../utils';
+import DevBanner from './devBanner.js';
+import Dropdown from '../dropdown';
+import Icon from '../icon';
+import NavItem from './navItem';
+import ProfileMenu from './profileMenu';
+import RoleFilter from '../role-filter';
+import { classArray } from '../../utils';
+
+import './navigation.scss';
 
 const customTheme = {
   '/': {
@@ -28,18 +33,22 @@ const NavBar = connect(
   ({
     doAuthLogin,
     authIsLoggedIn,
-    theme,
-    fixed = false,
-    hideBrand,
-    brand = null,
     projectsByRoute: project,
     pathname,
   }) => {
+    const [hideBrand, setHideBrand] = useState(false);
+    const [brand, setBrand] = useState(null);
+    const [theme, setTheme] = useState('primary');
+
+    const showDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
+
     const navClass = classArray([
       'navbar',
       'navbar-expand-lg',
-      fixed && 'fixed-top',
-      theme === 'light' ? 'navbar-light' : 'navbar-dark',
+      'navbar-dark',
+      theme !== 'transparent' ? 
+        showDevBanner ? 'fixed-top-20' : 'fixed-top'
+        : '',
       `bg-${theme}`,
     ]);
 
@@ -49,9 +58,18 @@ const NavBar = connect(
         (path) => pathname.indexOf(path) !== -1
       );
 
+    useEffect(() => {
+      const { hideBrand, brand, theme } = customTheme[pathname] || {};
+
+      setHideBrand(hideBrand);
+      setBrand(brand);
+      setTheme(theme || 'primary');
+    }, [pathname]);
+
     return (
       <>
-        <nav className={navClass}>
+        {showDevBanner && <DevBanner />}
+        <nav className={navClass} style={{ marginBottom: '20px'}}>
           {hideBrand ? null : (
             <span className='navbar-brand'>
               <strong>
@@ -76,11 +94,11 @@ const NavBar = connect(
             aria-expanded='false'
             aria-label='Toggle navigation'
           >
-            <span className='navbar-toggler-icon'></span>
+            <span className='navbar-toggler-icon' />
           </button>
 
           <div className='collapse navbar-collapse'>
-            <ul className='navbar-nav mr-auto'></ul>
+            <ul className='navbar-nav mr-auto' />
             <ul className='navbar-nav'>
               {project ? (
                 <>

@@ -61,7 +61,7 @@ export default connect(
 
     return (
       <div className='mb-5'>
-        <section className='container-fluid' style={{ marginTop: '6rem' }}>
+        <section className='container-fluid'>
           <div className='row'>
             <div className='col'>
               <Card className='h-100'>

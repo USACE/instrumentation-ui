@@ -104,7 +104,7 @@ export default connect(
 
     return (
       <>
-        <div className='container mt-3'>
+        <div className='container'>
           <Card>
             <Tab.Container
               tabs={tabs}
