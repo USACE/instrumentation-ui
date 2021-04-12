@@ -15,12 +15,6 @@ const Modal = connect(
     modalSize,
     closeWithEscape = false,
   }) => {
-    if (!ModalContent) {
-      document.body.classList.remove('no-scroll');
-    }
-
-    // document.body.classList.add('no-scroll');
-
     const modalCls = classArray([
       'modal-dialog',
       'modal-dialog-scrollable',
