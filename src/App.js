@@ -11,7 +11,7 @@ import './css/index.scss';
 
 export default connect('selectRoute', ({ route: Route }) => (
   <div>
-    <NavBar theme='primary' fixed />
+    <NavBar theme='primary' />
     <Route />
     <Modal closeWithEscape />
   </div>
