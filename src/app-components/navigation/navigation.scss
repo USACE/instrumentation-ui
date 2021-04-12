@@ -1,13 +1,23 @@
-.fixed-top-20 {
-  position: fixed;
-  top: 20;
+.fixed-top-banner {
+  position: fixed !important;
+  top: 32px;
   right: 0;
   left: 0;
+  margin-top: 0 !important;
   z-index: 1030;
 }
 
 .dev-banner {
   background: lightblue !important;
   padding: 5px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100vw;
+  z-index: 1030;
 };
+
+.transparent-nav-banner {
+  margin-top: 2rem;
+}

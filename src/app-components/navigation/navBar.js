@@ -47,8 +47,8 @@ const NavBar = connect(
       'navbar-expand-lg',
       'navbar-dark',
       theme !== 'transparent' ? 
-        showDevBanner ? 'fixed-top-20' : 'fixed-top'
-        : '',
+        showDevBanner ? 'fixed-top-banner' : 'fixed-top'
+        : showDevBanner ? 'transparent-nav-banner' : '',
       `bg-${theme}`,
     ]);
 
@@ -69,7 +69,7 @@ const NavBar = connect(
     return (
       <>
         {showDevBanner && <DevBanner />}
-        <nav className={navClass} style={{ marginBottom: '20px'}}>
+        <nav className={navClass}>
           {hideBrand ? null : (
             <span className='navbar-brand'>
               <strong>
