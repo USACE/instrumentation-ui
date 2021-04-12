@@ -9,7 +9,6 @@ import InstrumentGroupForm from './forms/instrument-group-form';
 import InstrumentGroupTable from './tabs/instrument-group-table';
 import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
-import Navbar from '../../app-components/navbar';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
 import Tab from '../../app-components/tab';
@@ -105,7 +104,6 @@ export default connect(
 
     return (
       <>
-        <Navbar theme='primary' />
         <div className='container mt-3'>
           <Card>
             <Tab.Container

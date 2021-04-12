@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 import { formatDistance } from 'date-fns';
 
 import Card from '../../app-components/card';
-import Navbar from '../../app-components/navbar';
 import Tab from '../../app-components/tab';
 
 import './userProfile.css';
@@ -68,7 +67,6 @@ const UserProfile = connect(
 
     return (
       <>
-        <Navbar theme='primary' />
         <section className='container-fluid'>
           <div className='row'>
             <div className='col-4 user-container'>

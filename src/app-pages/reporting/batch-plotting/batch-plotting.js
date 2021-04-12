@@ -6,7 +6,6 @@ import Card from '../../../app-components/card';
 import DataConfiguration from './data-configuration';
 import Icon from '../../../app-components/icon';
 import Map from '../../../app-components/classMap';
-import Navbar from '../../../app-components/navbar';
 
 import '../reporting.scss';
 
@@ -20,7 +19,6 @@ const BatchPlotting = connect(
     mapsObject,
   }) => (
     <>
-      <Navbar theme='primary' fixed />
       <section className='container-fluid page-body'>
         <Card className='w-100'>
           <Card.Header text='Plot Data Configuration' />

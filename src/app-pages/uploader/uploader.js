@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 
 import FileDetails from './file-details';
 import FilePreview from './file-preview';
-import Navbar from '../../app-components/navbar';
 import Notifications from '../../app-components/notifications';
 import UploadSettings from './upload-settings';
 
@@ -30,7 +29,6 @@ export default connect(
 
     return (
       <>
-        <Navbar theme='primary' fixed />
         <section className='container-fluid' style={{ marginTop: '6rem' }}>
           <div className='row'>
             <div className='col-4'>

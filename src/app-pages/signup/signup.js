@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
-import Navbar from '../../app-components/navbar';
 import ProfileForm from '../../app-components/profile-form';
 
 export default connect(
@@ -29,9 +28,9 @@ export default connect(
         doUpdateUrlWithHomepage(['/']);
       }
     };
+
     return (
       <div>
-        <Navbar theme='primary' brand='Home' />
         <section
           className='container'
           style={{

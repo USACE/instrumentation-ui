@@ -6,6 +6,20 @@ import Icon from './icon';
 import RoleFilter from './role-filter';
 import { classArray } from '../utils';
 
+const customTheme = {
+  '/': {
+    theme: 'transparent',
+    hideBrand: true,
+  },
+  '/help': {
+    theme: 'transparent',
+    hideBrand: true,
+  },
+  '/signup': {
+    brand: 'Home',
+  },
+};
+
 const NavBar = connect(
   'doAuthLogin',
   'selectAuthIsLoggedIn',
