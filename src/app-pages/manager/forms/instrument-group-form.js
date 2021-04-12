@@ -7,14 +7,14 @@ export default connect(
   'doModalClose',
   'doInstrumentGroupsSave',
   'doInstrumentGroupsDelete',
-  'doUpdateUrlWithHomepage',
+  'doUpdateUrl',
   'selectRouteParams',
   'selectProjectsByRoute',
   ({
     doModalClose,
     doInstrumentGroupsSave,
     doInstrumentGroupsDelete,
-    doUpdateUrlWithHomepage,
+    doUpdateUrl,
     routeParams,
     projectsByRoute: project,
     item,
@@ -45,7 +45,7 @@ export default connect(
           () => {
             doModalClose();
             if (routeParams.hasOwnProperty('groupSlug'))
-              doUpdateUrlWithHomepage('/manager');
+              doUpdateUrl('/manager');
           },
           true
         );

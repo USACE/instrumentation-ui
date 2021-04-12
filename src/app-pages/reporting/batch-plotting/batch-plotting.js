@@ -17,45 +17,51 @@ const BatchPlotting = connect(
     doMapsInitialize,
     doMapsShutdown,
     mapsObject,
-  }) => (
-    <>
-      <section className='container-fluid page-body'>
-        <Card className='w-100'>
-          <Card.Header text='Plot Data Configuration' />
-          <DataConfiguration />
-        </Card>
-        <div className='row mt-4'>
-          <div className='col col-sm-5'>
-            <Card style={{ minHeight: '400px' }}>
-              <Card.Body>
-                <Map
-                  mapKey='batchPlotMap'
-                  doMapsInitialize={doMapsInitialize}
-                  doMapsShutdown={doMapsShutdown}
-                  mapsObject={mapsObject}
-                />
-              </Card.Body>
-            </Card>
+  }) => {
+    const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
+
+    return (
+      <>
+        <section className='container-fluid page-body'>
+          <Card className='w-100'>
+            <Card.Header text='Plot Data Configuration' />
+            <DataConfiguration />
+          </Card>
+          <div className='row mt-4'>
+            <div className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}>
+              <Card style={{ minHeight: '400px' }}>
+                <Card.Body>
+                  <Map
+                    mapKey='batchPlotMap'
+                    doMapsInitialize={doMapsInitialize}
+                    doMapsShutdown={doMapsShutdown}
+                    mapsObject={mapsObject}
+                  />
+                </Card.Body>
+              </Card>
+            </div>
+            {crossSectionReady && (
+              <div className='col col-sm-7'>
+                <Card className='h-100'>
+                  <Card.Header text='Cross Section' />
+                  <Card.Body isContentCentered>
+                    <div className='text-muted pt-4'>
+                      <Icon icon='account-hard-hat' style={{ fontSize: '64px' }} />
+                      <h5>Currently Under Construction</h5>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+            )}
           </div>
-          <div className='col col-sm-7'>
-            <Card className='h-100'>
-              <Card.Header text='Cross Section' />
-              <Card.Body isContentCentered>
-                <div className='text-muted pt-4'>
-                  <Icon icon='account-hard-hat' style={{ fontSize: '64px' }} />
-                  <h5>Currently Under Construction</h5>
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
-        </div>
-        <Card className='w-100 my-4'>
-          <Card.Header text='Plot' />
-          <BatchPlotChart />
-        </Card>
-      </section>
-    </>
-  )
+          <Card className='w-100 my-4'>
+            <Card.Header text='Plot' />
+            <BatchPlotChart />
+          </Card>
+        </section>
+      </>
+    );
+  }
 );
 
 export default BatchPlotting;

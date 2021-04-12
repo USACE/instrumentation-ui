@@ -1,0 +1,39 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI Build User Interface; Deploy to Environment DEVELOP
+
+on:
+  push:
+    branches:
+      - new-develop
+jobs:
+  build:
+    env:
+      REACT_APP_DISTRICT_SELECTOR: true
+      REACT_APP_ALERT_EDITOR: true
+      REACT_APP_FORMULA_EDITOR: true
+      REACT_APP_INSTRUMENT_CHART: true
+      REACT_APP_CROSS_SECTION: true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build
+
+      - name: Deploy to Dev
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.CWBICI_DEVELOP_AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.CWBICI_DEVELOP_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CWBICI_DEVELOP_AWS_SECRET_ACCESS_KEY }}
+        run: npm run deploy-develop

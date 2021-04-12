@@ -30,8 +30,5 @@ export default createRouteBundle(
     '/:projectSlug/instruments/:instrumentSlug': Instrument,
     '/:projectSlug/collection-groups/:collectionGroupSlug': CollectionGroup,
     '*': NotFound,
-  },
-  {
-    routeInfoSelector: 'selectPathnameMinusHomepage',
   }
 );
