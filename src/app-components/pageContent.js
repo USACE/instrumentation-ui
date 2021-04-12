@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+
 import { classArray } from '../utils';
 
 const hasDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
-
 const blacklist = ['/', '/help'];
 
 const PageContent = connect(
