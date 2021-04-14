@@ -10,7 +10,6 @@ import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../manager/forms/instrument-form';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
-import Navbar from '../../app-components/navbar';
 import NoAlerts from './alert/no-alerts';
 import Notes from './notes';
 import RoleFilter from '../../app-components/role-filter';
@@ -62,8 +61,7 @@ export default connect(
 
     return (
       <div className='mb-5'>
-        <Navbar theme='primary' fixed />
-        <section className='container-fluid' style={{ marginTop: '6rem' }}>
+        <section className='container-fluid'>
           <div className='row'>
             <div className='col'>
               <Card className='h-100'>

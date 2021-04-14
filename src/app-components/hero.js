@@ -7,8 +7,7 @@ const Hero = () => (
   <div
     style={{
       height: '400px',
-      marginTop: '-80px',
-      paddingTop: '90px',
+      marginTop: '-95px',
       backgroundImage: `url(${bg1})`,
       backgroundSize: 'cover',
       backgroundPosition: 'top',

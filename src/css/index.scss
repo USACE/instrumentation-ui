@@ -56,6 +56,14 @@ $error-color: #f04124;
   z-index: 2;
 }
 
+.page-margin {
+  margin-top: 98px;
+
+  &.banner {
+    margin-top: 130px
+  }
+}
+
 footer.modal-footer {
   display: flex;
   align-items: center;
@@ -173,6 +181,10 @@ footer.modal-footer {
 
 .ag-root-wrapper {
   overflow: visible;
+}
+
+.react-datepicker-popper {
+  z-index: 3 !important;
 }
 
 .alert-container.unread {

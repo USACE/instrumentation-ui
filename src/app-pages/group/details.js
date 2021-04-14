@@ -11,7 +11,6 @@ import InstrumentRemove from './instrument-remove';
 import InstrumentTable from '../manager/tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
-import Navbar from '../../app-components/navbar';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesPanel from './group-time-series-panel';
 
@@ -36,8 +35,7 @@ export default connect(
 
     return (
       <>
-        <Navbar theme='primary' fixed />
-        <section className='container' style={{ marginTop: '6rem' }}>
+        <section className='container'>
           <div className='row'>
             <div className='col'>
               <Card style={{ height: '300px' }}>

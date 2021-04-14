@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 
 import Footer from '../../app-components/footer';
 import Hero from '../../app-components/hero';
-import Navbar from '../../app-components/navbar';
 import ProjectList from './project-list';
 
 export default connect(
@@ -11,10 +10,8 @@ export default connect(
   ({ homeData }) => (
     <div className='container-fluid' style={{ paddingLeft: 0, paddingRight: 0 }}>
       <section>
-        <Navbar theme='transparent' hideBrand={true} />
         <Hero />
       </section>
-      <h3>TEST MESSAGE THURSDAY APR08</h3>
       <section>
         <div className='d-flex justify-content-around'>
           {homeData

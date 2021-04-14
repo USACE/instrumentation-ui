@@ -1,6 +1,6 @@
-import { formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import { formatDistanceToNow } from 'date-fns';
 
 import Button from '../../app-components/button';
 
@@ -8,7 +8,7 @@ import './collectiongroup-timestamp-mode-switcher.css';
 
 const CollectionGroupTimestampModeSwitcher = ({ timestampMode, setTimestampMode, date, setDate }) => (
   <div className='d-flex flex-row-reverse align-items-center bg-light px-3 py-2'>
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column' onClick={e => e.stopPropagation()}>
       <div style={{ width: 240 }} className='text-right'>
         <DatePicker
           style={{ width: '100%' }}
@@ -33,7 +33,7 @@ const CollectionGroupTimestampModeSwitcher = ({ timestampMode, setTimestampMode,
           <Button
             variant='link'
             size='small'
-            className={`p-0 text-left ${timestampMode === 'now' ? 'text-secondary' : ''}`}
+            className='p-0 text-left'
             style={{ width: 120 }}
             handleClick={() => setTimestampMode('now')}
             text='reset to now'
