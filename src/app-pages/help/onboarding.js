@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 
 const csvSampleProjects = [
   ['Project Name'],
@@ -215,7 +215,7 @@ export default connect(
             .csv files below and modify them with your own data.
           </p>
           <p></p>
-          <Tab.Container tabs={tabs} />
+          <TabContainer tabs={tabs} />
         </Card.Body>
       </Card>
     );

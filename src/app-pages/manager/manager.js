@@ -11,7 +11,7 @@ import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (
@@ -106,7 +106,7 @@ export default connect(
       <>
         <div className='container'>
           <Card>
-            <Tab.Container
+            <TabContainer
               tabs={tabs}
               onTabChange={(title) => { setForm(title); setFilter(''); }}
               tabListClass='card-header pb-0'

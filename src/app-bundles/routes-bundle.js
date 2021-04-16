@@ -11,6 +11,7 @@ import Logout from '../app-pages/logout';
 import Manager from '../app-pages/manager/manager';
 import NotFound from '../app-pages/404';
 import Profile from '../app-pages/profile/userProfile';
+import Project from '../app-pages/project';
 import SignUp from '../app-pages/signup/signup';
 import Uploader from '../app-pages/uploader/uploader';
 
@@ -23,6 +24,7 @@ export default createRouteBundle(
     '/signup': SignUp,
     '/profile': Profile,
     '/:projectSlug/upload': Uploader,
+    '/:projectSlug/project': Project,
     '/:projectSlug/manager': Manager,
     '/:projectSlug/explore': Explorer,
     '/:projectSlug/batch-plotting': BatchPlotting,

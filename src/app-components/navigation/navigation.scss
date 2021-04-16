@@ -21,3 +21,14 @@
 .transparent-nav-banner {
   margin-top: 2rem;
 }
+
+.secondary-nav-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -10px;
+  padding: 0 15px;
+
+  > {
+    flex: 1;
+  }
+}

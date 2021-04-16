@@ -6,7 +6,7 @@ import Card from '../../app-components/card';
 import Chart from './chart/chart';
 import Constants from './constants/constants';
 import FormulaEditor from './formula/formula';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 import Timeseries from './timeseries/timeseries';
 
 export default connect(
@@ -41,7 +41,7 @@ export default connect(
 
     return (
       <Card>
-        <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
+        <TabContainer tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
       </Card>
     );
   }
