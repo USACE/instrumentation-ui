@@ -1,19 +1,19 @@
 .fixed-top-banner {
-  position: fixed !important;
-  top: 32px;
-  right: 0;
   left: 0;
   margin-top: 0 !important;
+  position: fixed !important;
+  right: 0;
+  top: 32px;
   z-index: 1030;
 }
 
 .dev-banner {
   background: lightblue !important;
+  left: 0;
   padding: 5px 10px;
   position: fixed;
-  top: 0;
-  left: 0;
   right: 0;
+  top: 0;
   width: 100vw;
   z-index: 1030;
 };
@@ -26,9 +26,31 @@
   display: flex;
   justify-content: space-between;
   margin-top: -10px;
-  padding: 0 15px;
+  padding: 0 15px 5px 15px;
+  position: relative;
 
   > {
     flex: 1;
+  }
+
+  .secondary-nav-heading {
+    border-bottom: 1px solid lightgray;
+    left: 0;
+    padding: 0 10px 5px;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: -1;
+  }
+
+  .secondary-nav-page-content {
+    left: 0px;
+    padding: 10px;
+    position: absolute;
+    top: 30px;
+  }
+
+  .secondary-nav-tabs {
+    z-index: 5;
   }
 }

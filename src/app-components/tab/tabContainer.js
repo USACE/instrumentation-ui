@@ -4,7 +4,6 @@ import TabItem from './tabItem';
 
 import './tab.scss';
 
-
 /**
  * A component used to switch between large page contexts within a single page of the application.
  * @param {Array} tabs - THe list of tabs to be generated and the element to be displayed when active. Item structure = `{ title: string, content: Element }`
