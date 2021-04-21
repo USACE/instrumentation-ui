@@ -1,6 +1,9 @@
 import React from 'react';
 
+import Explorer from '../explorer/explorer';
 import Icon from '../../app-components/icon';
+import ProjectDashboard from './dashboard';
+import Manager from '../manager/manager';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
 
 const Project = () => (
@@ -10,25 +13,13 @@ const Project = () => (
       navLinks={[
         {
           title: <span><Icon icon='view-dashboard' />&nbsp;Dashboard</span>,
-          content: (
-            <div>
-              Dashboard Page
-            </div>
-          ),
+          content: <ProjectDashboard />,
         }, {
-          title: <span><Icon icon='format-list-bulleted' />&nbsp;Instrument Groups</span>,
-          content: (
-            <div>
-              To hold Instrument Group Page
-            </div>
-          ),
+          title: <span><Icon icon='format-list-bulleted' />&nbsp;Inventory Manager</span>,
+          content: <Manager style={{ width: '100vw' }}/>,
         }, {
-          title: <span><Icon icon='speedometer' />&nbsp;All Instruments</span>,
-          content: (
-            <div>
-              To hold All Instruments Page
-            </div>
-          ),
+          title: <span><Icon icon='map-marker-radius-outline' />&nbsp;Explorer</span>,
+          content: <Explorer />,
         }, {
           title: <span><Icon icon='alert-outline' />&nbsp;Alerts</span>,
           content: (
