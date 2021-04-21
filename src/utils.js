@@ -18,6 +18,18 @@ exports.isNumeric = str => {
          !isNaN(parseFloat(str));           // ...and ensure strings of whitespace fail
 };
 
+/**
+ * Returns a provided string based on parameters provided
+ * @param {string} single - The string to be returned if value is 1
+ * @param {string} plural - The string to be returned if value is not 1
+ * @param {number} value - Checked to determine which string to return;
+ * @returns The single or plural string provided based on the value.
+ */
+exports.pluralize = (single, plural, value) => {
+  if (value === 1) return single;
+  return plural;
+};
+
 exports.seriesStyles = {
   rainfall: {
     mode: 'lines',

@@ -81,9 +81,9 @@ const NavBar = connect(
               {project && project.name && (
                 <>
                   <Icon icon='chevron-right' className='px-2' />
-                  <span className='text-white default-cursor'>
+                  <a href={`/${project.slug}/project`} className='text-white'>
                     {project.name}
-                  </span>
+                  </a>
                 </>
               )}
             </span>
@@ -102,10 +102,6 @@ const NavBar = connect(
             <ul className='navbar-nav'>
               {project ? (
                 <>
-                  <NavItem href={`/${project.slug}/explore`}>Explorer</NavItem>
-                  <NavItem href={`/${project.slug}/manager`}>
-                    Inventory Manager
-                  </NavItem>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
                   </RoleFilter>
