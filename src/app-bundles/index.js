@@ -65,7 +65,7 @@ export default composeBundles(
     root:
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:80'
-        : 'https://midas-api.rsgis.dev',
+        : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
       // GET requests do not include token unless path starts with /my_

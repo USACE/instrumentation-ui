@@ -18,6 +18,7 @@ jobs:
       REACT_APP_INSTRUMENT_CHART: true
       REACT_APP_CROSS_SECTION: true
       REACT_APP_DEVELOPMENT_BANNER: true
+      REACT_APP_API_URL: https://develop-midas-api.rsgis.dev
     runs-on: ubuntu-latest
     strategy:
       matrix:
