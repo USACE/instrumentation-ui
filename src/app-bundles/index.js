@@ -3,13 +3,11 @@ import {
   createCacheBundle,
   createUrlBundle,
 } from 'redux-bundler';
-import { createNestedUrlBundle } from '@corpsmap/corpsmap-bundles';
 // Required change from @corpsmap/create-auth-bundle;
 import createAuthBundle from './create-auth-bundle';
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from './create-jwt-api-bundle';
 import cache from '../cache';
-import pkg from '../../package.json';
 
 import alertReadBundle from './alert-read-bundle';
 import alertSubscribeBundle from './alert-subscribe-bundle';
@@ -40,7 +38,6 @@ import instrumentNotesBundle from './instrument-notes-bundle';
 import instrumentStatusBundle from './instrument-status-bundle';
 import mapsBundle from './maps-bundle';
 import modalBundle from './modal-bundle';
-import nestedUrlBundle from './nested-url-bundle';
 import notificationBundle from './notification-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
@@ -60,15 +57,15 @@ const mockTokenUser =
 export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
-    redirectOnLogout: pkg.homepage,
+    redirectOnLogout: '/',
     mock: process.env.NODE_ENV === 'development' ? true : false,
     token: process.env.NODE_ENV === 'development' ? mockTokenUser : null,
   }),
   createJwtApiBundle({
     root:
       process.env.NODE_ENV === 'development'
-        ? 'http://localhost:80/instrumentation'
-        : 'https://midas-api.rsgis.dev',
+        ? 'http://localhost:80'
+        : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
       // GET requests do not include token unless path starts with /my_
@@ -88,9 +85,6 @@ export default composeBundles(
     cacheFn: cache.set,
   }),
   createUrlBundle(),
-  createNestedUrlBundle({
-    pkg: pkg,
-  }),
   alertReadBundle,
   alertSubscribeBundle,
   alertUnreadBundle,
@@ -120,7 +114,6 @@ export default composeBundles(
   instrumentStatusBundle,
   mapsBundle,
   modalBundle,
-  nestedUrlBundle,
   notificationBundle,
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,

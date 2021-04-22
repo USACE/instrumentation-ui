@@ -11,6 +11,14 @@ on:
       - develop
 jobs:
   build:
+    env:
+      REACT_APP_DISTRICT_SELECTOR: true
+      REACT_APP_ALERT_EDITOR: true
+      REACT_APP_FORMULA_EDITOR: true
+      REACT_APP_INSTRUMENT_CHART: true
+      REACT_APP_CROSS_SECTION: true
+      REACT_APP_DEVELOPMENT_BANNER: true
+      REACT_APP_API_URL: https://develop-midas-api.rsgis.dev
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,4 +38,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.CWBICI_DEVELOP_AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.CWBICI_DEVELOP_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CWBICI_DEVELOP_AWS_SECRET_ACCESS_KEY }}
-        run: npm run deploy-dev
+        run: npm run deploy-develop

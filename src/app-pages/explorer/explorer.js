@@ -6,7 +6,6 @@ import PanelGroup from 'react-panelgroup';
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
 import MapTools from './map-tools';
-import Navbar from '../../app-components/navbar';
 import Visualizations from './explorer-visualizations';
 import useWindowListener from '../../customHooks/useWindowListener';
 
@@ -35,13 +34,14 @@ export default connect(
 
     useWindowListener('keydown', toggleLandscape);
 
+    const hasDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
+
     return (
       <>
-        <Navbar theme='primary' />
         <div
           style={{
             position: 'absolute',
-            top: 71,
+            top: hasDevBanner ? 106 : 71,
             right: 0,
             left: 0,
             bottom: 0,

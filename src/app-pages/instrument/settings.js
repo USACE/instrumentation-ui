@@ -16,22 +16,28 @@ export default connect(
     timeseriesMeasurementsItemsObject: measurements,
     instrumentsByRoute: instrument,
   }) => {
-    const tabs = [{
-      title: 'Alerts',
-      content: <AlertEditor />
-    }, {
-      title: 'Constants',
-      content: <Constants />
-    }, {
-      title: 'Timeseries',
-      content: <Timeseries data={measurements[instrument.id]} />,
-    }, {
-      title: 'Formula Editor',
-      content: <FormulaEditor />,
-    }, {
-      title: 'Chart',
-      content: <Chart />,
-    }];
+    const alertsReady = process.env.REACT_APP_ALERT_EDITOR;
+    const forumlaReady = process.env.REACT_APP_FORMULA_EDITOR;
+    const chartReady = process.env.REACT_APP_INSTRUMENT_CHART;
+
+    const tabs = [
+      alertsReady && {
+        title: 'Alerts',
+        content: <AlertEditor />
+      }, {
+        title: 'Constants',
+        content: <Constants />
+      }, {
+        title: 'Timeseries',
+        content: <Timeseries data={measurements[instrument.id]} />,
+      }, forumlaReady && {
+        title: 'Formula Editor',
+        content: <FormulaEditor />,
+      }, chartReady && {
+        title: 'Chart',
+        content: <Chart />,
+      }
+    ].filter(e => e);
 
     return (
       <Card>

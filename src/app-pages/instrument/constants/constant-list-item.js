@@ -11,8 +11,6 @@ export default connect(
   'selectProjectsByRoute',
   'doModalOpen',
   ({ projectsByRoute: project, doModalOpen, item, onClick, active }) => {
-    if (!item) return null;
-
     const li = useRef(null);
     const itemClass = classnames({
       'list-group-item': true,
@@ -20,28 +18,30 @@ export default connect(
     });
 
     return (
-      <li
-        ref={li}
-        className={itemClass}
-        onClick={(e) => {
-          if (e.currentTarget === li.current) onClick(item);
-        }}
-      >
-        <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-          <Button
-            variant='info'
-            size='small'
-            className='float-right'
-            isOutline
-            handleClick={() => doModalOpen(ConstantForm, { item: item })}
-            icon={<Icon icon='pencil' />}
-          />
-        </RoleFilter>
-        <div>{item.name}</div>
-        <div>
-          <small>{`${item.parameter} in ${item.unit}`}</small>
-        </div>
-      </li>
+      item && (
+        <li
+          ref={li}
+          className={itemClass}
+          onClick={(e) => {
+            if (e.currentTarget === li.current) onClick(item);
+          }}
+        >
+          <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+            <Button
+              variant='info'
+              size='small'
+              className='float-right'
+              isOutline
+              handleClick={() => doModalOpen(ConstantForm, { item: item })}
+              icon={<Icon icon='pencil' />}
+            />
+          </RoleFilter>
+          <div>{item.name}</div>
+          <div>
+            <small>{`${item.parameter} in ${item.unit}`}</small>
+          </div>
+        </li>
+      )
     );
   }
 );

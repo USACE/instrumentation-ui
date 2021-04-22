@@ -19,15 +19,16 @@ export default connect(
 
     const handleClickAdd = (e) => {
       e.preventDefault();
-      if (!timeseriesSelected) {
+
+      if (timeseriesSelected) {
+        doCollectionGroupAddTimeseries({
+          projectId: collectionGroup.project_id,
+          collectionGroupId: collectionGroup.id,
+          timeseriesId: timeseriesSelected.id,
+        });
+      } else {
         console.log('No Timeseries Selected; Skipping POST');
-        return;
       }
-      doCollectionGroupAddTimeseries({
-        projectId: collectionGroup.project_id,
-        collectionGroupId: collectionGroup.id,
-        timeseriesId: timeseriesSelected.id,
-      });
     };
 
     return (
@@ -35,7 +36,7 @@ export default connect(
         <ModalHeader title='Add Field' />
         <section className='modal-body' style={{ overflow: 'visible' }}>
           <Dropdown.Menu
-            buttonClasses={['btn-secondary', 'w-100']}
+            buttonClasses={['btn-outline-primary', 'w-100']}
             buttonContent={(
               timeseriesSelected &&
               timeseriesSelected.name &&

@@ -1,12 +1,10 @@
 import React from 'react';
 
 import Hero from '../../app-components/hero';
-import Navbar from '../../app-components/navbar';
 import Onboarding from './onboarding';
 
 const HelpPage = () => (
-  <div>
-    <Navbar theme='transparent' hideBrand={true} />
+  <>
     <Hero />
     <section>
       <div className='container'>
@@ -15,7 +13,7 @@ const HelpPage = () => (
         <Onboarding />
       </div>
     </section>
-  </div>
+  </>
 );
 
 export default HelpPage;
