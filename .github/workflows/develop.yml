@@ -8,7 +8,7 @@ name: CI Build User Interface; Deploy to Environment DEVELOP
 on:
   push:
     branches:
-      - new-develop
+      - develop
 jobs:
   build:
     env:
