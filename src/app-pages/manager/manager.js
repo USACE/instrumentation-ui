@@ -40,7 +40,7 @@ export default connect(
     if (!project) return null;
 
     const [filter, setFilter] = useState('');
-    const [form, setForm] = useState('Instrument Groups');
+    const [form, setForm] = useState('All Instruments');
     const forms = {
       'Instrument Groups': InstrumentGroupForm,
       'All Instruments': InstrumentForm,
@@ -77,19 +77,19 @@ export default connect(
     );
 
     const tabs = [{
-      title: 'Instrument Groups',
-      content: (
-        <>
-          {commonContent()}
-          <InstrumentGroupTable groups={data[form]} />
-        </>
-      ),
-    }, {
       title: 'All Instruments',
       content: (
         <>
           {commonContent()}
           <InstrumentTable instruments={data[form]} />
+        </>
+      ),
+    }, {
+      title: 'Instrument Groups',
+      content: (
+        <>
+          {commonContent()}
+          <InstrumentGroupTable groups={data[form]} />
         </>
       ),
     }, {
