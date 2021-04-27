@@ -6,6 +6,11 @@ import Icon from '../../app-components/icon';
 import ProjectDashboard from './dashboard/dashboard';
 import Manager from '../manager/manager';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
+import Uploader from '../uploader/uploader';
+
+const Title = ({ text, icon }) => (
+  <span><Icon icon={icon} />&nbsp;{text}</span>
+);
 
 const Project = connect(
   'selectProjectsByRoute',
@@ -18,16 +23,20 @@ const Project = connect(
           headingNode={<h4>{project.name}</h4>}
           navLinks={[
             {
-              title: <span><Icon icon='view-dashboard' />&nbsp;Dashboard</span>,
+              title: <Title text='Dashboard' icon='view-dashboard' />,
               content: <ProjectDashboard />,
               paddingSmall: true,
             }, {
-              title: <span><Icon icon='format-list-bulleted' />&nbsp;Inventory Manager</span>,
+              title: <Title text='All Instruments' icon='speedometer' />,
               content: <Manager style={{ width: '100vw' }}/>,
               paddingSmall: true,
             }, {
-              title: <span><Icon icon='map-marker-radius-outline' />&nbsp;Explorer</span>,
+              title: <Title text='Explorer' icon='map-marker-radius-outline' />,
               content: <Explorer />,
+              paddingSmall: true,
+            }, {
+              title: <Title text='Uploader' icon='cloud-upload-outline' />,
+              content: <Uploader />,
               paddingSmall: true,
             },
           ]}

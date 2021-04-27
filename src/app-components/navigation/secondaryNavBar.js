@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import { TabItem } from '../tab';
 import TabContainer from '../tab/tabContainer';
 
 const SecondaryNavBar = ({
@@ -9,7 +8,7 @@ const SecondaryNavBar = ({
 }) => (
   <div className='secondary-nav-container'>
     <div className='secondary-nav-heading'>
-      {headingNode}
+      {/* {headingNode} */}
     </div>
     <div />
     <TabContainer

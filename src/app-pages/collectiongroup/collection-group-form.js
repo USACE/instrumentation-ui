@@ -1,35 +1,33 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { ModalFooter, ModalHeader } from '../../../app-components/modal';
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 export default connect(
   'doModalClose',
-  'doInstrumentGroupsSave',
-  'doInstrumentGroupsDelete',
+  'doCollectionGroupSave',
   'doUpdateUrl',
+  'doCollectionGroupDelete',
   'selectRouteParams',
   'selectProjectsByRoute',
   ({
     doModalClose,
-    doInstrumentGroupsSave,
-    doInstrumentGroupsDelete,
+    doCollectionGroupSave,
     doUpdateUrl,
+    doCollectionGroupDelete,
     routeParams,
     projectsByRoute: project,
     item,
   }) => {
     const [name, setName] = useState((item && item.name) || '');
-    const [description, setDesc] = useState((item && item.description) || '');
     const [project_id] = useState((item && item.project_id) || project.id);
 
     const handleSave = (e) => {
       e.preventDefault();
-      doInstrumentGroupsSave(
+      doCollectionGroupSave(
         Object.assign({}, item, {
           name,
           project_id,
-          description,
         }),
         doModalClose,
         true
@@ -40,12 +38,13 @@ export default connect(
       e.preventDefault();
 
       if (item && item.id) {
-        doInstrumentGroupsDelete(
+        doCollectionGroupDelete(
           item,
           () => {
             doModalClose();
-            if (routeParams.hasOwnProperty('groupSlug'))
-              doUpdateUrl('/manager');
+            if (routeParams.hasOwnProperty('projectSlug')) {
+              doUpdateUrl(`/${routeParams.projectSlug}/manager`);
+            }
           },
           true
         );
@@ -54,31 +53,17 @@ export default connect(
 
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
-        <form id='instrument-group-form' onSubmit={handleSave}>
-          <ModalHeader title='Edit Instrument Group' />
+        <form id='collection-group-form' onSubmit={handleSave}>
+          <ModalHeader title='Edit Collection Group' />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>
               <input
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={(e) => setName(e.target.value)}
                 className='form-control'
                 type='text'
-                placeholder='Text input'
-              />
-            </div>
-            <div className='form-group'>
-              <label>Description</label>
-              <input
-                value={description}
-                onChange={(e) => {
-                  setDesc(e.target.value);
-                }}
-                className='form-control'
-                type='text'
-                placeholder='Text input'
+                placeholder='Group name...'
               />
             </div>
           </section>

@@ -43,3 +43,9 @@
     text-align: right;
   }
 }
+
+.table.dashboard-table {
+  th {
+    border-top: 0;
+  }
+}

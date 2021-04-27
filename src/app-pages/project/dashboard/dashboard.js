@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import InstrumentMeasurementCard from './instrumentMeasurementCard';
+import CollectionGroupCard from './collectionGroupCard';
+import InstrumentGroupCard from './instrumentGroupCard';
 import InstrumentStatusCard from './instrumentStatusCard';
-import ProjectDetails from './projectDetails';
 
 const ProjectDashboard = connect(
   'selectProjectsByRoute',
@@ -14,10 +14,10 @@ const ProjectDashboard = connect(
 
     return (
       <>
-        <ProjectDetails />
         <div className='row pt-3 px-3'>
           <div className='col-8'>
-            <InstrumentMeasurementCard />
+            <InstrumentGroupCard />
+            <CollectionGroupCard />
           </div>
           <div className='col-4'>
             <InstrumentStatusCard />

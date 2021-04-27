@@ -24,12 +24,12 @@ const InstrumentStatusCard = connect(
     return (
       <Card>
         <Card.Header text='Instrument Status' />
-        <Card.Body hasHorizontalPadding={false}>
+        <Card.Body hasPaddingHorizontal={false} hasPaddingVertical={false}>
           <Chart
             style={{ paddingLeft: '-20px' }}
             data={[{
-              values: Object.keys(instrumentsByStatus).map(key => instrumentsByStatus[key]),
-              labels: Object.keys(instrumentsByStatus).map(key => key),
+              values: Object.values(instrumentsByStatus),
+              labels: Object.keys(instrumentsByStatus),
               type: 'pie',
               textinfo: 'value',
               hole: 0.58,

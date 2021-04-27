@@ -4,7 +4,7 @@ import { roundToNearestMinutes } from 'date-fns';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
-import collectionGroupForm from '../manager/forms/collection-group-form';
+import collectionGroupForm from './collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import Icon from '../../app-components/icon';
 import LoginMessage from '../../app-components/login-message';
