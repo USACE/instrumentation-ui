@@ -3,7 +3,7 @@ import React from 'react';
 import Card from '../../../app-components/card';
 
 const ReportsCard = () => (
-  <Card>
+  <Card className='mt-4'>
     <Card.Header text='Batch Plots' />
     <Card.Body>
       test

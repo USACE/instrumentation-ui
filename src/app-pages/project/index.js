@@ -20,24 +20,27 @@ const Project = connect(
     project ? (
       <>
         <SecondaryNavBar
-          headingNode={<h4>{project.name}</h4>}
           navLinks={[
             {
               title: <Title text='Dashboard' icon='view-dashboard' />,
               content: <ProjectDashboard />,
               paddingSmall: true,
+              uri: '#dashboard',
             }, {
               title: <Title text='All Instruments' icon='speedometer' />,
               content: <Manager style={{ width: '100vw' }}/>,
               paddingSmall: true,
+              uri: '#all-instruments',
             }, {
               title: <Title text='Explorer' icon='map-marker-radius-outline' />,
               content: <Explorer />,
               paddingSmall: true,
+              uri: '#explorer',
             }, {
               title: <Title text='Uploader' icon='cloud-upload-outline' />,
               content: <Uploader />,
               paddingSmall: true,
+              uri: '#uploader',
             },
           ]}
         />

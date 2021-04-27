@@ -11,6 +11,7 @@ import './tab.scss';
  * @param {Array} contentClass - Class(es) to be applied to the element that wraps the rendered content within the tab.
  * @param {Array} onTabChange - Callback function that is executed when the user selects a new tab. `callback(tab.title, index)`
  * @param {Array} theme - Sets the theme of the the tab container. One of `['default', 'navigation']`
+ * @param {Number} defaultTab - Sets the tab, via the array index, that is open when initially rendered. Defaults to `0`
  * @returns TabContainer `React Element`
  */
 const TabContainer = ({
@@ -19,12 +20,13 @@ const TabContainer = ({
   contentClass = '',
   onTabChange = () => {},
   theme = 'default',
+  defaultTab = 0,
   ...customProps
 }) => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(defaultTab);
 
   const changeTab = (title, index) => {
-    onTabChange(title);
+    onTabChange(title, index);
     setTabIndex(index);
   };
 

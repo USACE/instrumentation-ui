@@ -16,33 +16,35 @@ const InstrumentGroupCard = connect(
     projectsByRoute: project,
     instrumentGroupsItems: groups,
   }) => (
-    <Card>
+    <Card className='dashboard-card'>
       <Card.Header text='Instrument Groups' />
       <Card.Body>
         <table className='table dashboard-table'>
           <thead>
             <tr>
-              <th className='col-3'>Name</th>
-              <th className='col-3'>Instrument Count</th>
-              <th className='col-3'>Last Measurement</th>
-              <th className='col-3'>Tools</th>
+              <th className='col-4'>Name</th>
+              <th className='col-2'>Instrument Count</th>
+              <th className='col-3'>
+                <span className='float-right'>Last Measurement</span>
+              </th>
+              <th className='col-3 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
             {groups.map(group => (
               <tr key={group.id}>
-                <td className='col-3'>
+                <td className='col-4'>
                   <a href={`/${project.slug}/groups/${group.slug}`}>
                     {group.name}
                   </a>
                 </td>
-                <td className='col-3'>
-                  Some X Value
+                <td className='col-2'>
+                  <span className='float-right'>Some X Value</span>
                 </td>
                 <td className='col-3'>
-                  Some Time ago
+                  <span className='float-right'>Some Time Ago</span>
                 </td>
-                <td className='col-3'>
+                <td className='col-3 pl-3'>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <Button
                       isOutline

@@ -25,7 +25,7 @@ const CollectionGroupCard = connect(
           <thead>
             <tr>
               <th className='col-9'>Name</th>
-              <th className='col-3'>Tools</th>
+              <th className='col-3 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
@@ -36,7 +36,7 @@ const CollectionGroupCard = connect(
                     {group.name}
                   </a>
                 </td>
-                <td className='col-3'>
+                <td className='col-3 pl-3'>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <Button
                       isOutline

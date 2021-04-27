@@ -1,3 +1,8 @@
+.dashboard-card {
+  max-height: 502px;
+  overflow: auto;
+}
+
 .details-container {
   display: flex;
   justify-content: space-between;

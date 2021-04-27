@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import CollectionGroupCard from './collectionGroupCard';
 import InstrumentGroupCard from './instrumentGroupCard';
 import InstrumentStatusCard from './instrumentStatusCard';
+import ReportsCard from './reportsCard';
 
 const ProjectDashboard = connect(
   'selectProjectsByRoute',
@@ -21,6 +22,7 @@ const ProjectDashboard = connect(
           </div>
           <div className='col-4'>
             <InstrumentStatusCard />
+            <ReportsCard />
           </div>
         </div>
       </>
