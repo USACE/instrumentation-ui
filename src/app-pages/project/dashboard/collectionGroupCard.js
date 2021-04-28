@@ -37,19 +37,19 @@ const CollectionGroupCard = connect(
         <table className='table dashboard-table'>
           <thead>
             <tr>
-              <th className='col-9'>Name</th>
-              <th className='col-3 pl-3'>Tools</th>
+              <th className='col-10'>Name</th>
+              <th className='col-2 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
             {(collectionGroups || []).map(group => (
               <tr key={group.id}>
-                <td className='col-9'>
+                <td className='col-10'>
                   <a href={`/${project.slug}/collection-groups/${group.slug}`}>
                     {group.name}
                   </a>
                 </td>
-                <td className='col-3 pl-3'>
+                <td className='col-2 pl-3'>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <Button
                       isOutline

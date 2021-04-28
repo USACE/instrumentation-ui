@@ -36,13 +36,13 @@ const InstrumentGroupCard = connect(
           <thead>
             <tr>
               <th className='col-4'>Name</th>
-              <th className='col-2'>
+              <th className='col-3'>
                 <span className='float-right'>Instrument Count</span>
               </th>
               <th className='col-3'>
                 <span className='float-right'>Last Measurement</span>
               </th>
-              <th className='col-3 pl-3'>Tools</th>
+              <th className='col-2 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
@@ -53,13 +53,13 @@ const InstrumentGroupCard = connect(
                     {group.name}
                   </a>
                 </td>
-                <td className='col-2'>
+                <td className='col-3'>
                   <span className='float-right'>Some X Value</span>
                 </td>
                 <td className='col-3'>
                   <span className='float-right'>Some Time Ago</span>
                 </td>
-                <td className='col-3 pl-3'>
+                <td className='col-2 pl-3'>
                   <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                     <Button
                       isOutline

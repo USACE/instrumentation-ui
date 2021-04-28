@@ -44,7 +44,7 @@ export default createRestBundle({
 
         return {
           type: 'FeatureCollection',
-          features: activeId ? (instrumentMap[activeId] || []).map((item) => {
+          features: activeId && instrumentMap[activeId] ? instrumentMap[activeId].map((item) => {
             const { geometry, ...rest } = item;
             const feature = {
               type: 'Feature',
