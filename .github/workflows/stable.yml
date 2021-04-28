@@ -11,11 +11,8 @@ on:
       - stable
 jobs:
   build:
-<<<<<<< HEAD
-=======
     env:
       REACT_APP_API_URL: https://midas-api.rsgis.dev
->>>>>>> develop
     runs-on: ubuntu-latest
     strategy:
       matrix:
