@@ -7,17 +7,14 @@ export default connect(
   'doModalClose',
   'doInstrumentGroupsSave',
   'doInstrumentGroupsDelete',
-  'doUpdateUrl',
-  'selectRouteParams',
   'selectProjectsByRoute',
   ({
     doModalClose,
     doInstrumentGroupsSave,
     doInstrumentGroupsDelete,
-    doUpdateUrl,
-    routeParams,
     projectsByRoute: project,
     item,
+    isEdit = true,
   }) => {
     const [name, setName] = useState((item && item.name) || '');
     const [description, setDesc] = useState((item && item.description) || '');
@@ -42,11 +39,7 @@ export default connect(
       if (item && item.id) {
         doInstrumentGroupsDelete(
           item,
-          () => {
-            doModalClose();
-            if (routeParams.hasOwnProperty('groupSlug'))
-              doUpdateUrl('/manager');
-          },
+          () => doModalClose(),
           true
         );
       }
@@ -55,7 +48,7 @@ export default connect(
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <form id='instrument-group-form' onSubmit={handleSave}>
-          <ModalHeader title='Edit Instrument Group' />
+          <ModalHeader title={`${isEdit ? 'Edit' : 'Create'} Instrument Group`} />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>

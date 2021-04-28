@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
+import Dropdown from '../../../app-components/dropdown';
 import Icon from '../../../app-components/icon';
 import InstrumentGroupForm from '../../group/instrument-group-form';
 import RoleFilter from '../../../app-components/role-filter';
@@ -17,13 +18,27 @@ const InstrumentGroupCard = connect(
     instrumentGroupsItems: groups,
   }) => (
     <Card className='dashboard-card'>
-      <Card.Header text='Instrument Groups' />
+      <Card.Header>
+        <div className='dashboard-card-header'>
+          <b>Instrument Groups</b>
+          <Dropdown.Menu
+            withToggleArrow={false}
+            buttonContent={<Icon icon='dots-vertical' />}
+            buttonClasses={['m-0', 'p-0']}
+            menuClasses={['dropdown-menu-right']}
+          >
+            <Dropdown.Item onClick={() => doModalOpen(InstrumentGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
+          </Dropdown.Menu>
+        </div>
+      </Card.Header>
       <Card.Body>
         <table className='table dashboard-table'>
           <thead>
             <tr>
               <th className='col-4'>Name</th>
-              <th className='col-2'>Instrument Count</th>
+              <th className='col-2'>
+                <span className='float-right'>Instrument Count</span>
+              </th>
               <th className='col-3'>
                 <span className='float-right'>Last Measurement</span>
               </th>

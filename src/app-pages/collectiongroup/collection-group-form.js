@@ -6,18 +6,15 @@ import { ModalFooter, ModalHeader } from '../../app-components/modal';
 export default connect(
   'doModalClose',
   'doCollectionGroupSave',
-  'doUpdateUrl',
   'doCollectionGroupDelete',
-  'selectRouteParams',
   'selectProjectsByRoute',
   ({
     doModalClose,
     doCollectionGroupSave,
-    doUpdateUrl,
     doCollectionGroupDelete,
-    routeParams,
     projectsByRoute: project,
     item,
+    isEdit = true,
   }) => {
     const [name, setName] = useState((item && item.name) || '');
     const [project_id] = useState((item && item.project_id) || project.id);
@@ -40,12 +37,7 @@ export default connect(
       if (item && item.id) {
         doCollectionGroupDelete(
           item,
-          () => {
-            doModalClose();
-            if (routeParams.hasOwnProperty('projectSlug')) {
-              doUpdateUrl(`/${routeParams.projectSlug}/manager`);
-            }
-          },
+          () => doModalClose(),
           true
         );
       }
@@ -54,7 +46,7 @@ export default connect(
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <form id='collection-group-form' onSubmit={handleSave}>
-          <ModalHeader title='Edit Collection Group' />
+          <ModalHeader title={`${isEdit ? 'Edit' : 'Create'} Collection Group`} />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>

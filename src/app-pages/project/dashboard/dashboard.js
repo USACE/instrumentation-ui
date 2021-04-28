@@ -15,7 +15,7 @@ const ProjectDashboard = connect(
 
     return (
       <>
-        <div className='row pt-3 px-3'>
+        <div className='row px-3'>
           <div className='col-8'>
             <InstrumentGroupCard />
             <CollectionGroupCard />

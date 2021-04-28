@@ -1,6 +1,15 @@
 .dashboard-card {
   max-height: 502px;
   overflow: auto;
+
+  .dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    b {
+      padding-top: 2px;
+    }
+  }
 }
 
 .details-container {
@@ -52,5 +61,21 @@
 .table.dashboard-table {
   th {
     border-top: 0;
+  }
+}
+
+.report-row {
+  border-bottom: 1px solid #c8cacb;
+  display: flex;
+  padding: 5px 0;
+  text-align: center;
+
+  >:nth-child(1) {
+    font-size: 24px;
+    color: gray;
+  }
+
+  a {
+    padding: 6px;
   }
 }

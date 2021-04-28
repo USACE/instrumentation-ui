@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import CollectionGroupForm from '../../collectiongroup/collection-group-form';
+import Dropdown from '../../../app-components/dropdown';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 
@@ -18,8 +19,20 @@ const CollectionGroupCard = connect(
     projectsByRoute: project,
     collectionGroupItems: collectionGroups,
   }) => (
-    <Card className='mt-4'>
-      <Card.Header text='Collection Groups' />
+    <Card className='dashboard-card mt-4'>
+      <Card.Header>
+        <div className='dashboard-card-header'>
+          <b>Collection Groups</b>
+          <Dropdown.Menu
+            withToggleArrow={false}
+            buttonContent={<Icon icon='dots-vertical' />}
+            buttonClasses={['m-0', 'p-0']}
+            menuClasses={['dropdown-menu-right']}
+          >
+            <Dropdown.Item onClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
+          </Dropdown.Menu>
+        </div>
+      </Card.Header>
       <Card.Body hasPaddingVertical={false}>
         <table className='table dashboard-table'>
           <thead>

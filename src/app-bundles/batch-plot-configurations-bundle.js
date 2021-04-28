@@ -37,7 +37,7 @@ export default createRestBundle({
 
         if (instruments.length && batchPlotConfigurations.length && timeseries.length) {
           batchPlotConfigurations.forEach(config => {
-            const activeTS = timeseries.filter(ts => config.timeseries_id.includes(ts.id));
+            const activeTS = timeseries.filter(ts => (config.timeseries_id || []).includes(ts.id));
             instrumentMap[config.id] = instruments.filter(i => activeTS.some(ts => ts.instrument_id === i.id));
           });
         }
