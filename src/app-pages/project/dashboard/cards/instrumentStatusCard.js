@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Card from '../../../app-components/card';
-import Chart from '../../../app-components/chart/chart';
+import Card from '../../../../app-components/card';
+import Chart from '../../../../app-components/chart/chart';
 
 const increment = (value = 0) => ++value;
 

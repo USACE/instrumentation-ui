@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Badge from '../../../app-components/badge';
-import Button from '../../../app-components/button';
-import Card from '../../../app-components/card';
-import CollectionGroupForm from '../../collectiongroup/collection-group-form';
-import Dropdown from '../../../app-components/dropdown';
-import Icon from '../../../app-components/icon';
-import RoleFilter from '../../../app-components/role-filter';
+import Badge from '../../../../app-components/badge';
+import Button from '../../../../app-components/button';
+import Card from '../../../../app-components/card';
+import CollectionGroupForm from '../../../collectiongroup/collection-group-form';
+import Dropdown from '../../../../app-components/dropdown';
+import Icon from '../../../../app-components/icon';
+import RoleFilter from '../../../../app-components/role-filter';
 
-import '../project.scss';
+import '../../project.scss';
 
 const CollectionGroupCard = connect(
   'doModalOpen',

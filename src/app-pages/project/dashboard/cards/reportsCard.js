@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Card from '../../../app-components/card';
-import Icon from '../../../app-components/icon';
+import Card from '../../../../app-components/card';
+import Icon from '../../../../app-components/icon';
 
-import '../project.scss';
+import '../../project.scss';
 
 const createReportRow = (project, plot) => {
   const { create_date, update_date, name, id } = plot;
@@ -12,7 +12,7 @@ const createReportRow = (project, plot) => {
   return (
     <div className='report-row'>
       <Icon icon='file-chart' />
-      <a href={`/${project.slug}/batch-plotting?c=${id}`}>{name}</a>
+      <a href={`/${project.slug}/project#batch-plotting?c=${id}`}>{name}</a>
     </div>
   );
 };

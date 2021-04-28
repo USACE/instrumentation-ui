@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import BatchPlotting from '../reporting/batch-plotting';
 import Explorer from '../explorer/explorer';
 import Icon from '../../app-components/icon';
 import ProjectDashboard from './dashboard/dashboard';
@@ -41,7 +42,12 @@ const Project = connect(
               content: <Uploader />,
               paddingSmall: true,
               uri: '#uploader',
-            },
+            }, {
+              title: <Title text='Batch Plotting' icon='file-chart' />,
+              content: <BatchPlotting />,
+              paddingSmall: true,
+              uri: '#batch-plotting',
+            }
           ]}
         />
       </>
