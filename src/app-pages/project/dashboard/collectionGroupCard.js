@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Badge from '../../../app-components/badge';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import CollectionGroupForm from '../../collectiongroup/collection-group-form';
@@ -22,7 +23,10 @@ const CollectionGroupCard = connect(
     <Card className='dashboard-card mt-4'>
       <Card.Header>
         <div className='dashboard-card-header'>
-          <b>Collection Groups</b>
+          <b>
+            Collection Groups
+            <Badge type='pill' variant='secondary' text={collectionGroups.length} className='ml-2'/>
+          </b>
           <Dropdown.Menu
             withToggleArrow={false}
             buttonContent={<Icon icon='dots-vertical' />}

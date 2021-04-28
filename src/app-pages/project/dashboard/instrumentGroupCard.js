@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Badge from '../../../app-components/badge';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import Dropdown from '../../../app-components/dropdown';
@@ -20,7 +21,10 @@ const InstrumentGroupCard = connect(
     <Card className='dashboard-card'>
       <Card.Header>
         <div className='dashboard-card-header'>
-          <b>Instrument Groups</b>
+          <b>
+            Instrument Groups
+            <Badge type='pill' variant='secondary' text={groups.length} className='ml-2'/>
+          </b>
           <Dropdown.Menu
             withToggleArrow={false}
             buttonContent={<Icon icon='dots-vertical' />}

@@ -64,9 +64,9 @@ export default InstrumentTypeCard;
 /**
  * To quickly switch this to horizontal bar chart, do the following:
  * 
- * 1. swap `x` and `y` keys.
+ * 1. swap `x` and `y` keys
  * 2. replace `yaxis` with `xaxis`
- * 3. Optionally replace layout.height with logarithmic function to prevent over growth with many bars:
- *   - height: Math.log2(Object.keys(instrumentsByType).length) * 150,
- *  
+ * 3. set `layout.orientation` to `h`
+ * 4. Optionally replace `layout.height` with logarithmic function to prevent over growth with many bars:
+ *   - `height: Math.log2(Object.keys(instrumentsByType).length) * 150,`
  */
