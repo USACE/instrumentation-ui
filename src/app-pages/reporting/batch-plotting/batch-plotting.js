@@ -19,13 +19,14 @@ const BatchPlotting = connect(
     mapsObject,
   }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
+    const userConfigId = new URL(location.href).searchParams.get('c');
 
     return (
       <>
         <section className='container-fluid page-body'>
           <Card className='w-100'>
             <Card.Header text='Plot Data Configuration' />
-            <DataConfiguration />
+            <DataConfiguration initialConfigurationId={userConfigId} />
           </Card>
           <div className='row mt-4'>
             <div className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}>

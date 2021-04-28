@@ -40,7 +40,7 @@ const BatchPlotChart = connect(
 
     const generateNewChartData = () => {
       const data = measurements.map((elem, i) => {
-        if (elem) {
+        if (elem && instrumentTimeseriesItemsByRoute.length) {
           const style = getStyle(i);
           const { items, timeseries_id } = elem;
           const { instrument, name, unit, parameter } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
@@ -86,13 +86,13 @@ const BatchPlotChart = connect(
     /** Extract specific measurements from the store that relate to our set timeseries */
     useEffect(() => {
       const measurementItems = timeseriesIds.map(id => timeseriesMeasurementsItems.find(elem => elem.timeseries_id === id));
-      setMeasurements(measurementItems);
+      if (measurementItems.every(elem => !!elem)) setMeasurements(measurementItems);
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
     useEffect(() => generateNewChartData(), [measurements, withPrecipitation]);
 
-    /** When chart data chagnges, see if there is precip data to adjust plot */
+    /** When chart data changes, see if there is precip data to adjust plot */
     useEffect(() => {
       if (chartData.length && chartData.find(elem => elem && elem.yaxis === 'y2')) {
         setWithPrecipitation(true);
