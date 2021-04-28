@@ -5,7 +5,7 @@ import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Icon from '../../app-components/icon';
 import InstrumentForm from '../manager/forms/instrument-form';
-import InstrumentGroupForm from '../manager/forms/instrument-group-form';
+import InstrumentGroupForm from './instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
 import InstrumentTable from '../manager/tabs/instrument-table';

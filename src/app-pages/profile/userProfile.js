@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { formatDistance } from 'date-fns';
 
 import Card from '../../app-components/card';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 
 import './userProfile.css';
 
@@ -74,7 +74,7 @@ const UserProfile = connect(
             </div>
             <div className='col-8'>
               <Card className='p-0 mt-2'>
-                <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0' />
+                <TabContainer tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0' />
               </Card>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
 import PreviewTable from './preview-table';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 
 export default connect(
   'selectUploadColumnDefsOriginal',
@@ -29,7 +29,7 @@ export default connect(
     return (
       project && (
         <Card>
-          <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
+          <TabContainer tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
         </Card>
       )
     );

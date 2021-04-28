@@ -5,7 +5,7 @@ export default createRestBundle({
   name: 'batchPlotConfigurations',
   uid: 'id',
   prefetch: false,
-  staleAfter: 10000,
+  staleAfter: 0,
   persist: false,
   getTemplate: '/projects/:projectId/plot_configurations',
   putTemplate: '/projects/:projectId/plot_configurations/:item.id',
@@ -37,14 +37,14 @@ export default createRestBundle({
 
         if (instruments.length && batchPlotConfigurations.length && timeseries.length) {
           batchPlotConfigurations.forEach(config => {
-            const activeTS = timeseries.filter(ts => config.timeseries_id.includes(ts.id));
+            const activeTS = timeseries.filter(ts => (config.timeseries_id || []).includes(ts.id));
             instrumentMap[config.id] = instruments.filter(i => activeTS.some(ts => ts.instrument_id === i.id));
           });
         }
 
         return {
           type: 'FeatureCollection',
-          features: activeId ? instrumentMap[activeId].map((item) => {
+          features: activeId && instrumentMap[activeId] ? instrumentMap[activeId].map((item) => {
             const { geometry, ...rest } = item;
             const feature = {
               type: 'Feature',

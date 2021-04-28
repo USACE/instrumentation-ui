@@ -21,7 +21,7 @@ const batchPlotMapBundle = {
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
-        case 'BATCHPLOTCONFIGURATIONS_FETCH_FINISHED':
+        case 'BATCHPLOTCONFIGURATIONS_SET_ACTIVE_ID':
           return Object.assign({}, state, {
             _shouldAddData: true,
           });
@@ -112,7 +112,7 @@ const batchPlotMapBundle = {
     const map = store.selectMapsObject()['batchPlotMap'];
     const lyr = store.selectBatchPlotMapLayer();
 
-    if (lyr) {
+    if (lyr && map) {
       const src = lyr.getSource();
       const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
       map.removeLayer(lyr);

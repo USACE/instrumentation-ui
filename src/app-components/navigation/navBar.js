@@ -6,7 +6,7 @@ import Dropdown from '../dropdown';
 import Icon from '../icon';
 import NavItem from './navItem';
 import ProfileMenu from './profileMenu';
-import RoleFilter from '../role-filter';
+// import RoleFilter from '../role-filter';
 import { classArray } from '../../utils';
 
 import './navigation.scss';
@@ -81,9 +81,9 @@ const NavBar = connect(
               {project && project.name && (
                 <>
                   <Icon icon='chevron-right' className='px-2' />
-                  <span className='text-white default-cursor'>
+                  <a href={`/${project.slug}/project#dashboard`} className='text-white'>
                     {project.name}
-                  </span>
+                  </a>
                 </>
               )}
             </span>
@@ -102,13 +102,6 @@ const NavBar = connect(
             <ul className='navbar-nav'>
               {project ? (
                 <>
-                  <NavItem href={`/${project.slug}/explore`}>Explorer</NavItem>
-                  <NavItem href={`/${project.slug}/manager`}>
-                    Inventory Manager
-                  </NavItem>
-                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <NavItem href={`/${project.slug}/upload`}>Uploader</NavItem>
-                  </RoleFilter>
                   <Dropdown.Menu
                     dropdownClasses={[
                       `nav-item pointer${isReportingActive ? ' active' : ''}`,
