@@ -4,15 +4,15 @@ import { connect } from 'redux-bundler-react';
 import Card from '../../../app-components/card';
 import Chart from '../../../app-components/chart/chart';
 
-const reduceInstrumentsByStatus = instruments => {
-  const increment = (value = 0) => ++value;
-  
-  return instruments.reduce(
+const increment = (value = 0) => ++value;
+
+const reduceInstrumentsByStatus = instruments => (
+  instruments.reduce(
     (accum, elem) => ({
       ...accum,
       [elem.status]: increment(accum[elem.status]),
-    }), {});
-};
+    }), {})
+);
 
 const InstrumentStatusCard = connect(
   'selectInstrumentsItems',
@@ -22,11 +22,10 @@ const InstrumentStatusCard = connect(
     const instrumentsByStatus = reduceInstrumentsByStatus(instruments);
 
     return (
-      <Card>
+      <Card className='mt-4'>
         <Card.Header text='Instrument Status' />
         <Card.Body hasPaddingHorizontal={false} hasPaddingVertical={false}>
           <Chart
-            style={{ paddingLeft: '-20px' }}
             data={[{
               values: Object.values(instrumentsByStatus),
               labels: Object.keys(instrumentsByStatus),
@@ -34,6 +33,18 @@ const InstrumentStatusCard = connect(
               textinfo: 'value',
               hole: 0.58,
             }]}
+            layout={{
+              height: 300,
+              margin: {
+                l: 20,
+                t: 30,
+                r: 20,
+                b: 30,
+              }
+            }}
+            config={{
+              displayModeBar: false,
+            }}
           />
         </Card.Body>
       </Card>
