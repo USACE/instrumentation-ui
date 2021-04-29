@@ -8,7 +8,7 @@ export default createRestBundle({
   staleAfter: 0,
   persist: false,
   getTemplate: '/my_alerts',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'PROFILE_FETCH_FINISHED'],
+  fetchActions: ['PROFILE_FETCH_FINISHED'],
   forceFetchActions: ['ALERTREAD_SAVE_FINISHED', 'ALERTUNREAD_SAVE_FINISHED'],
   addons: {
     selectProfileAlerts: createSelector(

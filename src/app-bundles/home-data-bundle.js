@@ -4,12 +4,14 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'home',
   uid: null,
-  prefetch: true,
+  prefetch: false,
   staleAfter: 45000,
   persist: true,
   routeParam: null,
   getTemplate: '/home',
-  fetchActions: ['URL_UPDATED'],
+  fetchActions: [
+    // 'URL_UPDATED'
+  ],
   forceFetchActions: [],
   addons: {
     selectHomeData: createSelector('selectHomeItems', (items) => {

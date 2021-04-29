@@ -3,7 +3,7 @@ import createRestBundle from './create-rest-bundle';
 export default createRestBundle({
   name: 'instrumentStatus',
   uid: 'id',
-  prefetch: true,
+  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'statusSlug',
@@ -11,7 +11,10 @@ export default createRestBundle({
   putTemplate: '',
   postTemplate: '/instruments/:item.instrument_id/status',
   deleteTemplate: '',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
+  fetchActions: [
+    // 'URL_UPDATED',
+    // 'AUTH_LOGGED_IN',
+  ],
   urlParamSelectors: ['selectInstrumentsIdByRoute'],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',

@@ -193,7 +193,7 @@ const createRestBundle = (opts) => {
           _err: null,
           _isSaving: false,
           _isLoading: false,
-          _shouldFetch: config.prefetch,
+          _shouldFetch: config.initialFetch,
           _forceFetch: false,
           _fetchCount: 0,
           _lastFetch: config.lastFetch,
@@ -204,6 +204,7 @@ const createRestBundle = (opts) => {
           _pageSize: config.pageSize,
           _sortBy: config.sortBy,
           _sortAsc: config.sortAsc,
+          ...config.customState,
         };
 
         return (state = initialData, { type, payload }) => {
@@ -324,6 +325,15 @@ const createRestBundle = (opts) => {
             },
           });
           return;
+        } else if (config.prefetch && typeof config.prefetch == 'function' && !config.prefetch(store)) {
+          // user defined prefetch function evaluated to false
+          dispatch({
+            type: actions.FETCH_ABORT,
+            payload: {
+              _isLoading: false,
+              _abortReason: 'Failed user defined evaluation',
+            },
+          });
         } else {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;

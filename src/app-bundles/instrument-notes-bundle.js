@@ -3,7 +3,7 @@ import createRestBundle from './create-rest-bundle';
 export default createRestBundle({
   name: 'instrumentNotes',
   uid: 'id',
-  prefetch: true,
+  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'noteId',
@@ -11,7 +11,10 @@ export default createRestBundle({
   putTemplate: '/instruments/notes/:item.id',
   postTemplate: '/instruments/notes',
   deleteTemplate: '/instruments/notes/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
+  fetchActions: [
+    // 'URL_UPDATED',
+    // 'AUTH_LOGGED_IN',
+  ],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',
     'INSTRUMENTNOTES_SAVE_FINISHED',

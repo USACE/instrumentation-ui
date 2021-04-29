@@ -9,7 +9,11 @@ export default createRestBundle({
   persist: false,
   routeParam: 'id',
   getTemplate: '/projects/:projectId/instruments/:instrumentId/alerts',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'INSTRUMENTS_FETCH_FINISHED', 'ALERTREAD_SAVE_FINISHED', 'ALERTUNREAD_SAVE_FINISHED'],
+  fetchActions: [
+    'INSTRUMENTS_FETCH_FINISHED',
+    'ALERTREAD_SAVE_FINISHED',
+    'ALERTUNREAD_SAVE_FINISHED',
+  ],
   urlParamSelectors: ['selectProjectsIdByRoute', 'selectInstrumentsIdByRoute'],
   addons: {
     selectAlertsByInstrumentId: createSelector(

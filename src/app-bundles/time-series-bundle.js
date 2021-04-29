@@ -4,7 +4,7 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'instrumentTimeseries',
   uid: 'id',
-  prefetch: true,
+  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: '',
@@ -12,7 +12,10 @@ export default createRestBundle({
   putTemplate: '/:',
   postTemplate: '/timeseries',
   deleteTemplate: '/timeseries/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
+  fetchActions: [
+    // 'URL_UPDATED',
+    // 'AUTH_LOGGED_IN',
+  ],
   forceFetchActions: [
     'INSTRUMENTCONSTANTS_SAVE_FINISHED',
     'INSTRUMENTS_FETCH_FINISHED',

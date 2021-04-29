@@ -10,7 +10,7 @@ const createReportRow = (project, plot) => {
   const { create_date, update_date, name, id } = plot;
 
   return (
-    <div className='report-row'>
+    <div className='report-row' key={id}>
       <Icon icon='file-chart' />
       <a href={`/${project.slug}/project#batch-plotting?c=${id}`}>{name}</a>
     </div>

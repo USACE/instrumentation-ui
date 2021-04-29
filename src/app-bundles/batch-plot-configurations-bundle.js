@@ -4,16 +4,20 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'batchPlotConfigurations',
   uid: 'id',
-  prefetch: false,
-  staleAfter: 0,
   persist: false,
   getTemplate: '/projects/:projectId/plot_configurations',
   putTemplate: '/projects/:projectId/plot_configurations/:item.id',
   postTemplate: '/projects/:projectId/plot_configurations',
   deleteTemplate: '/projects/:projectId/plot_configurations/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'INSTRUMENTS_FETCH_FINISHED'],
+  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [],
   urlParamSelectors: ['selectProjectsIdByRoute'],
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const whiteList = ['dashboard', 'batch-plotting'];
+
+    return whiteList.includes(hash);
+  },
   addons: {
     doBatchPlotConfigurationsSetActiveId: (id) => ({ dispatch, store }) => {
       dispatch({
@@ -25,7 +29,8 @@ export default createRestBundle({
       store.doBatchPlotMapAddData();
     },
 
-    selectBatchPlotConfigurationsActiveId: (state) => state.batchPlotConfigurations._activeBatchPlotConfigurationId,
+    selectBatchPlotConfigurationsRaw: state => state.batchPlotConfigurations,
+    selectBatchPlotConfigurationsActiveId: state => state.batchPlotConfigurations._activeBatchPlotConfigurationId,
 
     selectInstrumentsByBatchPlotConfigurationsGeoJSON: createSelector(
       'selectInstrumentsItems',

@@ -14,7 +14,6 @@ const geoJSON = new GeoJSON();
 export default createRestBundle({
   name: 'instruments',
   uid: 'slug',
-  prefetch: true,
   staleAfter: 10000,
   persist: false,
   sortBy: 'name',
@@ -23,7 +22,10 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/instruments/:item.id',
   postTemplate: '/projects/:projectId/instruments',
   deleteTemplate: '/projects/:projectId/instruments/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'PROJECTS_FETCH_FINISHED'],
+  fetchActions: [
+    'URL_UPDATED',
+    'PROJECTS_FETCH_FINISHED',
+  ],
   forceFetchActions: [
     'INSTRUMENTS_SAVE_FINISHED',
     'INSTRUMENTS_DELETE_FINISHED',
@@ -31,6 +33,12 @@ export default createRestBundle({
     'INSTRUMENTZ_SAVE_FINISHED',
   ],
   urlParamSelectors: ['selectProjectsIdByRoute'],
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const whiteList = ['dashboard', 'all-instruments'];
+
+    return whiteList.includes(hash);
+  },
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {
       dispatch({

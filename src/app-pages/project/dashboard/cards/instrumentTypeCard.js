@@ -10,7 +10,7 @@ const reduceInstrumentsByType = instruments => (
   instruments.reduce(
     (accum, elem) => ({
       ...accum,
-      [elem.type]: increment(accum[elem.status]),
+      [elem.type]: increment(accum[elem.type]),
     }), {})
 );
 

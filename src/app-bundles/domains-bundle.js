@@ -4,7 +4,7 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'domains',
   uid: 'id',
-  prefetch: true,
+  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'groupId',
@@ -12,7 +12,10 @@ export default createRestBundle({
   putTemplate: '/domains/:item.id',
   postTemplate: '/domains',
   deleteTemplate: '/domains/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
+  fetchActions: [
+    // 'URL_UPDATED',
+    // 'AUTH_LOGGED_IN',
+  ],
   forceFetchActions: [],
   addons: {
     selectDomainsItemsByGroup: createSelector('selectDomainsItems', (items) => {
