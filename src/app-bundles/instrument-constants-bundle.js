@@ -3,7 +3,6 @@ import createRestBundle from './create-rest-bundle';
 export default createRestBundle({
   name: 'instrumentConstants',
   uid: 'id',
-  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'id',

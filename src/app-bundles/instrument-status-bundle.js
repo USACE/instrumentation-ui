@@ -3,7 +3,6 @@ import createRestBundle from './create-rest-bundle';
 export default createRestBundle({
   name: 'instrumentStatus',
   uid: 'id',
-  prefetch: false,
   staleAfter: 0,
   persist: false,
   routeParam: 'statusSlug',

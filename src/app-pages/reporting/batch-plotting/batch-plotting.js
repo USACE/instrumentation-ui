@@ -23,9 +23,6 @@ const BatchPlotting = connect(
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
     const userConfigId = hashQuery ? hashQuery['c'] : '';
 
-    console.log('test location.href:', new URL(location.href));
-    console.log('test configId:', userConfigId);
-
     return (
       <>
         <section className='container-fluid page-body'>

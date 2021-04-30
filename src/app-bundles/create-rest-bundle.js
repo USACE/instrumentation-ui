@@ -326,7 +326,7 @@ const createRestBundle = (opts) => {
           });
           return;
         } else if (config.prefetch && typeof config.prefetch == 'function' && !config.prefetch(store)) {
-          // user defined prefetch function evaluated to false
+          // user defined `prefetch` function evaluated to false
           dispatch({
             type: actions.FETCH_ABORT,
             payload: {

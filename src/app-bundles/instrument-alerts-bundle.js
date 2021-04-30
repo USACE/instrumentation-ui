@@ -4,7 +4,6 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'alerts',
   uid: 'id',
-  prefetch: false,
   staleAfter: 0,
   persist: false,
   routeParam: 'id',

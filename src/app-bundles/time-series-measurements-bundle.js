@@ -6,7 +6,6 @@ const beforeDate = '2025-01-01T00:00:00.00Z';
 export default createRestBundle({
   name: 'timeseriesMeasurements',
   uid: 'timeseries_id',
-  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: '',
