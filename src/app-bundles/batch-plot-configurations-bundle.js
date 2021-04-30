@@ -13,7 +13,7 @@ export default createRestBundle({
   forceFetchActions: [],
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
-    const hash = store.selectHash();
+    const hash = store.selectHashStripQuery();
     const whiteList = ['dashboard', 'batch-plotting'];
 
     return whiteList.includes(hash);

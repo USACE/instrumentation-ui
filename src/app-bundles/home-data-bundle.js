@@ -25,5 +25,27 @@ export default createRestBundle({
         'Measurements Recorded in Past 2H': data.new_measurements_2h,
       };
     }),
+
+    selectHashStripQuery: createSelector('selectHash', hash => {
+      const queryRegex = /\?.*/g;
+      return hash ? hash.replace(queryRegex, '') : null;
+    }),
+
+    selectHashQuery: createSelector('selectHash', hash => {
+      if (!hash) return null;
+
+      const [_h, query] = hash.split('?');
+      if (!query) return null;
+      
+      const queryArray = query.split('&');
+
+      return queryArray.reduce((accum, elem) => {
+        const [key, value] = elem.split('=');
+        return {
+          ...accum,
+          [key]: value,
+        };
+      }, {});
+    }),
   },
 });
