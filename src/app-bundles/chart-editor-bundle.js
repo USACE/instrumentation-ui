@@ -220,19 +220,24 @@ const chartEditorBundle = {
 
   selectChartEditorSeries: (state) => state.chartEditor.series,
 
-  selectChartEditorCorrelationSeriesX: (state) => state.chartEditor.correlationSeriesX,
+  selectChartEditorCorrelationSeriesX: (state) =>
+    state.chartEditor.correlationSeriesX,
 
-  selectChartEditorCorrelationSeriesY: (state) => state.chartEditor.correlationSeriesY,
+  selectChartEditorCorrelationSeriesY: (state) =>
+    state.chartEditor.correlationSeriesY,
 
-  selectChartEditorCorrelationMinDate: (state) => state.chartEditor.correlationMinDate,
+  selectChartEditorCorrelationMinDate: (state) =>
+    state.chartEditor.correlationMinDate,
 
-  selectChartEditorCorrelationMaxDate: (state) => state.chartEditor.correlationMaxDate,
+  selectChartEditorCorrelationMaxDate: (state) =>
+    state.chartEditor.correlationMaxDate,
 
   selectChartEditorShowToday: (state) => state.chartEditor.showToday,
 
   selectChartEditorShowRainfall: (state) => state.chartEditor.showRainfall,
 
-  selectChartEditorExactMatchesOnly: (state) => state.chartEditor.exactMatchesOnly,
+  selectChartEditorExactMatchesOnly: (state) =>
+    state.chartEditor.exactMatchesOnly,
 
   selectChartEditorLayout: (state) => state.chartEditor.layout,
 
@@ -242,7 +247,8 @@ const chartEditorBundle = {
 
   selectChartEditorConfig: (state) => state.chartEditor.config,
 
-  selectChartEditorSelectionVersion: (state) => state.chartEditor.selectionVersion,
+  selectChartEditorSelectionVersion: (state) =>
+    state.chartEditor.selectionVersion,
 
   selectChartEditorTimeseriesData: createSelector(
     'selectExploreDataByInstrumentId',
@@ -250,9 +256,17 @@ const chartEditorBundle = {
     'selectRainfallData',
     (dataByInstrumentId, showRainfall, rainfallData) => {
       const chartSeries = [];
+      const parameters = [];
+      const chartData = [];
       Object.keys(dataByInstrumentId).forEach((id) => {
+        // const parameters = [];
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
+        timeseries.sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        });
         timeseries.forEach((series) => {
           const { items, style, instrument: instrumentName, name } = series;
           if (!items || !items.length) return undefined;
@@ -272,19 +286,29 @@ const chartEditorBundle = {
               x.push(new Date(item.time));
               y.push(item.value);
             });
-          chartSeries.push({
+          let range = {
             type: 'scattergl',
             name: `${instrumentName} - ${name}`,
             x: x,
             y: y,
             ...style,
-          });
+          };
+          if (!parameters.includes(name)) {
+            parameters.push(name);
+            let obj = {};
+            obj['name'] = name;
+            obj['data'] = [range];
+            chartData.push(obj);
+          } else {
+            const found = chartData.find((x) => x.name === name);
+            found.data.push(range);
+          }
         });
       });
       if (showRainfall) {
-        chartSeries.push(...rainfallData);
+        chartData.push(...rainfallData);
       }
-      return chartSeries;
+      return { data: chartData, parameters: parameters };
     }
   ),
 
@@ -314,8 +338,8 @@ const chartEditorBundle = {
         });
       });
 
-      let xItems = [],
-          yItems = [];
+      let xItems = [];
+      let yItems = [];
       if (
         itemsByTimeseriesId[correlationSeriesX] &&
         itemsByTimeseriesId[correlationSeriesY]

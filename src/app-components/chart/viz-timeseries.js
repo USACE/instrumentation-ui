@@ -44,6 +44,14 @@ export default connect(
     } else {
       layout.shapes = [];
     }
-    return <Chart data={data} layout={layout} config={config} />;
+    return (
+      <div>
+        {data.data.map((x) => (
+          <div key={x.name}>
+            <Chart data={x.data} layout={layout} config={config} />
+          </div>
+        ))}
+      </div>
+    );
   }
 );
