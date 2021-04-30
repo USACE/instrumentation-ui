@@ -13,8 +13,7 @@ export default createRestBundle({
   postTemplate: '/domains',
   deleteTemplate: '/domains/:item.id',
   fetchActions: [
-    // 'URL_UPDATED',
-    // 'AUTH_LOGGED_IN',
+    'HOME_FETCH_FINISHED',
   ],
   forceFetchActions: [],
   addons: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import TabItem from './tabItem';
 
@@ -24,17 +24,31 @@ const TabContainer = ({
   ...customProps
 }) => {
   const [tabIndex, setTabIndex] = useState(defaultTab);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const changeTab = (title, index) => {
     onTabChange(title, index);
     setTabIndex(index);
+    setIsDisabled(true);
   };
+
+  useEffect(() => {
+    if (isDisabled) {
+      setTimeout(() => setIsDisabled(false), 350);
+    }
+  }, [isDisabled, setIsDisabled]);
 
   return (
     <div {...customProps}>
       <ul className={`nav nav-tabs ${tabListClass}`}>
         {tabs.map((t, i) => (
-          <TabItem changeTab={changeTab} tab={t} index={i} isActive={tabIndex === i} key={i} />
+          <TabItem
+            key={i}
+            tab={t}
+            index={i}
+            changeTab={changeTab}
+            isActive={tabIndex === i}
+            isDisabled={isDisabled} />
         ))}
       </ul>
       <section className={`section mt-3 ${contentClass}`}>
