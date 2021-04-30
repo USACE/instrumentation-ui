@@ -14,11 +14,11 @@ export default createRestBundle({
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
   deleteTemplate: '',
-  fetchActions: [
-    // 'URL_UPDATED',
-    // 'AUTH_LOGGED_IN',
+  fetchActions: [],
+  forceFetchActions: [
+    'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
+    'INSTRUMENTTIMESERIES_FETCH_FINISHED',
   ],
-  forceFetchActions: ['INSTRUMENTTIMESERIES_SET_ACTIVE_ID'],
   urlParamSelectors: [
     'selectInstrumentTimeseriesActiveIdParam',
     'selectProjectsIdByRoute',

@@ -36,6 +36,7 @@ const SecondaryNavBar = connect(
           contentClass='secondary-nav-page-content'
           onTabChange={onTabChange}
           defaultTab={defaultTab}
+          changeTabDelay={350}
         />
       </div>
     );

@@ -4,15 +4,18 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'home',
   uid: null,
-  prefetch: false,
+  initialFetch: true,
   staleAfter: 45000,
   persist: true,
   routeParam: null,
   getTemplate: '/home',
-  fetchActions: [
-    // 'URL_UPDATED'
-  ],
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: [],
+  prefetch: store => {
+    const url = store.selectUrlObject();
+
+    return url.pathname === '/';
+  },
   addons: {
     selectHomeData: createSelector('selectHomeItems', (items) => {
       const data = items && items.length ? items[0] : null;
@@ -36,7 +39,7 @@ export default createRestBundle({
 
       const [_h, query] = hash.split('?');
       if (!query) return null;
-      
+
       const queryArray = query.split('&');
 
       return queryArray.reduce((accum, elem) => {

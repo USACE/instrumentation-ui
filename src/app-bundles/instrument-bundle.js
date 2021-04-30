@@ -14,7 +14,7 @@ const geoJSON = new GeoJSON();
 export default createRestBundle({
   name: 'instruments',
   uid: 'slug',
-  staleAfter: 10000,
+  staleAfter: 0,
   persist: false,
   sortBy: 'name',
   routeParam: 'instrumentSlug',
@@ -35,9 +35,10 @@ export default createRestBundle({
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
+    const url = store.selectUrlObject();
     const whiteList = ['dashboard', 'all-instruments'];
 
-    return whiteList.includes(hash);
+    return whiteList.includes(hash) || url.pathname.includes('/instruments/');
   },
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {

@@ -12,6 +12,7 @@ import './tab.scss';
  * @param {Array} onTabChange - Callback function that is executed when the user selects a new tab. `callback(tab.title, index)`
  * @param {Array} theme - Sets the theme of the the tab container. One of `['default', 'navigation']`
  * @param {Number} defaultTab - Sets the tab, via the array index, that is open when initially rendered. Defaults to `0`
+ * @param {Number} changeTabDelay - Add a delay (in ms) to the time between allowable tab changes. will mark all tabs as disabled until the timer completes.
  * @returns TabContainer `React Element`
  */
 const TabContainer = ({
@@ -21,6 +22,7 @@ const TabContainer = ({
   onTabChange = () => {},
   theme = 'default',
   defaultTab = 0,
+  changeTabDelay = 0,
   ...customProps
 }) => {
   const [tabIndex, setTabIndex] = useState(defaultTab);
@@ -29,12 +31,12 @@ const TabContainer = ({
   const changeTab = (title, index) => {
     onTabChange(title, index);
     setTabIndex(index);
-    setIsDisabled(true);
+    changeTabDelay && setIsDisabled(true);
   };
 
   useEffect(() => {
-    if (isDisabled) {
-      setTimeout(() => setIsDisabled(false), 350);
+    if (changeTabDelay && isDisabled) {
+      setTimeout(() => setIsDisabled(false), changeTabDelay);
     }
   }, [isDisabled, setIsDisabled]);
 
