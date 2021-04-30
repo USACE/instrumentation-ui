@@ -23,9 +23,10 @@ export default createRestBundle({
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
+    const url = store.selectUrlObject();
     const whiteList = ['dashboard'];
 
-    return whiteList.includes(hash);
+    return whiteList.includes(hash) || url.pathname.includes('/collection-groups/');
   },
   addons: {
     selectCollectionGroupIdByRoute: createSelector(

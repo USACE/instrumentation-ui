@@ -195,7 +195,7 @@ export default connect(
             <div className='mb-3' style={{ position: 'relative', height: 300 }}>
               <Map
                 mapKey='inst-edit'
-                options={{ center: [-80.79, 26.94], zoom: 9 }}
+                options={{ center: [-98.6, 39.8], zoom: 4 }}
                 mapsObject={mapsObject}
                 doMapsInitialize={doMapsInitialize}
                 doMapsShutdown={doMapsShutdown}

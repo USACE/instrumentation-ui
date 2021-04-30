@@ -4,7 +4,7 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'domains',
   uid: 'id',
-  prefetch: true,
+  initialFetch: true,
   staleAfter: 120000,
   persist: false,
   routeParam: 'groupId',
