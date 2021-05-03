@@ -24,7 +24,7 @@ export default createRestBundle({
   prefetch: (store) => {
     const hash = store.selectHash();
     const url = store.selectUrlObject();
-    const whiteList = ['dashboard'];
+    const whiteList = ['dashboard', 'explorer'];
 
     return whiteList.includes(hash) || url.pathname.includes('/groups/');
   },
