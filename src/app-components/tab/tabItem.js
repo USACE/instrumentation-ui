@@ -3,12 +3,13 @@ import { classArray } from '../../utils';
 
 import './tab.scss';
 
-const TabItem = ({ tab, changeTab, index, isActive }) => {
+const TabItem = ({ tab, changeTab, index, isActive, isDisabled }) => {
   const { title, isHidden, paddingSmall } = tab;
 
   const spanClasses = classArray([
     'nav-link',
     isActive && 'active',
+    isDisabled && 'disabled',
     paddingSmall && 'padding-small',
   ]);
 

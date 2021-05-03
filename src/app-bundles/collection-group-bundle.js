@@ -4,7 +4,6 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'collectionGroup',
   uid: 'slug',
-  prefetch: true,
   staleAfter: 10000,
   persist: false,
   sortBy: 'name',
@@ -13,12 +12,22 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/collection_groups/:item.id',
   postTemplate: '/projects/:projectId/collection_groups',
   deleteTemplate: '/projects/:projectId/collection_groups/:item.id',
-  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
+  fetchActions: [
+    'URL_UPDATED',
+    'PROJECTS_FETCH_FINISHED'
+  ],
   forceFetchActions: [
     'COLLECTIONGROUP_SAVE_FINISHED',
     'COLLECTIONGROUP_DELETE_FINISHED',
   ],
   urlParamSelectors: ['selectProjectsIdByRoute'],
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const url = store.selectUrlObject();
+    const whiteList = ['dashboard'];
+
+    return whiteList.includes(hash) || url.pathname.includes('/collection-groups/');
+  },
   addons: {
     selectCollectionGroupIdByRoute: createSelector(
       'selectCollectionGroupByRoute',

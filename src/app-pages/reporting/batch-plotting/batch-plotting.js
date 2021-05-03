@@ -13,13 +13,15 @@ const BatchPlotting = connect(
   'doMapsInitialize',
   'doMapsShutdown',
   'selectMapsObject',
+  'selectHashQuery',
   ({
     doMapsInitialize,
     doMapsShutdown,
     mapsObject,
+    hashQuery,
   }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
-    const userConfigId = new URL(location.href).searchParams.get('c');
+    const userConfigId = hashQuery ? hashQuery['c'] : '';
 
     return (
       <>

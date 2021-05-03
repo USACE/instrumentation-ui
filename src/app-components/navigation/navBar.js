@@ -100,21 +100,6 @@ const NavBar = connect(
           <div className='collapse navbar-collapse'>
             <ul className='navbar-nav mr-auto' />
             <ul className='navbar-nav'>
-              {project ? (
-                <>
-                  <Dropdown.Menu
-                    dropdownClasses={[
-                      `nav-item pointer${isReportingActive ? ' active' : ''}`,
-                    ]}
-                    menuClasses={['dropdown-menu-right']}
-                    customContent={<span className='nav-link'>Reporting</span>}
-                  >
-                    <Dropdown.Item href={`/${project.slug}/batch-plotting`}>
-                      Batch Plotting
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </>
-              ) : null}
               {window.location.pathname === '/help' ? (
                 <NavItem href='/'>Home</NavItem>
               ) : (

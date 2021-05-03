@@ -58,8 +58,6 @@ const DataConfiguration = connect(
     const handleSelectChange = val => {
       if (val && val !== previousConfigId) {
         doBatchPlotConfigurationsSetActiveId(val);
-        
-        window.history.replaceState(null, null, window.location.pathname);
       }
     };
 

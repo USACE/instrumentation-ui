@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../../app-components/button';
-import Card from '../../../app-components/card';
-import CollectionGroupForm from '../../collectiongroup/collection-group-form';
-import Dropdown from '../../../app-components/dropdown';
-import Icon from '../../../app-components/icon';
-import RoleFilter from '../../../app-components/role-filter';
+import Badge from '../../../../app-components/badge';
+import Button from '../../../../app-components/button';
+import Card from '../../../../app-components/card';
+import CollectionGroupForm from '../../../collectiongroup/collection-group-form';
+import Dropdown from '../../../../app-components/dropdown';
+import Icon from '../../../../app-components/icon';
+import RoleFilter from '../../../../app-components/role-filter';
 
-import '../project.scss';
+import '../../project.scss';
 
 const CollectionGroupCard = connect(
   'doModalOpen',
@@ -22,7 +23,10 @@ const CollectionGroupCard = connect(
     <Card className='dashboard-card mt-4'>
       <Card.Header>
         <div className='dashboard-card-header'>
-          <b>Collection Groups</b>
+          <b>
+            Collection Groups
+            <Badge type='pill' variant='secondary' text={collectionGroups.length} className='ml-2'/>
+          </b>
           <Dropdown.Menu
             withToggleArrow={false}
             buttonContent={<Icon icon='dots-vertical' />}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import TabItem from './tabItem';
 
@@ -12,6 +12,7 @@ import './tab.scss';
  * @param {Array} onTabChange - Callback function that is executed when the user selects a new tab. `callback(tab.title, index)`
  * @param {Array} theme - Sets the theme of the the tab container. One of `['default', 'navigation']`
  * @param {Number} defaultTab - Sets the tab, via the array index, that is open when initially rendered. Defaults to `0`
+ * @param {Number} changeTabDelay - Add a delay (in ms) to the time between allowable tab changes. will mark all tabs as disabled until the timer completes.
  * @returns TabContainer `React Element`
  */
 const TabContainer = ({
@@ -21,20 +22,35 @@ const TabContainer = ({
   onTabChange = () => {},
   theme = 'default',
   defaultTab = 0,
+  changeTabDelay = 0,
   ...customProps
 }) => {
   const [tabIndex, setTabIndex] = useState(defaultTab);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const changeTab = (title, index) => {
     onTabChange(title, index);
     setTabIndex(index);
+    changeTabDelay && setIsDisabled(true);
   };
+
+  useEffect(() => {
+    if (changeTabDelay && isDisabled) {
+      setTimeout(() => setIsDisabled(false), changeTabDelay);
+    }
+  }, [isDisabled, setIsDisabled]);
 
   return (
     <div {...customProps}>
       <ul className={`nav nav-tabs ${tabListClass}`}>
         {tabs.map((t, i) => (
-          <TabItem changeTab={changeTab} tab={t} index={i} isActive={tabIndex === i} key={i} />
+          <TabItem
+            key={i}
+            tab={t}
+            index={i}
+            changeTab={changeTab}
+            isActive={tabIndex === i}
+            isDisabled={isDisabled} />
         ))}
       </ul>
       <section className={`section mt-3 ${contentClass}`}>
