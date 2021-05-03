@@ -204,7 +204,6 @@ const createRestBundle = (opts) => {
           _pageSize: config.pageSize,
           _sortBy: config.sortBy,
           _sortAsc: config.sortAsc,
-          ...config.customState,
         };
 
         return (state = initialData, { type, payload }) => {
