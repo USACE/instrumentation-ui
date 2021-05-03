@@ -9,19 +9,13 @@ export default connect(
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
   }) => {
-    // placeholder for parameters?
-    const array = [1, 2, 3, 4];
+    console.log('data');
     return (
       <div>
-        {/* {array.map((x) => (
-          <div>
-            <h1>{x}</h1> */}
         <Chart
           version={exploreMapInteractionsVersion}
           instruments={instruments}
         />
-        {/* </div>
-        ))} */}
       </div>
     );
   }

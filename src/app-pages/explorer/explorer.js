@@ -17,12 +17,7 @@ export default connect(
   'doMapsShutdown',
   'selectExploreMapKey',
   'selectMapsObject',
-  ({
-    doMapsInitialize,
-    doMapsShutdown,
-    exploreMapKey: mapKey,
-    mapsObject,
-  }) => {
+  ({ doMapsInitialize, doMapsShutdown, exploreMapKey: mapKey, mapsObject }) => {
     const [landscapeMode, setLandscapeMode] = useState(false);
     const mapRef = useRef();
 
@@ -40,7 +35,7 @@ export default connect(
     const hasDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
     const cls = classArray([
       'explorer-container',
-      hasDevBanner && 'with-banner'
+      hasDevBanner && 'with-banner',
     ]);
 
     return (
@@ -65,9 +60,20 @@ export default connect(
             <MapTools />
             <MapLegend />
           </Panel>
-          <Panel>
+          {/* <Panel> */}
+          <div
+            style={{
+              overflow: 'auto',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+            }}
+          >
             <Visualizations />
-          </Panel>
+          </div>
+          {/* </Panel> */}
         </PanelGroup>
       </div>
     );

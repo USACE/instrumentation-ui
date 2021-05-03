@@ -46,11 +46,15 @@ export default connect(
     }
     return (
       <div>
-        {data.data.map((x) => (
-          <div key={x.name}>
-            <Chart data={x.data} layout={layout} config={config} />
-          </div>
-        ))}
+        {data.data.length ? (
+          data.data.map((x) => (
+            <div key={x.name}>
+              <Chart data={x.data} layout={layout} config={config} />
+            </div>
+          ))
+        ) : (
+          <Chart data={null} layout={layout} config={config} />
+        )}
       </div>
     );
   }
