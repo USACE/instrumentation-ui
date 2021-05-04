@@ -37,10 +37,10 @@ const InstrumentGroupCard = connect(
           </Dropdown.Menu>
         </div>
       </Card.Header>
-      <Card.Body>
+      <Card.Body className='mx-3'>
         <table className='table dashboard-table'>
           <thead>
-            <tr>
+            <tr className='row'>
               <th className='col-4'>Name</th>
               <th className='col-3'>
                 <span className='float-right'>Instrument Count</span>
@@ -50,14 +50,14 @@ const InstrumentGroupCard = connect(
               </th> */}
               {/* Temp */}
               <th className='col-3'>
-                <span className='float-right'>Measurement Count</span>
+                <span className='float-right'>Timeseries Count</span>
               </th>
               <th className='col-2 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
             {groups.map(group => (
-              <tr key={group.id}>
+              <tr key={group.id} className='row'>
                 <td className='col-4'>
                   <a href={`/${project.slug}/groups/${group.slug}`}>
                     {group.name}

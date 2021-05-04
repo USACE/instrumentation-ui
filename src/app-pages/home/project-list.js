@@ -344,7 +344,7 @@ export default connect(
   ({ projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
-    const [isTableMode, setIsTableMode] = useState(false);
+    const [isTableMode, setIsTableMode] = useState(true);
 
     const onChange = filteredList => {
       const filtered = projects.filter(p => filteredList.some(e => e.value === p.title));
@@ -402,7 +402,7 @@ export default connect(
                       </thead>
                       <tbody>
                         {(filteredProjects.length ? filteredProjects : projects).map(project => (
-                          <tr key={project.id}>
+                          <tr key={project.title}>
                             <td className='pt-3'>
                               <a href={project.href}>
                                 {project.title}

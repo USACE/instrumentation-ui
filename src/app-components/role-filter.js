@@ -48,7 +48,7 @@ export default connect(
     alt = null,
     children,
   }) => {
-    const { is_admin } = profile;
+    const { is_admin } = profile || {};
     const showChildren = isUserAllowed(authGroupRoles, is_admin, allowRoles, denyRoles);
 
     if (showChildren) {

@@ -45,7 +45,7 @@ const InstrumentTypeCard = connect(
                 t: 20,
                 r: 80,
                 l: 80,
-                b: 30,
+                b: 80,
                 pad: 5,
               }
             }}

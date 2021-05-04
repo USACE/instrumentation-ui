@@ -28,7 +28,7 @@ const Project = connect(
       return <p className='m-2'>Loading Project Details...</p>;
     }
 
-    const { is_admin } = profile;
+    const { is_admin } = profile || {};
 
     const activeLinks = [
       // Always Active
@@ -61,7 +61,6 @@ const Project = connect(
         uri: '#batch-plotting',
       }] : [],
       // Active if User === Admin
-      // TOdO: REMOVE NOT
       ...isUserAllowed(authGroupRoles, is_admin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,

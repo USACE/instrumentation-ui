@@ -71,11 +71,11 @@ export default composeBundles(
         : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
-      // GET requests do not include token unless path starts with /my_
+      // GET requests do not include token unless path starts with /my_ or includes /members/
       // Need token to figure out who "me" is
       custom: ({ method, path }) => {
         if (method === 'GET') {
-          if (path.slice(0, 4) === '/my_') {
+          if (path.slice(0, 4) === '/my_' || path.includes('/members')) {
             return false;
           }
           return true;
