@@ -60,7 +60,7 @@ const InstrumentGroupCard = connect(
                   </a>
                 </td>
                 <td className='col-3'>
-                  <span className='float-right'>Some X Value</span>
+                  <span className='float-right'>{group.instrument_count}</span>
                 </td>
                 <td className='col-3'>
                   <span className='float-right'>Some Time Ago</span>

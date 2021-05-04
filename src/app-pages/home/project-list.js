@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Button from '../../app-components/button';
 import Icon from '../../app-components/icon';
 import FilterSelect from '../../app-components/filter-select';
 import ProjectCard from './project-card';
@@ -343,6 +344,7 @@ export default connect(
   ({ projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
+    const [isTableMode, setIsTableMode] = useState(false);
 
     const onChange = filteredList => {
       const filtered = projects.filter(p => filteredList.some(e => e.value === p.title));
@@ -368,12 +370,62 @@ export default connect(
           <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
             { projects.length ? (
               <>
-                <div className='mb-2'>
-                  <FilterSelect items={filterList} onChange={onChange} hasClearButton />
+                <div className='mb-2 d-flex justify-content-between'>
+                  <span className='btn-group mr-3'>
+                    <Button
+                      isActive={!isTableMode}
+                      icon={<Icon icon='image-multiple-outline' />}
+                      variant='info'
+                      isOutline
+                      handleClick={() => setIsTableMode(false)}
+                    />
+                    <Button
+                      isActive={isTableMode}
+                      icon={<Icon icon='table-of-contents' />}
+                      variant='info'
+                      isOutline
+                      handleClick={() => setIsTableMode(true)}
+                    />
+                  </span>
+                  <FilterSelect items={filterList} onChange={onChange} hasClearButton className='w-100' />
                 </div>
-                <div className='d-flex flex-wrap justify-content-around'>
-                  {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
-                </div>
+                <>
+                  {isTableMode ? (
+                    <table className='table is-fullwidth'>
+                      <thead>
+                        <tr>
+                          <th>Project Name</th>
+                          <th>Tools</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(filteredProjects.length ? filteredProjects : projects).map(project => (
+                          <tr key={project.id}>
+                            <td className='pt-3'>
+                              <a href={project.href}>
+                                {project.title}
+                              </a>
+                              <span className='text-muted'>&nbsp;- {project.subtitle}</span>
+                            </td>
+                            <td>
+                              <Button
+                                size='small'
+                                icon={<Icon icon='star-outline' />}
+                                variant='dark'
+                                isOutline
+                                isDisabled
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className='d-flex flex-wrap justify-content-around'>
+                      {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
+                    </div>
+                  )}
+                </>
               </>
             ) : <p>Loading Projects...</p> }
           </div>

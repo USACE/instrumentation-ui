@@ -42,6 +42,7 @@ import notificationBundle from './notification-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
+import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
 import rainfallBundle from './rainfall-bundle';
@@ -118,6 +119,7 @@ export default composeBundles(
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
+  projectMembersBundle,
   projectionBundle,
   projectsBundle,
   rainfallBundle,

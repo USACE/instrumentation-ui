@@ -26,6 +26,10 @@ export default createRestBundle({
       if (!profileActive) return null;
       return profileActive.id;
     }),
+    selectProfileIsAdmin: createSelector('selectProfileActive', (profileActive) => {
+      if (!profileActive) return null;
+      return profileActive.is_admin;
+    }),
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
       'selectPathname',

@@ -54,7 +54,9 @@ const TabContainer = ({
         ))}
       </ul>
       <section className={`section mt-3 ${contentClass}`}>
-        {tabs[tabIndex] && tabs[tabIndex].content}
+        {tabs[tabIndex] ? tabs[tabIndex].content : (
+          <p>No Content</p>
+        )}
       </section>
     </div>
   );
