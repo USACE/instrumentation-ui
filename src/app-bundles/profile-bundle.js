@@ -5,7 +5,7 @@ export default createRestBundle({
   name: 'profile',
   uid: 'id',
   initialFetch: true,
-  staleAfter: 900000,
+  staleAfter: 0,
   persist: false,
   routeParam: 'id',
   getTemplate: '/my_profile',
@@ -24,11 +24,17 @@ export default createRestBundle({
     ),
     selectProfileId: createSelector('selectProfileActive', (profileActive) => {
       if (!profileActive) return null;
-      return profileActive.id;
+      return {
+        profileId: profileActive.id
+      };
     }),
     selectProfileIsAdmin: createSelector('selectProfileActive', (profileActive) => {
       if (!profileActive) return null;
       return profileActive.is_admin;
+    }),
+    selectProfileRoles: createSelector('selectProfileActive', (profileActive) => {
+      if (!profileActive) return null;
+      return profileActive.roles;
     }),
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
