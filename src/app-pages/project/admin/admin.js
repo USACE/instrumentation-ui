@@ -22,10 +22,10 @@ const AdminPage = connect(
     profileActive: profile,
     projectMembersItems: members,
   }) => {
-    console.log('test members:', members);
+    // console.log('test members:', members);
     const domainRoles = domainsItemsByGroup.role;
 
-    console.log('test domainRoles:', domainRoles);
+    // console.log('test domainRoles:', domainRoles);
 
     return (
       <div className='container-fluid'>

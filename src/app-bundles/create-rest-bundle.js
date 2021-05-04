@@ -498,8 +498,6 @@ const createRestBundle = (opts) => {
 
         const url = decorateUrlWithItem(store[selectDeleteUrl](), item);
 
-        console.log('test url: ', url);
-
         if (url.indexOf('/:') !== -1) {
           // if we haven't filled in all of our params then bail
           return;
