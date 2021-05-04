@@ -9,7 +9,6 @@ export default connect(
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
   }) => {
-    console.log('data');
     return (
       <div>
         <Chart

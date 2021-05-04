@@ -268,7 +268,13 @@ const chartEditorBundle = {
           return 0;
         });
         timeseries.forEach((series) => {
-          const { items, style, instrument: instrumentName, name } = series;
+          const {
+            items,
+            style,
+            instrument: instrumentName,
+            name,
+            parameter_id,
+          } = series;
           if (!items || !items.length) return undefined;
           const x = [];
           const y = [];
@@ -293,14 +299,14 @@ const chartEditorBundle = {
             y: y,
             ...style,
           };
-          if (!parameters.includes(name)) {
-            parameters.push(name);
+          if (!parameters.includes(parameter_id)) {
+            parameters.push(parameter_id);
             let obj = {};
-            obj['name'] = name;
+            obj['name'] = parameter_id;
             obj['data'] = [range];
             chartData.push(obj);
           } else {
-            const found = chartData.find((x) => x.name === name);
+            const found = chartData.find((x) => x.name === parameter_id);
             found.data.push(range);
           }
         });
