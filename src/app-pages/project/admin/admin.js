@@ -4,17 +4,20 @@ import { connect } from 'redux-bundler-react';
 import Badge from '../../../app-components/badge';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
+import DeleteConfirm from '../../../app-components/delete-confirm';
 import Dropdown from '../../../app-components/dropdown';
 import Icon from '../../../app-components/icon';
 import MemberForm from './memberForm';
 
 const AdminPage = connect(
   'doModalOpen',
+  'doProjectMembersDelete',
   'selectDomainsItemsByGroup',
   'selectProfileActive',
   'selectProjectMembersItems',
   ({
     doModalOpen,
+    doProjectMembersDelete,
     domainsItemsByGroup,
     profileActive: profile,
     projectMembersItems: members,
@@ -31,40 +34,39 @@ const AdminPage = connect(
             <b>Current Project Members
               <Badge type='pill' variant='secondary' text={members.length} className='ml-2'/>
             </b>
-            {/* <Dropdown.Menu
+            <Dropdown.Menu
               withToggleArrow={false}
               buttonContent={<Icon icon='dots-vertical' />}
               buttonClasses={['m-0', 'p-0']}
               menuClasses={['dropdown-menu-right']}
             >
               <Dropdown.Item onClick={() => doModalOpen(MemberForm, { isEdit: false })}>Add New Member</Dropdown.Item>
-            </Dropdown.Menu> */}
+            </Dropdown.Menu>
           </Card.Header>
-          <Card.Body>
+          <Card.Body className='mx-3'>
             {members.length ? (
               <table className='table'>
                 <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Tools</th>
+                  <tr className='row'>
+                    <th className='col-3'>Name</th>
+                    <th className='col-4'>Email</th>
+                    <th className='col-2'>Role</th>
+                    <th className='col-3'>Tools</th>
                   </tr>
                 </thead>
                 <tbody>
                   {members.map(member => (
-                    <tr key={member.profile_id}>
-                      <td>{member.username}</td>
-                      <td>{member.email}</td>
-                      <td>{member.role}</td>
-                      <td>
-                        <Button
-                          variant='danger'
+                    <tr key={member.profile_id} className='row'>
+                      <td className='col-3'>{member.username}</td>
+                      <td className='col-4'>{member.email}</td>
+                      <td className='col-2'>{member.role}</td>
+                      <td className='col-3'>
+                        <DeleteConfirm
                           size='small'
                           isOutline
-                          icon={<Icon icon='trash-can-outline' />}
-                          isDisabled
-                          // handleClick={() => doModalOpen(MemberForm, { member, isEdit: true })}
+                          deleteText=''
+                          deleteIcon={<Icon icon='trash-can-outline' />}
+                          handleDelete={() => doProjectMembersDelete(member, null, true)}
                         />
                       </td>
                     </tr>

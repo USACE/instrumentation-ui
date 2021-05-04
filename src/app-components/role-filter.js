@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-export const isUserAllowed = (authGroupRoles, isAdmin, allowRoles = [], denyRoles = []) => {
+export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles = []) => {
   // set our default show value, false makes us find an allow role, true makes us deny
   // if you add both allow and deny we first see if you are allowed, then deny overrides
   let showChildren = allowRoles.length > 0 ? false : true;
@@ -11,8 +11,8 @@ export const isUserAllowed = (authGroupRoles, isAdmin, allowRoles = [], denyRole
     const groupRole = allowRoles[i].split('.');
     const group = groupRole[0];
     const role = groupRole[1];
-    if (authGroupRoles[group] && authGroupRoles[group].length) {
-      if (role === '*' || authGroupRoles[group].indexOf(role) !== -1) {
+    if (profileRoles[group] && profileRoles[group].length) {
+      if (role === '*' || profileRoles[group].indexOf(role) !== -1) {
         showChildren = true;
         break;
       }
@@ -24,8 +24,8 @@ export const isUserAllowed = (authGroupRoles, isAdmin, allowRoles = [], denyRole
     const groupRole = denyRoles[y].split('.');
     const group = groupRole[0];
     const role = groupRole[1];
-    if (authGroupRoles[group] && authGroupRoles[group].length) {
-      if (role === '*' || authGroupRoles[group].indexOf(role) !== -1) {
+    if (profileRoles[group] && profileRoles[group].length) {
+      if (role === '*' || profileRoles[group].indexOf(role) !== -1) {
         showChildren = false;
         break;
       }
@@ -38,10 +38,10 @@ export const isUserAllowed = (authGroupRoles, isAdmin, allowRoles = [], denyRole
 };
 
 export default connect(
-  'selectAuthGroupRoles',
+  'selectProfileRoles',
   'selectProfileActive',
   ({
-    authGroupRoles,
+    profileRoles,
     profileActive: profile,
     allowRoles = [],
     denyRoles = [],
@@ -49,7 +49,7 @@ export default connect(
     children,
   }) => {
     const { is_admin } = profile || {};
-    const showChildren = isUserAllowed(authGroupRoles, is_admin, allowRoles, denyRoles);
+    const showChildren = isUserAllowed(profileRoles, is_admin, allowRoles, denyRoles);
 
     if (showChildren) {
       return <>{children}</>;

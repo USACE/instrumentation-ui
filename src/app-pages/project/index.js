@@ -16,11 +16,11 @@ const Title = ({ text, icon }) => (
 );
 
 const Project = connect(
-  'selectAuthGroupRoles',
+  'selectProfileRoles',
   'selectProjectsByRoute',
   'selectProfileActive',
   ({
-    authGroupRoles,
+    profileRoles,
     projectsByRoute: project,
     profileActive: profile,
   }) => {
@@ -37,18 +37,18 @@ const Project = connect(
         content: <ProjectDashboard />,
         paddingSmall: true,
         uri: '#dashboard',
-      }],
-      // Active if User === Member
-      ...isUserAllowed(authGroupRoles, is_admin, [`${project.slug.toUpperCase()}.*`]) ? [{
-        title: <Title text='All Instruments' icon='speedometer' />,
-        content: <Manager style={{ width: '100vw' }}/>,
-        paddingSmall: true,
-        uri: '#all-instruments',
       }, {
         title: <Title text='Explorer' icon='map-marker-radius-outline' />,
         content: <Explorer />,
         paddingSmall: true,
         uri: '#explorer',
+      }],
+      // Active if User === Member
+      ...isUserAllowed(profileRoles, is_admin, [`${project.slug.toUpperCase()}.*`]) ? [{
+        title: <Title text='All Instruments' icon='speedometer' />,
+        content: <Manager style={{ width: '100vw' }}/>,
+        paddingSmall: true,
+        uri: '#all-instruments',
       }, {
         title: <Title text='Uploader' icon='cloud-upload-outline' />,
         content: <Uploader />,
@@ -61,7 +61,7 @@ const Project = connect(
         uri: '#batch-plotting',
       }] : [],
       // Active if User === Admin
-      ...isUserAllowed(authGroupRoles, is_admin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
+      ...isUserAllowed(profileRoles, is_admin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,
         paddingSmall: true,

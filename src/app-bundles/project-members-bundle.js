@@ -7,9 +7,9 @@ export default createRestBundle({
   staleAfter: 0,
   persist: false,
   getTemplate: '/projects/:projectId/members',
-  postTemplate: '/projects/:project_id/members/:profile_id/roles/:role_id',
-  deleteTemplate: '/projects/:project_id/members/:profile_id/roles/:role_id',
-  urlParamSelectors: ['selectProjectsIdByRoute'],
+  postTemplate: '/projects/:projectId/members/:profileId/roles/:item.role_id',
+  deleteTemplate: '/projects/:projectId/members/:profileId/roles/:item.role_id',
+  urlParamSelectors: ['selectProjectsIdByRoute', 'selectProfileId'],
   fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
     'PROJECTMEMBERS_SAVE_FINISHED',
