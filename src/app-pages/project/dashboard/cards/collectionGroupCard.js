@@ -37,17 +37,17 @@ const CollectionGroupCard = connect(
           </Dropdown.Menu>
         </div>
       </Card.Header>
-      <Card.Body hasPaddingVertical={false}>
+      <Card.Body hasPaddingVertical={false} className='mx-3'>
         <table className='table dashboard-table'>
           <thead>
-            <tr>
+            <tr className='row'>
               <th className='col-10'>Name</th>
               <th className='col-2 pl-3'>Tools</th>
             </tr>
           </thead>
           <tbody>
             {(collectionGroups || []).map(group => (
-              <tr key={group.id}>
+              <tr key={group.id} className='row'>
                 <td className='col-10'>
                   <a href={`/${project.slug}/collection-groups/${group.slug}`}>
                     {group.name}

@@ -46,7 +46,7 @@ const FilterSelect = ({
 
   return (
     <Dropdown.Menu
-      className={[className]}
+      dropdownClasses={[className]}
       customContent={(
         <div className='input-group' {...customProps}>
           <input

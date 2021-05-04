@@ -21,8 +21,12 @@ const SecondaryNavBar = connect(
     };
 
     useEffect(() => {
-      if (`#${hashStripQuery}` !== navLinks[navTab].uri) {
-        setForceUpdateIncrement(forceUpdateIncrement + 1);
+      if (navLinks[navTab]) {
+        if (`#${hashStripQuery}` !== navLinks[navTab].uri) {
+          setForceUpdateIncrement(forceUpdateIncrement + 1);
+        }
+      } else {
+        location.assign('/not-found');
       }
     }, [navLinks, hashStripQuery, navTab, setForceUpdateIncrement]);
 
