@@ -54,13 +54,15 @@ import uploadBundle from './upload-bundle';
 // Mock Token User
 const mockTokenUser =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6WyJQVUJMSUMuVVNFUiIsIkJMVUUtV0FURVItREFNLUVYQU1QTEUtUFJPSkVDVC5NRU1CRVIiXX0.5K6-bBpWrleRdewkpVOyyHjzbyJmZqsib_J_YL1Vn6o';
+const mockTokenAdmin =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmFtZSI6IlVzZXIuQWRtaW4iLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MjAwMDAwMDAwMCwicm9sZXMiOltdfQ.KlGM1ofuy9e28URmDlca21wLOMWo-sqeAHr1t45Yjpg';
 
 export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
     redirectOnLogout: '/',
     mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenUser : null,
+    token: process.env.NODE_ENV === 'development' ? mockTokenAdmin : null,
   }),
   createJwtApiBundle({
     root:

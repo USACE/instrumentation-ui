@@ -376,6 +376,7 @@ export default connect(
                       isActive={!isTableMode}
                       icon={<Icon icon='image-multiple-outline' />}
                       variant='info'
+                      title='Switch to Card View'
                       isOutline
                       handleClick={() => setIsTableMode(false)}
                     />
@@ -383,6 +384,7 @@ export default connect(
                       isActive={isTableMode}
                       icon={<Icon icon='table-of-contents' />}
                       variant='info'
+                      title='Switch to List View'
                       isOutline
                       handleClick={() => setIsTableMode(true)}
                     />

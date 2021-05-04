@@ -28,6 +28,8 @@ const Project = connect(
       return <p className='m-2'>Loading Project Details...</p>;
     }
 
+    const { is_admin } = profile;
+
     const activeLinks = [
       // Always Active
       ...[{
@@ -37,7 +39,7 @@ const Project = connect(
         uri: '#dashboard',
       }],
       // Active if User === Member
-      ...isUserAllowed(authGroupRoles, [`${project.slug.toUpperCase()}.*`]) ? [{
+      ...isUserAllowed(authGroupRoles, is_admin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='All Instruments' icon='speedometer' />,
         content: <Manager style={{ width: '100vw' }}/>,
         paddingSmall: true,
@@ -60,7 +62,7 @@ const Project = connect(
       }] : [],
       // Active if User === Admin
       // TOdO: REMOVE NOT
-      ...!isUserAllowed(authGroupRoles, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
+      ...isUserAllowed(authGroupRoles, is_admin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,
         paddingSmall: true,
