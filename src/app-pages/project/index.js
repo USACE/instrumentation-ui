@@ -37,6 +37,11 @@ const Project = connect(
         content: <ProjectDashboard />,
         paddingSmall: true,
         uri: '#dashboard',
+      }, {
+        title: <Title text='Explorer' icon='map-marker-radius-outline' />,
+        content: <Explorer />,
+        paddingSmall: true,
+        uri: '#explorer',
       }],
       // Active if User === Member
       ...isUserAllowed(profileRoles, is_admin, [`${project.slug.toUpperCase()}.*`]) ? [{
@@ -44,11 +49,6 @@ const Project = connect(
         content: <Manager style={{ width: '100vw' }}/>,
         paddingSmall: true,
         uri: '#all-instruments',
-      }, {
-        title: <Title text='Explorer' icon='map-marker-radius-outline' />,
-        content: <Explorer />,
-        paddingSmall: true,
-        uri: '#explorer',
       }, {
         title: <Title text='Uploader' icon='cloud-upload-outline' />,
         content: <Uploader />,
