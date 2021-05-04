@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Print from './print';
 import BatchPlotChart from './batch-plot-chart';
 import Card from '../../../app-components/card';
 import DataConfiguration from './data-configuration';
@@ -13,11 +14,7 @@ const BatchPlotting = connect(
   'doMapsInitialize',
   'doMapsShutdown',
   'selectMapsObject',
-  ({
-    doMapsInitialize,
-    doMapsShutdown,
-    mapsObject,
-  }) => {
+  ({ doMapsInitialize, doMapsShutdown, mapsObject }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
     const userConfigId = new URL(location.href).searchParams.get('c');
 
@@ -29,7 +26,9 @@ const BatchPlotting = connect(
             <DataConfiguration initialConfigurationId={userConfigId} />
           </Card>
           <div className='row mt-4'>
-            <div className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}>
+            <div
+              className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}
+            >
               <Card style={{ minHeight: '400px' }}>
                 <Card.Body>
                   <Map
@@ -47,7 +46,10 @@ const BatchPlotting = connect(
                   <Card.Header text='Cross Section' />
                   <Card.Body isContentCentered>
                     <div className='text-muted pt-4'>
-                      <Icon icon='account-hard-hat' style={{ fontSize: '64px' }} />
+                      <Icon
+                        icon='account-hard-hat'
+                        style={{ fontSize: '64px' }}
+                      />
                       <h5>Currently Under Construction</h5>
                     </div>
                   </Card.Body>
@@ -58,6 +60,7 @@ const BatchPlotting = connect(
           <Card className='w-100 my-4'>
             <Card.Header text='Plot' />
             <BatchPlotChart />
+            <Print />
           </Card>
         </section>
       </>
