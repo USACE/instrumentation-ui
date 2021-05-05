@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 
 import Dropdown from './dropdown';
@@ -29,6 +30,7 @@ const FilterSelect = ({
   const [filteredList, setFilteredList] = useState(items);
   const [inputVal, setInputVal] = useState('');
   const previousVal = usePrevious(inputVal);
+  const previousItems = usePrevious(items);
 
   useEffect(() => {
     if (inputVal !== previousVal) {
@@ -43,6 +45,12 @@ const FilterSelect = ({
       if (onChange) onChange(newSet, inputVal, (items.find(e => e.text === inputVal) || {}).value);
     }
   }, [inputVal, previousVal, items, onChange, setFilteredList]);
+
+  useEffect(() => {
+    if (items !== previousItems) {
+      setFilteredList(items);
+    }
+  }, [items, previousItems]);
 
   return (
     <Dropdown.Menu

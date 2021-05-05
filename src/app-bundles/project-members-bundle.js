@@ -7,13 +7,11 @@ export default createRestBundle({
   staleAfter: 0,
   persist: false,
   getTemplate: '/projects/:projectId/members',
-  postTemplate: '/projects/:projectId/members/:profileId/roles/:item.role_id',
-  deleteTemplate: '/projects/:projectId/members/:profileId/roles/:item.role_id',
   urlParamSelectors: ['selectProjectsIdByRoute', 'selectProfileId'],
   fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
-    'PROJECTMEMBERS_SAVE_FINISHED',
-    'PROJECTMEMBERS_DELETE_FINISHED',
+    'PROJECTMEMBERS_ADD_USER_FINISHED',
+    'PROJECTMEMBERS_DELETE_USER_FINISHED',
   ],
   prefetch: (store) => {
     const hash = store.selectHash();
