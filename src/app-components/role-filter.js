@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles = []) => {
+  // If there are no profile roles, user shouldn't be here
+  if (!profileRoles) return false;
+
   // set our default show value, false makes us find an allow role, true makes us deny
   // if you add both allow and deny we first see if you are allowed, then deny overrides
   let showChildren = allowRoles.length > 0 ? false : true;

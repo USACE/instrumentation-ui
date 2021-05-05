@@ -210,9 +210,6 @@ const uploadBundle = {
                 message: 'Data Uploaded Successfully',
                 level: 'success',
                 autoDismiss: 10,
-                onRemove: () => {
-                  store.doUpdateUrl(`/${project.slug}/manager`);
-                },
               });
             }
           });
@@ -226,9 +223,6 @@ const uploadBundle = {
               message: 'Data Uploaded Successfully',
               level: 'success',
               autoDismiss: 10,
-              onRemove: () => {
-                store.doUpdateUrl(`/${project.slug}/manager`);
-              },
             });
           } else {
             data.errors.forEach((error) => {

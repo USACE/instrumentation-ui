@@ -160,11 +160,7 @@ export default connect(
       if (item && item.id) {
         doInstrumentsDelete(
           item,
-          () => {
-            doModalClose();
-            if (routeParams.hasOwnProperty('instrumentSlug'))
-              doUpdateUrl('/manager');
-          },
+          () => doModalClose(),
           true
         );
       }
