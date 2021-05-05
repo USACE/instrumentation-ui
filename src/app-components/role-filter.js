@@ -39,17 +39,16 @@ export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles 
 
 export default connect(
   'selectProfileRoles',
-  'selectProfileActive',
+  'selectProfileIsAdmin',
   ({
     profileRoles,
-    profileActive: profile,
+    profileIsAdmin,
     allowRoles = [],
     denyRoles = [],
     alt = null,
     children,
   }) => {
-    const { is_admin } = profile || {};
-    const showChildren = isUserAllowed(profileRoles, is_admin, allowRoles, denyRoles);
+    const showChildren = isUserAllowed(profileRoles, profileIsAdmin, allowRoles, denyRoles);
 
     if (showChildren) {
       return <>{children}</>;
