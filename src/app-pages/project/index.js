@@ -17,18 +17,16 @@ const Title = ({ text, icon }) => (
 
 const Project = connect(
   'selectProfileRoles',
+  'selectProfileIsAdmin',
   'selectProjectsByRoute',
-  'selectProfileActive',
   ({
     profileRoles,
+    profileIsAdmin,
     projectsByRoute: project,
-    profileActive: profile,
   }) => {
     if (!project) {
       return <p className='m-2'>Loading Project Details...</p>;
     }
-
-    const { is_admin } = profile || {};
 
     const activeLinks = [
       // Always Active
@@ -44,7 +42,7 @@ const Project = connect(
         uri: '#explorer',
       }],
       // Active if User === Member
-      ...isUserAllowed(profileRoles, is_admin, [`${project.slug.toUpperCase()}.*`]) ? [{
+      ...isUserAllowed(profileRoles, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='All Instruments' icon='speedometer' />,
         content: <Manager style={{ width: '100vw' }}/>,
         paddingSmall: true,
@@ -61,7 +59,7 @@ const Project = connect(
         uri: '#batch-plotting',
       }] : [],
       // Active if User === Admin
-      ...isUserAllowed(profileRoles, is_admin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
+      ...isUserAllowed(profileRoles, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,
         paddingSmall: true,
