@@ -50,6 +50,7 @@ import routesBundle from './routes-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
+import usersBundle from './users-bundle';
 
 // Mock Token User
 const mockTokenUser =
@@ -128,5 +129,6 @@ export default composeBundles(
   routesBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle,
-  uploadBundle
+  uploadBundle,
+  usersBundle,
 );

@@ -12,6 +12,7 @@ const ModalFooter = connect(
     onCancel = null,
     onDelete = null,
     saveIsSubmit = false,
+    saveIsDisabled = false,
     showCancelButton = false,
     saveText='Save',
     cancelText='Cancel',
@@ -21,6 +22,7 @@ const ModalFooter = connect(
     const saveButtonProps = {
       className: 'mr-2',
       text: saveText,
+      isDisabled: saveIsDisabled,
       ...saveIsSubmit ? {
         type: 'submit'
       } : {
