@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles = []) => {
   // If there are no profile roles, user shouldn't be here
   if (!profileRoles) return false;
+  if (isAdmin) return true;
 
   // set our default show value, false makes us find an allow role, true makes us deny
   // if you add both allow and deny we first see if you are allowed, then deny overrides
@@ -14,6 +15,7 @@ export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles 
     const groupRole = allowRoles[i].split('.');
     const group = groupRole[0];
     const role = groupRole[1];
+
     if (profileRoles[group] && profileRoles[group].length) {
       if (role === '*' || profileRoles[group].indexOf(role) !== -1) {
         showChildren = true;
@@ -35,23 +37,21 @@ export const isUserAllowed = (profileRoles, isAdmin, allowRoles = [], denyRoles 
     }
   }
 
-  if (isAdmin) showChildren = true;
-
   return showChildren;
 };
 
 export default connect(
-  'selectProfileRoles',
+  'selectProfileRolesObject',
   'selectProfileIsAdmin',
   ({
-    profileRoles,
+    profileRolesObject,
     profileIsAdmin,
     allowRoles = [],
     denyRoles = [],
     alt = null,
     children,
   }) => {
-    const showChildren = isUserAllowed(profileRoles, profileIsAdmin, allowRoles, denyRoles);
+    const showChildren = isUserAllowed(profileRolesObject, profileIsAdmin, allowRoles, denyRoles);
 
     if (showChildren) {
       return <>{children}</>;

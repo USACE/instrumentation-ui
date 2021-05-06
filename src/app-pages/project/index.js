@@ -16,11 +16,11 @@ const Title = ({ text, icon }) => (
 );
 
 const Project = connect(
-  'selectProfileRoles',
+  'selectProfileRolesObject',
   'selectProfileIsAdmin',
   'selectProjectsByRoute',
   ({
-    profileRoles,
+    profileRolesObject,
     profileIsAdmin,
     projectsByRoute: project,
   }) => {
@@ -42,7 +42,7 @@ const Project = connect(
         uri: '#explorer',
       }],
       // Active if User === Member
-      ...isUserAllowed(profileRoles, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
+      ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='All Instruments' icon='speedometer' />,
         content: <Manager style={{ width: '100vw' }}/>,
         paddingSmall: true,
@@ -59,7 +59,7 @@ const Project = connect(
         uri: '#batch-plotting',
       }] : [],
       // Active if User === Admin
-      ...isUserAllowed(profileRoles, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
+      ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,
         paddingSmall: true,
