@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import isEqual from 'lodash.isequal';
 
 import Dropdown from './dropdown';
 import Icon from './icon';
@@ -47,7 +48,9 @@ const FilterSelect = ({
   }, [inputVal, previousVal, items, onChange, setFilteredList]);
 
   useEffect(() => {
-    if (items !== previousItems) {
+    console.log('test items:', items);
+    console.log('test previousItems: ', previousItems);
+    if (!isEqual(items, previousItems)) {
       setFilteredList(items);
     }
   }, [items, previousItems]);
