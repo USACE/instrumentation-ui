@@ -5,6 +5,7 @@ import Button from '../../app-components/button';
 import Icon from '../../app-components/icon';
 import FilterSelect from '../../app-components/filter-select';
 import ProjectCard from './project-card';
+import Card from '../../app-components/card';
 
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
@@ -367,70 +368,73 @@ export default connect(
               />
             </div>
           )}
-          <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
-            { projects.length ? (
-              <>
-                <div className='mb-2 d-flex justify-content-between'>
-                  <span className='btn-group mr-3'>
-                    <Button
-                      isActive={!isTableMode}
-                      icon={<Icon icon='image-multiple-outline' />}
-                      variant='info'
-                      title='Switch to Card View'
-                      isOutline
-                      handleClick={() => setIsTableMode(false)}
-                    />
-                    <Button
-                      isActive={isTableMode}
-                      icon={<Icon icon='table-of-contents' />}
-                      variant='info'
-                      title='Switch to List View'
-                      isOutline
-                      handleClick={() => setIsTableMode(true)}
-                    />
-                  </span>
-                  <FilterSelect items={filterList} onChange={onChange} hasClearButton className='w-100' />
-                </div>
+          <Card className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
+            <Card.Header text='All Projects' />
+            <Card.Body>
+              { projects.length ? (
                 <>
-                  {isTableMode ? (
-                    <table className='table is-fullwidth'>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>Tools</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(filteredProjects.length ? filteredProjects : projects).map(project => (
-                          <tr key={project.title}>
-                            <td className='pt-3'>
-                              <a href={project.href}>
-                                {project.title}
-                              </a>
-                              <span className='text-muted'>&nbsp;- {project.subtitle}</span>
-                            </td>
-                            <td>
-                              <Button
-                                size='small'
-                                icon={<Icon icon='star-outline' />}
-                                variant='dark'
-                                isOutline
-                                isDisabled
-                              />
-                            </td>
+                  <div className='mb-2 d-flex justify-content-between'>
+                    <span className='btn-group mr-3'>
+                      <Button
+                        isActive={!isTableMode}
+                        icon={<Icon icon='image-multiple-outline' />}
+                        variant='info'
+                        title='Switch to Card View'
+                        isOutline
+                        handleClick={() => setIsTableMode(false)}
+                      />
+                      <Button
+                        isActive={isTableMode}
+                        icon={<Icon icon='table-of-contents' />}
+                        variant='info'
+                        title='Switch to List View'
+                        isOutline
+                        handleClick={() => setIsTableMode(true)}
+                      />
+                    </span>
+                    <FilterSelect items={filterList} onChange={onChange} hasClearButton className='w-100' />
+                  </div>
+                  <>
+                    {isTableMode ? (
+                      <table className='table is-fullwidth'>
+                        <thead>
+                          <tr>
+                            <th>Project Name</th>
+                            <th>Tools</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <div className='d-flex flex-wrap justify-content-around'>
-                      {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
-                    </div>
-                  )}
+                        </thead>
+                        <tbody>
+                          {(filteredProjects.length ? filteredProjects : projects).map(project => (
+                            <tr key={project.title}>
+                              <td className='pt-3'>
+                                <a href={project.href}>
+                                  {project.title}
+                                </a>
+                                <span className='text-muted'>&nbsp;- {project.subtitle}</span>
+                              </td>
+                              <td>
+                                <Button
+                                  size='small'
+                                  icon={<Icon icon='star-outline' />}
+                                  variant='dark'
+                                  isOutline
+                                  isDisabled
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <div className='d-flex flex-wrap justify-content-around'>
+                        {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
+                      </div>
+                    )}
+                  </>
                 </>
-              </>
-            ) : <p>Loading Projects...</p> }
-          </div>
+              ) : <p>Loading Projects...</p> }
+            </Card.Body>
+          </Card>
         </div>
       </div>
     );

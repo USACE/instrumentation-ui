@@ -49,6 +49,17 @@ export default createRestBundle({
         };
       }, {});
     }),
+    selectProjectsByProfileRoles: createSelector(
+      'selectProjectsItems',
+      'selectProfileRolesObject',
+      (projects, roles) => {
+        if (!projects || !roles) return [];
+
+        const projectSlugs = Object.keys(roles).map(elem => elem.toLowerCase());
+
+        return projects.filter(elem => projectSlugs.includes(elem.slug));
+      }
+    ),
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
       'selectPathname',
