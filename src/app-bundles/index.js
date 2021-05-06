@@ -53,17 +53,21 @@ import uploadBundle from './upload-bundle';
 import usersBundle from './users-bundle';
 
 // Mock Token User
-const mockTokenUser =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6WyJQVUJMSUMuVVNFUiIsIkJMVUUtV0FURVItREFNLUVYQU1QTEUtUFJPSkVDVC5NRU1CRVIiXX0.5K6-bBpWrleRdewkpVOyyHjzbyJmZqsib_J_YL1Vn6o';
-const mockTokenAdmin =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmFtZSI6IlVzZXIuQWRtaW4iLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MjAwMDAwMDAwMCwicm9sZXMiOltdfQ.KlGM1ofuy9e28URmDlca21wLOMWo-sqeAHr1t45Yjpg';
+const mockTokenPublic =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119._N-sAWgMhYsWhwIf44_SGSMGSgnnM8tntlswsBqjYDo';
+const mockTokenApplicationAdmin =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmFtZSI6IlVzZXIuQXBwbGljYXRpb25BZG1pbiIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.aKaDNBnuhQyXI6zvzn-dAg8SxJSP3mQEx5FTSmJbYog';
+const mockTokenProjectAdmin =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwibmFtZSI6IlVzZXIuUHJvamVjdEFkbWluIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjIwMDAwMDAwMDAsInJvbGVzIjpbXX0.P2Cb6s3Kq0hHsfXEczFcUvpQuR8TTV88U4RDvcPabMM';
+const mockTokenProjectMember =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwibmFtZSI6IlVzZXIuUHJvamVjdE1lbWJlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.ujBvw9bCksuSbXGJreIpdXZcVIHtb8GhgviBTvrO9AQ';
 
 export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
     redirectOnLogout: '/',
     mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenAdmin : null,
+    token: process.env.NODE_ENV === 'development' ? mockTokenProjectAdmin : null,
   }),
   createJwtApiBundle({
     root:
