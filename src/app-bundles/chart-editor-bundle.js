@@ -255,11 +255,8 @@ const chartEditorBundle = {
     'selectChartEditorShowRainfall',
     'selectRainfallData',
     (dataByInstrumentId, showRainfall, rainfallData) => {
-      const chartSeries = [];
-      const parameters = [];
       const chartData = [];
       Object.keys(dataByInstrumentId).forEach((id) => {
-        // const parameters = [];
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
         timeseries.sort((a, b) => {
@@ -274,6 +271,7 @@ const chartEditorBundle = {
             instrument: instrumentName,
             name,
             parameter_id,
+            unit_id,
           } = series;
           if (!items || !items.length) return undefined;
           const x = [];
@@ -299,13 +297,20 @@ const chartEditorBundle = {
             y: y,
             ...style,
           };
-          if (!parameters.includes(parameter_id)) {
-            parameters.push(parameter_id);
+          if (!chartData.find((y) => y.name === parameter_id)) {
             let obj = {};
             obj['name'] = parameter_id;
+            obj['unit'] = unit_id;
+            obj['data'] = [range];
+            chartData.push(obj);
+          } else if (!chartData.find((z) => z.unit === unit_id)) {
+            let obj = {};
+            obj['name'] = parameter_id;
+            obj['unit'] = unit_id;
             obj['data'] = [range];
             chartData.push(obj);
           } else {
+            console.log('third');
             const found = chartData.find((x) => x.name === parameter_id);
             found.data.push(range);
           }
@@ -314,7 +319,7 @@ const chartEditorBundle = {
       if (showRainfall) {
         chartData.push(...rainfallData);
       }
-      return { data: chartData, parameters: parameters };
+      return chartData;
     }
   ),
 

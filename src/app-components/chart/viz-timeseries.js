@@ -46,8 +46,8 @@ export default connect(
     }
     return (
       <div>
-        {data.data.length ? (
-          data.data.map((x) => (
+        {data.length ? (
+          data.map((x) => (
             <div key={x.name}>
               <Chart data={x.data} layout={layout} config={config} />
             </div>
