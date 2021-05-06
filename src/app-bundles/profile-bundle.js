@@ -36,6 +36,19 @@ export default createRestBundle({
       if (!profileActive) return null;
       return profileActive.roles;
     }),
+    selectProfileRolesObject: createSelector('selectProfileRoles', (profileRoles) => {
+      if (!profileRoles) return null;
+      return profileRoles.reduce((accum, elem) => {
+        const groupRole = elem.split('.');
+        const group = groupRole[0];
+        const role = groupRole[1];
+    
+        return {
+          ...accum,
+          [group]: (accum[group] || []).concat([role]),
+        };
+      }, {});
+    }),
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
       'selectPathname',
