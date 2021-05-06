@@ -2,7 +2,7 @@ import createRestBundle from './create-rest-bundle';
 
 export default createRestBundle({
   name: 'projectMembers',
-  uid: 'profile_id',
+  uid: 'id',
   sortBy: 'username',
   staleAfter: 0,
   persist: false,
