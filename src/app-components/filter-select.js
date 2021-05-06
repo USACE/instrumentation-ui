@@ -48,8 +48,6 @@ const FilterSelect = ({
   }, [inputVal, previousVal, items, onChange, setFilteredList]);
 
   useEffect(() => {
-    console.log('test items:', items);
-    console.log('test previousItems: ', previousItems);
     if (!isEqual(items, previousItems)) {
       setFilteredList(items);
     }
