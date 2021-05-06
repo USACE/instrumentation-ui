@@ -60,7 +60,6 @@ const usersBundle = {
   }),
 
   doTypeaheadQueryUpdated: (q) => ({ dispatch }) => {
-    console.log('test payload: ', q);
     dispatch({
       type: 'TYPEAHEAD_QUERY_UPDATED',
       payload: q,

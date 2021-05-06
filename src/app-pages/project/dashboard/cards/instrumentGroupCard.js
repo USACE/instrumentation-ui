@@ -45,10 +45,6 @@ const InstrumentGroupCard = connect(
               <th className='col-3'>
                 <span className='float-right'>Instrument Count</span>
               </th>
-              {/* <th className='col-3'>
-                <span className='float-right'>Last Measurement</span>
-              </th> */}
-              {/* Temp */}
               <th className='col-3'>
                 <span className='float-right'>Timeseries Count</span>
               </th>
@@ -66,10 +62,6 @@ const InstrumentGroupCard = connect(
                 <td className='col-3'>
                   <span className='float-right'>{group.instrument_count}</span>
                 </td>
-                {/* <td className='col-3'>
-                  <span className='float-right'>Some Time Ago</span>
-                </td> */}
-                {/* vvv Temp vvv */}
                 <td className='col-3'>
                   <span className='float-right'>{group.timeseries_count}</span>
                 </td>
