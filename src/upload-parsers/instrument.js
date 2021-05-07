@@ -65,11 +65,10 @@ const instrumentParser = {
     },
     lon: {
       label: 'Lon.',
-      type: 'number',
+      type: 'coord',
       required: true,
       template: '',
       parse: (val) => {
-        console.log('longitude val: ', val);
         if (val.toUpperCase().indexOf('W') !== -1)
           return parseStupidCoords(val);
         if (val.toUpperCase().indexOf('E') !== -1)
@@ -80,11 +79,10 @@ const instrumentParser = {
     },
     lat: {
       label: 'Lat.',
-      type: 'number',
+      type: 'coord',
       required: true,
       template: '',
       parse: (val) => {
-        console.log('latitude val: ', val);
         if (val.toUpperCase().indexOf('N') !== -1)
           return parseStupidCoords(val);
         if (val.toUpperCase().indexOf('S') !== -1)
