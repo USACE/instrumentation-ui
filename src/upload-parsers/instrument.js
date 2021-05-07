@@ -23,14 +23,13 @@ const instrumentParser = {
   postProcess: (rows) => {
     // convert lat and lon to geojson geometry
     rows.forEach((row) => {
+      console.log('test row: ', row);
       row.geometry = { type: 'Point', coordinates: [] };
       if (!isNaN(row.lon)) {
         row.geometry.coordinates[0] = parseFloat(row.lon);
-        delete row.lon;
       }
       if (!isNaN(row.lat)) {
         row.geometry.coordinates[1] = parseFloat(row.lat);
-        delete row.lat;
       }
     });
     return rows;
@@ -66,10 +65,11 @@ const instrumentParser = {
     },
     lon: {
       label: 'Lon.',
-      type: 'coord',
+      type: 'number',
       required: true,
       template: '',
       parse: (val) => {
+        console.log('longitude val: ', val);
         if (val.toUpperCase().indexOf('W') !== -1)
           return parseStupidCoords(val);
         if (val.toUpperCase().indexOf('E') !== -1)
@@ -80,10 +80,11 @@ const instrumentParser = {
     },
     lat: {
       label: 'Lat.',
-      type: 'coord',
+      type: 'number',
       required: true,
       template: '',
       parse: (val) => {
+        console.log('latitude val: ', val);
         if (val.toUpperCase().indexOf('N') !== -1)
           return parseStupidCoords(val);
         if (val.toUpperCase().indexOf('S') !== -1)
@@ -106,6 +107,7 @@ const instrumentParser = {
       type: 'number*100',
       required: false,
       template: '',
+      parse: (val) => Number(val),
       helpText:
         'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
     },

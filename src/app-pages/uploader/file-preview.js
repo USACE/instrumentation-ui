@@ -18,6 +18,8 @@ export default connect(
     uploadDataParsed: dataParsed,
     projectsByRoute: project,
   }) => {
+    console.log('test dataParsed: ', dataParsed);
+    console.log('test dataOriginal: ', dataOriginal);
     const tabs = [{
       title: 'Original',
       content: <PreviewTable columnDefs={colDefsOriginal} data={dataOriginal} />,
