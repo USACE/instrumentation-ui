@@ -310,7 +310,6 @@ const chartEditorBundle = {
             obj['data'] = [range];
             chartData.push(obj);
           } else {
-            console.log('third');
             const found = chartData.find((x) => x.name === parameter_id);
             found.data.push(range);
           }
