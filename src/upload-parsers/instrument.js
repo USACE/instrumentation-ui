@@ -23,7 +23,6 @@ const instrumentParser = {
   postProcess: (rows) => {
     // convert lat and lon to geojson geometry
     rows.forEach((row) => {
-      console.log('test row: ', row);
       row.geometry = { type: 'Point', coordinates: [] };
       if (!isNaN(row.lon)) {
         row.geometry.coordinates[0] = parseFloat(row.lon);
