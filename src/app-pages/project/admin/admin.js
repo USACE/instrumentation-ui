@@ -27,7 +27,7 @@ const AdminPage = connect(
           </b>
           <Dropdown.Menu
             withToggleArrow={false}
-            buttonContent={<Icon icon='dots-vertical' />}
+            buttonContent={<Icon icon='menu' />}
             buttonClasses={['m-0', 'p-0']}
             menuClasses={['dropdown-menu-right']}
           >

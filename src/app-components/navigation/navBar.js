@@ -52,12 +52,6 @@ const NavBar = connect(
       `bg-${theme}`,
     ]);
 
-    const isReportingActive =
-      project &&
-      [`/${project.slug}/batch-plotting`].some(
-        (path) => pathname.indexOf(path) !== -1
-      );
-
     useEffect(() => {
       const { hideBrand, brand, theme } = customTheme[pathname] || {};
 
@@ -75,7 +69,7 @@ const NavBar = connect(
               <strong>
                 <a href='/' className='text-white'>
                   <Icon icon='pulse' className='pr-2' />
-                  {brand || 'Home'}
+                  {brand || 'MIDAS'}
                 </a>
               </strong>
               {project && project.name && (
