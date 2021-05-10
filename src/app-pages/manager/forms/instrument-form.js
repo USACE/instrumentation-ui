@@ -20,8 +20,6 @@ export default connect(
   'doProjTransformFromLonLat',
   'doProjTransformToLonLat',
   'doInstrumentsDelete',
-  'doUpdateUrl',
-  'selectRouteParams',
   'selectInstrumentDrawLon',
   'selectInstrumentDrawLat',
   'selectInstrumentDrawReady',
@@ -40,8 +38,6 @@ export default connect(
     doProjTransformFromLonLat,
     doProjTransformToLonLat,
     doInstrumentsDelete,
-    doUpdateUrl,
-    routeParams,
     instrumentDrawLat,
     instrumentDrawLon,
     instrumentDrawReady,
@@ -72,7 +68,7 @@ export default connect(
     const [y, setY] = useState(projected[1]);
 
     useEffect(() => {
-      if (instrumentDrawReady  && item && item.geometry) {
+      if (instrumentDrawReady && item && item.geometry) {
         const geom = item.geometry;
         const itemLon = geom.coordinates[0];
         const itemLat = geom.coordinates[1];
@@ -191,7 +187,10 @@ export default connect(
             <div className='mb-3' style={{ position: 'relative', height: 300 }}>
               <Map
                 mapKey='inst-edit'
-                options={{ center: [-98.6, 39.8], zoom: 4 }}
+                options={{
+                  center: item && item.geometry && item.geometry.coordinates || [-98.6, 39.8],
+                  zoom: 4
+                }}
                 mapsObject={mapsObject}
                 doMapsInitialize={doMapsInitialize}
                 doMapsShutdown={doMapsShutdown}

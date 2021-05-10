@@ -67,7 +67,7 @@ export default composeBundles(
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
     redirectOnLogout: '/',
     mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenProjectAdmin : null,
+    token: process.env.NODE_ENV === 'development' ? mockTokenApplicationAdmin : null,
   }),
   createJwtApiBundle({
     root:
