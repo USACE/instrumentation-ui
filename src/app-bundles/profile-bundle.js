@@ -14,7 +14,29 @@ export default createRestBundle({
   deleteTemplate: '',
   fetchActions: ['AUTH_LOGGED_IN'],
   forceFetchActions: ['PROFILE_SAVE_FINISHED'],
+  reduceFurther: (state, { type, payload }) => {
+    switch (type) {
+      case 'PROFILE_REMOVE_PROFILE':
+        return Object.assign({}, payload);
+      default:
+        return state;
+    }
+  },
   addons: {
+    doRemoveProfile: () => ({ dispatch, store }) => {
+      dispatch({
+        type: 'PROFILE_REMOVE_PROFILE',
+        payload: store.selectProfileFlags(),
+      });
+    },
+    selectProfileRaw: state => state.profile,
+    selectProfileFlags: createSelector('selectProfileRaw', profile => {
+      const profileClone = Object.assign({}, profile);
+      Object.keys(profileClone).forEach((key) => {
+        if (key[0] !== '_') delete profileClone[key];
+      });
+      return profileClone;
+    }),
     selectProfileActive: createSelector(
       'selectProfileItems',
       (profileItems) => {

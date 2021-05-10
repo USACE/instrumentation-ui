@@ -85,6 +85,7 @@ const createAuthBundle = (opts) => {
         type: 'AUTH_LOGGED_OUT',
         payload: { token: null, error: null },
       });
+      store.doRemoveProfile();
       const redirect = store.selectAuthRedirectOnLogout();
       if (redirect) store.doUpdateUrl(redirect);
     },
