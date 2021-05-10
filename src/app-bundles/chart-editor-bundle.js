@@ -12,8 +12,8 @@ const initialData = {
   correlationSeriesY: '',
   correlationMinDate: subDays(now, 60),
   correlationMaxDate: now,
-  showToday: false,
-  showRainfall: true,
+  showToday: true,
+  showRainfall: false,
   exactMatchesOnly: true,
   layout: {
     title: {
