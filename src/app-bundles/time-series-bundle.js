@@ -7,10 +7,10 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: '',
-  getTemplate: '/timeseries',
-  putTemplate: '/timeseries/:item.id',
-  postTemplate: '/timeseries',
-  deleteTemplate: '/timeseries/:item.id',
+  getTemplate: '/projects/:projectId/timeseries',
+  putTemplate: '/projects/:projectId/timeseries/:item.id',
+  postTemplate: '/projects/:projectId/timeseries',
+  deleteTemplate: '/projects/:projectId/timeseries/:item.id',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',
@@ -18,7 +18,7 @@ export default createRestBundle({
     'INSTRUMENTCONSTANTS_SAVE_FINISHED',
     'INSTRUMENTTIMESERIES_SAVE_FINISHED',
   ],
-  urlParamSelectors: [],
+  urlParamSelectors: ['selectProjectsIdByRoute'],
   reduceFurther: (state, { type, payload }) => {
     if (type === 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID') {
       return Object.assign({}, state, payload);
