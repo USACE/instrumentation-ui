@@ -1,20 +1,5 @@
-import formatISO from 'date-fns/formatISO';
 import { DateTime } from 'luxon';
-
 import { isNumeric } from '../utils';
-
-
-const formatTime = t => {
-  try {
-    const formatted = formatISO(new Date(t));
-
-    const formattedTime = formatInTimeZone(formatted, 'yyyy-MM-dd kk:mm:ss xxx', 'UTC');
-    return formattedTime;
-  }
-  catch (_e) {
-    return undefined;
-  }
-};
 
 const timeseriesMeasurementParser = {
   name: 'Timeseries Measurement',
@@ -29,7 +14,7 @@ const timeseriesMeasurementParser = {
         timeseries_id,
         project_id,
         items: (accum['items'] || []).concat([{
-          time: formatTime(time),
+          time: DateTime.fromISO(time, { zone: 'utc' }),
           value,
         }])
       });
