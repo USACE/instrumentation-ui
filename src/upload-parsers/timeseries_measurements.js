@@ -3,6 +3,10 @@ import { isNumeric } from '../utils';
 
 const formatTime = t => {
   try {
+    // console.log('test init time: ', t);
+    // console.log('test time as Date: ', new Date(t));
+    // console.log('test formattedISO Date: ', formatISO(new Date(t)));
+
     const formatted = formatISO(new Date(t));
     return formatted;
   }

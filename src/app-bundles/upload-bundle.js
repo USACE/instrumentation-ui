@@ -263,7 +263,8 @@ const uploadBundle = {
 
   selectUploadColumnDefsOriginal: createSelector('selectUploadJson', (json) => {
     if (!json || !json.length) return [];
-    const keys = Object.keys(json[Math.round(json.length / 2)]);
+
+    const keys = Object.keys(json[0]);
     return [
       { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
       ...keys.map((key) => ({
