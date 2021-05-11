@@ -11,7 +11,10 @@ const SecondaryNavBar = connect(
   }) => {
     const getIndex = () => navLinks.findIndex(elem => elem.uri == `#${hashStripQuery}`);
 
-    const defaultTab = hashStripQuery ? getIndex() : 0;
+    const defaultTab = hashStripQuery ? getIndex() : () => {
+      location.hash = navLinks[0].uri;
+      return 0;
+    };
     const [navTab, setNavTab] = useState(defaultTab);
     const [forceUpdateIncrement, setForceUpdateIncrement] = useState(0);
 

@@ -21,10 +21,15 @@ const timeseriesParser = {
       label: 'Instrument',
       type: 'internal',
       required: true,
+      useFilterComponent: true,
+      hideCsvMappings: true,
       provider: state => (
         Object.keys(state.instruments)
           .filter(key => key.charAt(0) !== '_')
-          .map(key => ({ value: state.instruments[key].id, text: key }))
+          .map(key => ({
+            value: state.instruments[key].id,
+            text: state.instruments[key].name,
+          }))
       ),
       parse: (val) => val,
       validate: (val, state) => {

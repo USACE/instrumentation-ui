@@ -22,7 +22,9 @@ const generateOptions = (model, jsonKeys, domains, state) => {
     )));
   }
 
-  ret.push(...jsonKeys.map(jsonKey => ({ value: jsonKey })));
+  if (!model.hideCsvMappings) {
+    ret.push(...jsonKeys.map(jsonKey => ({ value: jsonKey })));
+  }
   return ret;
 };
 

@@ -1,6 +1,5 @@
 import { createRouteBundle } from 'redux-bundler';
 
-import BatchPlotting from '../app-pages/reporting/batch-plotting';
 import CollectionGroup from '../app-pages/collectiongroup/collectiongroup';
 import Group from '../app-pages/group/details';
 import Help from '../app-pages/help/help';
@@ -20,8 +19,7 @@ export default createRouteBundle(
     '/logout': Logout,
     '/signup': SignUp,
     '/profile': Profile,
-    '/:projectSlug/project': Project,
-    '/:projectSlug/batch-plotting': BatchPlotting,
+    '/:projectSlug': Project,
     '/:projectSlug/groups/:groupSlug': Group,
     '/:projectSlug/instruments/:instrumentSlug': Instrument,
     '/:projectSlug/collection-groups/:collectionGroupSlug': CollectionGroup,

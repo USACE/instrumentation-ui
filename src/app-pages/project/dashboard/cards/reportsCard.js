@@ -12,7 +12,7 @@ const createReportRow = (project, plot) => {
   return (
     <div className='report-row' key={id}>
       <Icon icon='file-chart' />
-      <a href={`/${project.slug}/project#batch-plotting?c=${id}`}>{name}</a>
+      <a href={`/${project.slug}#batch-plotting?c=${id}`}>{name}</a>
     </div>
   );
 };

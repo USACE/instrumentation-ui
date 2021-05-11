@@ -18,7 +18,7 @@ export default connect(
     });
 
     return (
-      item && (
+      item ? (
         <li
           ref={li}
           className={itemClass}
@@ -41,7 +41,7 @@ export default connect(
             <small>{`${item.parameter} in ${item.unit}`}</small>
           </div>
         </li>
-      )
+      ) : null
     );
   }
 );

@@ -34,7 +34,7 @@ export default createRestBundle({
           img: p.image,
           title: p.name,
           subtitle: 'Instrumentation Browser',
-          href: `/${p.slug}/project#dashboard`,
+          href: `/${p.slug}#dashboard`,
           content: '',
         }))
     ),
