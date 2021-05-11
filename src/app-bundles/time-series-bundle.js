@@ -13,9 +13,10 @@ export default createRestBundle({
   deleteTemplate: '/timeseries/:item.id',
   fetchActions: [],
   forceFetchActions: [
-    'INSTRUMENTCONSTANTS_SAVE_FINISHED',
     'INSTRUMENTS_FETCH_FINISHED',
     'INSTRUMENTGROUPS_FETCH_FINISHED',
+    'INSTRUMENTCONSTANTS_SAVE_FINISHED',
+    'INSTRUMENTTIMESERIES_SAVE_FINISHED',
   ],
   urlParamSelectors: [],
   reduceFurther: (state, { type, payload }) => {
