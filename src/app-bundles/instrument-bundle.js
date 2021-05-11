@@ -30,13 +30,12 @@ export default createRestBundle({
     'INSTRUMENTS_SAVE_FINISHED',
     'INSTRUMENTS_DELETE_FINISHED',
     'INSTRUMENTSTATUS_SAVE_FINISHED',
-    'INSTRUMENTZ_SAVE_FINISHED',
   ],
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
     const url = store.selectUrlObject();
-    const whiteList = ['dashboard', 'explorer', 'all-instruments'];
+    const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments'];
 
     return whiteList.includes(hash) || url.pathname.includes('/instruments/');
   },

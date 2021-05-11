@@ -4,7 +4,7 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'collectionGroup',
   uid: 'slug',
-  staleAfter: 10000,
+  staleAfter: 0,
   persist: false,
   sortBy: 'name',
   routeParam: 'collectionGroupSlug',

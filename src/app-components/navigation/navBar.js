@@ -75,7 +75,7 @@ const NavBar = connect(
               {project && project.name && (
                 <>
                   <Icon icon='chevron-right' className='px-2' />
-                  <a href={`/${project.slug}/project#dashboard`} className='text-white'>
+                  <a href={`/${project.slug}#dashboard`} className='text-white'>
                     {project.name}
                   </a>
                 </>
