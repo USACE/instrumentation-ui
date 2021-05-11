@@ -1,6 +1,5 @@
 import { createRouteBundle } from 'redux-bundler';
 
-// import BatchPlotting from '../app-pages/reporting/batch-plotting';
 import CollectionGroup from '../app-pages/collectiongroup/collectiongroup';
 import Group from '../app-pages/group/details';
 import Help from '../app-pages/help/help';

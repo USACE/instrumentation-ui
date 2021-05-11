@@ -44,10 +44,6 @@ export default connect(
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
-    console.log('test project: ', project);
-    console.log('test instrument: ', instrument);
-    console.log('test timeseriesByInstrumentId: ', timeseriesByInstrumentId);
-
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
