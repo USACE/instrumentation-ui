@@ -1,14 +1,15 @@
 import formatISO from 'date-fns/formatISO';
+import { DateTime } from 'luxon';
+
 import { isNumeric } from '../utils';
+
 
 const formatTime = t => {
   try {
-    // console.log('test init time: ', t);
-    // console.log('test time as Date: ', new Date(t));
-    // console.log('test formattedISO Date: ', formatISO(new Date(t)));
-
     const formatted = formatISO(new Date(t));
-    return formatted;
+
+    const formattedTime = formatInTimeZone(formatted, 'yyyy-MM-dd kk:mm:ss xxx', 'UTC');
+    return formattedTime;
   }
   catch (_e) {
     return undefined;
@@ -60,9 +61,9 @@ const timeseriesMeasurementParser = {
       label: 'Time',
       type: 'string',
       required: true,
-      parse: val => formatTime(val),
-      validate: val => !!val,
-      helpText: 'Value should be able to be parsed into a Javascript Date String (see MDN docs for this)',
+      parse: val => DateTime.fromISO(val, { zone: 'utc' }),
+      validate: val => DateTime.fromISO(val).isValid,
+      helpText: 'A valid ISO-8601 string. See Luxon docs (https://moment.github.io/luxon/docs/manual/parsing.html#iso-8601) for more information.',
     },
     value: {
       label: 'Value',
