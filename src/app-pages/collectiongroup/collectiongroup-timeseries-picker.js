@@ -8,12 +8,12 @@ export default connect(
   'doModalClose',
   'doCollectionGroupAddTimeseries',
   'selectCollectionGroupByRoute',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectNonComputedTimeseriesItemsByRoute',
   ({
     doModalClose,
     doCollectionGroupAddTimeseries,
     collectionGroupByRoute: collectionGroup,
-    instrumentTimeseriesItemsByRoute: timeseries,
+    nonComputedTimeseriesItemsByRoute: timeseries,
   }) => {
     const [timeseriesSelected, setTimeseriesSelected] = useState(null);
 

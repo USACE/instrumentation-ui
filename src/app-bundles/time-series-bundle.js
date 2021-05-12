@@ -7,7 +7,7 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: '',
-  getTemplate: '/timeseries',
+  getTemplate: '/projects/:projectId/timeseries',
   putTemplate: '/timeseries/:item.id',
   postTemplate: '/timeseries',
   deleteTemplate: '/timeseries/:item.id',
@@ -18,7 +18,7 @@ export default createRestBundle({
     'INSTRUMENTCONSTANTS_SAVE_FINISHED',
     'INSTRUMENTTIMESERIES_SAVE_FINISHED',
   ],
-  // urlParamSelectors: ['selectProjectsIdByRoute'],
+  urlParamSelectors: ['selectProjectsIdByRoute'],
   reduceFurther: (state, { type, payload }) => {
     if (type === 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID') {
       return Object.assign({}, state, payload);
@@ -55,6 +55,19 @@ export default createRestBundle({
           out[ts.instrument_id].push(ts);
         });
         return out;
+      }
+    ),
+    selectNonComputedTimeseriesByInstrumentId: createSelector(
+      'selectInstrumentTimeseriesByInstrumentId',
+      (timeseries) => {
+        if (!timeseries) return {};
+        const clone = Object.assign({}, timeseries);
+
+        Object.keys(timeseries).forEach(key => {
+          clone[key] = clone[key].filter(ts => !ts.is_computed);
+        });
+
+        return clone;
       }
     ),
     selectInstrumentTimeseriesByProjectId: createSelector(
@@ -98,6 +111,15 @@ export default createRestBundle({
           return [];
         }
       }
+    ),
+    selectNonComputedTimeseriesItemsByRoute: createSelector(
+      'selectInstrumentTimeseriesItemsByRoute',
+      (timeseries) => {
+        if (!timeseries) return [];
+
+        const out = timeseries.filter(ts => !ts.is_computed);
+        return out;
+      },
     ),
   },
 });

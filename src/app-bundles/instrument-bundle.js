@@ -35,7 +35,7 @@ export default createRestBundle({
   prefetch: (store) => {
     const hash = store.selectHash();
     const url = store.selectUrlObject();
-    const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments'];
+    const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments', 'batch-plotting'];
 
     return whiteList.includes(hash) || url.pathname.includes('/instruments/');
   },

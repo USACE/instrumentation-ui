@@ -19,14 +19,14 @@ export default connect(
   'doInstrumentTimeseriesSetActiveId',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItemsByRoute: timeseries,
+    nonComputedTimeseriesItemsByRoute: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
   }) => {
     const grid = useRef(null);
