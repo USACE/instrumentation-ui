@@ -40,14 +40,14 @@ const Project = connect(
         content: <Explorer />,
         paddingSmall: true,
         uri: '#explorer',
-      }],
-      // Active if User === Member
-      ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
+      }, {
         title: <Title text='All Instruments' icon='speedometer' />,
         content: <Manager style={{ width: '100vw' }}/>,
         paddingSmall: true,
         uri: '#all-instruments',
-      }, {
+      }],
+      // Active if User === Member
+      ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='Uploader' icon='cloud-upload-outline' />,
         content: <Uploader />,
         paddingSmall: true,

@@ -31,7 +31,7 @@ export default connect(
   'selectProjectsByRoute',
   'selectAlertsByRouteByInstrumentId',
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesByInstrumentId',
+  'selectNonComputedTimeseriesByInstrumentId',
   ({
     doModalOpen,
     doAlertsFetch,
@@ -41,7 +41,7 @@ export default connect(
     mapsObject,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
+    nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
