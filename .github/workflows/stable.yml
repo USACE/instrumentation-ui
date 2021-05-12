@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     env:
+      REACT_APP_FORMULA_EDITOR: true
       REACT_APP_API_URL: https://midas-api.rsgis.dev
     runs-on: ubuntu-latest
     strategy:
