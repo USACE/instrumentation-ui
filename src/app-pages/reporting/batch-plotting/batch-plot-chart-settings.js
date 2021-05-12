@@ -16,7 +16,7 @@ const BatchPlotChartSettings = ({
   const [from, to] = dateRange;
 
   useEffect(() => {
-    console.log('test from - to: ', from, ' - ', to);
+    // console.log('test from - to: ', from, ' - ', to);
   }, [dateRange]);
 
   return (

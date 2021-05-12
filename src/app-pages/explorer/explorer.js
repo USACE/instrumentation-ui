@@ -6,9 +6,11 @@ import PanelGroup from 'react-panelgroup';
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
 import MapTools from './map-tools';
-import Navbar from '../../app-components/navbar';
 import Visualizations from './explorer-visualizations';
 import useWindowListener from '../../customHooks/useWindowListener';
+import { classArray } from '../../utils';
+
+import './explorer.scss';
 
 export default connect(
   'doMapsInitialize',
@@ -35,44 +37,39 @@ export default connect(
 
     useWindowListener('keydown', toggleLandscape);
 
+    const hasDevBanner = process.env.REACT_APP_DEVELOPMENT_BANNER;
+    const cls = classArray([
+      'explorer-container',
+      hasDevBanner && 'with-banner'
+    ]);
+
     return (
-      <>
-        <Navbar theme='primary' />
-        <div
-          style={{
-            position: 'absolute',
-            top: 71,
-            right: 0,
-            left: 0,
-            bottom: 0,
-          }}
+      <div className={cls}>
+        <PanelGroup
+          borderColor='#ccc'
+          spacing={2}
+          direction={landscapeMode ? 'column' : 'row'}
+          onUpdate={(_data) =>
+            mapRef && mapRef.current && mapRef.current.updateSize()
+          }
         >
-          <PanelGroup
-            borderColor='#ccc'
-            spacing={2}
-            direction={landscapeMode ? 'column' : 'row'}
-            onUpdate={(_data) =>
-              mapRef && mapRef.current && mapRef.current.updateSize()
-            }
-          >
-            <Panel>
-              <Map
-                ref={mapRef}
-                mapKey={mapKey}
-                options={{ center: [-80.8027, 26.9419], zoom: 10 }}
-                doMapsInitialize={doMapsInitialize}
-                doMapsShutdown={doMapsShutdown}
-                mapsObject={mapsObject}
-              />
-              <MapTools />
-              <MapLegend />
-            </Panel>
-            <Panel>
-              <Visualizations />
-            </Panel>
-          </PanelGroup>
-        </div>
-      </>
+          <Panel>
+            <Map
+              ref={mapRef}
+              mapKey={mapKey}
+              options={{ center: [-98.6, 39.8], zoom: 4 }}
+              doMapsInitialize={doMapsInitialize}
+              doMapsShutdown={doMapsShutdown}
+              mapsObject={mapsObject}
+            />
+            <MapTools />
+            <MapLegend />
+          </Panel>
+          <Panel>
+            <Visualizations />
+          </Panel>
+        </PanelGroup>
+      </div>
     );
   }
 );

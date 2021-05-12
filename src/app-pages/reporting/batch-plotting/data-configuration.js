@@ -22,6 +22,7 @@ const DataConfiguration = connect(
     batchPlotConfigurationsActiveId,
     doBatchPlotConfigurationsDelete,
     doBatchPlotConfigurationsSetActiveId,
+    initialConfigurationId,
   }) => {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -65,10 +66,17 @@ const DataConfiguration = connect(
       doBatchPlotConfigurationsSetActiveId('');
     }, [doBatchPlotConfigurationsSetActiveId]);
 
+    useEffect(() => {
+      if (initialConfigurationId) {
+        doBatchPlotConfigurationsSetActiveId(initialConfigurationId);
+      }
+    }, [initialConfigurationId, doBatchPlotConfigurationsSetActiveId]);
+
     return (
       <div className='d-flex justify-content-around'>
         <div className='left-panel'>
           <Select
+            defaultOption={initialConfigurationId || undefined}
             isDisabled={isPanelOpen}
             style={{ maxWidth: '350px' }}
             className='mr-2'

@@ -6,7 +6,6 @@ import Card from '../../../app-components/card';
 import DataConfiguration from './data-configuration';
 import Icon from '../../../app-components/icon';
 import Map from '../../../app-components/classMap';
-import Navbar from '../../../app-components/navbar';
 
 import '../reporting.scss';
 
@@ -14,20 +13,22 @@ const BatchPlotting = connect(
   'doMapsInitialize',
   'doMapsShutdown',
   'selectMapsObject',
+  'selectHashQuery',
   ({
     doMapsInitialize,
     doMapsShutdown,
     mapsObject,
+    hashQuery,
   }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
+    const userConfigId = hashQuery ? hashQuery['c'] : '';
 
     return (
       <>
-        <Navbar theme='primary' fixed />
         <section className='container-fluid page-body'>
           <Card className='w-100'>
             <Card.Header text='Plot Data Configuration' />
-            <DataConfiguration />
+            <DataConfiguration initialConfigurationId={userConfigId} />
           </Card>
           <div className='row mt-4'>
             <div className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}>

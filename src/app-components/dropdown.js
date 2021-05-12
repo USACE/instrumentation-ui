@@ -16,7 +16,7 @@ const Item = ({
   <DropdownContext.Consumer>
     {({ closeDropdown }) => (
       href
-        ? <a className={`dropdown-item text-primary ${className}`} href={href}>{children}</a>
+        ? <a className={`dropdown-item text-primary ${className}`} href={href} onClick={() => closeDropdown()}>{children}</a>
         : (
           <button 
             className={`dropdown-item text-primary ${className}`}

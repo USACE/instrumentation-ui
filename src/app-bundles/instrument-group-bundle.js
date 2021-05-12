@@ -5,20 +5,29 @@ export default createRestBundle({
   name: 'instrumentGroups',
   uid: 'slug',
   sortBy: 'slug',
-  prefetch: true,
-  staleAfter: 10000,
+  staleAfter: 0,
   persist: false,
   routeParam: 'groupSlug',
   getTemplate: '/projects/:projectId/instrument_groups',
   putTemplate: '/instrument_groups/:item.id',
   postTemplate: '/instrument_groups',
   deleteTemplate: '/instrument_groups/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'PROJECTS_FETCH_FINISHED'],
+  fetchActions: [
+    'URL_UPDATED',
+    'PROJECTS_FETCH_FINISHED',
+  ],
   forceFetchActions: [
     'INSTRUMENTGROUPS_SAVE_FINISHED',
     'INSTRUMENTGROUPS_DELETE_FINISHED',
   ],
   urlParamSelectors: ['selectProjectsIdByRoute'],
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const url = store.selectUrlObject();
+    const whiteList = ['dashboard', 'explorer'];
+
+    return whiteList.includes(hash) || url.pathname.includes('/groups/');
+  },
   addons: {
     selectInstrumentGroupsIdByRoute: createSelector(
       'selectInstrumentGroupsByRoute',

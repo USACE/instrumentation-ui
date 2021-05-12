@@ -56,23 +56,18 @@ $error-color: #f04124;
   z-index: 2;
 }
 
+.page-margin {
+  margin-top: 98px;
+
+  &.banner {
+    margin-top: 130px
+  }
+}
+
 footer.modal-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.nav-item.active {
-  border-top: solid 2px white;
-  font-weight: 700;
-}
-
-.nav-tabs {
-  border-bottom: 1px solid #c8cacb !important;
-
-  .nav-link.active {
-    border-color: #c8cacb #c8cacb #fff !important;
-  }
 }
 
 .timeline-list-item {
@@ -173,6 +168,10 @@ footer.modal-footer {
 
 .ag-root-wrapper {
   overflow: visible;
+}
+
+.react-datepicker-popper {
+  z-index: 3 !important;
 }
 
 .alert-container.unread {

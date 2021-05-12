@@ -4,7 +4,6 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'alertConfigs',
   uid: 'id',
-  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'id',
@@ -12,7 +11,7 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
   postTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs',
   deleteTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'INSTRUMENTS_FETCH_FINISHED'],
+  fetchActions: ['INSTRUMENTS_FETCH_FINISHED'],
   urlParamSelectors: ['selectProjectsIdByRoute', 'selectInstrumentsIdByRoute'],
   addons: {
     selectAlertConfigsByInstrumentId: createSelector(

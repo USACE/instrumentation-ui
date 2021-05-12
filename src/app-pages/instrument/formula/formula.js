@@ -3,12 +3,12 @@ import { connect } from 'redux-bundler-react';
 
 export default connect(
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'doInstrumentsSave',
   ({
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItemsByRoute: timeseries,
+    nonComputedTimeseriesItemsByRoute: timeseries,
     doInstrumentsSave,
   }) => {
     const [formula, setFormula] = useState(instrument.formula || '');
