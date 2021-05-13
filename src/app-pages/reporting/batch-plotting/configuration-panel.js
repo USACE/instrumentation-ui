@@ -104,13 +104,13 @@ const ConfigurationPanel = connect(
               variant='success'
               size='small'
               text='Save'
+              className='mr-2'
               handleClick={handleSave}
             />
             <Button
               variant='secondary'
               size='small'
               text='Cancel'
-              className='mr-2'
               handleClick={() => closePanel()}
             />
           </div>
