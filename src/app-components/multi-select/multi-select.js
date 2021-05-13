@@ -32,9 +32,11 @@ const MultiSelect = ({
 
   const handleSelectAll = () => {
     if (isAllSelected) {
-      setCurrentSelections([]);
+      const filtered = currentSelections.filter(elem => !filteredOptions.find(el => el.value === elem));
+      setCurrentSelections(filtered);
     } else {
-      setCurrentSelections(options.map(elem => elem.value));
+      const newSet = [...currentSelections, ...filteredOptions.map(elem => elem.value)];
+      setCurrentSelections([...new Set(newSet)]);
     }
   };
 
@@ -54,13 +56,13 @@ const MultiSelect = ({
   useEffect(() => {
     if (onChange && typeof onChange === 'function') onChange(currentSelections);
     if (withSelectAllOption) {
-      if (currentSelections.length === options.length) {
+      if (filteredOptions.every(elem => currentSelections.includes(elem.value))) {
         setIsAllSelected(true);
       } else {
         setIsAllSelected(false);
       }
     }
-  }, [onChange, currentSelections, withSelectAllOption, setIsAllSelected]);
+  }, [onChange, currentSelections, filteredOptions, withSelectAllOption, setIsAllSelected]);
 
   /** Update dropdown list of item when input component value changes. Only runs if `isFilterable` is true. */
   useEffect(() => {
