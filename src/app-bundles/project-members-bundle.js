@@ -1,3 +1,4 @@
+import { createSelector } from 'redux-bundler';
 import createRestBundle from './create-rest-bundle';
 
 export default createRestBundle({
@@ -18,5 +19,23 @@ export default createRestBundle({
     const whiteList = ['admin'];
 
     return whiteList.includes(hash);
+  },
+  addons: {
+    selectMembersObject: createSelector(
+      'selectProjectMembersItems',
+      (members) => (
+        members.reduce((accum, elem) => {
+          const { profile_id, role } = elem;
+
+          return {
+            ...accum,
+            [profile_id]: {
+              ...elem,
+              role: accum[profile_id] ? [...accum[profile_id].role, role] : [role],
+            },
+          };
+        }, {})
+      ),
+    )
   },
 });
