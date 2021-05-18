@@ -1,31 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import { ModalContent, ModalHeader, ModalFooter } from '../../../app-components/modal';
 
 const MemberDeleteForm = connect(
-  'doModalClose',
+  'doUsersDeleteUser',
   ({
-    doModalClose,
+    doUsersDeleteUser,
     member = null,
-    isEdit = false,
   }) => {
-    const { username, email, role, role_id } = member || {};
+    const { profile_id, username, email, role, role_id } = member || {};
     const defaultState = role_id.reduce((accum, id) => ({
       ...accum,
       [id]: { isSelected: true },
     }), {});
 
-    const [selectedCheckboxes, setSelectedCheckboxes] = useState(defaultState);
+    const [selectedRoles, setSelectedRoles] = useState(defaultState);
+    const [selectedCount, setSelectedCount] = useState(role_id.length);
 
-    const toggleCheckbox = id => {
-      setSelectedCheckboxes(prevState => ({
+    const toggleActive = id => {
+      setSelectedRoles(prevState => ({
         ...prevState,
         [id]: { isSelected: !prevState[id].isSelected },
       }));
     };
 
-    const handleDelete = () => {};
+    useEffect(() => {
+      const ids = Object.keys(selectedRoles);
+      const count = ids.filter(id => selectedRoles[id].isSelected).length;
+
+      setSelectedCount(count);
+    }, [selectedCount, setSelectedCount, selectedRoles, setSelectedRoles]);
+
+    const handleDelete = () => {
+      const ids = Object.keys(selectedRoles);
+      const roles = ids.filter(id => selectedRoles[id].isSelected);
+
+      roles.forEach(role => {
+        doUsersDeleteUser(profile_id, role);
+      });
+    };
 
     return (
       <ModalContent>
@@ -46,19 +60,20 @@ const MemberDeleteForm = connect(
               {role_id.map((id, index) => (
                 <li
                   key={id}
-                  className={`list-group-item pointer ${selectedCheckboxes[id].isSelected ? 'list-group-item-info ' : ''}`}
-                  onClick={() => toggleCheckbox(id)}
+                  className={`list-group-item pointer ${selectedRoles[id].isSelected ? 'list-group-item-info ' : ''}`}
+                  onClick={() => toggleActive(id)}
                 >
                   {role[index]}
                 </li>
               ))}
             </ul>
           </p>
-        </div> 
+        </div>
         <ModalFooter
           showSaveButton={false}
           showCancelButton
-          onDelete={() => handleDelete()}
+          deleteText={`Delete (${selectedCount})`}
+          onDelete={selectedCount ? () => handleDelete() : undefined}
         />
       </ModalContent>
     );
