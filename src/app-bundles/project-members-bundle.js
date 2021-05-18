@@ -25,13 +25,14 @@ export default createRestBundle({
       'selectProjectMembersItems',
       (members) => (
         members.reduce((accum, elem) => {
-          const { profile_id, role } = elem;
+          const { profile_id, role, role_id } = elem;
 
           return {
             ...accum,
             [profile_id]: {
               ...elem,
               role: accum[profile_id] ? [...accum[profile_id].role, role] : [role],
+              role_id: accum[profile_id] ? [...accum[profile_id].role_id, role_id] : [role_id],
             },
           };
         }, {})

@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Badge from '../../../app-components/badge';
+import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import DeleteConfirm from '../../../app-components/delete-confirm';
 import Dropdown from '../../../app-components/dropdown';
 import Icon from '../../../app-components/icon';
+import MemberDeleteForm from './memberDeleteForm';
 import MemberForm from './memberForm';
 
 const AdminPage = connect(
@@ -58,13 +60,24 @@ const AdminPage = connect(
                         <td className='col-4'>{email}</td>
                         <td className='col-2'>{role.sort().join(', ')}</td>
                         <td className='col-3'>
-                          <DeleteConfirm
-                            size='small'
-                            isOutline
-                            deleteText=''
-                            deleteIcon={<Icon icon='trash-can-outline' />}
-                            handleDelete={() => doUsersDeleteUser(profile_id, role_id)}
-                          />
+                          {role_id.length > 1 ? (
+                            <Button
+                              isOutline
+                              size='small'
+                              title='Delete'
+                              variant='danger'
+                              icon={<Icon icon='trash-can-outline' />}
+                              handleClick={() => doModalOpen(MemberDeleteForm, { member: members[key] })}
+                            />
+                          ) : (
+                            <DeleteConfirm
+                              size='small'
+                              isOutline
+                              deleteText=''
+                              deleteIcon={<Icon icon='trash-can-outline' />}
+                              handleDelete={() => doUsersDeleteUser(profile_id, role_id[0])}
+                            />
+                          )}
                         </td>
                       </tr>
                     );
