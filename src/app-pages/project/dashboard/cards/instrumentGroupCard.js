@@ -11,6 +11,21 @@ import RoleFilter from '../../../../app-components/role-filter';
 
 import '../../project.scss';
 
+const NoGroupsDisplay = ({ doModalOpen }) => (
+  <div className='my-3'>
+    No Instrument Groups in this project.
+    <br />
+    <Button
+      isOutline
+      size='small'
+      variant='info'
+      text='Create New Group'
+      className='mt-2'
+      handleClick={() => doModalOpen(InstrumentGroupForm, { isEdit: false })}
+    />
+  </div>
+);
+
 const InstrumentGroupCard = connect(
   'doModalOpen',
   'selectProjectsByRoute',
@@ -33,62 +48,66 @@ const InstrumentGroupCard = connect(
             buttonClasses={['m-0', 'p-0']}
             menuClasses={['dropdown-menu-right']}
           >
-            <Dropdown.Item onClick={() => doModalOpen(InstrumentGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
+            <Dropdown.Item onClick={() => doModalOpen(InstrumentGroupForm, { isEdit: false })}>
+              Create New Group
+            </Dropdown.Item>
           </Dropdown.Menu>
         </div>
       </Card.Header>
-      <Card.Body className='mx-3'>
-        <table className='table dashboard-table'>
-          <thead>
-            <tr className='row'>
-              <th className='col-4'>Name</th>
-              <th className='col-3'>
-                <span className='float-right'>Instrument Count</span>
-              </th>
-              {/* <th className='col-3'>
-                <span className='float-right'>Last Measurement</span>
-              </th> */}
-              {/* Temp */}
-              <th className='col-3'>
-                <span className='float-right'>Timeseries Count</span>
-              </th>
-              <th className='col-2 pl-3'>Tools</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groups.map(group => (
-              <tr key={group.id} className='row'>
-                <td className='col-4'>
-                  <a href={`/${project.slug}/groups/${group.slug}`}>
-                    {group.name}
-                  </a>
-                </td>
-                <td className='col-3'>
-                  <span className='float-right'>{group.instrument_count}</span>
-                </td>
-                {/* <td className='col-3'>
-                  <span className='float-right'>Some Time Ago</span>
-                </td> */}
-                {/* vvv Temp vvv */}
-                <td className='col-3'>
-                  <span className='float-right'>{group.timeseries_count}</span>
-                </td>
-                <td className='col-2 pl-3'>
-                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <Button
-                      isOutline
-                      size='small'
-                      variant='info'
-                      title='Edit'
-                      handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
-                      icon={<Icon icon='pencil' />}
-                    />
-                  </RoleFilter>
-                </td>
+      <Card.Body className='mx-3 my-1' hasPaddingVertical={false}>
+        {groups.length ? (
+          <table className='table dashboard-table'>
+            <thead>
+              <tr className='row'>
+                <th className='col-4'>Name</th>
+                <th className='col-3'>
+                  <span className='float-right'>Instrument Count</span>
+                </th>
+                {/* <th className='col-3'>
+                  <span className='float-right'>Last Measurement</span>
+                </th> */}
+                {/* Temp */}
+                <th className='col-3'>
+                  <span className='float-right'>Timeseries Count</span>
+                </th>
+                <th className='col-2 pl-3'>Tools</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {groups.map(group => (
+                <tr key={group.id} className='row'>
+                  <td className='col-4'>
+                    <a href={`/${project.slug}/groups/${group.slug}`}>
+                      {group.name}
+                    </a>
+                  </td>
+                  <td className='col-3'>
+                    <span className='float-right'>{group.instrument_count}</span>
+                  </td>
+                  {/* <td className='col-3'>
+                    <span className='float-right'>Some Time Ago</span>
+                  </td> */}
+                  {/* vvv Temp vvv */}
+                  <td className='col-3'>
+                    <span className='float-right'>{group.timeseries_count}</span>
+                  </td>
+                  <td className='col-2 pl-3'>
+                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                      <Button
+                        isOutline
+                        size='small'
+                        variant='info'
+                        title='Edit'
+                        handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
+                        icon={<Icon icon='pencil' />}
+                      />
+                    </RoleFilter>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : <NoGroupsDisplay doModalOpen={doModalOpen} />}
       </Card.Body>
     </Card>
   )

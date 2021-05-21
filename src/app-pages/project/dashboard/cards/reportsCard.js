@@ -26,10 +26,19 @@ const ReportsCard = connect(
   }) => (
     <Card className='mt-4'>
       <Card.Header text='Batch Plots' />
-      <Card.Body className='pt-2'>
-        {plots.map((plot, i) => {
-          if (i < 5) return createReportRow(project, plot);
-        })}
+      <Card.Body hasPaddingVertical={false} className='pt-2'>
+        {plots.length ? (
+          <div className='pb-3'>
+            {plots.map((plot, i) => {
+              if (i < 5) return createReportRow(project, plot);
+            })}
+          </div>
+        ) : (
+          <p>
+            Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations.
+          </p>
+        )}
+        
       </Card.Body>
     </Card>
   )
