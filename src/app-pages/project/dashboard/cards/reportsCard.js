@@ -35,7 +35,7 @@ const ReportsCard = connect(
           </div>
         ) : (
           <p>
-            Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations.
+            Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations here.
           </p>
         )}
         
