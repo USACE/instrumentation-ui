@@ -6,8 +6,9 @@
     display: flex;
     justify-content: space-between;
 
-    b {
-      padding-top: 2px;
+    #dropdown {
+      margin-top: -2px;
+      margin-bottom: -2px;
     }
   }
 }

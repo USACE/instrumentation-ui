@@ -11,6 +11,23 @@ import RoleFilter from '../../../../app-components/role-filter';
 
 import '../../project.scss';
 
+const NoGroupsDisplay = ({ doModalOpen, project }) => (
+  <div className='my-3'>
+    No Collection Groups in this project.
+    <br />
+    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+      <Button
+        isOutline
+        size='small'
+        variant='info'
+        text='Create New Group'
+        className='mt-2'
+        handleClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}
+      />
+    </RoleFilter>
+  </div>
+);
+
 const CollectionGroupCard = connect(
   'doModalOpen',
   'selectProjectsByRoute',
@@ -27,48 +44,52 @@ const CollectionGroupCard = connect(
             Collection Groups
             <Badge type='pill' variant='secondary' text={collectionGroups.length} className='ml-2'/>
           </b>
-          <Dropdown.Menu
-            withToggleArrow={false}
-            buttonContent={<Icon icon='menu' />}
-            buttonClasses={['m-0', 'p-0']}
-            menuClasses={['dropdown-menu-right']}
-          >
-            <Dropdown.Item onClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
-          </Dropdown.Menu>
+          <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+            <Dropdown.Menu
+              withToggleArrow={false}
+              buttonContent={<Icon icon='menu' />}
+              buttonClasses={['m-0', 'p-0']}
+              menuClasses={['dropdown-menu-right']}
+            >
+              <Dropdown.Item onClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
+            </Dropdown.Menu>
+          </RoleFilter>
         </div>
       </Card.Header>
-      <Card.Body hasPaddingVertical={false} className='mx-3'>
-        <table className='table dashboard-table'>
-          <thead>
-            <tr className='row'>
-              <th className='col-10'>Name</th>
-              <th className='col-2 pl-3'>Tools</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(collectionGroups || []).map(group => (
-              <tr key={group.id} className='row'>
-                <td className='col-10'>
-                  <a href={`/${project.slug}/collection-groups/${group.slug}`}>
-                    {group.name}
-                  </a>
-                </td>
-                <td className='col-2 pl-3'>
-                  <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                    <Button
-                      isOutline
-                      size='small'
-                      variant='info'
-                      title='Edit'
-                      handleClick={() => doModalOpen(CollectionGroupForm, { item: group })}
-                      icon={<Icon icon='pencil' />}
-                    />
-                  </RoleFilter>
-                </td>
+      <Card.Body className='mx-3 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
+        {collectionGroups.length ? (
+          <table className='table dashboard-table'>
+            <thead>
+              <tr className='row'>
+                <th className='col-10'>Name</th>
+                <th className='col-2 pl-3'>Tools</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {collectionGroups.map(group => (
+                <tr key={group.id} className='row'>
+                  <td className='col-10'>
+                    <a href={`/${project.slug}/collection-groups/${group.slug}`}>
+                      {group.name}
+                    </a>
+                  </td>
+                  <td className='col-2 pl-3'>
+                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                      <Button
+                        isOutline
+                        size='small'
+                        variant='info'
+                        title='Edit'
+                        handleClick={() => doModalOpen(CollectionGroupForm, { item: group })}
+                        icon={<Icon icon='pencil' />}
+                      />
+                    </RoleFilter>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : <NoGroupsDisplay doModalOpen={doModalOpen} project={project} />}
       </Card.Body>
     </Card>
   )
