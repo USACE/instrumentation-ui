@@ -11,18 +11,20 @@ import RoleFilter from '../../../../app-components/role-filter';
 
 import '../../project.scss';
 
-const NoGroupsDisplay = ({ doModalOpen }) => (
+const NoGroupsDisplay = ({ doModalOpen, project }) => (
   <div className='my-3'>
     No Collection Groups in this project.
     <br />
-    <Button
-      isOutline
-      size='small'
-      variant='info'
-      text='Create New Group'
-      className='mt-2'
-      handleClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}
-    />
+    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+      <Button
+        isOutline
+        size='small'
+        variant='info'
+        text='Create New Group'
+        className='mt-2'
+        handleClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}
+      />
+    </RoleFilter>
   </div>
 );
 
@@ -42,17 +44,19 @@ const CollectionGroupCard = connect(
             Collection Groups
             <Badge type='pill' variant='secondary' text={collectionGroups.length} className='ml-2'/>
           </b>
-          <Dropdown.Menu
-            withToggleArrow={false}
-            buttonContent={<Icon icon='menu' />}
-            buttonClasses={['m-0', 'p-0']}
-            menuClasses={['dropdown-menu-right']}
-          >
-            <Dropdown.Item onClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
-          </Dropdown.Menu>
+          <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+            <Dropdown.Menu
+              withToggleArrow={false}
+              buttonContent={<Icon icon='menu' />}
+              buttonClasses={['m-0', 'p-0']}
+              menuClasses={['dropdown-menu-right']}
+            >
+              <Dropdown.Item onClick={() => doModalOpen(CollectionGroupForm, { isEdit: false })}>Create New Group</Dropdown.Item>
+            </Dropdown.Menu>
+          </RoleFilter>
         </div>
       </Card.Header>
-      <Card.Body className='mx-3 my-1' hasPaddingVertical={false}>
+      <Card.Body className='mx-3 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
         {collectionGroups.length ? (
           <table className='table dashboard-table'>
             <thead>
@@ -85,7 +89,7 @@ const CollectionGroupCard = connect(
               ))}
             </tbody>
           </table>
-        ) : <NoGroupsDisplay doModalOpen={doModalOpen} />}
+        ) : <NoGroupsDisplay doModalOpen={doModalOpen} project={project} />}
       </Card.Body>
     </Card>
   )
