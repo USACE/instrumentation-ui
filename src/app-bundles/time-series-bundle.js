@@ -19,6 +19,12 @@ export default createRestBundle({
     'INSTRUMENTTIMESERIES_SAVE_FINISHED',
   ],
   urlParamSelectors: ['selectProjectsIdByRoute'],
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const blacklist = ['explorer'];
+
+    return !blacklist.includes(hash);
+  },
   reduceFurther: (state, { type, payload }) => {
     if (type === 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID') {
       return Object.assign({}, state, payload);

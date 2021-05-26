@@ -1,4 +1,5 @@
 import { createSelector } from 'redux-bundler';
+
 import { seriesStyles } from '../utils';
 
 const exploreDataBundle = {
@@ -56,14 +57,13 @@ const exploreDataBundle = {
     (data, instrumentsById, timeseriesItems) => {
       if (!data) return {};
       const out = {};
-      let styleIter = 0;
-      Object.keys(data).forEach((instrumentId) => {
+      Object.keys(data).forEach((instrumentId, index) => {
         out[instrumentId] = {
           ...instrumentsById[instrumentId],
           timeseries: data[instrumentId].map((ts) => ({
             ...timeseriesItems[ts.timeseries_id],
             items: ts.items,
-            style: seriesStyles[styleIter++ % 11],
+            style: seriesStyles[index++ % 11],
           })),
         };
       });
