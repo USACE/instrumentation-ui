@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Print from './print';
 import BatchPlotChart from './batch-plot-chart';
 import Card from '../../../app-components/card';
 import DataConfiguration from './data-configuration';
@@ -15,12 +14,7 @@ const BatchPlotting = connect(
   'doMapsShutdown',
   'selectMapsObject',
   'selectHashQuery',
-  ({
-    doMapsInitialize,
-    doMapsShutdown,
-    mapsObject,
-    hashQuery,
-  }) => {
+  ({ doMapsInitialize, doMapsShutdown, mapsObject, hashQuery }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
     const userConfigId = hashQuery ? hashQuery['c'] : '';
 
@@ -66,7 +60,6 @@ const BatchPlotting = connect(
           <Card className='w-100 my-4'>
             <Card.Header text='Plot' />
             <BatchPlotChart />
-            <Print />
           </Card>
         </section>
       </>

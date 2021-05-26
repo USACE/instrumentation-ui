@@ -32,10 +32,6 @@ const styles = StyleSheet.create({
     height: 50,
     width: 74,
   },
-  // image: {
-  //   height: 350,
-  //   width: 750,
-  // },
   text: {
     paddingTop: 7,
     fontFamily: 'Lato-Bold',
@@ -46,15 +42,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Lato',
   },
+  subheader: {
+    padding: 10,
+    fontSize: 12,
+    fontFamily: 'Lato',
+  },
 });
 Font.register({ family: 'Lato', src: latoSource });
 Font.register({ family: 'Lato-Bold', src: latoBoldSource });
 
 const Print = connect(
+  'selectBatchPlotConfigurationsActiveId',
+  'selectBatchPlotConfigurationsItems',
   'selectProjectsByRoute',
   'selectPrintData',
   'selectPrintLayout',
-  ({ projectsByRoute, printData, printLayout }) => {
+  ({
+    batchPlotConfigurationsActiveId: activeId,
+    batchPlotConfigurationsItems: items,
+    projectsByRoute,
+    printData,
+    printLayout,
+  }) => {
+    const [plotConfigName, setPlotConfig] = useState('');
     const [imgSrc, setSrc] = useState('');
     const [name, setName] = useState('');
     const logo =
@@ -68,20 +78,22 @@ const Print = connect(
           </View>
           <View>
             <Text style={styles.header}>Project: {name}</Text>
+            <Text style={styles.subheader}>
+              Configuration: {plotConfigName}
+            </Text>
             <Image src={imgSrc}></Image>
           </View>
         </Page>
       </Document>
     );
     useEffect(() => {
-      console.log(projectsByRoute);
-      // const { name } = projectsByRoute;
-      // if (name && projectsByRoute) {
-      //   setName(name);
-      // }
       if (projectsByRoute) {
         const { name } = projectsByRoute;
         setName(name);
+      }
+      if (activeId) {
+        const activePlotName = items.find((x) => x.id === activeId).name;
+        setPlotConfig(activePlotName);
       }
       const fetchSrc = async () => {
         const response = await Plotly.toImage(
@@ -97,9 +109,12 @@ const Print = connect(
         setSrc(response);
       };
       fetchSrc();
-    }, [printData, projectsByRoute]);
+    }, [printData, projectsByRoute, activeId]);
     return (
-      <PDFDownloadLink document={<MyDoc />} fileName='export.pdf'>
+      <PDFDownloadLink
+        document={<MyDoc />}
+        fileName={`${name}-${plotConfigName}.pdf`}
+      >
         {({ blob, url, loading, error }) => (
           <Button variant='info' size='small' isOutline text='Download' />
         )}

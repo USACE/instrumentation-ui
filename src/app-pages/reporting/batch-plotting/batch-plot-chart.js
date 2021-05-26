@@ -171,16 +171,16 @@ const BatchPlotChart = connect(
           }}
         />
         {/* @TODO - When API can handle further settings */}
-        {false && (
-          <>
-            <hr />
-            <ChartSettings
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              setWithPrecipitation={setWithPrecipitation}
-            />
-          </>
-        )}
+        {/* {false && ( */}
+        <>
+          <hr />
+          <ChartSettings
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            setWithPrecipitation={setWithPrecipitation}
+          />
+        </>
+        {/* )} */}
       </>
     );
   }
