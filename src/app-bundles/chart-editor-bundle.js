@@ -303,7 +303,10 @@ const chartEditorBundle = {
             obj['unit'] = unit_id;
             obj['data'] = [range];
             chartData.push(obj);
-          } else if (!chartData.find((z) => z.unit === unit_id)) {
+          } else if (
+            chartData.find((x) => x.name === parameter_id).unit !== unit_id &&
+            chartData.findIndex((y) => y.name === parameter_id) !== -1
+          ) {
             let obj = {};
             obj['name'] = parameter_id;
             obj['unit'] = unit_id;
