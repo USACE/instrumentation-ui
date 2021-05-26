@@ -17,7 +17,7 @@ const ProjectCard = ({ project }) => {
     <>
       <a href={href} tabIndex={0}>
         <Card className='mb-5' style={{ width: '300px' }}>
-          <button className='favorite' onClick={toggleFavorite}>
+          <button className='favorite' onClick={toggleFavorite} disabled>
             <span
               className={`mdi ${
                 isFavorite ? 'mdi-star gold' : 'mdi-star-outline'

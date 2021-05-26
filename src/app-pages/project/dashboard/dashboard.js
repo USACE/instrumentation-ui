@@ -1,31 +1,41 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import CollectionGroupCard from './collectionGroupCard';
-import InstrumentGroupCard from './instrumentGroupCard';
-import InstrumentStatusCard from './instrumentStatusCard';
-import ReportsCard from './reportsCard';
+import CollectionGroupCard from './cards/collectionGroupCard';
+import InstrumentGroupCard from './cards/instrumentGroupCard';
+import InstrumentStatusCard from './cards/instrumentStatusCard';
+import InstrumentTypeCard from './cards/instrumentTypeCard';
+import ReportsCard from './cards/reportsCard';
+import { isUserAllowed } from '../../../app-components/role-filter';
 
 const ProjectDashboard = connect(
+  'selectProfileRolesObject',
+  'selectProfileIsAdmin',
   'selectProjectsByRoute',
   ({
+    profileRolesObject,
+    profileIsAdmin,
     projectsByRoute: project,
   }) => {
-    const { instrument_count, instrument_group_count } = project;
+    const { slug } = project;
 
     return (
-      <>
-        <div className='row px-3'>
+      project ? (
+        <div className='row px-3 pb-4'>
           <div className='col-8'>
             <InstrumentGroupCard />
             <CollectionGroupCard />
           </div>
           <div className='col-4'>
+            <InstrumentTypeCard />
             <InstrumentStatusCard />
-            <ReportsCard />
+            {isUserAllowed(profileRolesObject, profileIsAdmin, [`${slug.toUpperCase()}.*`])
+              ? <ReportsCard />
+              : null
+            }
           </div>
         </div>
-      </>
+      ) : null
     );
   }
 );

@@ -193,7 +193,7 @@ const createRestBundle = (opts) => {
           _err: null,
           _isSaving: false,
           _isLoading: false,
-          _shouldFetch: config.prefetch,
+          _shouldFetch: config.initialFetch,
           _forceFetch: false,
           _fetchCount: 0,
           _lastFetch: config.lastFetch,
@@ -324,6 +324,15 @@ const createRestBundle = (opts) => {
             },
           });
           return;
+        } else if (config.prefetch && typeof config.prefetch == 'function' && !config.prefetch(store)) {
+          // user defined `prefetch` function evaluated to false
+          dispatch({
+            type: actions.FETCH_ABORT,
+            payload: {
+              _isLoading: false,
+              _abortReason: 'Failed user defined evaluation',
+            },
+          });
         } else {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;

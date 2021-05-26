@@ -6,7 +6,6 @@ const beforeDate = '2025-01-01T00:00:00.00Z';
 export default createRestBundle({
   name: 'timeseriesMeasurements',
   uid: 'timeseries_id',
-  prefetch: true,
   staleAfter: 10000,
   persist: false,
   routeParam: '',
@@ -14,8 +13,11 @@ export default createRestBundle({
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
   deleteTemplate: '',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
-  forceFetchActions: ['INSTRUMENTTIMESERIES_SET_ACTIVE_ID'],
+  fetchActions: [],
+  forceFetchActions: [
+    'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
+    'INSTRUMENTTIMESERIES_FETCH_FINISHED',
+  ],
   urlParamSelectors: [
     'selectInstrumentTimeseriesActiveIdParam',
     'selectProjectsIdByRoute',

@@ -10,9 +10,11 @@ const AboutButton = () => {
   return (
     <>
       <Button
+        variant='info'
         className={show ? 'active' : ''}
         handleClick={() => setShow(!show)}
         icon={<Icon icon='information-outline' />}
+        title='About this tool'
       />
       {show ? (
         <Card className='w-75'>
@@ -33,7 +35,7 @@ const AboutButton = () => {
             </p>
             <p className='mb-2'>
               Use the select by box tool <Icon icon='selection-drag' /> to
-              select instruments by drawing a box on the map. Note that the
+              select instruments by drawing a box on the map. Note: The
               normal pan/zoom interactions are disabled while in select-by-box
               mode.
             </p>
