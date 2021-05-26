@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from 'react';
+import isEqual from 'lodash.isequal';
 
 import Dropdown from './dropdown';
 import Icon from './icon';
@@ -29,6 +31,7 @@ const FilterSelect = ({
   const [filteredList, setFilteredList] = useState(items);
   const [inputVal, setInputVal] = useState('');
   const previousVal = usePrevious(inputVal);
+  const previousItems = usePrevious(items);
 
   useEffect(() => {
     if (inputVal !== previousVal) {
@@ -44,9 +47,15 @@ const FilterSelect = ({
     }
   }, [inputVal, previousVal, items, onChange, setFilteredList]);
 
+  useEffect(() => {
+    if (!isEqual(items, previousItems)) {
+      setFilteredList(items);
+    }
+  }, [items, previousItems]);
+
   return (
     <Dropdown.Menu
-      className={[className]}
+      dropdownClasses={[className]}
       customContent={(
         <div className='input-group' {...customProps}>
           <input

@@ -19,14 +19,14 @@ export default connect(
   'doInstrumentTimeseriesSetActiveId',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesItemsByRoute: timeseries,
+    nonComputedTimeseriesItemsByRoute: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
   }) => {
     const grid = useRef(null);
@@ -104,7 +104,7 @@ export default connect(
                 size='small'
                 isOutline
                 isDisabled={!activeTimeseries}
-                href={`/${project.slug}/upload?type=Timeseries Measurement`}
+                href={`/${project.slug}#uploader`}
                 text='Upload to this timeseries'
                 title='Upload'
                 icon={<Icon icon='upload' className='mr-1' />}

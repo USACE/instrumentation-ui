@@ -87,12 +87,12 @@ export default connect(
   'doInstrumentTimeseriesSetActiveId',
   'selectInstrumentGroupInstrumentsItemsObject',
   'selectTimeseriesMeasurementsItemsObject',
-  'selectInstrumentTimeseriesByInstrumentId',
+  'selectNonComputedTimeseriesByInstrumentId',
   ({
     doInstrumentTimeseriesSetActiveId,
     instrumentGroupInstrumentsItemsObject: instruments,
     timeseriesMeasurementsItemsObject: measurements,
-    instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
+    nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
   }) => {
     const [series, dispatch] = useReducer(reducer, {});
 

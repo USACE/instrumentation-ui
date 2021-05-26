@@ -81,12 +81,15 @@ const createAuthBundle = (opts) => {
     },
 
     doAuthLogout: () => ({ dispatch, store }) => {
-      dispatch({
-        type: 'AUTH_LOGGED_OUT',
-        payload: { token: null, error: null },
-      });
-      const redirect = store.selectAuthRedirectOnLogout();
-      if (redirect) store.doUpdateUrl(redirect);
+      if (store.selectAuthTokenRaw()) {
+        dispatch({
+          type: 'AUTH_LOGGED_OUT',
+          payload: { token: null, error: null },
+        });
+        store.doRemoveProfile();
+        const redirect = store.selectAuthRedirectOnLogout();
+        if (redirect) store.doUpdateUrl(redirect);
+      }
     },
 
     doAuthVerifyToken: () => ({ dispatch, store }) => {

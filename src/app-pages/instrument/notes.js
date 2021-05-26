@@ -24,7 +24,7 @@ const NoteEditor = connect(
     };
 
     return (
-      instrument && (
+      instrument ? (
         <div style={{ margin: '1em', paddingBottom: '1em' }}>
           <div className='form-group'>
             <input
@@ -57,7 +57,7 @@ const NoteEditor = connect(
             />
           </div>
         </div>
-      )
+      ) : null
     );
   }
 );

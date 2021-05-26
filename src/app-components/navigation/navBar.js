@@ -52,12 +52,6 @@ const NavBar = connect(
       `bg-${theme}`,
     ]);
 
-    const isReportingActive =
-      project &&
-      [`/${project.slug}/batch-plotting`].some(
-        (path) => pathname.indexOf(path) !== -1
-      );
-
     useEffect(() => {
       const { hideBrand, brand, theme } = customTheme[pathname] || {};
 
@@ -75,13 +69,13 @@ const NavBar = connect(
               <strong>
                 <a href='/' className='text-white'>
                   <Icon icon='pulse' className='pr-2' />
-                  {brand || 'Home'}
+                  {brand || 'MIDAS'}
                 </a>
               </strong>
               {project && project.name && (
                 <>
                   <Icon icon='chevron-right' className='px-2' />
-                  <a href={`/${project.slug}/project#dashboard`} className='text-white'>
+                  <a href={`/${project.slug}#dashboard`} className='text-white'>
                     {project.name}
                   </a>
                 </>
@@ -100,21 +94,6 @@ const NavBar = connect(
           <div className='collapse navbar-collapse'>
             <ul className='navbar-nav mr-auto' />
             <ul className='navbar-nav'>
-              {project ? (
-                <>
-                  <Dropdown.Menu
-                    dropdownClasses={[
-                      `nav-item pointer${isReportingActive ? ' active' : ''}`,
-                    ]}
-                    menuClasses={['dropdown-menu-right']}
-                    customContent={<span className='nav-link'>Reporting</span>}
-                  >
-                    <Dropdown.Item href={`/${project.slug}/batch-plotting`}>
-                      Batch Plotting
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </>
-              ) : null}
               {window.location.pathname === '/help' ? (
                 <NavItem href='/'>Home</NavItem>
               ) : (

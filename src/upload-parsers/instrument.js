@@ -26,11 +26,9 @@ const instrumentParser = {
       row.geometry = { type: 'Point', coordinates: [] };
       if (!isNaN(row.lon)) {
         row.geometry.coordinates[0] = parseFloat(row.lon);
-        delete row.lon;
       }
       if (!isNaN(row.lat)) {
         row.geometry.coordinates[1] = parseFloat(row.lat);
-        delete row.lat;
       }
     });
     return rows;
@@ -106,6 +104,7 @@ const instrumentParser = {
       type: 'number*100',
       required: false,
       template: '',
+      parse: (val) => Number(val),
       helpText:
         'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
     },

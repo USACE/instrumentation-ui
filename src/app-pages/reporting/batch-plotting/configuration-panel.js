@@ -99,31 +99,32 @@ const ConfigurationPanel = connect(
               {inputError}
             </div>
           )}
+          <div className='panel-actions'>
+            <Button
+              variant='success'
+              size='small'
+              text='Save'
+              className='mr-2'
+              handleClick={handleSave}
+            />
+            <Button
+              variant='secondary'
+              size='small'
+              text='Cancel'
+              handleClick={() => closePanel()}
+            />
+          </div>
         </div>
         <div>
           <MultiSelect
+            isFilterable
             withSelectAllOption
-            menuClasses='dropdown-menu-right'
+            menuClasses='dropdown-menu'
             text={`Select Options (${(selectedTimeseries || []).length} selected)`}
             options={timeseries}
             onChange={val => setSelectedTimeseries(val)}
             initialValues={selectedTimeseries}
           />
-          <div className='panel-actions'>
-            <Button
-              variant='secondary'
-              size='small'
-              text='Cancel'
-              className='mr-2'
-              handleClick={() => closePanel()}
-            />
-            <Button
-              variant='success'
-              size='small'
-              text='Save'
-              handleClick={handleSave}
-            />
-          </div>
         </div>
       </div>
     );
