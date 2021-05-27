@@ -76,7 +76,6 @@ const BatchPlotChart = connect(
 
     /** Fetch any timeseries measurements not currently in the store for plotting */
     useEffect(() => {
-      console.log('i am running test?');
       timeseriesIds.forEach(id => {
         if (!timeseriesMeasurementsItemsObject[id]) {
           doTimeseriesMeasurementsFetchById({ timeseriesId: id });
