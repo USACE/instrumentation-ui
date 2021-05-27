@@ -64,6 +64,7 @@ const BatchPlotChart = connect(
       dragmode: 'pan',
       height: 600,
     };
+
     const generateNewChartData = () => {
       const data = measurements
         .map((elem, i) => {
@@ -170,17 +171,17 @@ const BatchPlotChart = connect(
             scrollZoom: true,
           }}
         />
-        {/* @TODO - When API can handle further settings */}
-        {/* {false && ( */}
-        <>
-          <hr />
-          <ChartSettings
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            setWithPrecipitation={setWithPrecipitation}
-          />
-        </>
-        {/* )} */}
+        {/* @TODO Updates - When API can handle further settings */}
+        {chartData.length ? (
+          <>
+            <hr />
+            <ChartSettings
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              setWithPrecipitation={setWithPrecipitation}
+            />
+          </>
+        ) : null}
       </>
     );
   }
