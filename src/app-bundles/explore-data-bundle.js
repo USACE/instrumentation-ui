@@ -26,11 +26,11 @@ const exploreDataBundle = {
     });
   },
 
-  doExploreDataLoad: (instrumentIds) => ({ dispatch, store }) => {
+  doExploreDataLoad: (instrumentIds, before, after) => ({ dispatch, store }) => {
     store.doExploreDataClear();
     const apiRoot = store.selectApiRoot();
     const token = store.selectAuthTokenRaw();
-    fetch(`${apiRoot}/explorer`, {
+    fetch(`${apiRoot}/explorer?before=${before}&after=${after}`, {
       method: 'POST',
       mode: 'cors',
       headers: {

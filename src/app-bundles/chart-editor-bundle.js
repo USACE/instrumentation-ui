@@ -10,7 +10,7 @@ const initialData = {
   series: {},
   correlationSeriesX: '',
   correlationSeriesY: '',
-  correlationMinDate: subDays(now, 60),
+  correlationMinDate: subDays(now, 7),
   correlationMaxDate: now,
   showToday: true,
   showRainfall: false,
@@ -204,6 +204,12 @@ const chartEditorBundle = {
     dispatch,
     store,
   }) => {
+    const after = store.selectChartEditorCorrelationMinDate();
+    const before = store.selectChartEditorCorrelationMaxDate();
+
+    const beforeString = before ? before.toISOString() : '';
+    const afterString = after ? after.toISOString() : '';
+
     dispatch({
       type: 'CHART_EDITOR_TRIGGER_MEASURE_LOAD',
       payload: {
@@ -211,7 +217,7 @@ const chartEditorBundle = {
       },
     });
 
-    store.doExploreDataLoad(idsToLoad);
+    store.doExploreDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,
