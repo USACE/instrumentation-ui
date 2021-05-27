@@ -5,7 +5,7 @@ const rainfallBundle = {
 
   getReducer: () => {
     const initialData = {
-      _shouldLoad: true,
+      _shouldLoad: false,
       items: [],
     };
 
