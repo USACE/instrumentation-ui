@@ -3,10 +3,11 @@
 import React, { useEffect } from 'react';
 import { subDays, startOfDay, endOfDay, isEqual } from 'date-fns';
 
-import Button from '../../../app-components/button';
-import ToggleButton from '../../../app-components/toggle-button';
+import Print from './print';
+// import Button from '../../../app-components/button';
+// import ToggleButton from '../../../app-components/toggle-button';
 
-const dateAgo = days => subDays(new Date(), days);
+// const dateAgo = (days) => subDays(new Date(), days);
 
 const BatchPlotChartSettings = ({
   dateRange = [],
@@ -21,7 +22,8 @@ const BatchPlotChartSettings = ({
 
   return (
     <div className='m-2'>
-      <ToggleButton handleChange={val => setWithPrecipitation(val)} />
+      <Print />
+      {/* <ToggleButton handleChange={val => setWithPrecipitation(val)} />
       <div className='btn-group'>
         <Button
           isOutline
@@ -44,7 +46,7 @@ const BatchPlotChartSettings = ({
           isActive={isEqual(from, startOfDay(dateAgo(90))) && isEqual(to, endOfDay(new Date()))}
           handleClick={() => setDateRange([startOfDay(dateAgo(90)), endOfDay(new Date())])}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

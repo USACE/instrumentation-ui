@@ -2,7 +2,6 @@ import { createSelector } from 'redux-bundler';
 import { trendline } from '../utils';
 import { subDays } from 'date-fns';
 
-const now = new Date();
 const initialData = {
   selectionVersion: null,
   showSettings: false,
@@ -10,8 +9,8 @@ const initialData = {
   series: {},
   correlationSeriesX: '',
   correlationSeriesY: '',
-  correlationMinDate: subDays(now, 60),
-  correlationMaxDate: now,
+  correlationMinDate: subDays(new Date(), 7),
+  correlationMaxDate: new Date(),
   showToday: true,
   showRainfall: false,
   exactMatchesOnly: true,
@@ -42,7 +41,7 @@ const initialData = {
     },
     xaxis: {
       autorange: true,
-      range: [0, 100],
+      range: [0, 0],
       title: {
         text: '',
       },
@@ -204,6 +203,27 @@ const chartEditorBundle = {
     dispatch,
     store,
   }) => {
+    const chartType = store.selectChartEditorChartType();
+    const layout = store.selectChartEditorLayout();
+    const minDate = store.selectChartEditorCorrelationMinDate();
+    const maxDate = store.selectChartEditorCorrelationMaxDate();
+
+    const from =
+      chartType === 'timeseries'
+        ? layout.xaxis.range[0]
+          ? layout.xaxis.range[0]
+          : null
+        : minDate;
+    const to =
+      chartType === 'timeseries'
+        ? layout.xaxis.range[1]
+          ? layout.xaxis.range[1]
+          : null
+        : maxDate;
+
+    const afterString = from ? new Date(from).toISOString() : '';
+    const beforeString = to ? new Date(to).toISOString() : '';
+
     dispatch({
       type: 'CHART_EDITOR_TRIGGER_MEASURE_LOAD',
       payload: {
@@ -211,7 +231,7 @@ const chartEditorBundle = {
       },
     });
 
-    store.doExploreDataLoad(idsToLoad);
+    store.doExploreDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,

@@ -39,6 +39,7 @@ import instrumentStatusBundle from './instrument-status-bundle';
 import mapsBundle from './maps-bundle';
 import modalBundle from './modal-bundle';
 import notificationBundle from './notification-bundle';
+import printBundle from './print-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
@@ -123,6 +124,7 @@ export default composeBundles(
   mapsBundle,
   modalBundle,
   notificationBundle,
+  printBundle,
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,

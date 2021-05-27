@@ -40,7 +40,6 @@ export default connect(
           <div>Settings</div>
           <div className='form-group'>
             <label>Y Axis Title</label>
-
             <input
               value={layout.yaxis.title.text}
               onChange={(e) => {
@@ -60,7 +59,6 @@ export default connect(
 
           <div className='form-group'>
             <label>X Axis Title</label>
-
             <input
               value={layout.xaxis.title.text}
               onChange={(e) => {
@@ -94,7 +92,6 @@ export default connect(
         </div>
         <div className='col'>
           <div>Series</div>
-
           <div className='form-group'>
             <label>Y Series</label>
             <select

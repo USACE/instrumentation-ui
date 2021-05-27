@@ -23,6 +23,15 @@ export default createRestBundle({
     'selectProjectsIdByRoute',
   ],
   mergeItems: true,
+  prefetch: (store) => {
+    const hash = store.selectHash();
+    const url = store.selectUrlObject();
+
+    const whitelist = [];
+    const pathnameWhitelist = ['/instruments/', '/groups/', '/collection-groups/'];
+
+    return whitelist.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
+  },
   addons: {
     doTimeseriesMeasurementsFetchById: ({
       timeseriesId

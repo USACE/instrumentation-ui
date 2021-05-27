@@ -9,6 +9,7 @@ export default connect(
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
   }) => {
+    console.log('placeholder');
     return (
       <div>
         <Chart
