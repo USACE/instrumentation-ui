@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
+
 import SettingsTimeseries from './settings-timeseries';
 import SettingsCorrelation from './settings-correlation';
 
