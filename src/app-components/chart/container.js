@@ -15,6 +15,7 @@ export default connect(
   'doChartEditorSetShowSettings',
   'doChartEditorSetLayout',
   'doChartEditorSetCorrelationDates',
+  'doExploreMapInteractionsIncrementVersion',
   'selectChartEditorShowSettings',
   'selectChartEditorChartType',
   'selectChartEditorLayout',
@@ -24,6 +25,7 @@ export default connect(
     doChartEditorSetShowSettings,
     doChartEditorSetLayout,
     doChartEditorSetCorrelationDates,
+    doExploreMapInteractionsIncrementVersion,
     chartEditorShowSettings: showSettings,
     chartEditorChartType: chartType,
     chartEditorLayout: layout,
@@ -35,13 +37,14 @@ export default connect(
       chartType === 'timeseries'
         ? layout.xaxis.range[0]
           ? layout.xaxis.range[0]
-          : null
+          : minDate
         : minDate;
+
     const to =
       chartType === 'timeseries'
         ? layout.xaxis.range[1]
           ? layout.xaxis.range[1]
-          : null
+          : maxDate
         : maxDate;
 
     const updateChartDates = (f, t) => {
@@ -56,24 +59,20 @@ export default connect(
       } else {
         doChartEditorSetCorrelationDates(f, t);
       }
+      doExploreMapInteractionsIncrementVersion();
     };
 
     const setLifetime = () => {
       if (chartType === 'timeseries') {
-        doChartEditorSetLayout({
-          ...layout,
-          xaxis: {
-            ...layout.xaxis,
-            ...{ autorange: true },
-          },
-        });
+        setChartDates();
       } else {
         doChartEditorSetCorrelationDates(null, null);
       }
+      doExploreMapInteractionsIncrementVersion();
     };
 
-    const setChartDates = (daysAgo = 0) => {
-      const backDate = subDays(now, daysAgo);
+    const setChartDates = (daysAgo) => {
+      const backDate = daysAgo ? subDays(now, daysAgo) : new Date(0);
       updateChartDates(backDate.toISOString(), now.toISOString());
     };
 
