@@ -1,7 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import { connect } from 'redux-bundler-react';
-import { subDays } from 'date-fns';
+import { subDays, differenceInDays, isSameDay } from 'date-fns';
 
 import Button from '../button';
 import Icon from '../icon';
@@ -76,10 +76,26 @@ export default connect(
       updateChartDates(backDate.toISOString(), now.toISOString());
     };
 
-    const commonButtonStyles = {
-      variant: 'info',
-      size: 'small',
-      isOutline: true,
+    const commonButtonStyles = (daysAgo) => {
+      const toDate = to ? new Date(to) : null;
+      const fromDate = from ? new Date(from) : null;
+
+      const isActive = () => {
+        if (!(toDate && fromDate)) return false;
+
+        if (daysAgo == 0) {
+          return (isSameDay(fromDate, new Date(0)) && isSameDay(toDate, new Date()));
+        } else {
+          return differenceInDays(toDate, fromDate) == daysAgo;
+        }
+      };
+
+      return {
+        variant: 'info',
+        size: 'small',
+        isOutline: true,
+        isActive: isActive(),
+      };
     };
 
     return (
@@ -124,29 +140,29 @@ export default connect(
             <label>
               <small>Presets</small>
             </label>
-            <div className='btn-group'>
+            <div className='btn-group d-block'>
               <Button
-                {...commonButtonStyles}
+                {...commonButtonStyles(7)}
                 text='7 day'
                 handleClick={() => setChartDates(7)}
               />
               <Button
-                {...commonButtonStyles}
+                {...commonButtonStyles(30)}
                 text='30 day'
                 handleClick={() => setChartDates(30)}
               />
               <Button
-                {...commonButtonStyles}
+                {...commonButtonStyles(60)}
                 text='60 day'
                 handleClick={() => setChartDates(60)}
               />
               <Button
-                {...commonButtonStyles}
+                {...commonButtonStyles(90)}
                 text='90 day'
                 handleClick={() => setChartDates(90)}
               />
               <Button
-                {...commonButtonStyles}
+                {...commonButtonStyles(0)}
                 text='Lifetime'
                 handleClick={() => setLifetime()}
               />
