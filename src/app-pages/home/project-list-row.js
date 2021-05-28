@@ -6,8 +6,6 @@ import Icon from '../../app-components/icon';
 const ProjectListRow = ({ project }) => {
   const { title, subtitle, href, instrumentCount, instrumentGroupCount } = project;
 
-  console.log('test project: ', project);
-
   return (
     <tr>
       <td className='pt-3'>
