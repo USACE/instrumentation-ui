@@ -29,10 +29,8 @@ export default createRestBundle({
     ),
     selectProjectsItemsWithLinks: createSelector(
       'selectProjectsItems',
-      (projects) => {
-        console.log('test projects: ', projects);
-
-        return projects.map((p) => ({
+      (projects) => 
+        projects.map((p) => ({
           img: p.image,
           title: p.name,
           subtitle: 'Instrumentation Browser',
@@ -40,8 +38,7 @@ export default createRestBundle({
           content: '',
           instrumentCount: p.instrument_count,
           instrumentGroupCount: p.instrument_group_count,
-        }));
-      }
+        }))
     ),
   },
 });
