@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact } from '@ag-grid-community/react';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 
 import Button from '../../../app-components/button';
 import Icon from '../../../app-components/icon';
@@ -8,10 +9,7 @@ import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
+import '../../../css/grids.scss';
 import './timeseries.css';
 
 export default connect(
@@ -122,6 +120,7 @@ export default connect(
                 ref={grid}
                 columnDefs={columnDefs}
                 rowData={items}
+                modules={[ClientSideRowModelModule]}
               />
             </div>
           </div>

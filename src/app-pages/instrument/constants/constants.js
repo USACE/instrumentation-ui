@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact } from '@ag-grid-community/react';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { connect } from 'redux-bundler-react';
 import { format } from 'date-fns';
 
@@ -10,11 +11,7 @@ import DateEditor from './date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import '../../../css/grids.scss';
 
 export default connect(
   'selectProjectsByRoute',
@@ -143,10 +140,11 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={items}
                 stopEditingWhenGridLosesFocus={true}
+                modules={[ClientSideRowModelModule]}
                 frameworkComponents={{
                   dateEditor: DateEditor,
                 }}
-              ></AgGridReact>
+              />
             </div>
           </div>
         </div>

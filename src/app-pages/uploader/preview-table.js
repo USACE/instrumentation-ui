@@ -1,10 +1,8 @@
 import React, { useRef, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact } from '@ag-grid-community/react';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
+import '../../css/grids.scss';
 
 const PreviewTable = ({ columnDefs, data }) => {
   const grid = useRef(null);
@@ -28,6 +26,7 @@ const PreviewTable = ({ columnDefs, data }) => {
         }}
         columnDefs={columnDefs}
         rowData={data}
+        modules={[ClientSideRowModelModule]}
       />
     </div>
   ) : <p>No Data to show yet</p>;    
