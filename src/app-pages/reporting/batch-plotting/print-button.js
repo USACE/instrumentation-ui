@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
-
 import {
   PDFDownloadLink,
   Document,
@@ -11,11 +10,14 @@ import {
   StyleSheet,
   Font,
 } from '@react-pdf/renderer';
-import Plotly from 'plotly.js';
-import Button from '../../../app-components/button';
 
+import Button from '../../../app-components/button';
+import Plotly from '../../../app-components/chart/minify-plotly';
 import latoBoldSource from '../../../css/google-fonts/fonts/Lato-Bold.ttf';
 import latoSource from '../../../css/google-fonts/fonts/Lato-Regular.ttf';
+
+Font.register({ family: 'Lato', src: latoSource });
+Font.register({ family: 'Lato-Bold', src: latoBoldSource });
 
 const styles = StyleSheet.create({
   page: {
@@ -48,10 +50,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
   },
 });
-Font.register({ family: 'Lato', src: latoSource });
-Font.register({ family: 'Lato-Bold', src: latoBoldSource });
 
-const Print = connect(
+const PrintButton = connect(
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItems',
   'selectProjectsByRoute',
@@ -67,8 +67,8 @@ const Print = connect(
     const [plotConfigName, setPlotConfig] = useState('');
     const [imgSrc, setSrc] = useState('');
     const [name, setName] = useState('');
-    const logo =
-      'https://media.defense.gov/2013/Oct/03/2000759570/-1/-1/0/131003-A-CL603-001.PNG';
+    const logo = 'https://media.defense.gov/2013/Oct/03/2000759570/-1/-1/0/131003-A-CL603-001.PNG';
+
     const MyDoc = () => (
       <Document>
         <Page style={styles.page} orientation='landscape'>
@@ -86,6 +86,7 @@ const Print = connect(
         </Page>
       </Document>
     );
+
     useEffect(() => {
       if (projectsByRoute) {
         const { name } = projectsByRoute;
@@ -110,6 +111,7 @@ const Print = connect(
       };
       fetchSrc();
     }, [printData, projectsByRoute, activeId]);
+
     return (
       <PDFDownloadLink
         document={<MyDoc />}
@@ -123,4 +125,4 @@ const Print = connect(
   }
 );
 
-export default Print;
+export default PrintButton;

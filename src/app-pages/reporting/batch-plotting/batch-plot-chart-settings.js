@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { subDays, startOfDay, endOfDay, isEqual } from 'date-fns';
 
-import Print from './print';
+import PrintButton from './print-button';
 // import Button from '../../../app-components/button';
 // import ToggleButton from '../../../app-components/toggle-button';
 
@@ -22,7 +22,7 @@ const BatchPlotChartSettings = ({
 
   return (
     <div className='m-2'>
-      <Print />
+      <PrintButton />
       {/* <ToggleButton handleChange={val => setWithPrecipitation(val)} />
       <div className='btn-group'>
         <Button
