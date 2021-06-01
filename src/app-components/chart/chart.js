@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import isEqual from 'lodash.isequal';
 
-import Plotly from 'plotly.js/dist/plotly';
+import Plotly from './minify-plotly';
 import createPlotlyComponent from 'react-plotly.js/factory';
 
 const Plot = createPlotlyComponent(Plotly);
