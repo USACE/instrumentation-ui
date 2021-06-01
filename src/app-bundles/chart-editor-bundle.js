@@ -319,6 +319,7 @@ const chartEditorBundle = {
           };
           if (!chartData.find((y) => y.name === parameter_id)) {
             let obj = {};
+            obj['id'] = series.id;
             obj['name'] = parameter_id;
             obj['unit'] = unit_id;
             obj['data'] = [range];
@@ -328,12 +329,14 @@ const chartEditorBundle = {
             chartData.findIndex((y) => y.name === parameter_id) !== -1
           ) {
             let obj = {};
+            obj['id'] = series.id;
             obj['name'] = parameter_id;
             obj['unit'] = unit_id;
             obj['data'] = [range];
             chartData.push(obj);
           } else {
             const found = chartData.find((x) => x.name === parameter_id);
+            found.id = series.id;
             found.data.push(range);
           }
         });

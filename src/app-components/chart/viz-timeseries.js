@@ -48,7 +48,8 @@ export default connect(
       <div>
         {data.length ? (
           data.map((x) => (
-            <div key={x.name}>
+            <div key={x.id} style={{ height: '600px' }}>
+              {/* {x.name} */}
               <Chart data={x.data} layout={layout} config={config} />
             </div>
           ))

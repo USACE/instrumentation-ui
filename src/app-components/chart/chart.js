@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import isEqual from 'lodash.isequal';
 
-import Plotly from './minify-plotly';
+import Plotly from 'plotly.js/dist/plotly';
 import createPlotlyComponent from 'react-plotly.js/factory';
 
 const Plot = createPlotlyComponent(Plotly);
@@ -32,7 +32,7 @@ const Chart = ({
       plotRef.current.resizeHandler();
     });
     ro.observe(containerRef.current);
-    
+
     return () => ro.disconnect();
   }, [containerRef, plotRef]);
 
