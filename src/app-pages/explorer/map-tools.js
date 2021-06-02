@@ -9,10 +9,10 @@ export default connect(
   'doExploreMapInteractionsReset',
   'doExploreMapInteractionsSelectMode',
   ({ doExploreMapInteractionsReset, doExploreMapInteractionsSelectMode }) => {
-    const [active, setActive] = useState(false);
+    const [selectMode, setSelectMode] = useState(false);
 
     useEffect(() => {
-      if (active) {
+      if (selectMode) {
         if (typeof doExploreMapInteractionsSelectMode === 'function')
           doExploreMapInteractionsSelectMode();
       } else {
@@ -20,19 +20,29 @@ export default connect(
           doExploreMapInteractionsReset();
       }
     }, [
-      active,
+      selectMode,
       doExploreMapInteractionsReset,
       doExploreMapInteractionsSelectMode,
     ]);
 
     return (
       <div style={{ position: 'absolute', left: 10, top: 10, right: 10 }}>
-        <Button
-          className={`${active ? 'active' : ''} mr-2`}
-          title='Select by box'
-          handleClick={() => setActive(!active)}
-          icon={<Icon icon='selection-drag' />}
-        />
+        <div className='btn-group'>
+          <Button
+            variant='info'
+            className={`${!selectMode ? 'active' : ''}`}
+            title='Pan / Zoom'
+            handleClick={() => setSelectMode(false)}
+            icon={<Icon icon='pan' />}
+          />
+          <Button
+            variant='info'
+            className={`${selectMode ? 'active' : ''} mr-2`}
+            title='Select by box'
+            handleClick={() => setSelectMode(true)}
+            icon={<Icon icon='selection-drag' />}
+          />
+        </div>
         <AboutButton />
       </div>
     );

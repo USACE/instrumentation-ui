@@ -36,8 +36,9 @@ export default createRestBundle({
     const hash = store.selectHash();
     const url = store.selectUrlObject();
     const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments', 'batch-plotting'];
+    const pathnameWhitelist = ['/instruments/', '/groups/'];
 
-    return whiteList.includes(hash) || url.pathname.includes('/instruments/');
+    return whiteList.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
   },
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {

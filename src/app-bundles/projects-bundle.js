@@ -29,13 +29,15 @@ export default createRestBundle({
     ),
     selectProjectsItemsWithLinks: createSelector(
       'selectProjectsItems',
-      (projects) =>
+      (projects) => 
         projects.map((p) => ({
           img: p.image,
           title: p.name,
           subtitle: 'Instrumentation Browser',
           href: `/${p.slug}#dashboard`,
           content: '',
+          instrumentCount: p.instrument_count,
+          instrumentGroupCount: p.instrument_group_count,
         }))
     ),
   },

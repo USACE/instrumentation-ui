@@ -14,12 +14,7 @@ const BatchPlotting = connect(
   'doMapsShutdown',
   'selectMapsObject',
   'selectHashQuery',
-  ({
-    doMapsInitialize,
-    doMapsShutdown,
-    mapsObject,
-    hashQuery,
-  }) => {
+  ({ doMapsInitialize, doMapsShutdown, mapsObject, hashQuery }) => {
     const crossSectionReady = process.env.REACT_APP_CROSS_SECTION;
     const userConfigId = hashQuery ? hashQuery['c'] : '';
 
@@ -31,7 +26,9 @@ const BatchPlotting = connect(
             <DataConfiguration initialConfigurationId={userConfigId} />
           </Card>
           <div className='row mt-4'>
-            <div className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}>
+            <div
+              className={`${crossSectionReady ? 'col col-sm-5' : 'col-sm-12'}`}
+            >
               <Card style={{ minHeight: '400px' }}>
                 <Card.Body>
                   <Map
@@ -49,7 +46,10 @@ const BatchPlotting = connect(
                   <Card.Header text='Cross Section' />
                   <Card.Body isContentCentered>
                     <div className='text-muted pt-4'>
-                      <Icon icon='account-hard-hat' style={{ fontSize: '64px' }} />
+                      <Icon
+                        icon='account-hard-hat'
+                        style={{ fontSize: '64px' }}
+                      />
                       <h5>Currently Under Construction</h5>
                     </div>
                   </Card.Body>

@@ -20,39 +20,46 @@ const InstrumentTypeCard = connect(
     instrumentsItems: instruments,
   }) => {
     const instrumentsByType = reduceInstrumentsByType(instruments);
+    const dataValues = Object.values(instrumentsByType);
 
     return (
       <Card>
         <Card.Header text='Instrument Types' />
-        <Card.Body>
-          <Chart
-            data={[{
-              y: Object.values(instrumentsByType),
-              x: Object.keys(instrumentsByType),
-              type: 'bar',
-              text: Object.values(instrumentsByType),
-              textposition: 'auto',
-              hoverinfo: 'none',
-              orientation: 'v',
-              base: 0,
-            }]}
-            layout={{
-              height: 370,
-              yaxis: {
-                tickformat: ',d',
-              },
-              margin: {
-                t: 20,
-                r: 80,
-                l: 80,
-                b: 80,
-                pad: 5,
-              }
-            }}
-            config={{
-              displayModeBar: false,
-            }}
-          />
+        <Card.Body hasPaddingVertical={false} hasPaddingHorizontal={false}>
+          {dataValues.length ? (
+            <Chart
+              data={[{
+                y: dataValues,
+                x: Object.keys(instrumentsByType),
+                type: 'bar',
+                text: dataValues,
+                textposition: 'auto',
+                hoverinfo: 'none',
+                orientation: 'v',
+                base: 0,
+              }]}
+              layout={{
+                height: 370,
+                yaxis: {
+                  tickformat: ',d',
+                },
+                margin: {
+                  t: 20,
+                  r: 80,
+                  l: 80,
+                  b: 80,
+                  pad: 5,
+                }
+              }}
+              config={{
+                displayModeBar: false,
+              }}
+            />
+          ) : (
+            <p className='m-3'>
+              Add Instruments to view this graph.
+            </p>
+          )}
         </Card.Body>
       </Card>
     );
@@ -66,7 +73,7 @@ export default InstrumentTypeCard;
  * 
  * 1. swap `x` and `y` keys
  * 2. replace `yaxis` with `xaxis`
- * 3. set `layout.orientation` to `h`
+ * 3. set `data.orientation` to `h`
  * 4. Optionally replace `layout.height` with logarithmic function to prevent over growth with many bars:
  *   - `height: Math.log2(Object.keys(instrumentsByType).length) * 150,`
  */

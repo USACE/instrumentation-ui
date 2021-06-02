@@ -5,6 +5,7 @@ import Button from '../../app-components/button';
 import Icon from '../../app-components/icon';
 import FilterSelect from '../../app-components/filter-select';
 import ProjectCard from './project-card';
+import ProjectListRow from './project-list-row';
 
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
@@ -394,31 +395,10 @@ export default connect(
                 <>
                   {isTableMode ? (
                     <table className='table is-fullwidth'>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>Tools</th>
-                        </tr>
-                      </thead>
+                      <ProjectListRow.Heading />
                       <tbody>
                         {(filteredProjects.length ? filteredProjects : projects).map(project => (
-                          <tr key={project.title}>
-                            <td className='pt-3'>
-                              <a href={project.href}>
-                                {project.title}
-                              </a>
-                              <span className='text-muted'>&nbsp;- {project.subtitle}</span>
-                            </td>
-                            <td>
-                              <Button
-                                size='small'
-                                icon={<Icon icon='star-outline' />}
-                                variant='dark'
-                                isOutline
-                                isDisabled
-                              />
-                            </td>
-                          </tr>
+                          <ProjectListRow project={project} key={project.title} />
                         ))}
                       </tbody>
                     </table>
