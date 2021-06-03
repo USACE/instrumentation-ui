@@ -60,20 +60,9 @@ export default connect(
             <MapTools />
             <MapLegend />
           </Panel>
-          {/* <Panel> */}
-          <div
-            style={{
-              overflow: 'auto',
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              left: 0,
-              bottom: 0,
-            }}
-          >
+          <Panel>
             <Visualizations />
-          </div>
-          {/* </Panel> */}
+          </Panel>
         </PanelGroup>
       </div>
     );
