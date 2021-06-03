@@ -14,6 +14,8 @@ const exploreDataBundle = {
           return Object.assign({}, initialData);
         case 'EXPLORE_DATA_LOAD':
           return Object.assign({}, state, payload);
+        case 'URL_UPDATED':
+          return Object.assign({}, initialData);
         default:
           return state;
       }
@@ -35,7 +37,7 @@ const exploreDataBundle = {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(instrumentIds),
     })
