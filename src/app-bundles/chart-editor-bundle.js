@@ -274,7 +274,6 @@ const chartEditorBundle = {
     'selectDomainsItemsByGroup',
     (dataByInstrumentId, showRainfall, rainfallData, domains) => {
       const chartData = [];
-      console.log('test domains: ', domains);
       Object.keys(dataByInstrumentId).forEach((id) => {
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
