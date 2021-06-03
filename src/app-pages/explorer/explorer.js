@@ -60,7 +60,7 @@ export default connect(
             <MapTools />
             <MapLegend />
           </Panel>
-          <Panel>
+          <Panel className='overflow-auto'>
             <Visualizations />
           </Panel>
         </PanelGroup>
