@@ -17,6 +17,7 @@ export default createRestBundle({
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
     'INSTRUMENTTIMESERIES_FETCH_FINISHED',
+    'TIMESERIESMEASUREMENTS_SAVE_FINISHED',
   ],
   urlParamSelectors: [
     'selectInstrumentTimeseriesActiveIdParam',
@@ -61,7 +62,7 @@ export default createRestBundle({
             },
           },
         });
-        dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START_FINISHED', payload: {} });
+        dispatch({ type: 'TIMESERIES_FETCH_BY_ID_FINISHED', payload: {} });
       });
     },
   },

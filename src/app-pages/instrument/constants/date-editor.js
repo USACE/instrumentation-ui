@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DatePicker from 'react-datepicker';
+import { DateTime } from 'luxon';
 
 export default class DateEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.value,
+      value: DateTime.fromISO(props.value, { zone: 'utc' }),
     };
   }
 
@@ -40,7 +41,7 @@ export default class DateEditor extends Component {
       <DatePicker
         ref='container'
         className='form-control'
-        selected={this.state.value}
+        selected={new Date(this.state.value)}
         onChange={(value) => {
           this.setState({ value });
         }}
