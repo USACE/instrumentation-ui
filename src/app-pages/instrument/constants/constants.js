@@ -3,6 +3,7 @@ import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
+import { isEqual } from 'lodash';
 
 import Button from '../../../app-components/button';
 import ConstantListItem from './constant-list-item';
@@ -10,10 +11,9 @@ import ConstantForm from './constant-form';
 import DateEditor from './date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
+import usePrevious from '../../../customHooks/usePrevious';
 
 import '../../../css/grids.scss';
-import usePrevious from '../../../customHooks/usePrevious';
-import { isEqual } from 'lodash';
 
 const Constants = connect(
   'doModalOpen',
@@ -36,14 +36,12 @@ const Constants = connect(
 
     const [activeConstant, setActiveConstant] = useState(null);
     const [gridApi, setGridApi] = useState(null);
-    const [gridColumnApi, setGridColumnApi] = useState(null);
     const [rowData, setRowData] = useState([]);
 
     const previousMeasurements = usePrevious(measurements);
 
     const onGridReady = (params) => {
       setGridApi(params.api);
-      setGridColumnApi(params.columnApi);
     };
 
     const addNewConstant = () => {
@@ -101,7 +99,7 @@ const Constants = connect(
           resizable: true,
           sortable: false,
           filter: true,
-          editable: true,
+          editable: key === 'time' ? false : true,
           cellEditor: key === 'time' ? 'dateEditor' : undefined,
           // TODO: Add this when DELETE is ready
           // headerCheckboxSelection: key === 'time',
