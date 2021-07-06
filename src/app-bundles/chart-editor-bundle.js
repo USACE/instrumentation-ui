@@ -1,6 +1,7 @@
 import { createSelector } from 'redux-bundler';
-import { trendline } from '../utils';
 import { subDays } from 'date-fns';
+
+import { trendline } from '../utils';
 
 const initialData = {
   selectionVersion: null,
@@ -56,6 +57,19 @@ const initialData = {
     modeBarButtonsToRemove: ['select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d'],
     scrollZoom: true,
   },
+};
+
+const getDomainName = (domains, parameter_id) => {
+  if (!(domains && domains.parameter) || !parameter_id) return 'Unknown Parameter';
+
+  const domain = domains.parameter.find(param => param.id === parameter_id);
+
+  if (!domain) return 'Unknown Parameter';
+  const name = domain.value;
+
+  if (name === 'unknown') return 'Formula';
+
+  return name.split('-').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
 };
 
 const chartEditorBundle = {
@@ -229,6 +243,7 @@ const chartEditorBundle = {
     });
 
     store.doExploreDataLoad(idsToLoad, beforeString, afterString);
+    store.doInclinometerDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,
@@ -237,24 +252,19 @@ const chartEditorBundle = {
 
   selectChartEditorSeries: (state) => state.chartEditor.series,
 
-  selectChartEditorCorrelationSeriesX: (state) =>
-    state.chartEditor.correlationSeriesX,
+  selectChartEditorCorrelationSeriesX: (state) => state.chartEditor.correlationSeriesX,
 
-  selectChartEditorCorrelationSeriesY: (state) =>
-    state.chartEditor.correlationSeriesY,
+  selectChartEditorCorrelationSeriesY: (state) => state.chartEditor.correlationSeriesY,
 
-  selectChartEditorCorrelationMinDate: (state) =>
-    state.chartEditor.correlationMinDate,
+  selectChartEditorCorrelationMinDate: (state) => state.chartEditor.correlationMinDate,
 
-  selectChartEditorCorrelationMaxDate: (state) =>
-    state.chartEditor.correlationMaxDate,
+  selectChartEditorCorrelationMaxDate: (state) => state.chartEditor.correlationMaxDate,
 
   selectChartEditorShowToday: (state) => state.chartEditor.showToday,
 
   selectChartEditorShowRainfall: (state) => state.chartEditor.showRainfall,
 
-  selectChartEditorExactMatchesOnly: (state) =>
-    state.chartEditor.exactMatchesOnly,
+  selectChartEditorExactMatchesOnly: (state) => state.chartEditor.exactMatchesOnly,
 
   selectChartEditorLayout: (state) => state.chartEditor.layout,
 
@@ -264,8 +274,7 @@ const chartEditorBundle = {
 
   selectChartEditorConfig: (state) => state.chartEditor.config,
 
-  selectChartEditorSelectionVersion: (state) =>
-    state.chartEditor.selectionVersion,
+  selectChartEditorSelectionVersion: (state) => state.chartEditor.selectionVersion,
 
   selectChartEditorTimeseriesData: createSelector(
     'selectExploreDataByInstrumentId',
@@ -274,6 +283,7 @@ const chartEditorBundle = {
     'selectDomainsItemsByGroup',
     (dataByInstrumentId, showRainfall, rainfallData, domains) => {
       const chartData = [];
+
       Object.keys(dataByInstrumentId).forEach((id) => {
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
@@ -285,68 +295,84 @@ const chartEditorBundle = {
         });
 
         timeseries.forEach((series) => {
-          const { items, style, instrument: instrumentName, name, parameter_id, unit_id } = series;
+          const { items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
           if (!items || !items.length) return undefined;
 
           const x = [];
           const y = [];
+          let plotData = [];
 
-          items.map((item) => ({
-            time: Object.keys(item)[0],
-            value: Object.values(item)[0],
-          })).sort((a, b) => {
-            if (a.time > b.time) return 1;
-            if (a.time < b.time) return -1;
-            return 0;
-          }).forEach((item) => {
-            x.push(new Date(item.time));
-            y.push(item.value);
-          });
+          if (isInclinometer) {
+            const negateDepth = val => val < 0 ? val : -val;
 
-          const range = {
-            type: 'scattergl',
-            name: `${instrumentName} - ${name}`,
-            x: x,
-            y: y,
-            ...style,
-          };
+            items.forEach(item => {
+              const time = Object.keys(item)[0];
+              const data = Object.values(item)[0];
 
-          const getDomainName = (parameter_id) => {
-            if (!(domains && domains.parameter) || !parameter_id) return 'Unknown Parameter';
+              // Push A CheckSums
+              plotData.push({
+                type: 'scattergl',
+                name: `aChecksum - ${time}`,
+                x: data.map(d => d.aChecksum),
+                y: data.map(d => negateDepth(d.depth)),
+                isInclinometer: true,
+              });
+              // Push B CheckSums
+              plotData.push({
+                type: 'scattergl',
+                name: `bChecksum - ${time}`,
+                x: data.map(d => d.bChecksum),
+                y: data.map(d => negateDepth(d.depth)),
+                isInclinometer: true,
+              });
+            });
+          } else {
+            items.map(item => ({
+              time: Object.keys(item)[0],
+              value: Object.values(item)[0],
+            })).sort((a, b) => {
+              if (a.time > b.time) return 1;
+              if (a.time < b.time) return -1;
+              return 0;
+            }).forEach(item => {
+              x.push(new Date(item.time));
+              y.push(item.value);
+            });
 
-            const domain = domains.parameter.find(param => param.id === parameter_id);
+            plotData = [{
+              type: 'scattergl',
+              name: `${instrumentName} - ${name}`,
+              x: x,
+              y: y,
+              ...style,
+            }];
+          }
 
-            if (!domain) return 'Unknown Parameter';
-            const name = domain.value;
+          const domainName = getDomainName(domains, parameter_id);
 
-            if (name === 'unknown') return 'Formula';
-
-            return name.split('-').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
-          };
-
-          if (!chartData.find((y) => y.name === parameter_id)) {
+          if (!chartData.find(y => y.name === parameter_id)) {
             chartData.push({
               id: series.id,
               name: parameter_id,
-              domainName: getDomainName(parameter_id),
+              domainName,
               unit: unit_id,
-              data: [range],
+              data: plotData,
             });
           } else if (
-            chartData.find((x) => x.name === parameter_id).unit !== unit_id &&
-            chartData.findIndex((y) => y.name === parameter_id) !== -1
+            chartData.find(x => x.name === parameter_id).unit !== unit_id &&
+            chartData.findIndex(y => y.name === parameter_id) !== -1
           ) {
             chartData.push({
               id: series.id,
               name: parameter_id,
-              domainName: getDomainName(parameter_id),
+              domainName,
               unit: unit_id,
-              data: [range],
+              data: plotData,
             });
           } else {
-            const found = chartData.find((x) => x.name === parameter_id);
+            const found = chartData.find(x => x.name === parameter_id);
             found.id = series.id;
-            found.data.push(range);
+            found.data.concat(plotData);
           }
         });
       });

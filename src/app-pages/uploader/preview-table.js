@@ -15,7 +15,7 @@ const PreviewTable = ({ columnDefs, data }) => {
     <div
       className='ag-theme-balham'
       style={{
-        height: `${window.innerHeight * 0.75}px`,
+        height: `${window.innerHeight * 0.70}px`,
         width: '100%',
       }}
     >

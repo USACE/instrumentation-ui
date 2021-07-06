@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Chart from '../../app-components/chart/container';
+import ChartContainer from '../../app-components/chart/container';
 
 export default connect(
   'selectExploreMapSelectedInstruments',
@@ -10,7 +10,7 @@ export default connect(
     exploreMapSelectedInstruments: instruments,
     exploreMapInteractionsVersion,
   }) => (
-    <Chart
+    <ChartContainer
       version={exploreMapInteractionsVersion}
       instruments={instruments}
     />

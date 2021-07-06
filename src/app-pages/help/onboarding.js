@@ -75,6 +75,15 @@ const csvSampleTimeseriesMeasurements = [
   ['My Example Timeseries 1A', '3/31/19 2:00', '2557.504244'],
 ];
 
+const csvSampleInclinometerMeasurements = [
+  ['Survey DateTime', 'Depth', 'A0', 'A180', 'B0', 'B180'],
+  ['2020-10-08T11:48:00', '2', '36',	'-54',	'-180',	'225'],
+  ['2020-10-08T11:48:00', '4',	'-229',	'206',	'-111',	'166'],
+  ['2020-10-08T11:48:00', '6',	'-169',	'148',	'-105',	'159'],
+  ['2020-10-08T11:48:00', '8',	'-85',	'65',	'-95',	'139'],
+  ['2020-10-08T11:48:00', '10',	'-65',	'43',	'-73',	'122'],
+];
+
 const DownloadCSVButton = ({ csvContent, filename }) => {
   // Used as a reference:
   // https://code-maven.com/create-and-download-csv-with-javascript
@@ -144,15 +153,11 @@ export default connect(
           {domainsItemsByGroup.unit.map((t, idx) => (
             <li key={idx}>{t.value}</li>
           ))}
-          {/* <li>Inches</li>
-          <li>Feet</li>
-          <li>Volts</li>
-          <li>Millibar</li>
-          <li>Inches mercury (Hg)</li> */}
         </ul>
       </div>
     );
     const NotesTimeseriesMeasurements = ({ props }) => <></>;
+    const NotesInclinometerMeasurements = ({ props }) => <></>;
 
     const CSV = ({ arr }) => (
       <pre>
@@ -196,6 +201,10 @@ export default connect(
         title: 'Timeseries Measurements',
         content: buildContent('Timeseries Measurements', csvSampleTimeseriesMeasurements, <NotesTimeseriesMeasurements />),
       },
+      {
+        title: 'Inclinometer Measurements',
+        content: buildContent('Inclinometer Measurements', csvSampleInclinometerMeasurements, <NotesInclinometerMeasurements />),
+      },
     ];
 
     return (
@@ -206,9 +215,8 @@ export default connect(
             own projects. How should I organize my dataset for upload?
           </p>
           <p className='text-muted'>
-            Glad you asked! The site supports .csv uploads of Instruments at
-            this time. Uploaders for Projects, Timeseries, and Timeseries
-            measurements are coming in the next few weeks. To get organized,
+            Glad you asked! The site supports .csv uploads of Instruments, Timeseries, Timeseries
+            measurements and Inclinometer measurements at this time. Uploaders for Projects are coming soon. To get organized,
             start with <span className='has-text-weight-bold'>projects</span>{' '}
             and <span className='has-text-weight-bold'>instruments</span>.
             Create a separate .csv file for each. You can download the template
