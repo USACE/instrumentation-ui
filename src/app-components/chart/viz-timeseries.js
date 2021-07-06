@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
-import Accordion from '../accordion';
 
+import Accordion from '../accordion';
 import Chart from './chart';
 
 export default connect(

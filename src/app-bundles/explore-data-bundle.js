@@ -6,14 +6,19 @@ const exploreDataBundle = {
   name: 'exploreData',
 
   getReducer: () => {
-    const initialData = {};
+    const initialData = {
+      data: [],
+      inclinometers: [],
+    };
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case 'EXPLORE_DATA_CLEAR':
           return Object.assign({}, initialData);
         case 'EXPLORE_DATA_LOAD':
-          return Object.assign({}, state, payload);
+          return Object.assign({}, state, { data: payload });
+        case 'INCLINOMETER_DATA_LOAD':
+          return Object.assign({}, state, { inclinometers: payload });
         case 'URL_UPDATED':
           return Object.assign({}, initialData);
         default:
@@ -52,15 +57,40 @@ const exploreDataBundle = {
       });
   },
 
+  doInclinometerDataLoad: (instrumentIds, before, after) => ({ dispatch, store }) => {
+    const apiRoot = store.selectApiRoot();
+    const token = store.selectAuthTokenRaw();
+
+    fetch(`${apiRoot}/inclinometers?before=${before}&after=${after}`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify(instrumentIds),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({
+          type: 'INCLINOMETER_DATA_LOAD',
+          payload: data,
+        });
+      });
+  },
+
   selectExploreData: (state) => state.exploreData,
 
   selectExploreDataByInstrumentId: createSelector(
     'selectExploreData',
     'selectInstrumentsItemsObjectById',
     'selectInstrumentTimeseriesItemsObject',
-    (data, instrumentsById, timeseriesItems) => {
-      if (!data) return {};
+    (exploreData, instrumentsById, timeseriesItems) => {
+      const { data = [], inclinometers = [] } = exploreData;
       const out = {};
+
+      console.log('test data: ', data);
+      console.log('test inclinometers: ', inclinometers);
       Object.keys(data).forEach((instrumentId, index) => {
         out[instrumentId] = {
           ...instrumentsById[instrumentId],

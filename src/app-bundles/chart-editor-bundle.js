@@ -1,6 +1,7 @@
 import { createSelector } from 'redux-bundler';
-import { trendline } from '../utils';
 import { subDays } from 'date-fns';
+
+import { trendline } from '../utils';
 
 const initialData = {
   selectionVersion: null,
@@ -56,6 +57,19 @@ const initialData = {
     modeBarButtonsToRemove: ['select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d'],
     scrollZoom: true,
   },
+};
+
+const getDomainName = (domains, parameter_id) => {
+  if (!(domains && domains.parameter) || !parameter_id) return 'Unknown Parameter';
+
+  const domain = domains.parameter.find(param => param.id === parameter_id);
+
+  if (!domain) return 'Unknown Parameter';
+  const name = domain.value;
+
+  if (name === 'unknown') return 'Formula';
+
+  return name.split('-').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
 };
 
 const chartEditorBundle = {
@@ -229,6 +243,7 @@ const chartEditorBundle = {
     });
 
     store.doExploreDataLoad(idsToLoad, beforeString, afterString);
+    store.doInclinometerDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,
@@ -237,24 +252,19 @@ const chartEditorBundle = {
 
   selectChartEditorSeries: (state) => state.chartEditor.series,
 
-  selectChartEditorCorrelationSeriesX: (state) =>
-    state.chartEditor.correlationSeriesX,
+  selectChartEditorCorrelationSeriesX: (state) => state.chartEditor.correlationSeriesX,
 
-  selectChartEditorCorrelationSeriesY: (state) =>
-    state.chartEditor.correlationSeriesY,
+  selectChartEditorCorrelationSeriesY: (state) => state.chartEditor.correlationSeriesY,
 
-  selectChartEditorCorrelationMinDate: (state) =>
-    state.chartEditor.correlationMinDate,
+  selectChartEditorCorrelationMinDate: (state) => state.chartEditor.correlationMinDate,
 
-  selectChartEditorCorrelationMaxDate: (state) =>
-    state.chartEditor.correlationMaxDate,
+  selectChartEditorCorrelationMaxDate: (state) => state.chartEditor.correlationMaxDate,
 
   selectChartEditorShowToday: (state) => state.chartEditor.showToday,
 
   selectChartEditorShowRainfall: (state) => state.chartEditor.showRainfall,
 
-  selectChartEditorExactMatchesOnly: (state) =>
-    state.chartEditor.exactMatchesOnly,
+  selectChartEditorExactMatchesOnly: (state) => state.chartEditor.exactMatchesOnly,
 
   selectChartEditorLayout: (state) => state.chartEditor.layout,
 
@@ -264,8 +274,7 @@ const chartEditorBundle = {
 
   selectChartEditorConfig: (state) => state.chartEditor.config,
 
-  selectChartEditorSelectionVersion: (state) =>
-    state.chartEditor.selectionVersion,
+  selectChartEditorSelectionVersion: (state) => state.chartEditor.selectionVersion,
 
   selectChartEditorTimeseriesData: createSelector(
     'selectExploreDataByInstrumentId',
@@ -311,24 +320,13 @@ const chartEditorBundle = {
             ...style,
           };
 
-          const getDomainName = (parameter_id) => {
-            if (!(domains && domains.parameter) || !parameter_id) return 'Unknown Parameter';
-
-            const domain = domains.parameter.find(param => param.id === parameter_id);
-
-            if (!domain) return 'Unknown Parameter';
-            const name = domain.value;
-
-            if (name === 'unknown') return 'Formula';
-
-            return name.split('-').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
-          };
+          const domainName = getDomainName(domains, parameter_id);
 
           if (!chartData.find((y) => y.name === parameter_id)) {
             chartData.push({
               id: series.id,
               name: parameter_id,
-              domainName: getDomainName(parameter_id),
+              domainName,
               unit: unit_id,
               data: [range],
             });
@@ -339,7 +337,7 @@ const chartEditorBundle = {
             chartData.push({
               id: series.id,
               name: parameter_id,
-              domainName: getDomainName(parameter_id),
+              domainName,
               unit: unit_id,
               data: [range],
             });
