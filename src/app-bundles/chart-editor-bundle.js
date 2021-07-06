@@ -303,6 +303,8 @@ const chartEditorBundle = {
           let plotData = [];
 
           if (isInclinometer) {
+            const negateDepth = val => val < 0 ? val : -val;
+
             items.forEach(item => {
               const time = Object.keys(item)[0];
               const data = Object.values(item)[0];
@@ -312,7 +314,7 @@ const chartEditorBundle = {
                 type: 'scattergl',
                 name: `aChecksum - ${time}`,
                 x: data.map(d => d.aChecksum),
-                y: data.map(d => -d.depth),
+                y: data.map(d => negateDepth(d.depth)),
                 isInclinometer: true,
               });
               // Push B CheckSums
@@ -320,7 +322,7 @@ const chartEditorBundle = {
                 type: 'scattergl',
                 name: `bChecksum - ${time}`,
                 x: data.map(d => d.bChecksum),
-                y: data.map(d => -d.depth),
+                y: data.map(d => negateDepth(d.depth)),
                 isInclinometer: true,
               });
             });
