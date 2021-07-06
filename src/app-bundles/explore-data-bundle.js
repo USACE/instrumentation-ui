@@ -115,12 +115,16 @@ const exploreDataBundle = {
       Object.keys(inclinometers).forEach(id => {
         out[id] = {
           ...instrumentsById[id],
-          timeseries: inclinometers[id].map(ts => ({
-            ...timeseriesItems[ts.timeseries_id],
-            items: ts.items,
-            style: seriesStyles[count++ % 11],
-            isInclinometer: true,
-          })),
+          timeseries: inclinometers[id].map(ts => {
+            if (!ts.items.length) return null;
+
+            return ({
+              ...timeseriesItems[ts.timeseries_id],
+              items: ts.items,
+              style: seriesStyles[count++ % 11],
+              isInclinometer: true,
+            });
+          }).filter(e => e).concat(out[id] ? out[id].timeseries : []),
         };
       });
 

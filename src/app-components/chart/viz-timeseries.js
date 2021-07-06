@@ -57,10 +57,13 @@ export default connect(
     return (
       <Accordion.List className='m-2'>
         {data.length ? (
-          data.map((x) => (
+          data.map(x => (
             <Accordion.Item headingText={x.domainName} key={x.id}>
               <div style={{ height: '600px' }}>
-                <Chart data={x.data} layout={finalLayout} config={config} />
+                {x.data[0].isInclinometer
+                  ? <Chart data={x.data} config={config} />
+                  : <Chart data={x.data} layout={finalLayout} config={config} />
+                }
               </div>
             </Accordion.Item>
           ))

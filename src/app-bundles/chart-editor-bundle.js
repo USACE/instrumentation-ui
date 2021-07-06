@@ -300,19 +300,28 @@ const chartEditorBundle = {
 
           const x = [];
           const y = [];
-          let plotData = {};
+          let plotData = [];
 
           if (isInclinometer) {
-            plotData = items.map(item => {
-              console.log('test items:', items);
+            items.forEach(item => {
               const time = Object.keys(item)[0];
               const data = Object.values(item)[0];
 
-              return ({
+              // Push A CheckSums
+              plotData.push({
                 type: 'scattergl',
-                name: time,
-                x: data.map(d => (d.a0 + d.a180)),
+                name: `aChecksum - ${time}`,
+                x: data.map(d => d.aChecksum),
                 y: data.map(d => -d.depth),
+                isInclinometer: true,
+              });
+              // Push B CheckSums
+              plotData.push({
+                type: 'scattergl',
+                name: `bChecksum - ${time}`,
+                x: data.map(d => d.bChecksum),
+                y: data.map(d => -d.depth),
+                isInclinometer: true,
               });
             });
           } else {
@@ -361,7 +370,7 @@ const chartEditorBundle = {
           } else {
             const found = chartData.find((x) => x.name === parameter_id);
             found.id = series.id;
-            found.data.push(...plotData);
+            found.data.concat(plotData);
           }
         });
       });
