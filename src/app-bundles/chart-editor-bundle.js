@@ -283,6 +283,7 @@ const chartEditorBundle = {
     'selectDomainsItemsByGroup',
     (dataByInstrumentId, showRainfall, rainfallData, domains) => {
       const chartData = [];
+
       Object.keys(dataByInstrumentId).forEach((id) => {
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
@@ -294,31 +295,47 @@ const chartEditorBundle = {
         });
 
         timeseries.forEach((series) => {
-          const { items, style, instrument: instrumentName, name, parameter_id, unit_id } = series;
+          const { items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
           if (!items || !items.length) return undefined;
 
           const x = [];
           const y = [];
+          let plotData = {};
 
-          items.map((item) => ({
-            time: Object.keys(item)[0],
-            value: Object.values(item)[0],
-          })).sort((a, b) => {
-            if (a.time > b.time) return 1;
-            if (a.time < b.time) return -1;
-            return 0;
-          }).forEach((item) => {
-            x.push(new Date(item.time));
-            y.push(item.value);
-          });
+          if (isInclinometer) {
+            plotData = items.map(item => {
+              console.log('test items:', items);
+              const time = Object.keys(item)[0];
+              const data = Object.values(item)[0];
 
-          const range = {
-            type: 'scattergl',
-            name: `${instrumentName} - ${name}`,
-            x: x,
-            y: y,
-            ...style,
-          };
+              return ({
+                type: 'scattergl',
+                name: time,
+                x: data.map(d => (d.a0 + d.a180)),
+                y: data.map(d => -d.depth),
+              });
+            });
+          } else {
+            items.map(item => ({
+              time: Object.keys(item)[0],
+              value: Object.values(item)[0],
+            })).sort((a, b) => {
+              if (a.time > b.time) return 1;
+              if (a.time < b.time) return -1;
+              return 0;
+            }).forEach(item => {
+              x.push(new Date(item.time));
+              y.push(item.value);
+            });
+
+            plotData = [{
+              type: 'scattergl',
+              name: `${instrumentName} - ${name}`,
+              x: x,
+              y: y,
+              ...style,
+            }];
+          }
 
           const domainName = getDomainName(domains, parameter_id);
 
@@ -328,23 +345,23 @@ const chartEditorBundle = {
               name: parameter_id,
               domainName,
               unit: unit_id,
-              data: [range],
+              data: plotData,
             });
           } else if (
-            chartData.find((x) => x.name === parameter_id).unit !== unit_id &&
-            chartData.findIndex((y) => y.name === parameter_id) !== -1
+            chartData.find(x => x.name === parameter_id).unit !== unit_id &&
+            chartData.findIndex(y => y.name === parameter_id) !== -1
           ) {
             chartData.push({
               id: series.id,
               name: parameter_id,
               domainName,
               unit: unit_id,
-              data: [range],
+              data: plotData,
             });
           } else {
             const found = chartData.find((x) => x.name === parameter_id);
             found.id = series.id;
-            found.data.push(range);
+            found.data.push(...plotData);
           }
         });
       });
