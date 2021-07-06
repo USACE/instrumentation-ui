@@ -348,7 +348,7 @@ const chartEditorBundle = {
 
           const domainName = getDomainName(domains, parameter_id);
 
-          if (!chartData.find((y) => y.name === parameter_id)) {
+          if (!chartData.find(y => y.name === parameter_id)) {
             chartData.push({
               id: series.id,
               name: parameter_id,
@@ -368,7 +368,7 @@ const chartEditorBundle = {
               data: plotData,
             });
           } else {
-            const found = chartData.find((x) => x.name === parameter_id);
+            const found = chartData.find(x => x.name === parameter_id);
             found.id = series.id;
             found.data.concat(plotData);
           }
