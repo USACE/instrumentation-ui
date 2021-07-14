@@ -36,7 +36,7 @@ export default createRestBundle({
     const hash = store.selectHash();
     const url = store.selectUrlObject();
     const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments', 'batch-plotting'];
-    const pathnameWhitelist = ['/instruments/', '/groups/'];
+    const pathnameWhitelist = ['/instruments/', '/groups/', '/collection-groups/'];
 
     return whiteList.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
   },

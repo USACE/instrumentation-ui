@@ -1,4 +1,6 @@
 .nav-item {
+  user-select: none;
+
   &.active {
     border-top: solid 2px white;
     font-weight: 700;

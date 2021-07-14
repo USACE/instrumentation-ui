@@ -32,7 +32,7 @@ const Chart = ({
       plotRef.current.resizeHandler();
     });
     ro.observe(containerRef.current);
-    
+
     return () => ro.disconnect();
   }, [containerRef, plotRef]);
 

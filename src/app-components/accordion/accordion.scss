@@ -1,0 +1,38 @@
+.accordion {
+  border: 1px solid #DFDFDF;
+  border-radius: 5px;
+
+  :last-child {
+    .accordion-heading {
+      border-bottom: 0;
+    }
+  }
+}
+
+.accordion-heading {
+  align-content: center;
+  border-bottom: 1px solid #DFDFDF;
+  cursor: pointer;
+  display: flex;
+  height: 52px; 
+  justify-content: space-between;
+  width: 100%;
+
+  > p {
+    margin-bottom: 0;
+    margin-left: 1rem;
+    margin-top: revert;
+  }
+
+  &.is-open {
+    background: #E7F1FF;
+
+    > p {
+      color: #1166E4 !important;
+    }
+
+    > .accordion-icon {
+      color: #1166E4;
+    }
+  }
+}

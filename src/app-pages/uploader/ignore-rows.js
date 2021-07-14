@@ -29,7 +29,7 @@ export default connect(
               className='input-group-text pointer'
               onClick={doUploadIgnoreErrors}
             >
-              Ignore Errors
+              Ignore All
             </span>
           </div>
         </div>

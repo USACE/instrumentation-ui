@@ -12,6 +12,62 @@ import TimeseriesListItem from './timeseries-list-item';
 import '../../../css/grids.scss';
 import './timeseries.css';
 
+const doesSetHaveData = (dataSet, key, activeTimeseries) => {
+  const data = dataSet[activeTimeseries];
+
+  return !!(data && data[key]);
+};
+
+const getInclinometerItems = inclinometers => {
+  const items = [];
+
+  inclinometers.forEach(inclinometer => {
+    const { time, values } = inclinometer;
+
+    values.forEach(value => {
+      const { depth, aChecksum, a0, a180, bChecksum, b0, b180 } = value;
+      items.push({
+        time,
+        depth,
+        aChecksum,
+        a0,
+        a180,
+        bChecksum,
+        b0,
+        b180,
+      });
+    });
+  });
+
+  return items;
+};
+
+const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
+  const items =
+    doesSetHaveData(measurements, 'items', activeTimeseries)
+      ? measurements[activeTimeseries].items
+      : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
+        ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
+        : [];
+
+  const keys = items && items.length ? Object.keys(items[0]) : [];
+  const columnDefs = [
+    { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
+    ...keys
+      .filter(key => key !== 'id')
+      .map(key => ({
+        headerName: key.toUpperCase(),
+        field: key,
+        resizable: true,
+        sortable: true,
+        filter: true,
+        editable: false,
+      })),
+  ];
+
+  return { rowData: items, columnDefs };
+};
+
 export default connect(
   'doModalOpen',
   'doInstrumentTimeseriesSetActiveId',
@@ -19,6 +75,7 @@ export default connect(
   'selectInstrumentsByRoute',
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
+  'selectInclinometerMeasurementsItemsObject',
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
@@ -26,6 +83,7 @@ export default connect(
     instrumentsByRoute: instrument,
     nonComputedTimeseriesItemsByRoute: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
+    inclinometerMeasurementsItemsObject: inclinometerMeasurements,
   }) => {
     const grid = useRef(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
@@ -43,23 +101,7 @@ export default connect(
       instrument.constants.indexOf(ts.id) === -1
     ));
 
-    const data = measurements[activeTimeseries];
-    const items = (data && data.items) || [];
-
-    const keys = items && items.length ? Object.keys(items[0]) : [];
-    const columnDefs = [
-      { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
-      ...keys
-        .filter(key => key !== 'id')
-        .map(key => ({
-          headerName: key.toUpperCase(),
-          field: key,
-          resizable: true,
-          sortable: true,
-          filter: true,
-          editable: false,
-        })),
-    ];
+    const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
 
     return (
       <>
@@ -119,7 +161,7 @@ export default connect(
               <AgGridReact
                 ref={grid}
                 columnDefs={columnDefs}
-                rowData={items}
+                rowData={rowData}
                 modules={[ClientSideRowModelModule]}
               />
             </div>

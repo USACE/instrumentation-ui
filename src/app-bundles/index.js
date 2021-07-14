@@ -25,6 +25,7 @@ import exploreDataBundle from './explore-data-bundle';
 import exploreMapBundle from './explore-map-bundle';
 import exploreMapInteractionBundle from './explore-map-interaction-bundle';
 import homeDataBundle from './home-data-bundle';
+import inclinometerMeasurements from './inclinometer-measurements';
 import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 import instrumentAlertsBundle from './instrument-alerts-bundle';
 import instrumentBundle from './instrument-bundle';
@@ -110,6 +111,7 @@ export default composeBundles(
   exploreMapBundle,
   exploreMapInteractionBundle,
   homeDataBundle,
+  inclinometerMeasurements,
   instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
   instrumentBundle,
