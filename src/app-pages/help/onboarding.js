@@ -70,9 +70,9 @@ const csvSampleTimeseries = [
 
 const csvSampleTimeseriesMeasurements = [
   ['Timeseries', 'Date', 'Reading'],
-  ['My Example Timeseries 1A', '3/31/19 0:00', '2557.495189'],
-  ['My Example Timeseries 1A', '3/31/19 1:00', '2557.496789'],
-  ['My Example Timeseries 1A', '3/31/19 2:00', '2557.504244'],
+  ['My Example Timeseries 1A', '2021-07-14T00:00:00', '2557.495189'],
+  ['My Example Timeseries 1A', '2021-07-14T01:00:00', '2557.496789'],
+  ['My Example Timeseries 1A', '2021-07-14T02:00:00', '2557.504244'],
 ];
 
 const csvSampleInclinometerMeasurements = [
