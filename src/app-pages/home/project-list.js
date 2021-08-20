@@ -352,7 +352,9 @@ export default connect(
       setFilteredProjects(filtered);
     };
 
-    const filterList = projects ? projects.map(p => ({ value: p.title })) : {};
+    const filterList = projects
+      ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title }))
+      : {};
 
     const isProdReady = process.env.REACT_APP_DISTRICT_SELECTOR;
 
@@ -398,13 +400,15 @@ export default connect(
                       <ProjectListRow.Heading />
                       <tbody>
                         {(filteredProjects.length ? filteredProjects : projects).map(project => (
-                          <ProjectListRow project={project} key={project.title} />
+                          project.instrumentCount ? <ProjectListRow project={project} key={project.title} /> : null
                         ))}
                       </tbody>
                     </table>
                   ) : (
                     <div className='d-flex flex-wrap justify-content-around'>
-                      {(filteredProjects.length ? filteredProjects : projects).map((proj, i) => <ProjectCard key={i} project={proj} /> )}
+                      {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
+                        project.instrumentCount ? <ProjectCard key={i} project={project} /> : null
+                      ))}
                     </div>
                   )}
                 </>

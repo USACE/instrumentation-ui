@@ -15,7 +15,7 @@ export default connect(
     chartEditorChartType: chartType,
     chartEditorLayout: layout,
   }) => (
-    <div style={{ marginTop: '6em', padding: '10px' }}>
+    <div className='p-3'>
       <div className='mb-2'>
         <div className='row'>
           <div className='col'>
@@ -34,10 +34,7 @@ export default connect(
                       ...layout,
                       xaxis: {
                         ...layout.xaxis,
-                        ...{
-                          type:
-                              e.target.value === 'timeseries' ? 'date' : '-',
-                        },
+                        type: e.target.value === 'timeseries' ? 'date' : '-',
                       },
                     });
                   }}
@@ -60,7 +57,7 @@ export default connect(
                     ...layout,
                     title: {
                       ...layout.title,
-                      ...{ text: e.target.value },
+                      text: e.target.value,
                     },
                   });
                 }}

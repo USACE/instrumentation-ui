@@ -1,6 +1,7 @@
 import neat from 'neat-csv';
 import { createSelector } from 'redux-bundler';
 
+import inclinometerMeasurements from '../upload-parsers/inclinometer_measurements';
 import instrumentParser from '../upload-parsers/instrument';
 import timeseriesParser from '../upload-parsers/timeseries';
 import timeseriesMeasurementsParser from '../upload-parsers/timeseries_measurements';
@@ -32,6 +33,7 @@ const uploadBundle = {
       json: null,
       ignoreRows: '',
       parsers: [
+        inclinometerMeasurements,
         instrumentParser,
         timeseriesParser,
         timeseriesMeasurementsParser,

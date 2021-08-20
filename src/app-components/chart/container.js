@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { connect } from 'redux-bundler-react';
 import { subDays, differenceInDays, isSameDay } from 'date-fns';
@@ -32,28 +32,17 @@ export default connect(
     chartEditorCorrelationMinDate: minDate,
     chartEditorCorrelationMaxDate: maxDate,
   }) => {
-    const now = new Date();
-    const from =
-      chartType === 'timeseries'
-        ? layout.xaxis.range[0]
-          ? layout.xaxis.range[0]
-          : minDate
-        : minDate;
+    const [from, setFrom] = useState(minDate);
+    const [to, setTo] = useState(maxDate);
 
-    const to =
-      chartType === 'timeseries'
-        ? layout.xaxis.range[1]
-          ? layout.xaxis.range[1]
-          : maxDate
-        : maxDate;
-
-    const updateChartDates = (f, t) => {
+    const updateChartDates = (f, t, autorange = true) => {
       if (chartType === 'timeseries') {
         doChartEditorSetLayout({
           ...layout,
           xaxis: {
             ...layout.xaxis,
-            ...{ autorange: false, range: [f, t] },
+            range: [f, t],
+            autorange,
           },
         });
       } else {
@@ -72,8 +61,11 @@ export default connect(
     };
 
     const setChartDates = (daysAgo) => {
+      const now = new Date();
       const backDate = daysAgo ? subDays(now, daysAgo) : new Date(0);
-      updateChartDates(backDate.toISOString(), now.toISOString());
+
+      setFrom(backDate.toISOString());
+      setTo(now.toISOString());
     };
 
     const commonButtonStyles = (daysAgo) => {
@@ -98,6 +90,10 @@ export default connect(
       };
     };
 
+    useEffect(() => {
+      updateChartDates(from, to);
+    }, [from, to]);
+
     return (
       <div className='chart-container'>
         <span
@@ -117,10 +113,8 @@ export default connect(
             <DatePicker
               className='form-control form-control-sm'
               selected={from ? new Date(from) : null}
-              onChange={(val) => {
-                updateChartDates(val.toISOString(), to);
-              }}
               maxDate={to ? new Date(to) : null}
+              onChange={val => setFrom(val.toISOString())}
             />
           </div>
           <div className='form-group mr-2'>
@@ -130,39 +124,40 @@ export default connect(
             <DatePicker
               className='form-control form-control-sm'
               selected={to ? new Date(to) : null}
-              onChange={(val) => {
-                updateChartDates(from, val.toISOString());
-              }}
               minDate={from ? new Date(from) : null}
+              onChange={val => setTo(val.toISOString())}
             />
           </div>
           <div className='form-group'>
             <label>
               <small>Presets</small>
             </label>
-            <div className='btn-group d-block'>
-              <Button
-                {...commonButtonStyles(7)}
-                text='7 day'
-                handleClick={() => setChartDates(7)}
-              />
-              <Button
-                {...commonButtonStyles(30)}
-                text='30 day'
-                handleClick={() => setChartDates(30)}
-              />
-              <Button
-                {...commonButtonStyles(60)}
-                text='60 day'
-                handleClick={() => setChartDates(60)}
-              />
-              <Button
-                {...commonButtonStyles(90)}
-                text='90 day'
-                handleClick={() => setChartDates(90)}
-              />
+            <div className='d-flex'>
+              <div className='btn-group'>
+                <Button
+                  {...commonButtonStyles(7)}
+                  text='7 day'
+                  handleClick={() => setChartDates(7)}
+                />
+                <Button
+                  {...commonButtonStyles(30)}
+                  text='30 day'
+                  handleClick={() => setChartDates(30)}
+                />
+                <Button
+                  {...commonButtonStyles(60)}
+                  text='60 day'
+                  handleClick={() => setChartDates(60)}
+                />
+                <Button
+                  {...commonButtonStyles(90)}
+                  text='90 day'
+                  handleClick={() => setChartDates(90)}
+                />
+              </div>
               <Button
                 {...commonButtonStyles(0)}
+                className='ml-2'
                 text='Lifetime'
                 handleClick={() => setLifetime()}
               />
