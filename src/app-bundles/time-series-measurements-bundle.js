@@ -12,7 +12,7 @@ export default createRestBundle({
   getTemplate: `/timeseries/:timeseriesId/measurements?after=${afterDate}&before=${beforeDate}`,
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
-  deleteTemplate: '',
+  deleteTemplate: '/timeseries/:timeseriesId/measurements',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
@@ -63,6 +63,37 @@ export default createRestBundle({
           },
         });
         dispatch({ type: 'TIMESERIES_FETCH_BY_ID_FINISHED', payload: {} });
+      });
+    },
+    
+    doDeleteTimeseriesMeasurement: ({
+      timeseriesId,
+      date,
+    }) => ({ dispatch, store, apiDelete }) => {
+      dispatch({ type: 'DELETE_TIMESERIES_MEASUREMENT_START', payload: {} });
+      
+      const url = `/timeseries/${timeseriesId}/measurements?time=${date}`;
+      const flags = store['selectTimeseriesMeasurementsFlags']();
+      const delItem = [{'timeseries_id' : timeseriesId, 'time' : date}];
+      let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();
+
+      apiDelete(url, (_err, body) => {
+        dispatch({
+          type: 'TIMESERIES_MEASUREMENT_ITEM_TO_DELETE',
+          payload: {
+            ...delItem,
+            ...flags,
+            ...{
+              _isLoading: false,
+              _isSaving: false,
+              _fetchCount: ++fetchCount,
+              _lastFetch: new Date(),
+              _lastResource: url,
+              _abortReason: null,
+            }
+          },
+        });
+        dispatch({ type: 'DELETE_TIMESERIES_MEASUREMENT_FINISHED', payload: {} });
       });
     },
   },

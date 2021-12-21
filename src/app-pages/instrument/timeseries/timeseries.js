@@ -76,8 +76,10 @@ export default connect(
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
+  'doDeleteTimeseriesMeasurement',
   ({
     doModalOpen,
+    doDeleteTimeseriesMeasurement,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
@@ -85,21 +87,39 @@ export default connect(
     timeseriesMeasurementsItemsObject: measurements,
     inclinometerMeasurementsItemsObject: inclinometerMeasurements,
   }) => {
-    const grid = useRef(null);
+    const [grid, setGrid] = useState(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
+    const [didDelete, setDidDelete] = useState(false);
 
     // trigger the fetch for our measurements
     useEffect(() => {
       if (activeTimeseries) {
         doInstrumentTimeseriesSetActiveId(activeTimeseries);
       }
-    }, [activeTimeseries, doInstrumentTimeseriesSetActiveId]);
+    }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId]);
 
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
       ts.instrument_id === instrument.id &&
       instrument.constants.indexOf(ts.id) === -1
     ));
+
+    const onGridReady = (params) => {
+      setGrid(params);
+    };
+
+    const deleteTimeseriesMeasurement = () => {
+      if (grid.api.getSelectedNodes()[0]) {
+        const rowData = grid.api.getSelectedNodes()[0].data;
+        const time = rowData.time;
+        doDeleteTimeseriesMeasurement(
+          {
+            timeseriesId: activeTimeseries,
+            date: time
+          });
+        setDidDelete(!didDelete);
+      }
+    };
 
     const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
 
@@ -139,16 +159,29 @@ export default connect(
           </div>
           <div className='col'>
             <div className='mb-2'>
-              <Button
-                variant='secondary'
-                size='small'
-                isOutline
-                isDisabled={!activeTimeseries}
-                href={`/${project.slug}#uploader`}
-                text='Upload to this timeseries'
-                title='Upload'
-                icon={<Icon icon='upload' className='mr-1' />}
-              />
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <Button
+                  variant='secondary'
+                  size='small'
+                  isOutline
+                  isDisabled={!activeTimeseries}
+                  href={`/${project.slug}#uploader`}
+                  text='Upload to this timeseries'
+                  title='Upload'
+                  icon={<Icon icon='upload' className='mr-1' />}
+                />
+              </RoleFilter>
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <Button
+                  variant='danger'
+                  size='small'
+                  className='ml-2'
+                  isOutline
+                  text='Delete Selected Measurement'
+                  isDisabled={!activeTimeseries}
+                  handleClick={() => deleteTimeseriesMeasurement()}
+                />
+              </RoleFilter>
             </div>
             <div
               className='ag-theme-balham'
@@ -159,9 +192,10 @@ export default connect(
               }}
             >
               <AgGridReact
-                ref={grid}
+                onGridReady={onGridReady}
                 columnDefs={columnDefs}
                 rowData={rowData}
+                rowSelection={'single'}
                 modules={[ClientSideRowModelModule]}
               />
             </div>
