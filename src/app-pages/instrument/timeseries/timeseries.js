@@ -11,12 +11,7 @@ import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
-
-const doesSetHaveData = (dataSet, key, activeTimeseries) => {
-  const data = dataSet[activeTimeseries];
-
-  return !!(data && data[key]);
-};
+import { isObjectLike } from 'lodash';
 
 const getInclinometerItems = inclinometers => {
   const items = [];
@@ -42,32 +37,6 @@ const getInclinometerItems = inclinometers => {
   return items;
 };
 
-const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
-  const items =
-    doesSetHaveData(measurements, 'items', activeTimeseries)
-      ? measurements[activeTimeseries].items
-      : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
-        ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
-        : [];
-
-  const keys = items && items.length ? Object.keys(items[0]) : [];
-  const columnDefs = [
-    { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
-    ...keys
-      .filter(key => key !== 'id')
-      .map(key => ({
-        headerName: key.toUpperCase(),
-        field: key,
-        resizable: true,
-        sortable: true,
-        filter: true,
-        editable: false,
-      })),
-  ];
-
-  return { rowData: items, columnDefs };
-};
-
 export default connect(
   'doModalOpen',
   'doInstrumentTimeseriesSetActiveId',
@@ -77,9 +46,13 @@ export default connect(
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
   'doDeleteTimeseriesMeasurement',
+  'doTimeseriesMeasurementsSave',
+  'doDeleteInclinometerMeasurement',
   ({
     doModalOpen,
     doDeleteTimeseriesMeasurement,
+    doDeleteInclinometerMeasurement,
+    doTimeseriesMeasurementsSave,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
@@ -98,6 +71,12 @@ export default connect(
       }
     }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId]);
 
+    const doesSetHaveData = (dataSet, key, activeTimeseries) => {
+      const data = dataSet[activeTimeseries];
+      
+      return !!(data && data[key]);
+    };
+
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
       ts.instrument_id === instrument.id &&
@@ -108,17 +87,59 @@ export default connect(
       setGrid(params);
     };
 
-    const deleteTimeseriesMeasurement = () => {
+    const deleteMeasurement = () => {
       if (grid.api.getSelectedNodes()[0]) {
         const rowData = grid.api.getSelectedNodes()[0].data;
         const time = rowData.time;
-        doDeleteTimeseriesMeasurement(
-          {
+        // OPTIMIZATION TO DO *** Make state var for isInclinometer rather than this check 
+        Object.keys(rowData).includes('a0','a180','b0','b180','depth','aChecksum','bChecksum') ? 
+          doDeleteInclinometerMeasurement({
+            timeseriesId: activeTimeseries,
+            date: time
+          }) :
+          doDeleteTimeseriesMeasurement({
             timeseriesId: activeTimeseries,
             date: time
           });
         setDidDelete(!didDelete);
       }
+    };
+
+    const updateMeasurement = cell => {
+      const { node, data } = cell;
+      data.value = new Number(data.value);
+    
+      doTimeseriesMeasurementsSave({
+        timeseries_id: activeTimeseries,
+        items: [data],
+      }, null, false, true);
+    };
+    
+    const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
+      const items =
+        doesSetHaveData(measurements, 'items', activeTimeseries)
+          ? measurements[activeTimeseries].items
+          : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
+            ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
+            : [];
+    
+      const keys = items && items.length ? Object.keys(items[0]) : [];
+      const columnDefs = [
+        { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
+        ...keys
+          .filter(key => key !== 'id')
+          .map(key => ({
+            headerName: key.toUpperCase(),
+            field: key,
+            resizable: true,
+            sortable: true,
+            filter: true,
+            editable: key === 'value' ? true : false, // no editing inclinometer values for now
+            onCellValueChanged: cell => updateMeasurement(cell),
+          })),
+      ];
+    
+      return { rowData: items, columnDefs };
     };
 
     const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
@@ -179,7 +200,7 @@ export default connect(
                   isOutline
                   text='Delete Selected Measurement'
                   isDisabled={!activeTimeseries}
-                  handleClick={() => deleteTimeseriesMeasurement()}
+                  handleClick={() => deleteMeasurement()}
                 />
               </RoleFilter>
             </div>
@@ -196,6 +217,7 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={rowData}
                 rowSelection={'single'}
+                stopEditingWhenGridLosesFocus={true}
                 modules={[ClientSideRowModelModule]}
               />
             </div>
