@@ -8,7 +8,7 @@ import { isEqual } from 'lodash';
 import Button from '../../../app-components/button';
 import ConstantListItem from './constant-list-item';
 import ConstantForm from './constant-form';
-import DateEditor from './date-editor';
+import DateEditor from '../../../app-components/date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import usePrevious from '../../../customHooks/usePrevious';

@@ -6,36 +6,13 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import Button from '../../../app-components/button';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
+import DateEditor from '../../../app-components/date-editor';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
 import { isObjectLike } from 'lodash';
-
-const getInclinometerItems = inclinometers => {
-  const items = [];
-
-  inclinometers.forEach(inclinometer => {
-    const { time, values } = inclinometer;
-
-    values.forEach(value => {
-      const { depth, aChecksum, a0, a180, bChecksum, b0, b180 } = value;
-      items.push({
-        time,
-        depth,
-        aChecksum,
-        a0,
-        a180,
-        bChecksum,
-        b0,
-        b180,
-      });
-    });
-  });
-
-  return items;
-};
 
 export default connect(
   'doModalOpen',
@@ -63,12 +40,14 @@ export default connect(
     const [grid, setGrid] = useState(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
     const [didDelete, setDidDelete] = useState(false);
+    const [isInclinometer, setIsInclinometer] = useState(null);
 
     // trigger the fetch for our measurements
     useEffect(() => {
       if (activeTimeseries) {
         doInstrumentTimeseriesSetActiveId(activeTimeseries);
       }
+      doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries) ? setIsInclinometer(true) : setIsInclinometer(false);
     }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId]);
 
     const doesSetHaveData = (dataSet, key, activeTimeseries) => {
@@ -91,8 +70,7 @@ export default connect(
       if (grid.api.getSelectedNodes()[0]) {
         const rowData = grid.api.getSelectedNodes()[0].data;
         const time = rowData.time;
-        // OPTIMIZATION TO DO *** Make state var for isInclinometer rather than this check 
-        Object.keys(rowData).includes('a0','a180','b0','b180','depth','aChecksum','bChecksum') ? 
+        isInclinometer ? 
           doDeleteInclinometerMeasurement({
             timeseriesId: activeTimeseries,
             date: time
@@ -106,13 +84,42 @@ export default connect(
     };
 
     const updateMeasurement = cell => {
-      const { node, data } = cell;
-      data.value = new Number(data.value);
+
+      if(isInclinometer) {
+        // TO DO : create doInclinometerMeasurementsSave()
+      } else {
+        const { node, data } = cell;
+        data.value = new Number(data.value);
+        doTimeseriesMeasurementsSave({
+          timeseries_id: activeTimeseries,
+          items: [data],
+        }, null, false, true);
+      }
+      
+    };
+
+    const getInclinometerItems = inclinometers => {
+      const items = [];
     
-      doTimeseriesMeasurementsSave({
-        timeseries_id: activeTimeseries,
-        items: [data],
-      }, null, false, true);
+      inclinometers.forEach(inclinometer => {
+        const { time, values } = inclinometer;
+    
+        values.forEach(value => {
+          const { depth, aChecksum, a0, a180, bChecksum, b0, b180 } = value;
+          items.push({
+            time,
+            depth,
+            aChecksum,
+            a0,
+            a180,
+            bChecksum,
+            b0,
+            b180,
+          });
+        });
+      });
+    
+      return items;
     };
     
     const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
@@ -134,7 +141,8 @@ export default connect(
             resizable: true,
             sortable: true,
             filter: true,
-            editable: key === 'value' ? true : false, // no editing inclinometer values for now
+            editable: !isInclinometer ? true : false, // no editing inclinometer values for now
+            cellEditor: key === 'time' ? 'dateEditor' : undefined,
             onCellValueChanged: cell => updateMeasurement(cell),
           })),
       ];
@@ -219,6 +227,9 @@ export default connect(
                 rowSelection={'single'}
                 stopEditingWhenGridLosesFocus={true}
                 modules={[ClientSideRowModelModule]}
+                frameworkComponents={{
+                  'dateEditor': DateEditor,
+                }}
               />
             </div>
           </div>
