@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
+import DatePicker from 'react-datepicker';
 import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { CSVLink } from 'react-csv';
 
 import Button from '../../../app-components/button';
 import Icon from '../../../app-components/icon';
@@ -39,8 +41,12 @@ export default connect(
   }) => {
     const [grid, setGrid] = useState(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
+    const [activeTimeseriesName, setActiveTimeseriesName] = useState(null);
     const [didDelete, setDidDelete] = useState(false);
     const [isInclinometer, setIsInclinometer] = useState(null);
+    const [isUsingDateRange, setIsUsingDateRange] = useState(false);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startDate, endDate] = dateRange;
 
     // trigger the fetch for our measurements
     useEffect(() => {
@@ -48,7 +54,7 @@ export default connect(
         doInstrumentTimeseriesSetActiveId(activeTimeseries);
       }
       doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries) ? setIsInclinometer(true) : setIsInclinometer(false);
-    }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId]);
+    }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId, dateRange]);
 
     const doesSetHaveData = (dataSet, key, activeTimeseries) => {
       const data = dataSet[activeTimeseries];
@@ -129,7 +135,7 @@ export default connect(
           : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
             ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
             : [];
-    
+
       const keys = items && items.length ? Object.keys(items[0]) : [];
       const columnDefs = [
         { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
@@ -146,8 +152,10 @@ export default connect(
             onCellValueChanged: cell => updateMeasurement(cell),
           })),
       ];
-    
-      return { rowData: items, columnDefs };
+      
+      const filteredItems = isUsingDateRange ? items.filter(item => new Date(item['time']) >= startDate && new Date(item['time']) <= endDate) : items;
+
+      return { rowData: filteredItems, columnDefs };
     };
 
     const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
@@ -181,6 +189,7 @@ export default connect(
                   item={ts}
                   onClick={(item) => {
                     setActiveTimeseries(activeTimeseries === ts.id ? null : item.id);
+                    setActiveTimeseriesName(activeTimeseries === ts.id ? null : ts.name);
                   }}
                 />
               ))}
@@ -201,6 +210,19 @@ export default connect(
                 />
               </RoleFilter>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <CSVLink data={rowData} filename={instrument.name+' - '+activeTimeseriesName+'.csv'}>
+                  <Button
+                    variant='secondary'
+                    size='small'
+                    isOutline
+                    className='ml-2'
+                    isDisabled={!activeTimeseries}
+                    text='Download measurements'
+                    icon={<Icon icon='download' classname='mr-1'/>}
+                  />
+                </CSVLink>
+              </RoleFilter>
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <Button
                   variant='danger'
                   size='small'
@@ -211,6 +233,32 @@ export default connect(
                   handleClick={() => deleteMeasurement()}
                 />
               </RoleFilter>
+              <Button
+                variant='primary'
+                size='small'
+                className='ml-2'
+                isOutline
+                text='Toggle DateRange'
+                isDisabled={!activeTimeseries || !rowData.length}
+                handleClick={()=>{
+                  !isUsingDateRange ? 
+                    setDateRange([new Date(rowData[rowData.length-1]['time']), new Date(rowData[0]['time'])]) :
+                    setDateRange([null, null]);
+                  setIsUsingDateRange(!isUsingDateRange);
+                }}
+              />
+              <DatePicker
+                selectsRange={true}
+                startDate={startDate}
+                endDate={endDate}
+                onChange={(update) => {
+                  setDateRange(update);
+                }}
+                disabled={!isUsingDateRange}
+                showMonthDropdown
+                showYearDropdown
+                dateFormat='MMMM d, yyyy h:mm aa zzzz'
+              />
             </div>
             <div
               className='ag-theme-balham'
