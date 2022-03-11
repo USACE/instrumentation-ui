@@ -1,7 +1,7 @@
 import { setDate } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import { parseISO, format } from 'date-fns';
+import { subDays, parseISO, format } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
@@ -41,7 +41,8 @@ const BatchPlotChart = connect(
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+    const [lifetimeDate, setLifetimeDate] = useState([]);
+    const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
     const layout = {
       xaxis: {
@@ -116,8 +117,9 @@ const BatchPlotChart = connect(
         .filter((e) => e);
       
       const datedData = data;
-      
+      // optimize
       if(datedData[0] && datedData[0].x && datedData[0].y) {
+        setLifetimeDate(datedData[0].x[0]);
         for(let i = 0; i < datedData[0].x.length; i++) {
           const tempDate = new Date(datedData[0].x[i]);
           if(tempDate > dateRange[1] || tempDate < dateRange[0]) {
@@ -127,7 +129,6 @@ const BatchPlotChart = connect(
           }
         }
       }
-      
       setChartData(datedData);
     };
 
@@ -208,6 +209,7 @@ const BatchPlotChart = connect(
           <>
             <hr />
             <ChartSettings
+              lifetimeDate={lifetimeDate}
               dateRange={dateRange}
               setDateRange={setDateRange}
               setWithPrecipitation={setWithPrecipitation}

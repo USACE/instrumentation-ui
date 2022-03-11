@@ -16,27 +16,17 @@ const BatchPlotChartSettings = ({
   dateRange = [],
   setDateRange,
   setWithPrecipitation,
+  lifetimeDate,
 }) => {
 
-  const [fromTime, setFromTime] = useState(dateRange[0]);
-  const [endTime, setEndTime] = useState(dateRange[0]);
+  const [fromTime, endTime] = dateRange;
 
-  useEffect(() => {
-    setDateRange([fromTime, endTime]);
-
-  }, [fromTime, endTime]);
-
-  const thirtyDay = () => {
-    setEndTime(new Date());
-    setFromTime(startOfDay(dateAgo(30)));
+  const alterRange = (daysAgo) => {
+    setDateRange([startOfDay(dateAgo(daysAgo)), new Date()]);
   };
-  const sixtyDay = () => {
-    setEndTime(new Date());
-    setFromTime(startOfDay(dateAgo(60)));
-  };
-  const ninetyDay = () => {
-    setEndTime(new Date());
-    setFromTime(startOfDay(dateAgo(90)));
+
+  const calcLifetime = () => {
+    setDateRange([new Date(lifetimeDate), new Date()]);
   };
 
   return (
@@ -66,32 +56,39 @@ const BatchPlotChartSettings = ({
           handleClick={() => setDateRange([startOfDay(dateAgo(90)), endOfDay(new Date())])}
         />*/}
         <DatePicker
-          dateFormat="yyyy-MM-d hh:mm 'GMT'XXXXX"
-          selected={fromTime}
-          onChange={(val) => setFromTime(val)}
-        />
-        <DatePicker
-          dateFormat="yyyy-MM-d hh:mm 'GMT'XXXXX"
-          selected={endTime}
-          onChange={(val) => setEndTime(val)}
-        />
-        <Button
-          isOutline
-          text = '30 Day'
-          variant = 'info'
-          handleClick={() => thirtyDay()}
+          selectsRange={true}
+          startDate={fromTime}
+          endDate={endTime}
+          onChange={(update) => {
+            setDateRange(update);
+          }}
+          showMonthDropdown
+          showYearDropdown
+          dateFormat='MMMM d, yyyy h:mm aa zzzz'
         />
         <Button
           isOutline
-          text = '60 Day'
+          text = 'Lifetime'
           variant = 'info'
-          handleClick={() => sixtyDay()}
+          handleClick={() => calcLifetime()}
         />
         <Button
           isOutline
-          text = '90 Day'
+          text = '5 Years'
           variant = 'info'
-          handleClick={() => ninetyDay()}
+          handleClick={() => alterRange(1825)}
+        />
+        <Button
+          isOutline
+          text = '1 Year'
+          variant = 'info'
+          handleClick={() => alterRange(365)}
+        />
+        <Button
+          isOutline
+          text = '1 Month'
+          variant = 'info'
+          handleClick={() => alterRange(30)}
         />
         <Notifications />
       </div> 
