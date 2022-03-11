@@ -1,5 +1,7 @@
+import { setDate } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { parseISO, format } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
@@ -24,6 +26,7 @@ const BatchPlotChart = connect(
   'selectTimeseriesMeasurementsItems',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInstrumentTimeseriesItemsByRoute',
+  'doNotificationFire',
   ({
     doPrintSetData,
     doInstrumentTimeseriesSetActiveId,
@@ -33,11 +36,12 @@ const BatchPlotChart = connect(
     timeseriesMeasurementsItems,
     timeseriesMeasurementsItemsObject,
     instrumentTimeseriesItemsByRoute,
+    doNotificationFire,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [dateRange, setDateRange] = useState([]);
+    const [dateRange, setDateRange] = useState([new Date(), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
     const layout = {
       xaxis: {
@@ -110,8 +114,21 @@ const BatchPlotChart = connect(
           }
         })
         .filter((e) => e);
-
-      setChartData(data);
+      
+      const datedData = data;
+      
+      if(datedData[0] && datedData[0].x && datedData[0].y) {
+        for(let i = 0; i < datedData[0].x.length; i++) {
+          const tempDate = new Date(datedData[0].x[i]);
+          if(tempDate > dateRange[1] || tempDate < dateRange[0]) {
+            datedData[0].x.splice(i, 1);
+            datedData[0].y.splice(i, 1);
+            i--;
+          }
+        }
+      }
+      
+      setChartData(datedData);
     };
 
     /** Load specific timeseries ids into state when new configurations are loaded */
@@ -158,6 +175,21 @@ const BatchPlotChart = connect(
       }
       doPrintSetData(chartData, layout);
     }, [chartData, setWithPrecipitation]);
+
+    useEffect(() => {
+      if(dateRange[0] && dateRange[1]) {
+        if(dateRange[0] < dateRange[1]) {
+          generateNewChartData(); 
+        } else {
+          const fail = {
+            level: 'error',
+            title: 'Incorrect Date Range',
+            message: 'Begin date must be earlier or the same as the end date',
+          };
+          doNotificationFire(fail);
+        }
+      }
+    }, [dateRange]);
 
     return (
       <>
