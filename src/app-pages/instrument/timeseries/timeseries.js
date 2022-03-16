@@ -96,6 +96,12 @@ export default connect(
       } else {
         const { node, data } = cell;
         data.value = new Number(data.value);
+        if(cell.colDef.field == 'time') {
+          doDeleteTimeseriesMeasurement({
+            timeseriesId: activeTimeseries,
+            date: cell.oldValue
+          });
+        }
         doTimeseriesMeasurementsSave({
           timeseries_id: activeTimeseries,
           items: [data],

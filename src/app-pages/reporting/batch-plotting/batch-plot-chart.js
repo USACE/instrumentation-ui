@@ -42,7 +42,7 @@ const BatchPlotChart = connect(
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [lifetimeDate, setLifetimeDate] = useState([]);
-    const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
+    const [dateRange, setDateRange] = useState([subDays(new Date(), 30), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
     const layout = {
       xaxis: {
