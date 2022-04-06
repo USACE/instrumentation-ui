@@ -103,9 +103,9 @@ export default connect(
           });
         }
         if(cell.colDef.field == 'validated') {
-          data.validated = data.validated == 'true' ? true : false;
+          data.validated = (data.validated === 'true');
         } else if(cell.colDef.field == 'masked') {
-          data.masked = data.masked == 'true' ? true : false;
+          data.masked = (data.masked === 'true');
         }
         doTimeseriesMeasurementsSave({
           timeseries_id: activeTimeseries,
