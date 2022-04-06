@@ -7,7 +7,10 @@ const timeseriesMeasurementParser = {
   prePostFilter: (data) => (
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
-      const { timeseries_id, time, value, project_id } = current;
+      const { timeseries_id, time, value, masked, validated, annotation, project_id } = current;
+      console.log(masked);
+      console.log(validated);
+      console.log(annotation);
 
       return ({
         ...accum,
@@ -16,6 +19,9 @@ const timeseriesMeasurementParser = {
         items: (accum['items'] || []).concat([{
           time: DateTime.fromISO(time, { zone: 'utc' }),
           value,
+          masked,
+          validated,
+          annotation,
         }])
       });
     }, {})
@@ -40,7 +46,7 @@ const timeseriesMeasurementParser = {
       },
       parse: val => val,
       validate: val => !!val,
-      helpText: 'Should map to an timeseries name that exists in the system for the selected instrument.',
+      helpText: 'Should map to a timeseries name that exists in the system for the selected instrument.',
     },
     time: {
       label: 'Time',
@@ -57,6 +63,30 @@ const timeseriesMeasurementParser = {
       parse: val => isNumeric(val) ? Number(val) : null,
       validate: val => !!val,
       helpText: 'Numeric value of the measurement at the specified time',
+    },
+    masked: {
+      label: 'Masked',
+      type: 'boolean',
+      required: false,
+      parse: val => val === 'true' || val === 'T' || val ==='Y',
+      validate: val => !!val,
+      helpText: 'Boolean value of whether the measurement should be masked (Optional, default to false)',
+    },
+    validated: {
+      label: 'Validated',
+      type: 'boolean',
+      required: false,
+      parse: val => val === 'true' || val === 'T' || val ==='Y',
+      validate: val => !!val,
+      helpText: 'Boolean value of whether the measurement is already validated (Optional, default to false)',
+    },
+    annotation: {
+      label: 'Annotation',
+      type: 'string',
+      required: false,
+      parse: val => val,
+      validate: val => !!val,
+      helpText: 'String note to be associated with the measurement (Optional, can be empty)',
     },
   },
 };
