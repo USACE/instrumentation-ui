@@ -8,9 +8,6 @@ const timeseriesMeasurementParser = {
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
       const { timeseries_id, time, value, masked, validated, annotation, project_id } = current;
-      console.log(masked);
-      console.log(validated);
-      console.log(annotation);
 
       return ({
         ...accum,
