@@ -102,6 +102,11 @@ export default connect(
             date: cell.oldValue
           });
         }
+        if(cell.colDef.field == 'validated') {
+          data.validated = data.validated == 'true' ? true : false;
+        } else if(cell.colDef.field == 'masked') {
+          data.masked = data.masked == 'true' ? true : false;
+        }
         doTimeseriesMeasurementsSave({
           timeseries_id: activeTimeseries,
           items: [data],
