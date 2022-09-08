@@ -66,7 +66,7 @@ export default createRestBundle({
       });
     },
     
-    doDeleteTimeseriesMeasurement: ({
+    doTimeseriesMeasurementDelete: ({
       timeseriesId,
       date,
     }) => ({ dispatch, store, apiDelete }) => {

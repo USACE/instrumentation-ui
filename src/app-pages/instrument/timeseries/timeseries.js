@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import DatePicker from 'react-datepicker';
 import { AgGridReact } from '@ag-grid-community/react';
@@ -14,7 +14,6 @@ import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
-import { isObjectLike } from 'lodash';
 
 export default connect(
   'doModalOpen',
@@ -24,13 +23,13 @@ export default connect(
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
-  'doDeleteTimeseriesMeasurement',
+  'doTimeseriesMeasurementDelete',
   'doTimeseriesMeasurementsSave',
-  'doDeleteInclinometerMeasurement',
+  'doInclinometerMeasurementDelete',
   ({
     doModalOpen,
-    doDeleteTimeseriesMeasurement,
-    doDeleteInclinometerMeasurement,
+    doTimeseriesMeasurementDelete,
+    doInclinometerMeasurementDelete,
     doTimeseriesMeasurementsSave,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
@@ -77,11 +76,11 @@ export default connect(
         const rowData = grid.api.getSelectedNodes()[0].data;
         const time = rowData.time;
         isInclinometer ? 
-          doDeleteInclinometerMeasurement({
+          doInclinometerMeasurementDelete({
             timeseriesId: activeTimeseries,
             date: time
           }) :
-          doDeleteTimeseriesMeasurement({
+          doTimeseriesMeasurementDelete({
             timeseriesId: activeTimeseries,
             date: time
           });
@@ -97,7 +96,7 @@ export default connect(
         const { node, data } = cell;
         data.value = new Number(data.value);
         if(cell.colDef.field == 'time') {
-          doDeleteTimeseriesMeasurement({
+          doTimeseriesMeasurementDelete({
             timeseriesId: activeTimeseries,
             date: cell.oldValue
           });

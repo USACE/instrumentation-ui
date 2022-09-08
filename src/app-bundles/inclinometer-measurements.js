@@ -34,7 +34,7 @@ export default createRestBundle({
   },
 
   addons : {
-    doDeleteInclinometerMeasurement: ({
+    doInclinometerMeasurementDelete: ({
       timeseriesId,
       date,
     }) => ({ dispatch, store, apiDelete }) => {
