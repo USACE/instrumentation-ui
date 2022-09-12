@@ -61,7 +61,7 @@ const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries)
         resizable: true,
         sortable: true,
         filter: true,
-        editable: false,
+        editable: true,
       })),
   ];
 
@@ -163,6 +163,7 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={rowData}
                 modules={[ClientSideRowModelModule]}
+                editType={'fullRow'}
               />
             </div>
           </div>

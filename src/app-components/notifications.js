@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
-import NotificationSystem from 'react-notification-system';
+// import NotificationSystem from 'react-notification-system';
 
 export default connect(
   'selectNotification',
@@ -15,6 +15,7 @@ export default connect(
       }
     }, [notification, doNotificationClear]);
 
-    return <NotificationSystem ref={notificationSystem} />;
+    // return <NotificationSystem ref={notificationSystem} />;
+    return <></>;
   }
 );

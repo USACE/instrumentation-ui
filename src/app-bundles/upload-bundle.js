@@ -1,4 +1,4 @@
-import neat from 'neat-csv';
+// import neat from 'neat-csv';
 import { createSelector } from 'redux-bundler';
 
 import inclinometerMeasurements from '../upload-parsers/inclinometer_measurements';
@@ -88,13 +88,13 @@ const uploadBundle = {
 
     const csv = store.selectUploadCsv();
     const text = await csv.text();
-    const json = await neat(text);
+    // const json = await neat(text);
 
     dispatch({
       type: 'UPLOAD_PARSE_CSV_FINISH',
       payload: {
         _isParsing: false,
-        json: json,
+        // json: json,
       },
     });
   },
