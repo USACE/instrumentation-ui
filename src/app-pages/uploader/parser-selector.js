@@ -5,16 +5,16 @@ import Select from '../../app-components/select';
 
 export default connect(
   'doUploadSetFieldmap',
+  'doUploadSetSelectedParser',
   'selectProjectsByRoute',
   'selectUploadParsers',
   'selectUploadSelectedParser',
-  'doUploadSetSelectedParser',
   ({
     doUploadSetFieldmap,
+    doUploadSetSelectedParser,
     projectsByRoute: project,
     uploadParsers,
     uploadSelectedParser,
-    doUploadSetSelectedParser,
   }) => {
     const options = uploadParsers.map(o => ({ value: o.name }));
 

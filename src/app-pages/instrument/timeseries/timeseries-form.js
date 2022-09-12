@@ -20,9 +20,7 @@ export default connect(
   }) => {
     const [name, setName] = useState((item && item.name) || '');
     const [instrument_id] = useState(instrument.id);
-    const [parameter_id, setParameterId] = useState(
-      (item && item.parameter_id) || ''
-    );
+    const [parameter_id, setParameterId] = useState((item && item.parameter_id) || '');
     const [unit_id, setUnitId] = useState((item && item.unit_id) || '');
 
     const handleSave = (e) => {

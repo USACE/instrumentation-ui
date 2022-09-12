@@ -7,7 +7,8 @@
     "@ag-grid-community/client-side-row-model": "^25.3.0",
     "@ag-grid-community/core": "^25.3.0",
     "@corpsmap/corpsmap": "^4.0.36",
-    "@react-pdf/renderer": "^2.0.13",
+    "@react-pdf/font": "2.2.0",
+    "@react-pdf/renderer": "2.1.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -18,7 +19,6 @@
     "luxon": "^1.26.0",
     "money-clip": "^3.0.1",
     "neat-csv": "^5.2.0",
-    "node-sass": "^4.14.1",
     "ol": "^6.2.1",
     "plotly.js": "^1.57.1",
     "proj4": "^2.6.1",
@@ -32,8 +32,12 @@
     "react-scripts": "^4.0.3",
     "redux-bundler": "^27.0.1",
     "redux-bundler-react": "^1.2.0",
+    "sass": "^1.54.8",
     "source-map-explorer": "^2.5.2",
     "xhr": "^2.5.0"
+  },
+  "resolutions": {
+    "@react-pdf/font": "2.2.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
