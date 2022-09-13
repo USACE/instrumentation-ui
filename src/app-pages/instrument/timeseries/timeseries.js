@@ -25,11 +25,11 @@ export default connect(
   'selectInclinometerMeasurementsItemsObject',
   'doTimeseriesMeasurementDelete',
   'doTimeseriesMeasurementsSave',
-  'doInclinometerMeasurementDelete',
+  'doInclinometerMeasurementsDelete',
   ({
     doModalOpen,
     doTimeseriesMeasurementDelete,
-    doInclinometerMeasurementDelete,
+    doInclinometerMeasurementsDelete,
     doTimeseriesMeasurementsSave,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
@@ -76,7 +76,7 @@ export default connect(
         const rowData = grid.api.getSelectedNodes()[0].data;
         const time = rowData.time;
         isInclinometer ? 
-          doInclinometerMeasurementDelete({
+          doInclinometerMeasurementsDelete({
             timeseriesId: activeTimeseries,
             date: time
           }) :
