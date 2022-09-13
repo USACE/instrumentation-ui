@@ -12,7 +12,7 @@ export default createRestBundle({
   getTemplate: `/timeseries/:timeseriesId/measurements?after=${afterDate}&before=${beforeDate}`,
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
-  deleteTemplate: '/timeseries/:timeseriesId/measurements',
+  deleteTemplate: '/timeseries/:timeseriesId/measurements?time={:date}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
@@ -48,7 +48,7 @@ export default createRestBundle({
         new Array(body).forEach(item => itemsById[item['timeseries_id']] = item);
 
         dispatch({
-          type: 'TIMSERIES_MEASUREMENTS_UPDATED_ITEM',
+          type: 'TIMESERIES_MEASUREMENTS_UPDATED_ITEM',
           payload: {
             ...itemsById,
             ...flags,
@@ -65,42 +65,11 @@ export default createRestBundle({
         dispatch({ type: 'TIMESERIES_FETCH_BY_ID_FINISHED', payload: {} });
       });
     },
-    
-    doTimeseriesMeasurementDelete: ({
-      timeseriesId,
-      date,
-    }) => ({ dispatch, store, apiDelete }) => {
-      dispatch({ type: 'DELETE_TIMESERIES_MEASUREMENT_START', payload: {} });
-      
-      const url = `/timeseries/${timeseriesId}/measurements?time=${date}`;
-      const flags = store['selectTimeseriesMeasurementsFlags']();
-      const delItem = [{'timeseries_id' : timeseriesId, 'time' : date}];
-      let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();
-
-      apiDelete(url, (_err, body) => {
-        dispatch({
-          type: 'TIMESERIES_MEASUREMENT_ITEM_TO_DELETE',
-          payload: {
-            ...delItem,
-            ...flags,
-            ...{
-              _isLoading: false,
-              _isSaving: false,
-              _fetchCount: ++fetchCount,
-              _lastFetch: new Date(),
-              _lastResource: url,
-              _abortReason: null,
-            }
-          },
-        });
-        dispatch({ type: 'DELETE_TIMESERIES_MEASUREMENT_FINISHED', payload: {} });
-      });
-    },
   },
 
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-      case 'TIMSERIES_MEASUREMENTS_UPDATED_ITEM':
+      case 'TIMESERIES_MEASUREMENTS_UPDATED_ITEM':
         return Object.assign({}, state, payload);
       default:
         return state;

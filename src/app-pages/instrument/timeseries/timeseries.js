@@ -23,12 +23,12 @@ export default connect(
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
-  'doTimeseriesMeasurementDelete',
+  'doTimeseriesMeasurementsDelete',
   'doTimeseriesMeasurementsSave',
   'doInclinometerMeasurementsDelete',
   ({
     doModalOpen,
-    doTimeseriesMeasurementDelete,
+    doTimeseriesMeasurementsDelete,
     doInclinometerMeasurementsDelete,
     doTimeseriesMeasurementsSave,
     doInstrumentTimeseriesSetActiveId,
@@ -80,8 +80,7 @@ export default connect(
             timeseriesId: activeTimeseries,
             date: time
           }) :
-          doTimeseriesMeasurementDelete({
-            timeseriesId: activeTimeseries,
+          doTimeseriesMeasurementsDelete({
             date: time
           });
         setDidDelete(!didDelete);
@@ -96,8 +95,7 @@ export default connect(
         const { node, data } = cell;
         data.value = new Number(data.value);
         if(cell.colDef.field == 'time') {
-          doTimeseriesMeasurementDelete({
-            timeseriesId: activeTimeseries,
+          doTimeseriesMeasurementsDelete({
             date: cell.oldValue
           });
         }
