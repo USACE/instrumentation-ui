@@ -19,6 +19,7 @@ export default createRouteBundle(
     '/logout': Logout,
     '/signup': SignUp,
     '/profile': Profile,
+    '/not-found': NotFound,
     '/:projectSlug': Project,
     '/:projectSlug/groups/:groupSlug': Group,
     '/:projectSlug/instruments/:instrumentSlug': Instrument,

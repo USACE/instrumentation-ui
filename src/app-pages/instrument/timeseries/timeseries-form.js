@@ -60,9 +60,7 @@ export default connect(
               <label>Name</label>
               <input
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={e => setName(e.target.value)}
                 className='form-control'
                 type='text'
                 placeholder='Text input'
@@ -72,7 +70,7 @@ export default connect(
               <label>Parameter</label>
               <DomainSelect
                 value={parameter_id}
-                onChange={(val) => setParameterId(val)}
+                onChange={val => setParameterId(val)}
                 domain='parameter'
               />
             </div>
@@ -80,7 +78,7 @@ export default connect(
               <label>Unit</label>
               <DomainSelect
                 value={unit_id}
-                onChange={(val) => setUnitId(val)}
+                onChange={val => setUnitId(val)}
                 domain='unit'
               />
             </div>

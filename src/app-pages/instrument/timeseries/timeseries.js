@@ -139,16 +139,18 @@ export default connect(
           </div>
           <div className='col'>
             <div className='mb-2'>
-              <Button
-                variant='secondary'
-                size='small'
-                isOutline
-                isDisabled={!activeTimeseries}
-                href={`/${project.slug}#uploader`}
-                text='Upload to this timeseries'
-                title='Upload'
-                icon={<Icon icon='upload' className='mr-1' />}
-              />
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <Button
+                  variant='secondary'
+                  size='small'
+                  isOutline
+                  isDisabled={!activeTimeseries}
+                  href={`/${project.slug}#uploader`}
+                  text='Upload to this timeseries'
+                  title='Upload'
+                  icon={<Icon icon='upload' className='mr-1' />}
+                />
+              </RoleFilter>
             </div>
             <div
               className='ag-theme-balham'
