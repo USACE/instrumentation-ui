@@ -6,9 +6,13 @@ export default createRestBundle({
   staleAfter: 10000,
   persist: false,
   routeParam: '',
-  getTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?before={:item.before}&after={:item.after}',
+
+  // TODO: default before and after time periods should be implemented on
+  // the backend.
+  getTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?before=2025-01-01T00:00:00.00Z&after=1900-01-01T00:00:00.00Z',
+  
   putTemplate: '',
-  postTemplate: '',
+  postTemplate: '/timeseries/:timeseriesId/inclinometer_measurements',
   deleteTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?time={:item.date}',
   fetchActions: [],
   forceFetchActions: [
