@@ -347,6 +347,7 @@ export default connect(
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
     const [isTableMode, setIsTableMode] = useState(true);
+    const [inputString, setInputString] = useState('');
 
     const onInputChange = input => {
       const filtered = projects.filter(p => (p.title).toLowerCase().includes(input.toLowerCase()));
@@ -404,7 +405,13 @@ export default connect(
                   <Select
                     isClearable
                     options={filterList}
-                    onInputChange={onInputChange}
+                    inputValue={inputString}
+                    onInputChange={(value, action) => {
+                      if (action.action === 'input-change') {
+                        setInputString(value);
+                        onInputChange(value);
+                      }
+                    }}
                     onChange={onChange}
                     className='w-100'
                   />

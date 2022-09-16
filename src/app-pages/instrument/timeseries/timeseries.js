@@ -52,7 +52,14 @@ const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries)
 
   const keys = items && items.length ? Object.keys(items[0]) : [];
   const columnDefs = [
-    { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
+    {
+      headerName: '',
+      field: 'rowIndex',
+      valueGetter: 'node.rowIndex + 1',
+      width: 40,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+    },
     ...keys
       .filter(key => key !== 'id')
       .map(key => ({
@@ -103,6 +110,22 @@ export default connect(
 
     const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
 
+    const editSelectedRows = () => {
+      const nodes = grid?.current?.api?.getSelectedNodes();
+
+      nodes.forEach(node => {
+        const { data, rowIndex } = node;
+        const keys = Object.keys(data);
+
+        keys.forEach(key => {
+          grid?.current?.api?.startEditingCell({
+            rowIndex: rowIndex,
+            colKey: key
+          });
+        });
+      });
+    };
+
     return (
       <>
         <p>
@@ -150,6 +173,16 @@ export default connect(
                   title='Upload'
                   icon={<Icon icon='upload' className='mr-1' />}
                 />
+                <Button
+                  variant='info'
+                  size='small'
+                  isOutline
+                  isDisabled={false}
+                  className='ml-2'
+                  text='Edit Selected Rows'
+                  title='Edit Rows'
+                  handleClick={() => editSelectedRows()}
+                />
               </RoleFilter>
             </div>
             <div
@@ -165,7 +198,10 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={rowData}
                 modules={[ClientSideRowModelModule]}
-                editType={'fullRow'}
+                editType='fullrow'
+                suppressClickEdit
+                rowSelection='multiple'
+                rowMultiSelectWithClick
               />
             </div>
           </div>
