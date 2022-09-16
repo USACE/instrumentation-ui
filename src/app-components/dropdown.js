@@ -61,7 +61,6 @@ const Menu = forwardRef(({
   }));
 
   useOutsideEventHandle(
-    'click',
     [menuRef, ...containerRefs],
     isOpen ? () => setIsOpen(false) : () => { }
   );
