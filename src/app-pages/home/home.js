@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../app-components/button';
 import Footer from '../../app-components/footer';
 import Hero from '../../app-components/hero';
 import ProjectList from './project-list';
@@ -14,14 +13,6 @@ export default connect(
       <section>
         <Hero />
       </section>
-      <Button
-        text='fire notification test'
-        handleClick={() => doNotificationFire({
-          title:'TEST',
-          message:'test message',
-          type:'success'
-        })}
-      />
       <section>
         <div className='d-flex justify-content-around'>
           {homeData

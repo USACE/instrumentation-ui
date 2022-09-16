@@ -197,8 +197,8 @@ const uploadBundle = {
           message: err
             ? `${err.name}: ${err.Detail}`
             : 'An unexpected error occured. Please try again later.',
-          level: 'error',
-          autoDismiss: 0,
+          type: 'error',
+          autoClose: false,
         });
       } else {
         const data = body;
@@ -209,8 +209,8 @@ const uploadBundle = {
               console.error(err.message);
               store.doNotificationFire({
                 message: 'An unexpected error occured. Please try again later.',
-                level: 'error',
-                autoDismiss: 0,
+                type: 'error',
+                autoClose: false,
               });
             } else {
               dispatch({
@@ -218,8 +218,8 @@ const uploadBundle = {
               });
               store.doNotificationFire({
                 message: 'Data Uploaded Successfully',
-                level: 'success',
-                autoDismiss: 10,
+                type: 'success',
+                autoClose: 10000,
               });
             }
           });
@@ -231,15 +231,15 @@ const uploadBundle = {
             });
             store.doNotificationFire({
               message: 'Data Uploaded Successfully',
-              level: 'success',
-              autoDismiss: 10,
+              type: 'success',
+              autoClose: 10000,
             });
           } else {
             data.errors.forEach((error) => {
               store.doNotificationFire({
                 message: error,
-                level: 'error',
-                autoDismiss: 20,
+                type: 'error',
+                autoClose: 20000,
               });
             });
           }
