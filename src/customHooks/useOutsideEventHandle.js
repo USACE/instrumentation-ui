@@ -9,14 +9,14 @@ const useOutsideEventHandle = (ref, callback) => {
       if (Array.isArray(ref)) {
         let contained = false;
         ref.forEach(r => {
-          if (ref?.current?.contains(event.target)) {
+          if (r.current?.contains(event.target)) {
             contained = true;
           }
         });
 
         if (!contained) callback(event);
       } else {
-        if (!ref.current || !ref.current.contains(event.target)) {
+        if (!ref.current || ref.current.contains(event.target)) {
           return;
         }
 
