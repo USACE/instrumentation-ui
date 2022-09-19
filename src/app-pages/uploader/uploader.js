@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 
 import FileDetails from './file-details';
 import FilePreview from './file-preview';
-import Notifications from '../../app-components/notifications';
 import UploadSettings from './upload-settings';
 
 export default connect(
@@ -40,7 +39,6 @@ export default connect(
             </div>
           </div>
         </section>
-        <Notifications />
       </>
     );
   }

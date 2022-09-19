@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import DevBanner from './devBanner.js';
-import Dropdown from '../dropdown';
 import Icon from '../icon';
 import NavItem from './navItem';
 import ProfileMenu from './profileMenu';
-// import RoleFilter from '../role-filter';
 import { classArray } from '../../utils';
 
 import './navigation.scss';

@@ -8,10 +8,10 @@ const PreviewTable = ({ columnDefs, data }) => {
   const grid = useRef(null);
 
   useEffect(() => {
-    if (grid && grid.current) grid.current.api.refreshCells();
+    grid?.current?.api?.refreshCells();
   }, [grid, data]);
 
-  return data && data.length ? (
+  return data?.length ? (
     <div
       className='ag-theme-balham'
       style={{

@@ -166,6 +166,22 @@ export default connect(
 
     const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
 
+    const editSelectedRows = () => {
+      const nodes = grid?.current?.api?.getSelectedNodes();
+
+      nodes.forEach(node => {
+        const { data, rowIndex } = node;
+        const keys = Object.keys(data);
+
+        keys.forEach(key => {
+          grid?.current?.api?.startEditingCell({
+            rowIndex: rowIndex,
+            colKey: key
+          });
+        });
+      });
+    };
+
     return (
       <>
         <p>

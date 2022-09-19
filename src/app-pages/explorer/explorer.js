@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Panel from './panel';
-import PanelGroup from 'react-panelgroup';
+import PanelGroup from '../../app-components/panel-group';
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
 import MapTools from './map-tools';
@@ -39,7 +39,7 @@ export default connect(
     ]);
 
     return (
-      <div className={cls}>
+      <div className={cls} key={Number(landscapeMode)}>
         <PanelGroup
           borderColor='#ccc'
           spacing={2}

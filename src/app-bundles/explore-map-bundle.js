@@ -9,6 +9,8 @@ import Circle from 'ol/geom/Circle';
 
 const geoJSON = new GeoJSON();
 
+const ignoreActions = ['APP_IDLE'];
+
 const statusColors = {
   active: '#43ac6a',
   inactive: 'grey',
@@ -32,7 +34,10 @@ const exploreMapBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (process.env.NODE_ENV === 'development') console.log(type, payload);
+      if (process.env.NODE_ENV === 'development') {
+        if (!ignoreActions.includes(type))
+          console.log(type, payload);
+      };
       switch (type) {
         case 'INSTRUMENTS_FETCH_FINISHED':
           return Object.assign({}, state, {
