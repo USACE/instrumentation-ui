@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import DatePicker from 'react-datepicker';
 import { AgGridReact } from '@ag-grid-community/react';
@@ -14,7 +14,6 @@ import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
-import { isObjectLike } from 'lodash';
 
 export default connect(
   'doModalOpen',
@@ -24,13 +23,15 @@ export default connect(
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
-  'doDeleteTimeseriesMeasurement',
+  'doTimeseriesMeasurementsDelete',
   'doTimeseriesMeasurementsSave',
-  'doDeleteInclinometerMeasurement',
+  'doInclinometerMeasurementsDelete',
+  'doInclinometerMeasurementsSave',
   ({
     doModalOpen,
-    doDeleteTimeseriesMeasurement,
-    doDeleteInclinometerMeasurement,
+    doTimeseriesMeasurementsDelete,
+    doInclinometerMeasurementsDelete,
+    doInclinometerMeasurementsSave,
     doTimeseriesMeasurementsSave,
     doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
@@ -53,7 +54,7 @@ export default connect(
       if (activeTimeseries) {
         doInstrumentTimeseriesSetActiveId(activeTimeseries);
       }
-      doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries) ? setIsInclinometer(true) : setIsInclinometer(false);
+      setIsInclinometer(Boolean(doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)));
     }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId, dateRange]);
 
     const doesSetHaveData = (dataSet, key, activeTimeseries) => {
@@ -77,12 +78,11 @@ export default connect(
         const rowData = grid.api.getSelectedNodes()[0].data;
         const time = rowData.time;
         isInclinometer ? 
-          doDeleteInclinometerMeasurement({
+          doInclinometerMeasurementsDelete({
             timeseriesId: activeTimeseries,
             date: time
           }) :
-          doDeleteTimeseriesMeasurement({
-            timeseriesId: activeTimeseries,
+          doTimeseriesMeasurementsDelete({
             date: time
           });
         setDidDelete(!didDelete);
@@ -90,15 +90,19 @@ export default connect(
     };
 
     const updateMeasurement = cell => {
+      const { node, data } = cell;
 
       if(isInclinometer) {
-        // TO DO : create doInclinometerMeasurementsSave()
+        // TODO: implement inclinometer measurement saving endpoint.
+        // console.info(`Saving measurements ${data}`);
+        // doInclinometerMeasurementsSave({
+        //   timeseries_id: activeTimeseries,
+        //   items: [data],
+        // }, null, false, true);
       } else {
-        const { node, data } = cell;
         data.value = new Number(data.value);
         if(cell.colDef.field == 'time') {
-          doDeleteTimeseriesMeasurement({
-            timeseriesId: activeTimeseries,
+          doTimeseriesMeasurementsDelete({
             date: cell.oldValue
           });
         }
@@ -115,29 +119,20 @@ export default connect(
       
     };
 
-    const getInclinometerItems = inclinometers => {
-      const items = [];
-    
-      inclinometers.forEach(inclinometer => {
-        const { time, values } = inclinometer;
-    
-        values.forEach(value => {
-          const { depth, aChecksum, a0, a180, bChecksum, b0, b180 } = value;
-          items.push({
-            time,
-            depth,
-            aChecksum,
-            a0,
-            a180,
-            bChecksum,
-            b0,
-            b180,
-          });
-        });
-      });
-    
-      return items;
-    };
+    const getInclinometerItems = inclinometers => (
+      inclinometers.map(({ time, values }) => 
+        values.map(({ depth, aChecksum, a0, a180, bChecksum, b0, b180 }) => ({
+          time,
+          depth,
+          aChecksum,
+          a0,
+          a180,
+          bChecksum,
+          b0,
+          b180
+        }))
+      )
+    );
     
     const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
       const items =
@@ -158,7 +153,7 @@ export default connect(
             resizable: true,
             sortable: true,
             filter: true,
-            editable: !isInclinometer ? true : false, // no editing inclinometer values for now
+            editable: true,
             cellEditor: key === 'time' ? 'dateEditor' : undefined,
             onCellValueChanged: cell => updateMeasurement(cell),
           })),
@@ -241,7 +236,7 @@ export default connect(
                   isOutline
                   text='Delete Selected Measurement'
                   isDisabled={!activeTimeseries}
-                  handleClick={() => deleteMeasurement()}
+                  handleClick={deleteMeasurement}
                 />
               </RoleFilter>
               <Button
@@ -262,9 +257,7 @@ export default connect(
                 selectsRange={true}
                 startDate={startDate}
                 endDate={endDate}
-                onChange={(update) => {
-                  setDateRange(update);
-                }}
+                onChange={setDateRange}
                 disabled={!isUsingDateRange}
                 showMonthDropdown
                 showYearDropdown

@@ -74,7 +74,7 @@ export default composeBundles(
   createJwtApiBundle({
     root:
       process.env.NODE_ENV === 'development'
-        ? 'http://localhost:8082'
+        ? 'http://localhost:80'
         : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
