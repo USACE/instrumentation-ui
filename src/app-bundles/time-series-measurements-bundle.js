@@ -12,7 +12,7 @@ export default createRestBundle({
   getTemplate: `/timeseries/:timeseriesId/measurements?after=${afterDate}&before=${beforeDate}`,
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
-  deleteTemplate: '/timeseries/:timeseriesId/measurements?time={:date}',
+  deleteTemplate: '/timeseries/:timeseriesId/measurements?time={:item.date}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',

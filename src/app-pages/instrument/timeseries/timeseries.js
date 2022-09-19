@@ -1,67 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
-import DatePicker from 'react-datepicker';
 import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import { CSVLink } from 'react-csv';
 
 import Button from '../../../app-components/button';
+import DateEditor from '../../../app-components/date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
-import DateEditor from '../../../app-components/date-editor';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
 
+const doesSetHaveData = (dataSet, key, activeTimeseries) => {
+  const data = dataSet[activeTimeseries];
+
+  return !!(data && data[key]);
+};
+
+const getInclinometerItems = inclinometers => {
+  const items = [];
+
+  inclinometers.forEach(inclinometer => {
+    const { time, values } = inclinometer;
+
+    values.forEach(value => {
+      const { depth, aChecksum, a0, a180, bChecksum, b0, b180 } = value;
+      items.push({
+        time,
+        depth,
+        aChecksum,
+        a0,
+        a180,
+        bChecksum,
+        b0,
+        b180,
+      });
+    });
+  });
+
+  return items;
+};
+
+const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries, updateMeasurement) => {
+  const items =
+    doesSetHaveData(measurements, 'items', activeTimeseries)
+      ? measurements[activeTimeseries].items
+      : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
+        ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
+        : [];
+
+  const keys = items && items.length ? Object.keys(items[0]) : [];
+  const columnDefs = [
+    {
+      headerName: '',
+      field: 'rowIndex',
+      valueGetter: 'node.rowIndex + 1',
+      width: 40,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+    },
+    ...keys
+      .filter(key => key !== 'id')
+      .map(key => ({
+        headerName: key.toUpperCase(),
+        field: key,
+        resizable: true,
+        sortable: true,
+        filter: true,
+        editable: true,
+        cellEditor: key === 'time' ? 'dateEditor' : undefined,
+        onCellValueChanged: cell => updateMeasurement(cell),
+      })),
+  ];
+
+  return { rowData: items, columnDefs };
+};
+
 export default connect(
   'doModalOpen',
   'doInstrumentTimeseriesSetActiveId',
+  'doTimeseriesMeasurementsSave',
+  'doTimeseriesMeasurementsDelete',
+  'doInclinometerMeasurementsDelete',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
   'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
   'selectInclinometerMeasurementsItemsObject',
-  'doTimeseriesMeasurementsDelete',
-  'doTimeseriesMeasurementsSave',
-  'doInclinometerMeasurementsDelete',
-  'doInclinometerMeasurementsSave',
   ({
     doModalOpen,
+    doInstrumentTimeseriesSetActiveId,
+    doTimeseriesMeasurementsSave,
     doTimeseriesMeasurementsDelete,
     doInclinometerMeasurementsDelete,
-    doInclinometerMeasurementsSave,
-    doTimeseriesMeasurementsSave,
-    doInstrumentTimeseriesSetActiveId,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     nonComputedTimeseriesItemsByRoute: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
     inclinometerMeasurementsItemsObject: inclinometerMeasurements,
   }) => {
-    const [grid, setGrid] = useState(null);
+    const grid = useRef(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
-    const [activeTimeseriesName, setActiveTimeseriesName] = useState(null);
-    const [didDelete, setDidDelete] = useState(false);
-    const [isInclinometer, setIsInclinometer] = useState(null);
-    const [isUsingDateRange, setIsUsingDateRange] = useState(false);
-    const [dateRange, setDateRange] = useState([null, null]);
-    const [startDate, endDate] = dateRange;
-
-    // trigger the fetch for our measurements
-    useEffect(() => {
-      if (activeTimeseries) {
-        doInstrumentTimeseriesSetActiveId(activeTimeseries);
-      }
-      setIsInclinometer(Boolean(doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)));
-    }, [activeTimeseries, didDelete, doInstrumentTimeseriesSetActiveId, dateRange]);
-
-    const doesSetHaveData = (dataSet, key, activeTimeseries) => {
-      const data = dataSet[activeTimeseries];
-      
-      return !!(data && data[key]);
-    };
+    const [isInclinometer, setIsInclinometer] = useState(false);
 
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
@@ -69,30 +111,27 @@ export default connect(
       instrument.constants.indexOf(ts.id) === -1
     ));
 
-    const onGridReady = (params) => {
-      setGrid(params);
-    };
+    const deleteSelectedRows = () => {
+      const nodes = grid?.current?.api?.getSelectedNodes();
 
-    const deleteMeasurement = () => {
-      if (grid.api.getSelectedNodes()[0]) {
-        const rowData = grid.api.getSelectedNodes()[0].data;
-        const time = rowData.time;
-        isInclinometer ? 
-          doInclinometerMeasurementsDelete({
-            timeseriesId: activeTimeseries,
-            date: time
-          }) :
-          doTimeseriesMeasurementsDelete({
-            date: time
-          });
-        setDidDelete(!didDelete);
-      }
+      nodes.forEach(node => {
+        const { data } = node;
+        const { time } = data;
+
+        isInclinometer
+          ? doInclinometerMeasurementsDelete({ timeseriesId: activeTimeseries, date: time })
+          : doTimeseriesMeasurementsDelete({ timeseriesId: activeTimeseries, date: time });
+      });
     };
 
     const updateMeasurement = cell => {
-      const { node, data } = cell;
+      const { data, colDef, oldValue } = cell;
+      const { field } = colDef;
+      const { validated, masked, value } = data;
 
-      if(isInclinometer) {
+      const newValue = { ...data };
+
+      if (isInclinometer) {
         // TODO: implement inclinometer measurement saving endpoint.
         // console.info(`Saving measurements ${data}`);
         // doInclinometerMeasurementsSave({
@@ -100,87 +139,27 @@ export default connect(
         //   items: [data],
         // }, null, false, true);
       } else {
-        data.value = new Number(data.value);
-        if(cell.colDef.field == 'time') {
-          doTimeseriesMeasurementsDelete({
-            date: cell.oldValue
-          });
-        }
-        if(cell.colDef.field == 'validated') {
-          data.validated = (data.validated === 'true');
-        } else if(cell.colDef.field == 'masked') {
-          data.masked = (data.masked === 'true');
-        }
+        newValue.value = new Number(value);
+
+        if (field === 'time') doTimeseriesMeasurementsDelete({ timeseriesId: activeTimeseries, date: oldValue });
+        if (field === 'validated') newValue.validated = validated === 'true';
+        if (field === 'masked') newValue.masked = masked === 'true';
+
         doTimeseriesMeasurementsSave({
           timeseries_id: activeTimeseries,
-          items: [data],
+          items: [newValue],
         }, null, false, true);
       }
-      
     };
 
-    const getInclinometerItems = inclinometers => (
-      inclinometers.map(({ time, values }) => 
-        values.map(({ depth, aChecksum, a0, a180, bChecksum, b0, b180 }) => ({
-          time,
-          depth,
-          aChecksum,
-          a0,
-          a180,
-          bChecksum,
-          b0,
-          b180
-        }))
-      )
-    );
-    
-    const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
-      const items =
-        doesSetHaveData(measurements, 'items', activeTimeseries)
-          ? measurements[activeTimeseries].items
-          : doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)
-            ? getInclinometerItems(inclinometerMeasurements[activeTimeseries].inclinometers)
-            : [];
+    const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries, updateMeasurement);
 
-      const keys = items && items.length ? Object.keys(items[0]) : [];
-      const columnDefs = [
-        { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
-        ...keys
-          .filter(key => key !== 'id')
-          .map(key => ({
-            headerName: key.toUpperCase(),
-            field: key,
-            resizable: true,
-            sortable: true,
-            filter: true,
-            editable: true,
-            cellEditor: key === 'time' ? 'dateEditor' : undefined,
-            onCellValueChanged: cell => updateMeasurement(cell),
-          })),
-      ];
-      
-      const filteredItems = isUsingDateRange ? items.filter(item => new Date(item['time']) >= startDate && new Date(item['time']) <= endDate) : items;
-
-      return { rowData: filteredItems, columnDefs };
-    };
-
-    const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
-
-    const editSelectedRows = () => {
-      const nodes = grid?.current?.api?.getSelectedNodes();
-
-      nodes.forEach(node => {
-        const { data, rowIndex } = node;
-        const keys = Object.keys(data);
-
-        keys.forEach(key => {
-          grid?.current?.api?.startEditingCell({
-            rowIndex: rowIndex,
-            colKey: key
-          });
-        });
-      });
-    };
+    useEffect(() => {
+      if (activeTimeseries) {
+        doInstrumentTimeseriesSetActiveId(activeTimeseries);
+        setIsInclinometer(Boolean(doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)));
+      }
+    }, [activeTimeseries, doInstrumentTimeseriesSetActiveId]);
 
     return (
       <>
@@ -211,7 +190,6 @@ export default connect(
                   item={ts}
                   onClick={(item) => {
                     setActiveTimeseries(activeTimeseries === ts.id ? null : item.id);
-                    setActiveTimeseriesName(activeTimeseries === ts.id ? null : ts.name);
                   }}
                 />
               ))}
@@ -230,55 +208,17 @@ export default connect(
                   title='Upload'
                   icon={<Icon icon='upload' className='mr-1' />}
                 />
-              </RoleFilter>
-              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                <CSVLink data={rowData} filename={instrument.name+' - '+activeTimeseriesName+'.csv'}>
-                  <Button
-                    variant='secondary'
-                    size='small'
-                    isOutline
-                    className='ml-2'
-                    isDisabled={!activeTimeseries}
-                    text='Download measurements'
-                    icon={<Icon icon='download' classname='mr-1'/>}
-                  />
-                </CSVLink>
-              </RoleFilter>
-              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <Button
                   variant='danger'
                   size='small'
-                  className='ml-2'
                   isOutline
-                  text='Delete Selected Measurement'
                   isDisabled={!activeTimeseries}
-                  handleClick={deleteMeasurement}
+                  className='ml-2'
+                  text='Delete Selected Rows'
+                  title='Delete Rows'
+                  handleClick={deleteSelectedRows}
                 />
               </RoleFilter>
-              <Button
-                variant='primary'
-                size='small'
-                className='ml-2'
-                isOutline
-                text='Toggle DateRange'
-                isDisabled={!activeTimeseries || !rowData.length}
-                handleClick={()=>{
-                  !isUsingDateRange ? 
-                    setDateRange([new Date(rowData[rowData.length-1]['time']), new Date(rowData[0]['time'])]) :
-                    setDateRange([null, null]);
-                  setIsUsingDateRange(!isUsingDateRange);
-                }}
-              />
-              <DatePicker
-                selectsRange={true}
-                startDate={startDate}
-                endDate={endDate}
-                onChange={setDateRange}
-                disabled={!isUsingDateRange}
-                showMonthDropdown
-                showYearDropdown
-                dateFormat='MMMM d, yyyy h:mm aa zzzz'
-              />
             </div>
             <div
               className='ag-theme-balham'
@@ -289,12 +229,15 @@ export default connect(
               }}
             >
               <AgGridReact
-                onGridReady={onGridReady}
+                ref={grid}
                 columnDefs={columnDefs}
                 rowData={rowData}
-                rowSelection={'single'}
-                stopEditingWhenGridLosesFocus={true}
                 modules={[ClientSideRowModelModule]}
+                editType='fullRow'
+                rowSelection='multiple'
+                rowMultiSelectWithClick
+                suppressRowClickSelection
+                stopEditingWhenCellsLoseFocus
                 frameworkComponents={{
                   'dateEditor': DateEditor,
                 }}
