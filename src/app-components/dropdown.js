@@ -93,7 +93,7 @@ const Menu = forwardRef(({
             </button>
           )
         }
-        <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '400px', overflow: 'auto' }}>
+        <div className={menuClass} aria-labelledby={`${id}MenuButton`} ref={menuRef} style={{ maxHeight: '700%', overflow: 'auto' }}>
           {children}
         </div>
       </div>
