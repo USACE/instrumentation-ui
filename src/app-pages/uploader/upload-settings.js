@@ -14,7 +14,7 @@ export default connect(
   'selectUploadJson',
   'selectUploadSelectedParser',
   'selectUploadFieldMap',
-  ({ uploadHasFile, uploadJson, uploadSelectedParser, uploadFieldMap }) => (
+  ({ uploadHasFile, uploadJson, uploadSelectedParser, uploadFieldMap, activeTs }) => (
     <Card>
       <Card.Header text='Upload Settings' />
       <Card.Body>
@@ -23,7 +23,7 @@ export default connect(
             <ParserSelector />
             { uploadSelectedParser && uploadFieldMap && (
               <>
-                <FieldMapper />
+                <FieldMapper activeTs={activeTs} />
                 <IgnoreRows />
                 <Toolbar />
               </>

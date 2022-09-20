@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import FileDetails from './file-details';
@@ -14,12 +14,15 @@ export default connect(
     doUploadSetSelectedParser,
     uploadParsers,
   }) => {
+    const [activeTs, setActiveTs] = useState(null);
+
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
       const type = urlParams.get('type');
+      setActiveTs(urlParams.get('activeTs'));
 
       if (type) {
-        const parser = uploadParsers.find((p) => p.name === type);
+        const parser = uploadParsers.find(p => p.name === type);
         doUploadSetSelectedParser(parser);
       }
 
@@ -32,7 +35,7 @@ export default connect(
           <div className='row'>
             <div className='col-4'>
               <FileDetails />
-              <UploadSettings />
+              <UploadSettings activeTs={activeTs} />
             </div>
             <div className='col-8'>
               <FilePreview />

@@ -42,6 +42,7 @@ export default connect(
     uploadJsonKeys,
     uploadSelectedParser,
     stateData,
+    activeTs,
   }) => {
     const { model } = uploadSelectedParser;
     const modelKeys = Object.keys(model);

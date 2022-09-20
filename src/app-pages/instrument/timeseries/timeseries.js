@@ -203,7 +203,7 @@ export default connect(
                   size='small'
                   isOutline
                   isDisabled={!activeTimeseries}
-                  href={`/${project.slug}#uploader`}
+                  href={`/${project.slug}?type=Timeseries Measurement&activeTs=${activeTimeseries}#uploader`}
                   text='Upload to this timeseries'
                   title='Upload'
                   icon={<Icon icon='upload' className='mr-1' />}
