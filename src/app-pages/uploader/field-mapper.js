@@ -1,29 +1,30 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
+import Select from 'react-select';
 
-import Select from '../../app-components/select';
-import FilterSelect from '../../app-components/filter-select';
+// import Select from '../../app-components/select';
+// import FilterSelect from '../../app-components/filter-select';
 
 const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
 
   if (model.type === 'boolean') {
     ret.push(...[
-      { value: 'all-true', text: 'Set all to True' },
-      { value: 'all-false', text: 'Set all to False' },
+      { value: 'all-true', label: 'Set all to True' },
+      { value: 'all-false', label: 'Set all to False' },
     ]);
   } else if (model.type === 'domain') {
     ret.push(...domains[model.domainGroup].map(domain => (
-      { value: `all-${domain.id}`, text: `Set all to ${domain.value}`}
+      { value: `all-${domain.id}`, label: `Set all to ${domain.value}`}
     )));
   } else if (model.type === 'internal') {
     ret.push(...model.provider(state).map(item => (
-      { value: item.value, text: item.text }
+      { value: item.value, label: item.text }
     )));
   }
 
   if (!model.hideCsvMappings) {
-    ret.push(...jsonKeys.map(jsonKey => ({ value: jsonKey })));
+    ret.push(...jsonKeys.map(jsonKey => ({ value: jsonKey, label: jsonKey })));
   }
   return ret;
 };
@@ -48,7 +49,7 @@ export default connect(
     const modelKeys = Object.keys(model);
 
     const updateFieldMap = useCallback((val, key) => {
-      if (val && uploadFieldMap[key] !== val) {
+      if (uploadFieldMap[key] !== val) {
         doUploadSetFieldmap({
           ...uploadFieldMap,
           ...{
@@ -58,6 +59,24 @@ export default connect(
         });
       }
     }, [doUploadSetFieldmap, uploadFieldMap]);
+
+    const getTsData = () => {
+      const tsData = model['timeseries_id'].provider(stateData);
+      const ts = tsData.find(el => el.value === activeTs);
+
+      return ts;
+    };
+
+    const initTsField = key => {
+      if (!activeTs) return;
+
+      const data = getTsData();
+      if (data) updateFieldMap(data.value, key);
+    };
+
+    useEffect(() => {
+      initTsField('timeseries_id');
+    }, []);
 
     return (
       <>
@@ -69,19 +88,15 @@ export default connect(
                   {model[key].label}
                 </label>
                 <div className='col-9'>
-                  {model[key] && model[key].useFilterComponent ? (
-                    <FilterSelect
-                      placeholder='Select One...'
-                      onChange={(_, __, val) => updateFieldMap(val, key)}
-                      items={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
-                    />
-                  ) : (
-                    <Select
-                      onChange={(val) => updateFieldMap(val, key)}
-                      placeholderText='Select One...'
-                      options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
-                    />
-                  )}
+                  <Select
+                    isClearable={model[key].useFilterComponent}
+                    isSearchable={model[key].useFilterComponent}
+                    placeholder='Select One...'
+                    defaultValue={key === 'timeseries_id' ? (activeTs || undefined) : undefined}
+                    defaultInputValue={key === 'timeseries_id' ? getTsData()?.text : undefined}
+                    onChange={newValue => updateFieldMap(newValue?.value, key)}
+                    options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
+                  />
                   {model[key] && model[key].helpText ? (
                     <small className='text-muted'>{model[key].helpText}</small>
                   ) : null}

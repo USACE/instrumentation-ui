@@ -89,8 +89,6 @@ const uploadBundle = {
     const csv = store.selectUploadCsv();
     const text = await csv.text();
 
-    console.log('csv text: ', text);
-
     readString(text, {
       worker: true,
       header: true,
