@@ -2,9 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import Select from 'react-select';
 
-// import Select from '../../app-components/select';
-// import FilterSelect from '../../app-components/filter-select';
-
 const generateOptions = (model, jsonKeys, domains, state) => {
   const ret = [];
 
@@ -92,8 +89,7 @@ export default connect(
                     isClearable={model[key].useFilterComponent}
                     isSearchable={model[key].useFilterComponent}
                     placeholder='Select One...'
-                    defaultValue={key === 'timeseries_id' ? (activeTs || undefined) : undefined}
-                    defaultInputValue={key === 'timeseries_id' ? getTsData()?.text : undefined}
+                    defaultValue={key === 'timeseries_id' && activeTs ? { value: activeTs, label: getTsData()?.text} : undefined}
                     onChange={newValue => updateFieldMap(newValue?.value, key)}
                     options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
                   />
