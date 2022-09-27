@@ -1,5 +1,5 @@
-import neat from 'neat-csv';
 import { createSelector } from 'redux-bundler';
+import { readString } from 'react-papaparse';
 
 import inclinometerMeasurements from '../upload-parsers/inclinometer_measurements';
 import instrumentParser from '../upload-parsers/instrument';
@@ -88,15 +88,21 @@ const uploadBundle = {
 
     const csv = store.selectUploadCsv();
     const text = await csv.text();
-    const json = await neat(text);
 
-    dispatch({
-      type: 'UPLOAD_PARSE_CSV_FINISH',
-      payload: {
-        _isParsing: false,
-        json: json,
+    readString(text, {
+      worker: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        dispatch({
+          type: 'UPLOAD_PARSE_CSV_FINISH',
+          payload: {
+            _isParsing: false,
+            json: results?.data,
+          },
+        });
       },
-    });
+    });    
   },
 
   doUploadClear: () => ({ dispatch }) => {
@@ -189,8 +195,8 @@ const uploadBundle = {
           message: err
             ? `${err.name}: ${err.Detail}`
             : 'An unexpected error occured. Please try again later.',
-          level: 'error',
-          autoDismiss: 0,
+          type: 'error',
+          autoClose: false,
         });
       } else {
         const data = body;
@@ -201,8 +207,8 @@ const uploadBundle = {
               console.error(err.message);
               store.doNotificationFire({
                 message: 'An unexpected error occured. Please try again later.',
-                level: 'error',
-                autoDismiss: 0,
+                type: 'error',
+                autoClose: false,
               });
             } else {
               dispatch({
@@ -210,8 +216,8 @@ const uploadBundle = {
               });
               store.doNotificationFire({
                 message: 'Data Uploaded Successfully',
-                level: 'success',
-                autoDismiss: 10,
+                type: 'success',
+                autoClose: 10000,
               });
             }
           });
@@ -223,15 +229,15 @@ const uploadBundle = {
             });
             store.doNotificationFire({
               message: 'Data Uploaded Successfully',
-              level: 'success',
-              autoDismiss: 10,
+              type: 'success',
+              autoClose: 10000,
             });
           } else {
             data.errors.forEach((error) => {
               store.doNotificationFire({
                 message: error,
-                level: 'error',
-                autoDismiss: 20,
+                type: 'error',
+                autoClose: 20000,
               });
             });
           }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import Select from 'react-select';
 
 import Button from '../../../app-components/button';
-import FilterSelect from '../../../app-components/filter-select';
 import { ModalHeader, ModalFooter } from '../../../app-components/modal';
 
 const MemberForm = connect(
@@ -22,8 +22,8 @@ const MemberForm = connect(
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedRole, setSelectedRole] = useState(null);
 
-    const domainRoles = domainsItemsByGroup.role;
     const { email } = member || {};
+    const domainRoles = domainsItemsByGroup.role;
     const title = !isEdit ? 'Add New Member' : `Edit Permissions for: ${email}`;
 
     const handleSave = () => {
@@ -35,6 +35,7 @@ const MemberForm = connect(
         const { username, email, id } = elem;
   
         return {
+          label: `${username} | ${email}`,
           text: `${username} | ${email}`,
           value: id,
         };
@@ -47,12 +48,10 @@ const MemberForm = connect(
       <div className='modal-content' style={{ overflow: 'visible' }}>
         <ModalHeader title={title} />
         <div className='m-3'>
-          <FilterSelect
-            items={filterItems}
-            onChange={(_, q, val) => {
-              setSelectedUser(val);
-              doTypeaheadQueryUpdated(q);
-            }}
+          <Select
+            options={filterItems}
+            onChange={newVal => setSelectedUser(newVal?.value)}
+            onInputChange={input => doTypeaheadQueryUpdated(input)}
           />
         </div>
         {selectedUser && (

@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
+import Select from 'react-select';
 
 import Button from '../../app-components/button';
 import Icon from '../../app-components/icon';
-import FilterSelect from '../../app-components/filter-select';
 import ProjectCard from './project-card';
 import ProjectListRow from './project-list-row';
 
@@ -341,19 +341,29 @@ const filters = [
 ];
 
 export default connect(
+  'doUpdateUrl',
   'selectProjectsItemsWithLinks',
-  ({ projectsItemsWithLinks: projects }) => {
+  ({ doUpdateUrl, projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
     const [isTableMode, setIsTableMode] = useState(true);
+    const [inputString, setInputString] = useState('');
 
-    const onChange = filteredList => {
-      const filtered = projects.filter(p => filteredList.some(e => e.value === p.title));
+    const onInputChange = input => {
+      const filtered = projects.filter(p => (p.title).toLowerCase().includes(input.toLowerCase()));
       setFilteredProjects(filtered);
     };
 
+    const onChange = selected => {
+      const { value } = selected;
+
+      const project = projects.find(p => p.title === value);
+      
+      doUpdateUrl(project.href);
+    };
+
     const filterList = projects
-      ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title }))
+      ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title, label: p.title }))
       : {};
 
     const isProdReady = process.env.REACT_APP_DISTRICT_SELECTOR;
@@ -392,7 +402,19 @@ export default connect(
                       handleClick={() => setIsTableMode(true)}
                     />
                   </span>
-                  <FilterSelect items={filterList} onChange={onChange} hasClearButton className='w-100' />
+                  <Select
+                    isClearable
+                    options={filterList}
+                    inputValue={inputString}
+                    onInputChange={(value, action) => {
+                      if (action.action === 'input-change') {
+                        setInputString(value);
+                        onInputChange(value);
+                      }
+                    }}
+                    onChange={onChange}
+                    className='w-100'
+                  />
                 </div>
                 <>
                   {isTableMode ? (

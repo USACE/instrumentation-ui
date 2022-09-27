@@ -4,6 +4,7 @@ import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 
 import Button from '../../../app-components/button';
+import DateEditor from '../../../app-components/date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
@@ -42,7 +43,7 @@ const getInclinometerItems = inclinometers => {
   return items;
 };
 
-const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries) => {
+const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries, updateMeasurement) => {
   const items =
     doesSetHaveData(measurements, 'items', activeTimeseries)
       ? measurements[activeTimeseries].items
@@ -52,7 +53,14 @@ const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries)
 
   const keys = items && items.length ? Object.keys(items[0]) : [];
   const columnDefs = [
-    { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
+    {
+      headerName: '',
+      field: 'rowIndex',
+      valueGetter: 'node.rowIndex + 1',
+      width: 40,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+    },
     ...keys
       .filter(key => key !== 'id')
       .map(key => ({
@@ -61,7 +69,9 @@ const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries)
         resizable: true,
         sortable: true,
         filter: true,
-        editable: false,
+        editable: true,
+        cellEditor: key === 'time' ? 'dateEditor' : undefined,
+        onCellValueChanged: cell => updateMeasurement(cell),
       })),
   ];
 
@@ -71,6 +81,9 @@ const getColumnDefs = (measurements, inclinometerMeasurements, activeTimeseries)
 export default connect(
   'doModalOpen',
   'doInstrumentTimeseriesSetActiveId',
+  'doTimeseriesMeasurementsSave',
+  'doTimeseriesMeasurementsDelete',
+  'doInclinometerMeasurementsDelete',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
   'selectNonComputedTimeseriesItemsByRoute',
@@ -79,6 +92,9 @@ export default connect(
   ({
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
+    doTimeseriesMeasurementsSave,
+    doTimeseriesMeasurementsDelete,
+    doInclinometerMeasurementsDelete,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     nonComputedTimeseriesItemsByRoute: timeseries,
@@ -87,13 +103,7 @@ export default connect(
   }) => {
     const grid = useRef(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
-
-    // trigger the fetch for our measurements
-    useEffect(() => {
-      if (activeTimeseries) {
-        doInstrumentTimeseriesSetActiveId(activeTimeseries);
-      }
-    }, [activeTimeseries, doInstrumentTimeseriesSetActiveId]);
+    const [isInclinometer, setIsInclinometer] = useState(false);
 
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
@@ -101,7 +111,55 @@ export default connect(
       instrument.constants.indexOf(ts.id) === -1
     ));
 
-    const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries);
+    const deleteSelectedRows = () => {
+      const nodes = grid?.current?.api?.getSelectedNodes();
+
+      nodes.forEach(node => {
+        const { data } = node;
+        const { time } = data;
+
+        isInclinometer
+          ? doInclinometerMeasurementsDelete({ timeseriesId: activeTimeseries, date: time })
+          : doTimeseriesMeasurementsDelete({ timeseriesId: activeTimeseries, date: time });
+      });
+    };
+
+    const updateMeasurement = cell => {
+      const { data, colDef, oldValue } = cell;
+      const { field } = colDef;
+      const { validated, masked, value } = data;
+
+      const newValue = { ...data };
+
+      if (isInclinometer) {
+        // TODO: implement inclinometer measurement saving endpoint.
+        // console.info(`Saving measurements ${data}`);
+        // doInclinometerMeasurementsSave({
+        //   timeseries_id: activeTimeseries,
+        //   items: [data],
+        // }, null, false, true);
+      } else {
+        newValue.value = new Number(value);
+
+        if (field === 'time') doTimeseriesMeasurementsDelete({ timeseriesId: activeTimeseries, date: oldValue });
+        if (field === 'validated') newValue.validated = validated === 'true';
+        if (field === 'masked') newValue.masked = masked === 'true';
+
+        doTimeseriesMeasurementsSave({
+          timeseries_id: activeTimeseries,
+          items: [newValue],
+        }, null, false, true);
+      }
+    };
+
+    const { rowData, columnDefs } = getColumnDefs(measurements, inclinometerMeasurements, activeTimeseries, updateMeasurement);
+
+    useEffect(() => {
+      if (activeTimeseries) {
+        doInstrumentTimeseriesSetActiveId(activeTimeseries);
+        setIsInclinometer(Boolean(doesSetHaveData(inclinometerMeasurements, 'inclinometers', activeTimeseries)));
+      }
+    }, [activeTimeseries, doInstrumentTimeseriesSetActiveId]);
 
     return (
       <>
@@ -139,16 +197,28 @@ export default connect(
           </div>
           <div className='col'>
             <div className='mb-2'>
-              <Button
-                variant='secondary'
-                size='small'
-                isOutline
-                isDisabled={!activeTimeseries}
-                href={`/${project.slug}#uploader`}
-                text='Upload to this timeseries'
-                title='Upload'
-                icon={<Icon icon='upload' className='mr-1' />}
-              />
+              <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                <Button
+                  variant='secondary'
+                  size='small'
+                  isOutline
+                  isDisabled={!activeTimeseries}
+                  href={`/${project.slug}?type=Timeseries Measurement&activeTs=${activeTimeseries}#uploader`}
+                  text='Upload to this timeseries'
+                  title='Upload'
+                  icon={<Icon icon='upload' className='mr-1' />}
+                />
+                <Button
+                  variant='danger'
+                  size='small'
+                  isOutline
+                  isDisabled={!activeTimeseries}
+                  className='ml-2'
+                  text='Delete Selected Rows'
+                  title='Delete Rows'
+                  handleClick={deleteSelectedRows}
+                />
+              </RoleFilter>
             </div>
             <div
               className='ag-theme-balham'
@@ -163,6 +233,14 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={rowData}
                 modules={[ClientSideRowModelModule]}
+                editType='fullRow'
+                rowSelection='multiple'
+                rowMultiSelectWithClick
+                suppressRowClickSelection
+                stopEditingWhenCellsLoseFocus
+                frameworkComponents={{
+                  'dateEditor': DateEditor,
+                }}
               />
             </div>
           </div>
