@@ -1,32 +1,20 @@
+import { toast } from 'react-toastify';
+
+const ToastBody = ({ title, message }) => (
+  <>
+    {title && <b>{title}</b>}
+    <p className='m-0 p-0'>{message}</p>
+  </>
+);
+
 const notificationBundle = {
   name: 'notification',
 
-  getReducer() {
-    const initialData = {
-      options: null,
-    };
+  doNotificationFire: (options) => () => {
+    const { title, message, ...rest } = options;
 
-    return (state = initialData, { type, payload }) => {
-      switch (type) {
-        case 'NOTIFICATIONS_FIRE':
-          return Object.assign({}, state, payload);
-        case 'NOTIFICATIONS_CLEAR':
-          return Object.assign({}, state, { options: null });
-        default:
-          return state;
-      }
-    };
+    toast(<ToastBody title={title} message={message} />, { ...rest });
   },
-
-  doNotificationFire: (options) => ({ dispatch }) => {
-    dispatch({ type: 'NOTIFICATIONS_FIRE', payload: { options } });
-  },
-
-  doNotificationClear: () => ({ dispatch }) => {
-    dispatch({ type: 'NOTIFICATIONS_CLEAR' });
-  },
-
-  selectNotification: (state) => state.notification.options,
 };
 
 export default notificationBundle;

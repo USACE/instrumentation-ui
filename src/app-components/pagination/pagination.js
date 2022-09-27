@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 
-import Select from '../select';
 import { determinePagesToShow, createPage } from './helper';
-
-import './pagination.scss';
 
 const Pagination = ({
   itemCount = 0,
@@ -38,13 +36,13 @@ const Pagination = ({
       <div className='d-flex justify-content-between noselect pointer'>
         <Select
           title='Page Size'
-          className='pagination-select'
-          defaultOption={defaultItemsPerPage}
-          onChange={val => setItemsPerPage(val)}
+          menuPlacement='top'
+          defaultValue={{ value: defaultItemsPerPage, label : defaultItemsPerPage }}
+          onChange={newValue => setItemsPerPage(newValue?.value)}
           options={[
-            { value: '10' },
-            { value: '20' },
-            { value: '30' },
+            { value: '10', label: '10' },
+            { value: '20', label: '20' },
+            { value: '30', label: '30' },
           ]}
         />
         <ul className='pagination'>

@@ -7,7 +7,8 @@ import ProjectList from './project-list';
 
 export default connect(
   'selectHomeData',
-  ({ homeData }) => (
+  'doNotificationFire',
+  ({ homeData, doNotificationFire }) => (
     <div className='container-fluid' style={{ paddingLeft: 0, paddingRight: 0 }}>
       <section>
         <Hero />

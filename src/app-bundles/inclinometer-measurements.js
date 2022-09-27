@@ -1,18 +1,19 @@
 import createRestBundle from './create-rest-bundle';
 
-const afterDate = '1900-01-01T00:00:00.00Z';
-const beforeDate = '2025-01-01T00:00:00.00Z';
-
 export default createRestBundle({
   name: 'inclinometerMeasurements',
   uid: 'timeseries_id',
   staleAfter: 10000,
   persist: false,
   routeParam: '',
-  getTemplate: `/timeseries/:timeseriesId/inclinometer_measurements?before=${beforeDate}&after=${afterDate}`,
+
+  // TODO: default before and after time periods should be implemented on
+  // the backend.
+  getTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?before=2025-01-01T00:00:00.00Z&after=1900-01-01T00:00:00.00Z',
+  
   putTemplate: '',
-  postTemplate: '',
-  deleteTemplate: '',
+  postTemplate: '/timeseries/:timeseriesId/inclinometer_measurements',
+  deleteTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?time={:item.date}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',

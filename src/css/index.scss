@@ -202,3 +202,8 @@ footer.modal-footer {
 .text-dark {
   color: #222 !important;
 }
+
+
+.modal-content, .modal-body {
+  overflow: visible !important;
+}

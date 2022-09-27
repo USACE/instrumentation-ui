@@ -1,10 +1,13 @@
-/* @TODO - What is this file, is it needed? */
+/*
+  @TODO - What is this file, is it needed?
+
+  9/26 - Still unsure if needed. updated if it is though...
+*/
 
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 import { ChromePicker } from 'react-color';
-
-import Select from '../../app-components/select';
+import Select from 'react-select';
 
 export default connect(
   'doChartUpdateType',
@@ -22,7 +25,7 @@ export default connect(
           justifyContent: 'space-between'
         }}
       >
-          Chart Options
+        Chart Options
       </div>
       <div className='p-3'>
         <div className='columns'>
@@ -30,12 +33,12 @@ export default connect(
             <div className='control'>
               <div className='select'>
                 <Select
-                  onChange={value => doChartUpdateType(value)}
-                  placeholderText='Chart Type'
+                  onChange={newValue => doChartUpdateType(newValue?.value)}
+                  placeholder='Chart Type'
                   options={[
-                    { value: 'markers', text: 'Markers' },
-                    { value: 'lines', text: 'Lines' },
-                    { value: 'lines+markers', text: 'Line+Markers' },
+                    { value: 'markers', label: 'Markers' },
+                    { value: 'lines', label: 'Lines' },
+                    { value: 'lines+markers', label: 'Line+Markers' },
                   ]}
                 />
               </div>
@@ -44,13 +47,13 @@ export default connect(
               {chartType !== 'markers' ? (
                 <div className='select'>
                   <Select
-                    onChange={value => doChartUpdateWidth(value)}
-                    placeholderText='Line Width'
+                    onChange={newValue => doChartUpdateWidth(newValue?.value)}
+                    placeholder='Line Width'
                     options={[
-                      { value: '1', text: '.5' },
-                      { value: '2', text: '1' },
-                      { value: '3', text: '2' },
-                      { value: '4', text: '3' },
+                      { value: '1', label: '.5' },
+                      { value: '2', label: '1' },
+                      { value: '3', label: '2' },
+                      { value: '4', label: '3' },
                     ]}
                   />
                 </div>

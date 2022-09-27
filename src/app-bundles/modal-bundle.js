@@ -14,6 +14,7 @@ const ModalBundle = {
       return state;
     };
   },
+
   doModalOpen: (content, props, size) => ({ dispatch }) => {
     dispatch({
       type: 'MODAL_UPDATED',

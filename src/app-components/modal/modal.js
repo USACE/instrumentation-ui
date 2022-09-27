@@ -23,7 +23,6 @@ const Modal = connect(
     ]);
 
     const closeModalWithEscape = useCallback((e) => {
-      console.log(e.keyCode);
       if (e.keyCode === 27) doModalClose();
     }, [doModalClose]);
 
@@ -47,7 +46,7 @@ const Modal = connect(
           />
           <div className='modal fade show' style={{ display: 'block' }}>
             <div className={modalCls}>
-              <ModalContent {...modalProps} />
+              <ModalContent {...modalProps} style={{ overflow: 'visible' }} />
             </div>
           </div>
         </>

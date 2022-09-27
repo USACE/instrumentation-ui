@@ -12,7 +12,7 @@ export default createRestBundle({
   getTemplate: `/timeseries/:timeseriesId/measurements?after=${afterDate}&before=${beforeDate}`,
   putTemplate: '',
   postTemplate: '/projects/:projectId/timeseries_measurements',
-  deleteTemplate: '',
+  deleteTemplate: '/timeseries/:timeseriesId/measurements?time={:item.date}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
@@ -48,7 +48,7 @@ export default createRestBundle({
         new Array(body).forEach(item => itemsById[item['timeseries_id']] = item);
 
         dispatch({
-          type: 'TIMSERIES_MEASUREMENTS_UPDATED_ITEM',
+          type: 'TIMESERIES_MEASUREMENTS_UPDATED_ITEM',
           payload: {
             ...itemsById,
             ...flags,
@@ -69,7 +69,7 @@ export default createRestBundle({
 
   reduceFurther: (state, { type, payload }) => {
     switch (type) {
-      case 'TIMSERIES_MEASUREMENTS_UPDATED_ITEM':
+      case 'TIMESERIES_MEASUREMENTS_UPDATED_ITEM':
         return Object.assign({}, state, payload);
       default:
         return state;

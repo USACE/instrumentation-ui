@@ -1,52 +1,69 @@
 // @TODO: Work In Progress
 
-import React, { useEffect } from 'react';
-import { subDays, startOfDay, endOfDay, isEqual } from 'date-fns';
+import React from 'react';
+import { subDays, startOfDay } from 'date-fns';
 
 import PrintButton from './print-button';
-// import Button from '../../../app-components/button';
-// import ToggleButton from '../../../app-components/toggle-button';
+import Button from '../../../app-components/button';
+import DatePicker from 'react-datepicker';
 
-// const dateAgo = (days) => subDays(new Date(), days);
+const dateAgo = (days) => subDays(new Date(), days);
 
 const BatchPlotChartSettings = ({
   dateRange = [],
   setDateRange,
-  setWithPrecipitation,
+  lifetimeDate,
 }) => {
-  const [from, to] = dateRange;
+  const [fromTime, endTime] = dateRange;
 
-  useEffect(() => {
-    // console.log('test from - to: ', from, ' - ', to);
-  }, [dateRange]);
+  const alterRange = (daysAgo) => {
+    setDateRange([startOfDay(dateAgo(daysAgo)), new Date()]);
+  };
+
+  const calcLifetime = () => {
+    setDateRange([new Date(lifetimeDate), new Date()]);
+  };
 
   return (
     <div className='m-2'>
       <PrintButton />
-      {/* <ToggleButton handleChange={val => setWithPrecipitation(val)} />
-      <div className='btn-group'>
-        <Button
-          isOutline
-          text='30 Day'
-          variant='info'
-          isActive={isEqual(from, startOfDay(dateAgo(30))) && isEqual(to, endOfDay(new Date()))}
-          handleClick={() => setDateRange([startOfDay(dateAgo(30)), endOfDay(new Date())])}
+      <div className='date-picker-group'>
+        <DatePicker
+          selectsRange={true}
+          startDate={fromTime}
+          endDate={endTime}
+          onChange={(update) => {
+            setDateRange(update);
+          }}
+          showMonthDropdown
+          showYearDropdown
+          dateFormat='MMMM d, yyyy h:mm aa zzzz'
         />
         <Button
           isOutline
-          text='60 Day'
-          variant='info'
-          isActive={isEqual(from, startOfDay(dateAgo(60))) && isEqual(to, endOfDay(new Date()))}
-          handleClick={() => setDateRange([startOfDay(dateAgo(60)), endOfDay(new Date())])}
+          text = 'Lifetime'
+          variant = 'info'
+          handleClick={() => calcLifetime()}
         />
         <Button
           isOutline
-          text='90 Day'
-          variant='info'
-          isActive={isEqual(from, startOfDay(dateAgo(90))) && isEqual(to, endOfDay(new Date()))}
-          handleClick={() => setDateRange([startOfDay(dateAgo(90)), endOfDay(new Date())])}
+          text = '5 Years'
+          variant = 'info'
+          handleClick={() => alterRange(1825)}
         />
-      </div> */}
+        <Button
+          isOutline
+          text = '1 Year'
+          variant = 'info'
+          handleClick={() => alterRange(365)}
+        />
+        <Button
+          isOutline
+          text = '1 Month'
+          variant = 'info'
+          handleClick={() => alterRange(30)}
+        />
+      </div> 
     </div>
   );
 };

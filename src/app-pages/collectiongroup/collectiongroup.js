@@ -8,7 +8,6 @@ import collectionGroupForm from './collection-group-form';
 import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import Icon from '../../app-components/icon';
 import LoginMessage from '../../app-components/login-message';
-import Notifications from '../../app-components/notifications';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesList from './collectiongroup-timeseries-list';
 import TimestampModeSwitcher from './collectiongroup-timestamp-mode-switcher';
@@ -49,12 +48,12 @@ export default connect(
       value
     ) => {
       const success = {
-        level: 'success',
+        type: 'success',
         title: `Saved ${instrument} | ${name} `,
         message: `${value} ${unit}  @  ${date.toISOString()}`,
       };
       const fail = {
-        level: 'error',
+        type: 'error',
         title: 'Missing Value',
         message: 'Enter a value before clicking add',
       };
@@ -165,7 +164,6 @@ export default connect(
             </div>
           </section>
         )}
-        <Notifications />
       </div>
     );
   }
