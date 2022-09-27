@@ -1,33 +1,53 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import DatePicker from 'react-datepicker';
+import { DateTime } from 'luxon';
 
-const DateEditor = forwardRef(({ value }, ref) => {
-  const [date, setDate] = useState(value);
+export default class DateEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: DateTime.fromISO(props.value, { zone: 'utc' }),
+    };
+  }
 
-  const containerRef = useRef(null);
+  componentDidMount() {
+    this.focus();
+  }
 
-  useImperativeHandle(ref, () => ({
-    getValue() {
-      return date;
-    },
+  componentDidUpdate() {
+    this.focus();
+  }
 
-    isPopup() {
-      return true;
-    },
-  }));
+  focus() {
+    window.setTimeout(() => {
+      let container = ReactDOM.findDOMNode(this.refs.container);
+      if (container) {
+        container.focus();
+      }
+    });
+  }
 
-  return (
-    <DatePicker
-      ref={containerRef}
-      selected={new Date(date)}
-      onChange={val => {
-        const ISOdate = val.toISOString();
-        setDate(ISOdate);
-      }}
-      dateFormat="MMMM dd, yyyy HH:mm 'GMT'XXX"
-      showTimeInput
-    />
-  );
-});
+  getValue() {
+    return this.state.value;
+  }
 
-export default DateEditor;
+  isPopup() {
+    return true;
+  }
+
+  render() {
+    return (
+      <DatePicker
+        ref='container'
+        className='form-control'
+        selected={new Date(this.state.value)}
+        onChange={(value) => {
+          this.setState({ value });
+        }}
+        dateFormat='MMMM d, yyyy h:mm aa zzzz'
+        showTimeInput
+      />
+    );
+  }
+}
