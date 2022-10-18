@@ -8,9 +8,9 @@ export default createRestBundle({
   persist: false,
   routeParam: '',
   getTemplate: '/projects/:projectId/timeseries',
-  putTemplate: '/timeseries/:item.id',
+  putTemplate: '/timeseries/{:item.id}',
   postTemplate: '/timeseries',
-  deleteTemplate: '/timeseries/:item.id',
+  deleteTemplate: '/timeseries/{:item.id}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',

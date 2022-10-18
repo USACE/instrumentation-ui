@@ -6,9 +6,10 @@ import MultiSelect from '../../../app-components/multi-select';
 
 const filterTimeseries = timeseries => {
   const validTypes = ['elevation', 'stage', 'precipitation'];
-  const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
+  return timeseries;
+  // const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
 
-  return typeFiltered;
+  // return typeFiltered;
 };
 
 const formatOptions = timeseries => (

@@ -42,10 +42,14 @@ const BatchPlotChart = connect(
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [lifetimeDate, setLifetimeDate] = useState([]);
-    const [dateRange, setDateRange] = useState([subDays(new Date(), 30), new Date()]);
+    const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
+    const [chartSettings, setChartSettings] = useState();
+
     const layout = {
       xaxis: {
+        autorange: chartSettings?.autorange,
+        range: dateRange,
         title: 'Date',
         showline: true,
         mirror: true,
@@ -70,7 +74,11 @@ const BatchPlotChart = connect(
       height: 600,
     };
 
+
+    // TODO: the commented line is correct but causes errors in functionality below. Rework this entire function.
     const generateNewChartData = () => {
+      const { show_comments, show_masked, show_nonvalidated } = chartSettings || {};
+
       const data = measurements
         .map((elem, i) => {
           if (elem && instrumentTimeseriesItemsByRoute.length) {
@@ -81,19 +89,27 @@ const BatchPlotChart = connect(
               name,
               unit,
               parameter,
-            } = instrumentTimeseriesItemsByRoute.find(
-              (i) => i.id === timeseries_id
-            );
+            } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
 
-            const sortedItems = (items || [])
+            const filteredItems = (items || []).filter(el => {
+              if ((show_masked && el?.masked) || (show_nonvalidated && !el?.validated)) return true;
+              else if (!el?.masked || el?.validated) return true;
+              // else if (!el?.masked && el?.validated) return true;
+
+              return false;
+            });
+
+            const sortedItems = filteredItems
               .slice()
               .sort((a, b) => new Date(a.time) - new Date(b.time));
-            const { x, y } = sortedItems.reduce(
+
+            const { x, y, hovertext } = sortedItems.reduce(
               (accum, item) => ({
                 x: [...accum.x, item.time],
                 y: [...accum.y, item.value],
+                hovertext: [...accum.hovertext, item.annotation],
               }),
-              { x: [], y: [] }
+              { x: [], y: [], hovertext: [] }
             );
 
             return parameter === 'precipitation'
@@ -103,6 +119,8 @@ const BatchPlotChart = connect(
                 type: 'bar',
                 yaxis: 'y2',
                 name: `${instrument} - ${name} (${unit})` || '',
+                hovertext: show_comments ? hovertext : [],
+                hoverinfo: 'x+y+text',
                 showlegend: true,
               }
               : {
@@ -111,18 +129,21 @@ const BatchPlotChart = connect(
                 y,
                 name: `${instrument} - ${name} (${unit})` || '',
                 showlegend: true,
+                hovertext: show_comments ? hovertext : [],
+                hoverinfo: 'x+y+text'
               };
           }
         })
-        .filter((e) => e);
+        .filter(e => e);
       
       const datedData = data;
+
       // optimize
-      if(datedData[0] && datedData[0].x && datedData[0].y) {
+      if (datedData[0] && datedData[0].x && datedData[0].y) {
         setLifetimeDate(datedData[0].x[0]);
-        for(let i = 0; i < datedData[0].x.length; i++) {
+        for (let i = 0; i < datedData[0].x.length; i++) {
           const tempDate = new Date(datedData[0].x[i]);
-          if(tempDate > dateRange[1] || tempDate < dateRange[0]) {
+          if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
             datedData[0].x.splice(i, 1);
             datedData[0].y.splice(i, 1);
             i--;
@@ -134,13 +155,14 @@ const BatchPlotChart = connect(
 
     /** Load specific timeseries ids into state when new configurations are loaded */
     useEffect(() => {
-      const config =
-        batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
+      const config = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
       setTimeseriesId((config || {}).timeseries_id || []);
+      setChartSettings(config);
     }, [
       batchPlotConfigurationsActiveId,
       batchPlotConfigurationsItemsObject,
       setTimeseriesId,
+      setChartSettings,
     ]);
 
     /** Fetch any timeseries measurements not currently in the store for plotting */
@@ -155,20 +177,20 @@ const BatchPlotChart = connect(
     /** Extract specific measurements from the store that relate to our set timeseries */
     useEffect(() => {
       const measurementItems = timeseriesIds.map((id) =>
-        timeseriesMeasurementsItems.find((elem) => elem.timeseries_id === id)
+        timeseriesMeasurementsItems.find(elem => elem.timeseries_id === id)
       );
       if (measurementItems.every((elem) => !!elem))
         setMeasurements(measurementItems);
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
-    useEffect(() => generateNewChartData(), [measurements, withPrecipitation]);
+    useEffect(() => generateNewChartData(), [measurements, withPrecipitation, chartSettings]);
 
     /** When chart data changes, see if there is precip data to adjust plot */
     useEffect(() => {
       if (
         chartData.length &&
-        chartData.find((elem) => elem && elem.yaxis === 'y2')
+        chartData.find(elem => elem?.yaxis === 'y2')
       ) {
         setWithPrecipitation(true);
       } else {
@@ -178,8 +200,8 @@ const BatchPlotChart = connect(
     }, [chartData, setWithPrecipitation]);
 
     useEffect(() => {
-      if(dateRange[0] && dateRange[1]) {
-        if(dateRange[0] < dateRange[1]) {
+      if (dateRange[0] && dateRange[1]) {
+        if (dateRange[0] < dateRange[1]) {
           generateNewChartData(); 
         } else {
           const fail = {
@@ -213,6 +235,8 @@ const BatchPlotChart = connect(
               dateRange={dateRange}
               setDateRange={setDateRange}
               setWithPrecipitation={setWithPrecipitation}
+              chartSettings={chartSettings || {}}
+              setChartSettings={setChartSettings}
             />
           </>
         ) : null}

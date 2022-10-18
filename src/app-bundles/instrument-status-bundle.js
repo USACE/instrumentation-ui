@@ -8,7 +8,7 @@ export default createRestBundle({
   routeParam: 'statusSlug',
   getTemplate: '/instruments/:instrumentId/status',
   putTemplate: '',
-  postTemplate: '/instruments/:item.instrument_id/status',
+  postTemplate: '/instruments/{:item.instrument_id}/status',
   deleteTemplate: '',
   fetchActions: [],
   urlParamSelectors: ['selectInstrumentsIdByRoute'],

@@ -11,6 +11,7 @@ export default connect(
     nonComputedTimeseriesItemsByRoute: timeseries,
     doInstrumentsSave,
   }) => {
+    const [formulaName, setFormulaName] = useState(instrument.formula_name || '');
     const [formula, setFormula] = useState(instrument.formula || '');
     const input = useRef(null);
 
@@ -26,6 +27,7 @@ export default connect(
 
     const handleSave = () => {
       instrument.formula = formula;
+      instrument.formula_name = formulaName;
       doInstrumentsSave(instrument);
     };
 
@@ -52,6 +54,13 @@ export default connect(
             </ul>
           </div>
           <div className='col'>
+            <input
+              type='text'
+              className='form-control mb-2'
+              placeholder='Custom formula name...'
+              value={formulaName}
+              onChange={e => setFormulaName(e.target.value)}
+            />
             <textarea
               ref={input}
               className='form-control'
@@ -62,6 +71,7 @@ export default connect(
             <div className='float-right mt-2'>
               <button
                 onClick={() => {
+                  setFormulaName(instrument.formula_name || '');
                   setFormula(instrument.formula || '');
                 }}
                 className='btn btn-sm btn-secondary mr-1'

@@ -10,7 +10,7 @@ export default createRestBundle({
   getTemplate: '/projects/:projectId/collection_groups/:collectionGroupId',
   putTemplate: '/:',
   postTemplate: '/projects/:projectId/collection_groups',
-  deleteTemplate: '/projects/:projectId/collection_groups/:item.id',
+  deleteTemplate: '/projects/:projectId/collection_groups/{:item.id}',
   fetchActions: [],
   forceFetchActions: [
     'COLLECTIONGROUP_FETCH_FINISHED',

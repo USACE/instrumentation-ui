@@ -9,9 +9,9 @@ export default createRestBundle({
   sortBy: 'name',
   routeParam: 'collectionGroupSlug',
   getTemplate: '/projects/:projectId/collection_groups',
-  putTemplate: '/projects/:projectId/collection_groups/:item.id',
+  putTemplate: '/projects/:projectId/collection_groups/{:item.id}',
   postTemplate: '/projects/:projectId/collection_groups',
-  deleteTemplate: '/projects/:projectId/collection_groups/:item.id',
+  deleteTemplate: '/projects/:projectId/collection_groups/{:item.id}',
   fetchActions: [
     'URL_UPDATED',
     'PROJECTS_FETCH_FINISHED'

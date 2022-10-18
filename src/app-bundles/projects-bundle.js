@@ -9,9 +9,9 @@ export default createRestBundle({
   persist: false,
   routeParam: 'projectSlug',
   getTemplate: '/projects',
-  putTemplate: '/projects/:item.id',
+  putTemplate: '/projects/{:item.id}',
   postTemplate: '/projects',
-  deleteTemplate: '/projects/:item.id',
+  deleteTemplate: '/projects/{:item.id}',
   fetchActions: [
     'URL_UPDATED',
     'AUTH_LOGGED_IN',
