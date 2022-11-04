@@ -2,12 +2,12 @@ import { createSelector } from 'redux-bundler';
 
 /**
  * Replace any :.* values in the url with the actual value from the item.
- * 
+ *
  * Three flavors of syntax are permitted for substitution:
  * 1. `/building/:item.pathParamName`
  * 2. `/building/:item.pathParamName/other`
  * 3. `/building/path?queryVar={:item.pathParamName}`
- * 
+ *
  * The third flavor is permissible anywhere in the string. For example, one
  * can write `/building_{:pathParam}/other`. If `item = { pathParam: 'test' }`,
  * this would produce `/building_test/other`.
@@ -27,7 +27,7 @@ const decorateUrlWithItem = (urlTemplate, item) => {
     // ':'.
     const toReplace = matched.startsWith('{') ? m[0] : m[1];
     const key = (matched.startsWith('{') ? m[2] : m[1]).slice(prefix.length);
-    url = url.replace(toReplace, (item && item[key] ? item[key] : ''));
+    url = url.replace(toReplace, item && item[key] ? item[key] : '');
   }
   url = url.replace(/\{|\}/g, '');
   return url;
@@ -265,316 +265,323 @@ const createRestBundle = (opts) => {
         };
       },
 
-      [doFetch]: (item) => ({ dispatch, store, apiGet }) => {
-        dispatch({
-          type: actions.FETCH_STARTED,
-          payload: {
-            _shouldFetch: false,
-            _isLoading: true,
-          },
-        });
-
-        const isAllowed = store[selectIsAllowedRole]();
-        const isDisallowed = store[selectIsDisallowedRole]();
-        if (!isAllowed || isDisallowed) {
+      [doFetch]:
+        (item) =>
+        ({ dispatch, store, apiGet }) => {
           dispatch({
-            type: actions.FETCH_ABORT,
+            type: actions.FETCH_STARTED,
             payload: {
-              _isLoading: false,
-              _abortReason: 'User is not allowed to run this query',
-            },
-          });
-          return;
-        }
-
-        const url = decorateUrlWithItem(store[selectGetUrl](), item);
-        let fetchCount = store[selectFetchCount]();
-        const isStale = store[selectIsStale]();
-        const lastResource = store[selectLastResource]();
-        const forceFetch = store[selectForceFetch]();
-        const flags = store[selectFlags]();
-        const items = store[selectItemsObject]();
-
-        if (url.indexOf('/:') !== -1 || url.indexOf('{:') !== -1) {
-          // if we haven't filled in all of our params then bail
-          dispatch({
-            type: actions.FETCH_ABORT,
-            payload: {
-              _isLoading: false,
-              _lastResource: url,
-              _abortReason: 'don\'t have all the params we need',
+              _shouldFetch: false,
+              _isLoading: true,
             },
           });
 
-          // if this is a new request, but the url isnt up to date, clear the items,
-          // this way they can be garbage collected and it prevents leakage
-          // the way this dispatch works it's overriding the payload of the FETCH_ABORT above
-          // so for now we're sending this data twice, once so that the abort can be seen
-          // and once to set the state in the store
-          if (config.clearItemsOnAbort) {
+          const isAllowed = store[selectIsAllowedRole]();
+          const isDisallowed = store[selectIsDisallowedRole]();
+          if (!isAllowed || isDisallowed) {
             dispatch({
-              type: actions.UPDATED_ITEM,
+              type: actions.FETCH_ABORT,
               payload: {
-                ...flags,
-                ...{
-                  _isLoading: false,
-                  _lastResource: url,
-                  _abortReason: 'don\'t have all the params we need',
-                },
+                _isLoading: false,
+                _abortReason: 'User is not allowed to run this query',
               },
             });
+            return;
           }
-          return;
-        } else if (!isStale && url === lastResource && !forceFetch) {
-          // if we're not stale and we're trying the same resource, then bail
-          // but if force is true then keep going no matter what
-          dispatch({
-            type: actions.FETCH_ABORT,
-            payload: {
-              _isLoading: false,
-              _abortReason: 'we\'re not stale enough',
-            },
-          });
-          return;
-        } else if (config.prefetch && typeof config.prefetch == 'function' && !config.prefetch(store)) {
-          // user defined `prefetch` function evaluated to false
-          dispatch({
-            type: actions.FETCH_ABORT,
-            payload: {
-              _isLoading: false,
-              _abortReason: 'Failed user defined evaluation',
-            },
-          });
-        } else {
-          if (fetchReq) fetchReq.abort();
-          fetchReq = null;
-          fetchReq = apiGet(url, (err, body) => {
-            if (err) {
+
+          const url = decorateUrlWithItem(store[selectGetUrl](), item);
+          let fetchCount = store[selectFetchCount]();
+          const isStale = store[selectIsStale]();
+          const lastResource = store[selectLastResource]();
+          const forceFetch = store[selectForceFetch]();
+          const flags = store[selectFlags]();
+          const items = store[selectItemsObject]();
+
+          if (url.indexOf('/:') !== -1 || url.indexOf('{:') !== -1) {
+            // if we haven't filled in all of our params then bail
+            dispatch({
+              type: actions.FETCH_ABORT,
+              payload: {
+                _isLoading: false,
+                _lastResource: url,
+                _abortReason: "don't have all the params we need",
+              },
+            });
+
+            // if this is a new request, but the url isnt up to date, clear the items,
+            // this way they can be garbage collected and it prevents leakage
+            // the way this dispatch works it's overriding the payload of the FETCH_ABORT above
+            // so for now we're sending this data twice, once so that the abort can be seen
+            // and once to set the state in the store
+            if (config.clearItemsOnAbort) {
               dispatch({
-                type: actions.ERROR,
+                type: actions.UPDATED_ITEM,
                 payload: {
-                  _err: { err: err },
-                  _isLoading: false,
-                  _isSaving: false,
-                  _fetchCount: ++fetchCount,
-                  _lastResource: url,
-                  _abortReason: null,
-                },
-              });
-            } else {
-              let data = typeof body === 'string' ? JSON.parse(body) : body;
-              if (!Array.isArray(data)) data = [data];
-              const itemsById = {};
-              if (config.mergeItems) {
-                Object.assign(itemsById, items);
-              }
-              data.forEach((item, i) => {
-                if (config.uid) {
-                  itemsById[item[config.uid]] = item;
-                } else {
-                  itemsById[i] = item;
-                }
-              });
-              dispatch({
-                type: actions.FETCH_FINISHED,
-                payload: {
-                  ...itemsById,
                   ...flags,
                   ...{
                     _isLoading: false,
-                    _isSaving: false,
-                    _fetchCount: ++fetchCount,
-                    _lastFetch: new Date(),
                     _lastResource: url,
-                    _abortReason: null,
+                    _abortReason: "don't have all the params we need",
                   },
                 },
               });
             }
-          });
-        }
-      },
+            return;
+          } else if (!isStale && url === lastResource && !forceFetch) {
+            // if we're not stale and we're trying the same resource, then bail
+            // but if force is true then keep going no matter what
+            dispatch({
+              type: actions.FETCH_ABORT,
+              payload: {
+                _isLoading: false,
+                _abortReason: "we're not stale enough",
+              },
+            });
+            return;
+          } else if (
+            config.prefetch &&
+            typeof config.prefetch == 'function' &&
+            !config.prefetch(store)
+          ) {
+            // user defined `prefetch` function evaluated to false
+            dispatch({
+              type: actions.FETCH_ABORT,
+              payload: {
+                _isLoading: false,
+                _abortReason: 'Failed user defined evaluation',
+              },
+            });
+          } else {
+            if (fetchReq) fetchReq.abort();
+            fetchReq = null;
+            fetchReq = apiGet(url, (err, body) => {
+              if (err) {
+                dispatch({
+                  type: actions.ERROR,
+                  payload: {
+                    _err: { err: err },
+                    _isLoading: false,
+                    _isSaving: false,
+                    _fetchCount: ++fetchCount,
+                    _lastResource: url,
+                    _abortReason: null,
+                  },
+                });
+              } else {
+                let data = typeof body === 'string' ? JSON.parse(body) : body;
+                if (!Array.isArray(data)) data = [data];
+                const itemsById = {};
+                if (config.mergeItems) {
+                  Object.assign(itemsById, items);
+                }
+                data.forEach((item, i) => {
+                  if (config.uid) {
+                    itemsById[item[config.uid]] = item;
+                  } else {
+                    itemsById[i] = item;
+                  }
+                });
+                dispatch({
+                  type: actions.FETCH_FINISHED,
+                  payload: {
+                    ...itemsById,
+                    ...flags,
+                    ...{
+                      _isLoading: false,
+                      _isSaving: false,
+                      _fetchCount: ++fetchCount,
+                      _lastFetch: new Date(),
+                      _lastResource: url,
+                      _abortReason: null,
+                    },
+                  },
+                });
+              }
+            });
+          }
+        },
 
-      [doSave]: (item, callback, deferCallback, forcePost) => ({
-        dispatch,
-        store,
-        apiPut,
-        apiPost,
-      }) => {
-        dispatch({
-          type: actions.SAVE_STARTED,
-          payload: {
-            _isSaving: true,
-          },
-        });
-
-        // grab the state object
-        const tempState = store[selectState]();
-
-        if (!item[config.uid] || forcePost) {
-          const url = decorateUrlWithItem(store[selectPostUrl](), item);
-
-          // create a temporary id and store it in state using that as the key
-          const tempId = Number(new Date()).toString();
-          tempState[tempId] = Object.assign({}, item);
+      [doSave]:
+        (item, callback, deferCallback, forcePost) =>
+        ({ dispatch, store, apiPut, apiPost }) => {
           dispatch({
-            type: actions.UPDATED_ITEM,
-            payload: tempState,
+            type: actions.SAVE_STARTED,
+            payload: {
+              _isSaving: true,
+            },
           });
 
-          apiPost(url, item, (err, body) => {
-            if (err) {
-              dispatch({
-                type: actions.ERROR,
-                payload: {
-                  _err: { err: err },
-                  _isSaving: false,
-                },
-              });
-            } else {
-              // remove our temporary record from the state
-              const updatedState = store[selectState]();
-              delete updatedState[tempId];
+          // grab the state object
+          const tempState = store[selectState]();
 
-              // add our new id to our item and re-attach to our state
-              let data = typeof body === 'string' ? JSON.parse(body) : body;
-              if (data && data.length) data = data[0];
-              const updatedItem = Object.assign({}, item, data);
-              updatedState[updatedItem[config.uid]] = updatedItem;
+          if (!item[config.uid] || forcePost) {
+            const url = decorateUrlWithItem(store[selectPostUrl](), item);
 
-              dispatch({
-                type: actions.UPDATED_ITEM,
-                payload: updatedState,
-              });
+            // create a temporary id and store it in state using that as the key
+            const tempId = Number(new Date()).toString();
+            tempState[tempId] = Object.assign({}, item);
+            dispatch({
+              type: actions.UPDATED_ITEM,
+              payload: tempState,
+            });
 
-              // Make sure we're sending save_finished when we're done
-              dispatch({
-                type: actions.SAVE_FINISHED,
-                payload: {
-                  _isSaving: false,
-                },
-              });
+            apiPost(url, item, (err, body) => {
+              if (err) {
+                dispatch({
+                  type: actions.ERROR,
+                  payload: {
+                    _err: { err: err },
+                    _isSaving: false,
+                  },
+                });
+              } else {
+                // remove our temporary record from the state
+                const updatedState = store[selectState]();
+                delete updatedState[tempId];
 
-              if (deferCallback && callback) callback(updatedItem);
-            }
-          });
-          // if we get a callback, go ahead and fire it
-          if (!deferCallback && callback) callback();
-        } else {
-          const url = decorateUrlWithItem(store[selectPutUrl](), item);
+                // add our new id to our item and re-attach to our state
+                let data = typeof body === 'string' ? JSON.parse(body) : body;
+                if (data && data.length) data = data[0];
+                const updatedItem = Object.assign({}, item, data);
+                updatedState[updatedItem[config.uid]] = updatedItem;
 
-          // add our updated item to the state based on it's key
-          tempState[item[config.uid]] = Object.assign({}, item);
+                dispatch({
+                  type: actions.UPDATED_ITEM,
+                  payload: updatedState,
+                });
+
+                // Make sure we're sending save_finished when we're done
+                dispatch({
+                  type: actions.SAVE_FINISHED,
+                  payload: {
+                    _isSaving: false,
+                  },
+                });
+
+                if (deferCallback && callback) callback(updatedItem);
+              }
+            });
+            // if we get a callback, go ahead and fire it
+            if (!deferCallback && callback) callback();
+          } else {
+            const url = decorateUrlWithItem(store[selectPutUrl](), item);
+
+            // add our updated item to the state based on it's key
+            tempState[item[config.uid]] = Object.assign({}, item);
+            dispatch({
+              type: actions.UPDATED_ITEM,
+              payload: tempState,
+            });
+
+            // save changes to the server
+            apiPut(url, item, (err, _body) => {
+              if (err) {
+                dispatch({
+                  type: actions.ERROR,
+                  payload: {
+                    _err: { err: err },
+                    _isSaving: false,
+                  },
+                });
+              } else {
+                // if successful we shouldn't have to do anything else
+                dispatch({
+                  type: actions.SAVE_FINISHED,
+                  payload: {
+                    _isSaving: false,
+                  },
+                });
+                if (deferCallback && callback) callback();
+              }
+            });
+            // if we get a callback, go ahead and fire it
+            if (!deferCallback && callback) callback();
+          }
+        },
+
+      [doDelete]:
+        (item, callback, deferCallback) =>
+        ({ dispatch, store, apiDelete }) => {
           dispatch({
-            type: actions.UPDATED_ITEM,
-            payload: tempState,
+            type: actions.DELETE_STARTED,
+            payload: {
+              _isSaving: true,
+            },
           });
 
-          // save changes to the server
-          apiPut(url, item, (err, body) => {
-            if (err) {
-              dispatch({
-                type: actions.ERROR,
-                payload: {
-                  _err: { err: err },
-                  _isSaving: false,
-                },
-              });
-            } else {
-              // if successful we shouldn't have to do anything else
-              dispatch({
-                type: actions.SAVE_FINISHED,
-                payload: {
-                  _isSaving: false,
-                },
-              });
-              if (deferCallback && callback) callback();
-            }
-          });
-          // if we get a callback, go ahead and fire it
-          if (!deferCallback && callback) callback();
-        }
-      },
+          const url = decorateUrlWithItem(store[selectDeleteUrl](), item);
 
-      [doDelete]: (item, callback, deferCallback) => ({
-        dispatch,
-        store,
-        apiDelete,
-      }) => {
-        dispatch({
-          type: actions.DELETE_STARTED,
-          payload: {
-            _isSaving: true,
-          },
-        });
+          if (url.indexOf('/:') !== -1) {
+            // if we haven't filled in all of our params then bail
+            return;
+          } else {
+            // remove the item from our state and update it internally
+            const updatedState = store[selectState]();
+            const holdCurrent = Object.assign({}, updatedState);
 
-        const url = decorateUrlWithItem(store[selectDeleteUrl](), item);
+            delete updatedState[item[config.uid]];
+            dispatch({
+              type: actions.UPDATED_ITEM,
+              payload: updatedState,
+            });
 
-        if (url.indexOf('/:') !== -1) {
-          // if we haven't filled in all of our params then bail
-          return;
-        } else {
-          // remove the item from our state and update it internally
-          const updatedState = store[selectState]();
-          const holdCurrent = Object.assign({}, updatedState);
+            // update the state on the server now
+            apiDelete(url, (err, _body) => {
+              if (err) {
+                dispatch({
+                  type: actions.ERROR,
+                  payload: {
+                    _err: { err: err },
+                    _isSaving: false,
+                  },
+                });
+                dispatch({
+                  type: actions.UPDATED_ITEM,
+                  payload: holdCurrent,
+                });
+              } else {
+                dispatch({
+                  type: actions.DELETE_FINISHED,
+                  payload: {
+                    _isSaving: false,
+                  },
+                });
+                if (deferCallback && callback) callback();
+              }
+            });
 
-          delete updatedState[item[config.uid]];
+            // if we get a callback, go ahead and fire it
+            if (!deferCallback && callback) callback();
+          }
+        },
+
+      [doUpdatePageSize]:
+        (ps) =>
+        ({ dispatch }) => {
+          if (typeof ps === 'number')
+            dispatch({
+              type: actions.PAGE_SIZE_UPDATED,
+              payload: { _pageSize: ps },
+            });
+        },
+
+      [doUpdateSortBy]:
+        (sortBy) =>
+        ({ dispatch }) => {
           dispatch({
-            type: actions.UPDATED_ITEM,
-            payload: updatedState,
+            type: actions.SORT_BY_UPDATED,
+            payload: { _sortBy: sortBy },
           });
+        },
 
-          // update the state on the server now
-          apiDelete(url, (err, body) => {
-            if (err) {
-              dispatch({
-                type: actions.ERROR,
-                payload: {
-                  _err: { err: err },
-                  _isSaving: false,
-                },
-              });
-              dispatch({
-                type: actions.UPDATED_ITEM,
-                payload: holdCurrent,
-              });
-            } else {
-              dispatch({
-                type: actions.DELETE_FINISHED,
-                payload: {
-                  _isSaving: false,
-                },
-              });
-              if (deferCallback && callback) callback();
-            }
-          });
-
-          // if we get a callback, go ahead and fire it
-          if (!deferCallback && callback) callback();
-        }
-      },
-
-      [doUpdatePageSize]: (ps) => ({ dispatch }) => {
-        if (typeof ps === 'number')
+      [doUpdateSortAsc]:
+        (sortAsc) =>
+        ({ dispatch }) => {
           dispatch({
-            type: actions.PAGE_SIZE_UPDATED,
-            payload: { _pageSize: ps },
+            type: actions.SORT_ASC_UPDATED,
+            payload: { _sortAsc: !!sortAsc },
           });
-      },
-
-      [doUpdateSortBy]: (sortBy) => ({ dispatch }) => {
-        dispatch({
-          type: actions.SORT_BY_UPDATED,
-          payload: { _sortBy: sortBy },
-        });
-      },
-
-      [doUpdateSortAsc]: (sortAsc) => ({ dispatch }) => {
-        dispatch({
-          type: actions.SORT_ASC_UPDATED,
-          payload: { _sortAsc: !!sortAsc },
-        });
-      },
+        },
 
       [selectAbortReason]: (state) => state[config.name]._abortReason,
 
@@ -643,7 +650,10 @@ const createRestBundle = (opts) => {
         (items, sortBy, sortAsc) => {
           if (sortBy) {
             const sorted = items.sort((a, b) => {
-              if (!a.hasOwnProperty(sortBy) || !b.hasOwnProperty(sortBy))
+              if (
+                !Object.prototype.hasOwnProperty.call(a, sortBy) ||
+                !Object.prototype.hasOwnProperty.call(b, sortBy)
+              )
                 return 0;
               if (a[sortBy] > b[sortBy]) return 1;
               if (a[sortBy] < b[sortBy]) return -1;
@@ -661,8 +671,13 @@ const createRestBundle = (opts) => {
         selectItemsObject,
         'selectRouteParams',
         (items, params) => {
-          if (params.hasOwnProperty(config.routeParam)) {
-            if (items.hasOwnProperty(params[config.routeParam])) {
+          if (Object.prototype.hasOwnProperty.call(params, config.routeParam)) {
+            if (
+              Object.prototype.hasOwnProperty.call(
+                items,
+                params[config.routeParam]
+              )
+            ) {
               return items[params[config.routeParam]];
             } else {
               return null;

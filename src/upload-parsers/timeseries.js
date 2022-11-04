@@ -1,10 +1,10 @@
 const timeseriesParser = {
   name: 'Timeseries',
   url: '/timeseries',
-  postProcess: (rows) => (
+  postProcess: (rows) =>
     /** Remove duplicate entries of timeseries name + instrument_id combinations */
     rows.reduce((accum, current) => {
-      const found = accum.find(elem => {
+      const found = accum.find((elem) => {
         const { instrument_id, name } = elem;
 
         if (!instrument_id || !name) return false;
@@ -14,8 +14,7 @@ const timeseriesParser = {
 
       if (!found) accum.push(current);
       return accum;
-    }, [])
-  ),
+    }, []),
   model: {
     instrument_id: {
       label: 'Instrument',
@@ -23,18 +22,19 @@ const timeseriesParser = {
       required: true,
       useFilterComponent: true,
       hideCsvMappings: true,
-      provider: state => (
+      provider: (state) =>
         Object.keys(state.instruments)
-          .filter(key => key.charAt(0) !== '_')
-          .map(key => ({
+          .filter((key) => key.charAt(0) !== '_')
+          .map((key) => ({
             value: state.instruments[key].id,
             text: state.instruments[key].name,
-          }))
-      ),
+          })),
       parse: (val) => val,
       validate: (val, state) => {
         const existingInstruments = Object.keys(state.instruments);
-        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
+        return val
+          ? existingInstruments.indexOf(val.toLowerCase()) === -1
+          : false;
       },
       helpText: 'Should map to an instrument name that exists in the system.',
     },
@@ -42,14 +42,16 @@ const timeseriesParser = {
       label: 'Name',
       type: 'string',
       required: true,
-      helpText: 'Name will be used everywhere the timeseries is displayed, along with the instrument name.',
+      helpText:
+        'Name will be used everywhere the timeseries is displayed, along with the instrument name.',
     },
     parameter_id: {
       label: 'Parameter',
       type: 'domain',
       domainGroup: 'parameter',
       required: true,
-      helpText: 'Acceptable data values include \'pressure\', \'temperature\', \'elevation\', \'length\', \'precipitation\', or \'voltage\' others will be ignored',
+      helpText:
+        "Acceptable data values include 'pressure', 'temperature', 'elevation', 'length', 'precipitation', or 'voltage' others will be ignored",
     },
     unit_id: {
       label: 'Unit',
@@ -57,7 +59,8 @@ const timeseriesParser = {
       domainGroup: 'unit',
       required: true,
       useFilterComponent: true,
-      helpText: 'Acceptable data values include \'inches\', \'feet\', \'volts\', \'millibar\', or \'inches mercury (Hg)\' others will be ignored',
+      helpText:
+        "Acceptable data values include 'inches', 'feet', 'volts', 'millibar', or 'inches mercury (Hg)' others will be ignored",
     },
   },
 };

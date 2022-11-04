@@ -20,33 +20,34 @@ const rainfallBundle = {
     };
   },
 
-  doRainfallLoad: () => ({ dispatch, store }) => {
-    dispatch({
-      type: 'RAINFALL_LOAD_START',
-      payload: {
-        _shouldLoad: false,
-      },
-    });
+  doRainfallLoad:
+    () =>
+    ({ dispatch, store }) => {
+      dispatch({
+        type: 'RAINFALL_LOAD_START',
+        payload: {
+          _shouldLoad: false,
+        },
+      });
 
-    const apiRoot = store.selectApiRoot();
+      const apiRoot = store.selectApiRoot();
 
-    const tsId =
-      process.env.NODE_ENV === 'development'
+      const tsId = import.meta.env.DEV
         ? '05ddb512-b865-433d-b2db-81e75bb69b65'
         : '9a3864a8-8766-4bfa-bad1-0328b166f6a8';
-    fetch(
-      `${apiRoot}/timeseries/${tsId}/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`
-    )
-      .then((response) => response.json())
-      .then((rainfall) => {
-        dispatch({
-          type: 'RAINFALL_LOAD_FINISHED',
-          payload: {
-            items: rainfall.items,
-          },
+      fetch(
+        `${apiRoot}/timeseries/${tsId}/measurements?after=1900-01-01T00:00:00.00Z&before=2025-01-01T00:00:00.00Z`
+      )
+        .then((response) => response.json())
+        .then((rainfall) => {
+          dispatch({
+            type: 'RAINFALL_LOAD_FINISHED',
+            payload: {
+              items: rainfall.items,
+            },
+          });
         });
-      });
-  },
+    },
 
   selectRainfallItems: (state) => state.rainfall.items,
 

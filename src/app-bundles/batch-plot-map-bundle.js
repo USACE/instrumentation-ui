@@ -26,7 +26,7 @@ const batchPlotMapBundle = {
             _shouldAddData: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('batchPlotMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: true,
               _shouldAddData: true,
@@ -35,7 +35,7 @@ const batchPlotMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('batchPlotMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
@@ -53,92 +53,97 @@ const batchPlotMapBundle = {
     };
   },
 
-  doBatchPlotMapInitialize: () => ({ dispatch, store }) => {
-    dispatch({
-      type: 'BATCHPLOTMAP_INITIALIZE_START',
-      payload: {
-        layer: new Layer({}),
-        _shouldInitialize: false,
-      },
-    });
-
-    const lyr = new Layer({
-      source: new Source(),
-      declutter: true,
-      style: (f, r) => new Style({
-        geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
-        fill: new Fill({
-          color: '#000000',
-        }),
-        stroke: new Stroke({
-          color: '#ffffff',
-          width: 1,
-        }),
-        text: new Text({
-          fill: new Fill({
-            color: '#000000',
-          }),
-          font: '16px sans-serif',
-          offsetX: 12,
-          offsetY: -12,
-          padding: [2, 2, 2, 2],
-          stroke: new Stroke({
-            color: '#ffffff',
-            width: 2,
-          }),
-          text: f.get('name'),
-          textAlign: 'left',
-        }),
-      }),
-    });
-
-    dispatch({
-      type: 'BATCHPLOTMAP_INITIALIZE_FINISH',
-      payload: {
-        layer: lyr,
-      },
-    });
-  },
-
-  doBatchPlotMapAddData: () => ({ dispatch, store }) => {
-    dispatch({
-      type: 'BATCHPLOTMAP_ADD_DATA_START',
-      payload: {
-        _shouldAddData: false,
-      },
-    });
-    const geoProjection = store.selectMapsGeoProjection();
-    const webProjection = store.selectMapsWebProjection();
-    const map = store.selectMapsObject()['batchPlotMap'];
-    const lyr = store.selectBatchPlotMapLayer();
-
-    if (lyr && map) {
-      const src = lyr.getSource();
-      const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
-      map.removeLayer(lyr);
-      src.clear();
-      const features = geoJSON.readFeatures(data, {
-        featureProjection: webProjection,
-        dataProjection: geoProjection,
+  doBatchPlotMapInitialize:
+    () =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'BATCHPLOTMAP_INITIALIZE_START',
+        payload: {
+          layer: new Layer({}),
+          _shouldInitialize: false,
+        },
       });
-      src.addFeatures(features);
-      map.addLayer(lyr);
-      const view = map.getView();
-      if (features && features.length) {
-        view.fit(src.getExtent(), {
-          padding: [50, 50, 50, 50],
-          maxZoom: 16,
+
+      const lyr = new Layer({
+        source: new Source(),
+        declutter: true,
+        style: (f, r) =>
+          new Style({
+            geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+            fill: new Fill({
+              color: '#000000',
+            }),
+            stroke: new Stroke({
+              color: '#ffffff',
+              width: 1,
+            }),
+            text: new Text({
+              fill: new Fill({
+                color: '#000000',
+              }),
+              font: '16px sans-serif',
+              offsetX: 12,
+              offsetY: -12,
+              padding: [2, 2, 2, 2],
+              stroke: new Stroke({
+                color: '#ffffff',
+                width: 2,
+              }),
+              text: f.get('name'),
+              textAlign: 'left',
+            }),
+          }),
+      });
+
+      dispatch({
+        type: 'BATCHPLOTMAP_INITIALIZE_FINISH',
+        payload: {
+          layer: lyr,
+        },
+      });
+    },
+
+  doBatchPlotMapAddData:
+    () =>
+    ({ dispatch, store }) => {
+      dispatch({
+        type: 'BATCHPLOTMAP_ADD_DATA_START',
+        payload: {
+          _shouldAddData: false,
+        },
+      });
+      const geoProjection = store.selectMapsGeoProjection();
+      const webProjection = store.selectMapsWebProjection();
+      const map = store.selectMapsObject()['batchPlotMap'];
+      const lyr = store.selectBatchPlotMapLayer();
+
+      if (lyr && map) {
+        const src = lyr.getSource();
+        const data = store.selectInstrumentsByBatchPlotConfigurationsGeoJSON();
+        map.removeLayer(lyr);
+        src.clear();
+        const features = geoJSON.readFeatures(data, {
+          featureProjection: webProjection,
+          dataProjection: geoProjection,
+        });
+        src.addFeatures(features);
+        map.addLayer(lyr);
+        const view = map.getView();
+        if (features && features.length) {
+          view.fit(src.getExtent(), {
+            padding: [50, 50, 50, 50],
+            maxZoom: 16,
+          });
+        }
+        dispatch({
+          type: 'BATCHPLOTMAP_ADD_DATA_FINISH',
+        });
+      } else {
+        dispatch({
+          type: 'BATCHPLOTMAP_NO_LAYER_READY',
         });
       }
-      dispatch({
-        type: 'BATCHPLOTMAP_ADD_DATA_FINISH',
-      });
-    } else {
-      dispatch({
-        type: 'BATCHPLOTMAP_NO_LAYER_READY',
-      });
-    }
-  },
+    },
 
   selectBatchPlotMapLayer: (state) => state.batchPlotMap.layer,
 

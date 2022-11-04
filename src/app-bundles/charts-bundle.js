@@ -17,61 +17,65 @@ const chartsBundle = {
     };
   },
 
-  doChartsCreateNew: () => ({ dispatch, store }) => {
-    const id = ID++;
-    dispatch({
-      type: 'CHARTS_CREATE_NEW',
-      payload: {
-        [id]: {
-          showSettings: false,
-          title: '',
-          xaxisTitle: '',
-          yaxisTitle: '',
-          shapes: [],
-          series: {},
-          chartType: 'timeseries',
-          correlationSeriesY: '',
-          correlationSeriesX: '',
-          layout: {
+  doChartsCreateNew:
+    () =>
+    ({ dispatch }) => {
+      const id = ID++;
+      dispatch({
+        type: 'CHARTS_CREATE_NEW',
+        payload: {
+          [id]: {
+            showSettings: false,
             title: '',
-            autosize: true,
-            showlegend: false,
-            dragmode: 'pan',
-            yaxis: {
-              autorange: true,
-              title: {
-                text: '',
-              },
-            },
-            xaxis: {
-              autorange: true,
-              title: {
-                text: '',
-              },
-            },
+            xaxisTitle: '',
+            yaxisTitle: '',
             shapes: [],
+            series: {},
+            chartType: 'timeseries',
+            correlationSeriesY: '',
+            correlationSeriesX: '',
+            layout: {
+              title: '',
+              autosize: true,
+              showlegend: false,
+              dragmode: 'pan',
+              yaxis: {
+                autorange: true,
+                title: {
+                  text: '',
+                },
+              },
+              xaxis: {
+                autorange: true,
+                title: {
+                  text: '',
+                },
+              },
+              shapes: [],
+            },
+            config: {
+              responsive: true,
+              displaylogo: false,
+              displayModeBar: true,
+              scrollZoom: true,
+            },
+            frames: [],
+            data: [],
           },
-          config: {
-            responsive: true,
-            displaylogo: false,
-            displayModeBar: true,
-            scrollZoom: true,
-          },
-          frames: [],
-          data: [],
         },
-      },
-    });
-  },
+      });
+    },
 
-  doChartsSave: (id, figure) => ({ dispatch, store }) => {
-    dispatch({
-      type: 'CHARTS_SAVE',
-      payload: {
-        [id]: figure,
-      },
-    });
-  },
+  doChartsSave:
+    (id, figure) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'CHARTS_SAVE',
+        payload: {
+          [id]: figure,
+        },
+      });
+    },
 
   selectCharts: (state) => state.charts,
 };

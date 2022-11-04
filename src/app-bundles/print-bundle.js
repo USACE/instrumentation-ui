@@ -17,15 +17,17 @@ const printBundle = {
     };
   },
 
-  doPrintSetData: (data, layout) => ({ dispatch, store }) => {
-    dispatch({
-      type: 'PRINT_SET_DATA',
-      payload: {
-        chartData: data,
-        layoutData: layout,
-      },
-    });
-  },
+  doPrintSetData:
+    (data, layout) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'PRINT_SET_DATA',
+        payload: {
+          chartData: data,
+          layoutData: layout,
+        },
+      });
+    },
 
   selectPrintData: (state) => state.print.chartData,
   selectPrintLayout: (state) => state.print.layoutData,

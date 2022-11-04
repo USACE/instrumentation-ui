@@ -47,63 +47,75 @@ const createAuthBundle = (opts) => {
       };
     },
 
-    doAuthLogin: () => ({ dispatch, store }) => {
-      const isMock = store.selectAuthIsMocked();
-      if (isMock) {
-        const token = store.selectAuthTokenMockRaw();
-        dispatch({
-          type: 'AUTH_LOGGED_IN',
-          payload: { token: token, error: null, shouldVerifyToken: true },
-        });
-      } else {
-        const url = store.selectAuthUrl();
-        //@todo move to fetch api at some point
-        try {
-          xhr(url, (err, response, body) => {
-            if (err) {
-              throw new Error('Login Response not ok');
-            } else {
-              const token = typeof body === 'string' ? body : JSON.parse(body);
-              dispatch({
-                type: 'AUTH_LOGGED_IN',
-                payload: { token: token, error: null, shouldVerifyToken: true },
-              });
-            }
-          });
-        } catch (err) {
-          if (process.env.NODE_ENV === 'development') console.error(err);
+    doAuthLogin:
+      () =>
+      ({ dispatch, store }) => {
+        const isMock = store.selectAuthIsMocked();
+        if (isMock) {
+          const token = store.selectAuthTokenMockRaw();
           dispatch({
-            type: 'AUTH_ERROR',
-            payload: { msg: 'Error Logging In', err: err },
+            type: 'AUTH_LOGGED_IN',
+            payload: { token: token, error: null, shouldVerifyToken: true },
           });
+        } else {
+          const url = store.selectAuthUrl();
+          //@todo move to fetch api at some point
+          try {
+            xhr(url, (err, response, body) => {
+              if (err) {
+                throw new Error('Login Response not ok');
+              } else {
+                const token =
+                  typeof body === 'string' ? body : JSON.parse(body);
+                dispatch({
+                  type: 'AUTH_LOGGED_IN',
+                  payload: {
+                    token: token,
+                    error: null,
+                    shouldVerifyToken: true,
+                  },
+                });
+              }
+            });
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            if (import.meta.env.DEV) console.error(err);
+            dispatch({
+              type: 'AUTH_ERROR',
+              payload: { msg: 'Error Logging In', err: err },
+            });
+          }
         }
-      }
-    },
+      },
 
-    doAuthLogout: () => ({ dispatch, store }) => {
-      if (store.selectAuthTokenRaw()) {
+    doAuthLogout:
+      () =>
+      ({ dispatch, store }) => {
+        if (store.selectAuthTokenRaw()) {
+          dispatch({
+            type: 'AUTH_LOGGED_OUT',
+            payload: { token: null, error: null },
+          });
+          store.doRemoveProfile();
+          const redirect = store.selectAuthRedirectOnLogout();
+          if (redirect) store.doUpdateUrl(redirect);
+        }
+      },
+
+    doAuthVerifyToken:
+      () =>
+      ({ dispatch, store }) => {
         dispatch({
-          type: 'AUTH_LOGGED_OUT',
-          payload: { token: null, error: null },
+          type: 'AUTH_VERIFY_TOKEN',
+          payload: { shouldVerifyToken: false },
         });
-        store.doRemoveProfile();
-        const redirect = store.selectAuthRedirectOnLogout();
-        if (redirect) store.doUpdateUrl(redirect);
-      }
-    },
-
-    doAuthVerifyToken: () => ({ dispatch, store }) => {
-      dispatch({
-        type: 'AUTH_VERIFY_TOKEN',
-        payload: { shouldVerifyToken: false },
-      });
-      const isExpired = store.selectAuthTokenIsExpired();
-      if (isExpired) {
-        store.doAuthLogout();
-      } else {
-        window.setTimeout(store.doAuthVerifyToken, config.verifyInterval);
-      }
-    },
+        const isExpired = store.selectAuthTokenIsExpired();
+        if (isExpired) {
+          store.doAuthLogout();
+        } else {
+          window.setTimeout(store.doAuthVerifyToken, config.verifyInterval);
+        }
+      },
 
     selectAuthRedirectOnLogout: (state) => state.auth.redirectOnLogout,
 
@@ -130,7 +142,7 @@ const createAuthBundle = (opts) => {
     // select info about token expiration
 
     selectAuthTokenExp: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('exp')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'exp')) return null;
       return payload.exp;
     }),
 
@@ -142,31 +154,34 @@ const createAuthBundle = (opts) => {
     // select parts of the payload
 
     selectAuthUsername: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('name')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'name')) return null;
       return payload.name;
     }),
 
     selectAuthEdipi: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('sub')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'sub')) return null;
       return payload.sub;
     }),
 
     selectAuthRoles: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('roles')) return [];
+      if (!Object.prototype.hasOwnProperty.call(payload, 'roles')) return [];
       return payload.roles;
     }),
 
-    selectAuthGroups: createSelector('selectAuthRoles', (roles) => roles.map((role) => {
-      const roleArr = role.split('.');
-      return roleArr[0];
-    })),
+    selectAuthGroups: createSelector('selectAuthRoles', (roles) =>
+      roles.map((role) => {
+        const roleArr = role.split('.');
+        return roleArr[0];
+      })
+    ),
 
     selectAuthGroupRoles: createSelector('selectAuthRoles', (roles) => {
       const groupRoles = {};
       roles
         .map((role) => role.split('.'))
         .forEach((role) => {
-          if (!groupRoles.hasOwnProperty(role[0])) groupRoles[role[0]] = [];
+          if (!Object.prototype.hasOwnProperty.call(groupRoles, role[0]))
+            groupRoles[role[0]] = [];
           groupRoles[role[0]].push(role[1]);
         });
       return groupRoles;

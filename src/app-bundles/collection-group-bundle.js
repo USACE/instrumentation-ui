@@ -12,10 +12,7 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/collection_groups/:item.id',
   postTemplate: '/projects/:projectId/collection_groups',
   deleteTemplate: '/projects/:projectId/collection_groups/:item.id',
-  fetchActions: [
-    'URL_UPDATED',
-    'PROJECTS_FETCH_FINISHED'
-  ],
+  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
     'COLLECTIONGROUP_SAVE_FINISHED',
     'COLLECTIONGROUP_DELETE_FINISHED',
@@ -26,7 +23,9 @@ export default createRestBundle({
     const url = store.selectUrlObject();
     const whiteList = ['dashboard'];
 
-    return whiteList.includes(hash) || url.pathname.includes('/collection-groups/');
+    return (
+      whiteList.includes(hash) || url.pathname.includes('/collection-groups/')
+    );
   },
   addons: {
     selectCollectionGroupIdByRoute: createSelector(
@@ -35,40 +34,36 @@ export default createRestBundle({
         if (cg && cg.id) return { collectionGroupId: cg.id };
       }
     ),
-    doCollectionGroupRemoveTimeseries: ({
-      projectId,
-      collectionGroupId,
-      timeseriesId,
-    }) => ({ dispatch, store, apiDelete }) => {
-      dispatch({
-        type: 'COLLECTIONGROUP_REMOVE_TIMESERIES_START',
-        payload: {},
-      });
-      const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
-      apiDelete(url, (err, body) => {
+    doCollectionGroupRemoveTimeseries:
+      ({ projectId, collectionGroupId, timeseriesId }) =>
+      ({ dispatch, apiDelete }) => {
         dispatch({
-          type: 'COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH',
+          type: 'COLLECTIONGROUP_REMOVE_TIMESERIES_START',
           payload: {},
         });
-      });
-    },
-    doCollectionGroupAddTimeseries: ({
-      projectId,
-      collectionGroupId,
-      timeseriesId,
-    }) => ({ dispatch, apiPost }) => {
-      dispatch({
-        type: 'COLLECTIONGROUP_ADD_TIMESERIES_START',
-        payload: {},
-      });
-      const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
-      apiPost(url, {}, (err, body) => {
+        const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
+        apiDelete(url, (_err, _body) => {
+          dispatch({
+            type: 'COLLECTIONGROUP_REMOVE_TIMESERIES_FINISH',
+            payload: {},
+          });
+        });
+      },
+    doCollectionGroupAddTimeseries:
+      ({ projectId, collectionGroupId, timeseriesId }) =>
+      ({ dispatch, apiPost }) => {
         dispatch({
-          type: 'COLLECTIONGROUP_ADD_TIMESERIES_FINISH',
+          type: 'COLLECTIONGROUP_ADD_TIMESERIES_START',
           payload: {},
         });
-      });
-    },
+        const url = `/projects/${projectId}/collection_groups/${collectionGroupId}/timeseries/${timeseriesId}`;
+        apiPost(url, {}, (_err, _body) => {
+          dispatch({
+            type: 'COLLECTIONGROUP_ADD_TIMESERIES_FINISH',
+            payload: {},
+          });
+        });
+      },
   },
 
   reduceFurther: (state, { type, payload }) => {

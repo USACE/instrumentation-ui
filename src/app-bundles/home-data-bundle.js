@@ -11,7 +11,7 @@ export default createRestBundle({
   getTemplate: '/home',
   fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: [],
-  prefetch: store => {
+  prefetch: (store) => {
     const url = store.selectUrlObject();
 
     return url.pathname === '/';
@@ -29,15 +29,15 @@ export default createRestBundle({
       };
     }),
 
-    selectHashStripQuery: createSelector('selectHash', hash => {
+    selectHashStripQuery: createSelector('selectHash', (hash) => {
       const queryRegex = /\?.*/g;
       return hash ? hash.replace(queryRegex, '') : null;
     }),
 
-    selectHashQuery: createSelector('selectHash', hash => {
+    selectHashQuery: createSelector('selectHash', (hash) => {
       if (!hash) return null;
 
-      const [_h, query] = hash.split('?');
+      const [, query] = hash.split('?');
       if (!query) return null;
 
       const queryArray = query.split('&');

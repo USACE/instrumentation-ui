@@ -35,37 +35,41 @@ const MapsBundle = {
     };
   },
 
-  doMapsInitialize: (key, el, options) => ({ dispatch, store }) => {
-    const map = new olMap(
-      Object.assign(
-        {
-          controls: [new ScaleBar({ units: 'us' }), new BasemapPicker()],
-          target: el,
-          view: new View({
-            center: (options && options.center) || [-11000000, 4600000],
-            zoom: (options && options.zoom) || 4,
-          }),
-          layers: [],
+  doMapsInitialize:
+    (key, el, options) =>
+    ({ dispatch }) => {
+      const map = new olMap(
+        Object.assign(
+          {
+            controls: [new ScaleBar({ units: 'us' }), new BasemapPicker()],
+            target: el,
+            view: new View({
+              center: (options && options.center) || [-11000000, 4600000],
+              zoom: (options && options.zoom) || 4,
+            }),
+            layers: [],
+          },
+          options
+        )
+      );
+      dispatch({
+        type: actions.MAPS_INITIALIZED,
+        payload: {
+          [key]: map,
         },
-        options
-      )
-    );
-    dispatch({
-      type: actions.MAPS_INITIALIZED,
-      payload: {
-        [key]: map,
-      },
-    });
-  },
+      });
+    },
 
-  doMapsShutdown: (key) => ({ dispatch }) => {
-    dispatch({
-      type: actions.MAPS_SHUTDOWN,
-      payload: {
-        [key]: null,
-      },
-    });
-  },
+  doMapsShutdown:
+    (key) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: actions.MAPS_SHUTDOWN,
+        payload: {
+          [key]: null,
+        },
+      });
+    },
 
   selectMapsState: (state) => state.maps,
 

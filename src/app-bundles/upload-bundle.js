@@ -67,150 +67,182 @@ const uploadBundle = {
     };
   },
 
-  doUploadQueueCsv: (csv) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_QUEUE_CSV',
-      payload: {
-        csv: csv,
-        _shouldParseCsv: true,
-      },
-    });
-  },
+  doUploadQueueCsv:
+    (csv) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_QUEUE_CSV',
+        payload: {
+          csv: csv,
+          _shouldParseCsv: true,
+        },
+      });
+    },
 
-  doUploadParseCsv: () => async ({ dispatch, store }) => {
-    dispatch({
-      type: 'UPLOAD_PARSE_CSV_START',
-      payload: {
-        _isParsing: true,
-        _shouldParseCsv: false,
-      },
-    });
-
-    const csv = store.selectUploadCsv();
-    const text = await csv.text();
-
-    readString(text, {
-      worker: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        dispatch({
-          type: 'UPLOAD_PARSE_CSV_FINISH',
-          payload: {
-            _isParsing: false,
-            json: results?.data,
-          },
-        });
-      },
-    });    
-  },
-
-  doUploadClear: () => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_CLEAR',
-      payload: {
-        csv: null,
-        json: null,
-        ignoreRows: '',
-        selectedParser: null,
-        fieldMap: null,
-        _errors: [],
-      },
-    });
-  },
-
-  doUploadSettingsClear: () => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SETTINGS_CLEAR',
-      payload: {
-        ignoreRows: '',
-        selectedParser: null,
-        fieldMap: null,
-        _errors: [],
-      },
-    });
-  },
-
-  doUploadSetIgnoreRows: (rows) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SET_IGNORE_ROWS',
-      payload: {
-        ignoreRows: rows,
-      },
-    });
-  },
-
-  doUploadSetSelectedParser: (parser) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SET_PARSER',
-      payload: {
-        selectedParser: parser,
-      },
-    });
-  },
-
-  doUploadSetFieldmap: (fieldMap) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SET_FIELD_MAP',
-      payload: {
-        fieldMap: fieldMap,
-      },
-    });
-  },
-
-  doUploadSend: () => async ({ dispatch, store, apiPost }) => {
-    dispatch({
-      type: 'UPLOAD_POST_START',
-      payload: {
-        _isUploading: true,
-      },
-    });
-
-    const project = store.selectProjectsByRoute();
-    const selectedParser = store.selectUploadSelectedParser();
-    const parsedData = store.selectUploadDataParsed();
-
-    let filteredData = parsedData
-      .filter((row) => !row.ignore)
-      .map((row) => {
-        delete row.ignore;
-        delete row.errors;
-        row.project_id = project.id;
-        return row;
+  doUploadParseCsv:
+    () =>
+    async ({ dispatch, store }) => {
+      dispatch({
+        type: 'UPLOAD_PARSE_CSV_START',
+        payload: {
+          _isParsing: true,
+          _shouldParseCsv: false,
+        },
       });
 
-    if (
-      selectedParser.prePostFilter &&
-      typeof selectedParser.prePostFilter === 'function'
-    ) {
-      filteredData = selectedParser.prePostFilter(filteredData);
-    }
+      const csv = store.selectUploadCsv();
+      const text = await csv.text();
 
-    const postUrl = selectedParser.url.replace(':projectId', project.id);
+      readString(text, {
+        worker: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          dispatch({
+            type: 'UPLOAD_PARSE_CSV_FINISH',
+            payload: {
+              _isParsing: false,
+              json: results?.data,
+            },
+          });
+        },
+      });
+    },
 
-    apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
-      if (err) {
-        console.error(err.message);
-        store.doNotificationFire({
-          message: err
-            ? `${err.name}: ${err.Detail}`
-            : 'An unexpected error occured. Please try again later.',
-          type: 'error',
-          autoClose: false,
+  doUploadClear:
+    () =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_CLEAR',
+        payload: {
+          csv: null,
+          json: null,
+          ignoreRows: '',
+          selectedParser: null,
+          fieldMap: null,
+          _errors: [],
+        },
+      });
+    },
+
+  doUploadSettingsClear:
+    () =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_SETTINGS_CLEAR',
+        payload: {
+          ignoreRows: '',
+          selectedParser: null,
+          fieldMap: null,
+          _errors: [],
+        },
+      });
+    },
+
+  doUploadSetIgnoreRows:
+    (rows) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_SET_IGNORE_ROWS',
+        payload: {
+          ignoreRows: rows,
+        },
+      });
+    },
+
+  doUploadSetSelectedParser:
+    (parser) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_SET_PARSER',
+        payload: {
+          selectedParser: parser,
+        },
+      });
+    },
+
+  doUploadSetFieldmap:
+    (fieldMap) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'UPLOAD_SET_FIELD_MAP',
+        payload: {
+          fieldMap: fieldMap,
+        },
+      });
+    },
+
+  doUploadSend:
+    () =>
+    async ({ dispatch, store, apiPost }) => {
+      dispatch({
+        type: 'UPLOAD_POST_START',
+        payload: {
+          _isUploading: true,
+        },
+      });
+
+      const project = store.selectProjectsByRoute();
+      const selectedParser = store.selectUploadSelectedParser();
+      const parsedData = store.selectUploadDataParsed();
+
+      let filteredData = parsedData
+        .filter((row) => !row.ignore)
+        .map((row) => {
+          delete row.ignore;
+          delete row.errors;
+          row.project_id = project.id;
+          return row;
         });
-      } else {
-        const data = body;
-        if (data.is_valid) {
-          apiPost(postUrl, filteredData, (err, body) => {
-            if (err) {
-              // @TODO add better error handling here
-              console.error(err.message);
-              store.doNotificationFire({
-                message: 'An unexpected error occured. Please try again later.',
-                type: 'error',
-                autoClose: false,
-              });
-            } else {
+
+      if (
+        selectedParser.prePostFilter &&
+        typeof selectedParser.prePostFilter === 'function'
+      ) {
+        filteredData = selectedParser.prePostFilter(filteredData);
+      }
+
+      const postUrl = selectedParser.url.replace(':projectId', project.id);
+
+      apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
+        if (err) {
+          // eslint-disable-next-line no-console
+          console.error(err.message);
+          store.doNotificationFire({
+            message: err
+              ? `${err.name}: ${err.Detail}`
+              : 'An unexpected error occured. Please try again later.',
+            type: 'error',
+            autoClose: false,
+          });
+        } else {
+          const data = body;
+          if (data.is_valid) {
+            apiPost(postUrl, filteredData, (err, _body) => {
+              if (err) {
+                // @TODO add better error handling here
+                // eslint-disable-next-line no-console
+                console.error(err.message);
+                store.doNotificationFire({
+                  message:
+                    'An unexpected error occured. Please try again later.',
+                  type: 'error',
+                  autoClose: false,
+                });
+              } else {
+                dispatch({
+                  type: 'UPLOAD_POST_FINISHED',
+                });
+                store.doNotificationFire({
+                  message: 'Data Uploaded Successfully',
+                  type: 'success',
+                  autoClose: 10000,
+                });
+              }
+            });
+          } else {
+            // Safety meaasure until ?dry_run=true is complete on API for all uploaders
+            if (Array.isArray(data) && data.length > 0) {
               dispatch({
                 type: 'UPLOAD_POST_FINISHED',
               });
@@ -219,49 +251,38 @@ const uploadBundle = {
                 type: 'success',
                 autoClose: 10000,
               });
-            }
-          });
-        } else {
-          // Safety meaasure until ?dry_run=true is complete on API for all uploaders
-          if (Array.isArray(data) && data.length > 0) {
-            dispatch({
-              type: 'UPLOAD_POST_FINISHED',
-            });
-            store.doNotificationFire({
-              message: 'Data Uploaded Successfully',
-              type: 'success',
-              autoClose: 10000,
-            });
-          } else {
-            data.errors.forEach((error) => {
-              store.doNotificationFire({
-                message: error,
-                type: 'error',
-                autoClose: 20000,
+            } else {
+              data.errors.forEach((error) => {
+                store.doNotificationFire({
+                  message: error,
+                  type: 'error',
+                  autoClose: 20000,
+                });
               });
-            });
+            }
           }
         }
-      }
-    });
-  },
+      });
+    },
 
-  doUploadIgnoreErrors: () => ({ dispatch, store }) => {
-    const parsed = store.selectUploadDataParsed();
-    const errRows = parsed
-      .map((row, i) => {
-        if (row.errors.length) return i + 1;
-        return null;
-      })
-      .filter((row) => !!row)
-      .join(',');
-    dispatch({
-      type: 'UPLOAD_SET_IGNORE_ROWS',
-      payload: {
-        ignoreRows: errRows,
-      },
-    });
-  },
+  doUploadIgnoreErrors:
+    () =>
+    ({ dispatch, store }) => {
+      const parsed = store.selectUploadDataParsed();
+      const errRows = parsed
+        .map((row, i) => {
+          if (row.errors.length) return i + 1;
+          return null;
+        })
+        .filter((row) => !!row)
+        .join(',');
+      dispatch({
+        type: 'UPLOAD_SET_IGNORE_ROWS',
+        payload: {
+          ignoreRows: errRows,
+        },
+      });
+    },
 
   selectUploadErrors: (state) => state.upload._errors,
 

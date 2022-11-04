@@ -15,24 +15,28 @@ const ModalBundle = {
     };
   },
 
-  doModalOpen: (content, props, size) => ({ dispatch }) => {
-    dispatch({
-      type: 'MODAL_UPDATED',
-      payload: {
-        content: content,
-        props: props,
-      },
-    });
-  },
-  doModalClose: () => ({ dispatch }) => {
-    dispatch({
-      type: 'MODAL_UPDATED',
-      payload: {
-        content: null,
-        props: null,
-      },
-    });
-  },
+  doModalOpen:
+    (content, props, _) =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'MODAL_UPDATED',
+        payload: {
+          content: content,
+          props: props,
+        },
+      });
+    },
+  doModalClose:
+    () =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'MODAL_UPDATED',
+        payload: {
+          content: null,
+          props: null,
+        },
+      });
+    },
   selectModalContent: (state) => state.modal.content,
   selectModalProps: (state) => state.modal.props,
   selectModalSize: (state) => state.modal.size,

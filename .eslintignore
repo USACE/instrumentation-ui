@@ -1,5 +1,4 @@
 node_modules/
 public/
 build/
-src/serviceWorker.js
 src/app-components/panel-group

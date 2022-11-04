@@ -1,4 +1,4 @@
-const arrayIze = (thing) => !thing || Array.isArray(thing) ? thing : [thing];
+const arrayIze = (thing) => (!thing || Array.isArray(thing) ? thing : [thing]);
 
 const shouldSkipToken = (method, path, unless) => {
   let skip = false;
@@ -28,40 +28,46 @@ const shouldSkipToken = (method, path, unless) => {
   return skip;
 };
 
-const processResponse = response => (
+const processResponse = (response) =>
   new Promise((resolve, reject) => {
     const func = response.status < 400 ? resolve : reject;
 
-    // Handle no content - @TODO: test this
     if (response.status === 204) {
       func({
-        'status': response.status,
-        'json': {},
+        status: response.status,
+        json: {},
       });
     } else {
-      response.json()
-        .then(json => func({
-          'status': response.status,
-          'json': json,
-        }))
-        .catch(e => console.error(e));
+      response
+        .text()
+        .then((data) => (data ? JSON.parse(data) : {}))
+        .then((json) =>
+          func({
+            status: response.status,
+            json: json,
+          })
+        )
+        // eslint-disable-next-line no-console
+        .catch((e) => console.error(e));
     }
-  })
-);
+  });
 
 const commonFetch = (root, path, options, callback) => {
   fetch(`${root}${path}`, options)
     .then(processResponse)
-    .then(response => {
+    .then((response) => {
       if (callback && typeof callback === 'function') {
         callback(null, response.json);
         return;
       }
     })
-    .catch(response => {
-      throw new ApiError(response.json, `Request returned a ${response.status}`);
+    .catch((response) => {
+      throw new ApiError(
+        response.json,
+        `Request returned a ${response.status}`
+      );
     })
-    .catch(err => {
+    .catch((err) => {
       callback(err);
     });
 };
@@ -79,11 +85,11 @@ class ApiError extends Error {
     this.name = 'Api Error';
     this.timestamp = new Date();
 
-    dataKeys.forEach(key => {
+    dataKeys.forEach((key) => {
       this[key] = data[key];
     });
-  };
-};
+  }
+}
 
 const createJwtApiBundle = (opts) => {
   const defaults = {
@@ -126,7 +132,7 @@ const createJwtApiBundle = (opts) => {
         tokenSelector: store[selectTokenSelector](),
       });
 
-      const defaultHeaders = token => ({
+      const defaultHeaders = (token) => ({
         Authorization: `Bearer ${token}`,
       });
 

@@ -27,16 +27,19 @@ export default createRestBundle({
     }
   },
   addons: {
-    doInstrumentTimeseriesSetActiveId: (id) => ({ dispatch }) => {
-      dispatch({
-        type: 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
-        payload: {
-          _activeId: id,
-        },
-      });
-    },
+    doInstrumentTimeseriesSetActiveId:
+      (id) =>
+      ({ dispatch }) => {
+        dispatch({
+          type: 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
+          payload: {
+            _activeId: id,
+          },
+        });
+      },
 
-    selectInstrumentTimeseriesActiveId: (state) => state.instrumentTimeseries._activeId,
+    selectInstrumentTimeseriesActiveId: (state) =>
+      state.instrumentTimeseries._activeId,
 
     selectInstrumentTimeseriesActiveIdParam: createSelector(
       'selectInstrumentTimeseriesActiveId',
@@ -51,7 +54,8 @@ export default createRestBundle({
         if (!timeseries || !timeseries.length) return {};
         const out = {};
         timeseries.forEach((ts) => {
-          if (!out.hasOwnProperty(ts.instrument_id)) out[ts.instrument_id] = [];
+          if (!Object.prototype.hasOwnProperty.call(out, ts.instrument_id))
+            out[ts.instrument_id] = [];
           out[ts.instrument_id].push(ts);
         });
         return out;
@@ -63,8 +67,8 @@ export default createRestBundle({
         if (!timeseries) return {};
         const clone = Object.assign({}, timeseries);
 
-        Object.keys(timeseries).forEach(key => {
-          clone[key] = clone[key].filter(ts => !ts.is_computed);
+        Object.keys(timeseries).forEach((key) => {
+          clone[key] = clone[key].filter((ts) => !ts.is_computed);
         });
 
         return clone;
@@ -76,7 +80,8 @@ export default createRestBundle({
         if (!timeseries || !timeseries.length) return {};
         const out = {};
         timeseries.forEach((ts) => {
-          if (!out.hasOwnProperty(ts.project_id)) out[ts.project_id] = [];
+          if (!Object.prototype.hasOwnProperty.call(out, ts.project_id))
+            out[ts.project_id] = [];
           out[ts.project_id].push(ts);
         });
         return out;
@@ -97,14 +102,20 @@ export default createRestBundle({
         if (
           instrument &&
           instrument.id &&
-          timeseriesByInstrumentId.hasOwnProperty(instrument.id)
+          Object.prototype.hasOwnProperty.call(
+            timeseriesByInstrumentId,
+            instrument.id
+          )
         ) {
           return timeseriesByInstrumentId[instrument.id];
         } // If on a project page
         else if (
           project &&
           project.id &&
-          timeseriesByProjectId.hasOwnProperty(project.id)
+          Object.prototype.hasOwnProperty.call(
+            timeseriesByProjectId,
+            project.id
+          )
         ) {
           return timeseriesByProjectId[project.id];
         } else {
@@ -117,9 +128,9 @@ export default createRestBundle({
       (timeseries) => {
         if (!timeseries) return [];
 
-        const out = timeseries.filter(ts => !ts.is_computed);
+        const out = timeseries.filter((ts) => !ts.is_computed);
         return out;
-      },
+      }
     ),
   },
 });

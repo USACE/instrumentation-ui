@@ -34,10 +34,11 @@ const exploreMapBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         if (!ignoreActions.includes(type))
+          // eslint-disable-next-line no-console
           console.log(type, payload);
-      };
+      }
       switch (type) {
         case 'INSTRUMENTS_FETCH_FINISHED':
           return Object.assign({}, state, {
@@ -48,7 +49,9 @@ const exploreMapBundle = {
             _groupsLoaded: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
+          if (
+            Object.prototype.hasOwnProperty.call(payload, initialData._mapKey)
+          ) {
             return Object.assign({}, state, {
               _mapLoaded: true,
             });
@@ -56,7 +59,9 @@ const exploreMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
+          if (
+            Object.prototype.hasOwnProperty.call(payload, initialData._mapKey)
+          ) {
             return Object.assign({}, state, {
               _mapLoaded: false,
               _instrumentsLoaded: false,
@@ -76,85 +81,89 @@ const exploreMapBundle = {
     };
   },
 
-  doExploreMapInitialize: () => ({ dispatch, store }) => {
-    dispatch({
-      type: 'EXPLOREMAP_INITIALIZE_START',
-      payload: {
-        _shouldInitialize: false,
-      },
-    });
-
-    const lyr = new Layer({
-      source: new Source(),
-      declutter: false,
-      style: (f, r) =>
-        new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
-          fill: new Fill({
-            color: '#ffffff',
-          }),
-          stroke: new Stroke({
-            color: statusColors[f.getProperties()['status']],
-            width: 3,
-          }),
-          text: new Text({
-            fill: new Fill({
-              color: '#000000',
-            }),
-            font: '16px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
-            stroke: new Stroke({
-              color: '#ffffff',
-              width: 2,
-            }),
-            text: f.get('name'),
-            textAlign: 'left',
-          }),
-        }),
-    });
-    dispatch({
-      type: 'EXPLOREMAP_INITIALIZE_FINISH',
-      payload: {
-        layer: lyr,
-      },
-    });
-  },
-
-  doExploreMapAddData: () => ({ dispatch, store }) => {
-    dispatch({
-      type: 'EXPLOREMAP_ADD_DATA_START',
-      payload: {
-        _mapLoaded: false,
-      },
-    });
-    const mapKey = store.selectExploreMapKey();
-    const geoProjection = store.selectMapsGeoProjection();
-    const webProjection = store.selectMapsWebProjection();
-    const map = store.selectMapsObject()[mapKey];
-    const lyr = store.selectExploreMapLayer();
-    const src = lyr.getSource();
-    const data = store.selectInstrumentsItemsGeoJSON();
-    map.removeLayer(lyr);
-    src.clear();
-    const features = geoJSON.readFeatures(data, {
-      featureProjection: webProjection,
-      dataProjection: geoProjection,
-    });
-    src.addFeatures(features);
-    map.addLayer(lyr);
-    const view = map.getView();
-    if (features && features.length) {
-      view.fit(src.getExtent(), {
-        padding: [50, 50, 50, 50],
-        maxZoom: 16,
+  doExploreMapInitialize:
+    () =>
+    ({ dispatch }) => {
+      dispatch({
+        type: 'EXPLOREMAP_INITIALIZE_START',
+        payload: {
+          _shouldInitialize: false,
+        },
       });
-    }
-    dispatch({
-      type: 'EXPLOREMAP_ADD_DATA_FINISH',
-    });
-  },
+
+      const lyr = new Layer({
+        source: new Source(),
+        declutter: false,
+        style: (f, r) =>
+          new Style({
+            geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
+            fill: new Fill({
+              color: '#ffffff',
+            }),
+            stroke: new Stroke({
+              color: statusColors[f.getProperties()['status']],
+              width: 3,
+            }),
+            text: new Text({
+              fill: new Fill({
+                color: '#000000',
+              }),
+              font: '16px sans-serif',
+              offsetX: 12,
+              offsetY: -12,
+              padding: [2, 2, 2, 2],
+              stroke: new Stroke({
+                color: '#ffffff',
+                width: 2,
+              }),
+              text: f.get('name'),
+              textAlign: 'left',
+            }),
+          }),
+      });
+      dispatch({
+        type: 'EXPLOREMAP_INITIALIZE_FINISH',
+        payload: {
+          layer: lyr,
+        },
+      });
+    },
+
+  doExploreMapAddData:
+    () =>
+    ({ dispatch, store }) => {
+      dispatch({
+        type: 'EXPLOREMAP_ADD_DATA_START',
+        payload: {
+          _mapLoaded: false,
+        },
+      });
+      const mapKey = store.selectExploreMapKey();
+      const geoProjection = store.selectMapsGeoProjection();
+      const webProjection = store.selectMapsWebProjection();
+      const map = store.selectMapsObject()[mapKey];
+      const lyr = store.selectExploreMapLayer();
+      const src = lyr.getSource();
+      const data = store.selectInstrumentsItemsGeoJSON();
+      map.removeLayer(lyr);
+      src.clear();
+      const features = geoJSON.readFeatures(data, {
+        featureProjection: webProjection,
+        dataProjection: geoProjection,
+      });
+      src.addFeatures(features);
+      map.addLayer(lyr);
+      const view = map.getView();
+      if (features && features.length) {
+        view.fit(src.getExtent(), {
+          padding: [50, 50, 50, 50],
+          maxZoom: 16,
+        });
+      }
+      dispatch({
+        type: 'EXPLOREMAP_ADD_DATA_FINISH',
+      });
+    },
 
   selectExploreMapKey: (state) => state.exploreMap._mapKey,
 
