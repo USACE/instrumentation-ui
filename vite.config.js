@@ -38,4 +38,11 @@ export default defineConfig({
     open: true,
     port: 3000,
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+    },
+  },
 });

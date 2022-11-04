@@ -1,27 +1,27 @@
 import React, { useRef, useEffect } from 'react';
-// import { isEqual } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
-// import Plotly from './minify-plotly';
-// import createPlotlyComponent from 'react-plotly.js/factory';
+import Plotly from './minify-plotly';
+import createPlotlyComponent from 'react-plotly.js/factory';
 
-// const Plot = createPlotlyComponent(Plotly);
+const Plot = createPlotlyComponent(Plotly);
 
 const Chart = ({
   data = [],
   layout = {},
-  // frames = [],
-  // config = {},
-  // onUpdate,
+  frames = [],
+  config = {},
+  onUpdate,
 }) => {
-  // const updateState = (figure) => {
-  //   if (
-  //     !isEqual(figure.layout, layout) ||
-  //     !isEqual(figure.frames, frames) ||
-  //     !isEqual(figure.data, data)
-  //   ) {
-  //     if (onUpdate && typeof onUpdate === 'function') onUpdate(figure);
-  //   }
-  // };
+  const updateState = (figure) => {
+    if (
+      !isEqual(figure.layout, layout) ||
+      !isEqual(figure.frames, frames) ||
+      !isEqual(figure.data, data)
+    ) {
+      if (onUpdate && typeof onUpdate === 'function') onUpdate(figure);
+    }
+  };
 
   // resizing to the container as it moves
   const containerRef = useRef(null);
@@ -47,7 +47,7 @@ const Chart = ({
 
   return (
     <div ref={containerRef} style={{ height: '100%' }}>
-      {/* <Plot
+      <Plot
         ref={plotRef}
         data={data}
         layout={layout}
@@ -58,7 +58,7 @@ const Chart = ({
         onInitialized={updateState}
         onUpdate={updateState}
         onClick={() => {}}
-      /> */}
+      />
     </div>
   );
 };

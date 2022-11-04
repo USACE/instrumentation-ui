@@ -1,9 +1,9 @@
 import React from 'react';
 
-// import Plotly from '../../app-components/chart/minify-plotly';
-// import createPlotlyComponent from 'react-plotly.js/factory';
+import Plotly from '../../app-components/chart/minify-plotly';
+import createPlotlyComponent from 'react-plotly.js/factory';
 
-// const Plot = createPlotlyComponent(Plotly);
+const Plot = createPlotlyComponent(Plotly);
 
 const GroupTimeseriesChart = ({ data, _title }) => {
   if (!data) return null;
@@ -35,23 +35,22 @@ const GroupTimeseriesChart = ({ data, _title }) => {
   });
 
   return (
-    <></>
-    // <Plot
-    //   data={chartData}
-    //   layout={{
-    //     autosize: true,
-    //     showlegend: false,
-    //     dragmode: 'pan',
-    //   }}
-    //   showLegend={false}
-    //   config={{
-    //     responsive: true,
-    //     displaylogo: false,
-    //     displayModeBar: true,
-    //     scrollZoom: true,
-    //   }}
-    //   style={{ width: '100%', height: '500px' }}
-    // />
+    <Plot
+      data={chartData}
+      layout={{
+        autosize: true,
+        showlegend: false,
+        dragmode: 'pan',
+      }}
+      showLegend={false}
+      config={{
+        responsive: true,
+        displaylogo: false,
+        displayModeBar: true,
+        scrollZoom: true,
+      }}
+      style={{ width: '100%', height: '500px' }}
+    />
   );
 };
 
