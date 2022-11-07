@@ -22,10 +22,7 @@ export default createRestBundle({
   putTemplate: '/projects/:projectId/instruments/{:item.id}',
   postTemplate: '/projects/:projectId/instruments',
   deleteTemplate: '/projects/:projectId/instruments/{:item.id}',
-  fetchActions: [
-    'URL_UPDATED',
-    'PROJECTS_FETCH_FINISHED',
-  ],
+  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
     'INSTRUMENTS_SAVE_FINISHED',
     'INSTRUMENTS_DELETE_FINISHED',
@@ -35,10 +32,23 @@ export default createRestBundle({
   prefetch: (store) => {
     const hash = store.selectHash();
     const url = store.selectUrlObject();
-    const whiteList = ['dashboard', 'uploader', 'explorer', 'all-instruments', 'batch-plotting'];
-    const pathnameWhitelist = ['/instruments/', '/groups/', '/collection-groups/'];
+    const whiteList = [
+      'dashboard',
+      'uploader',
+      'explorer',
+      'all-instruments',
+      'batch-plotting',
+    ];
+    const pathnameWhitelist = [
+      '/instruments/',
+      '/groups/',
+      '/collection-groups/',
+    ];
 
-    return whiteList.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
+    return (
+      whiteList.includes(hash) ||
+      pathnameWhitelist.some((elem) => url.pathname.includes(elem))
+    );
   },
   addons: {
     doInstrumentsInitializeLayer: () => ({ dispatch, store }) => {
@@ -53,31 +63,32 @@ export default createRestBundle({
       const lyr = new Layer({
         source: new Source(),
         declutter: true,
-        style: (f, r) => new Style({
-          geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
-          fill: new Fill({
-            color: '#000000',
-          }),
-          stroke: new Stroke({
-            color: '#ffffff',
-            width: 1,
-          }),
-          text: new Text({
+        style: (f, r) =>
+          new Style({
+            geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
             fill: new Fill({
               color: '#000000',
             }),
-            font: '16px sans-serif',
-            offsetX: 12,
-            offsetY: -12,
-            padding: [2, 2, 2, 2],
             stroke: new Stroke({
               color: '#ffffff',
-              width: 2,
+              width: 1,
             }),
-            text: f.get('name'),
-            textAlign: 'left',
+            text: new Text({
+              fill: new Fill({
+                color: '#000000',
+              }),
+              font: '16px sans-serif',
+              offsetX: 12,
+              offsetY: -12,
+              padding: [2, 2, 2, 2],
+              stroke: new Stroke({
+                color: '#ffffff',
+                width: 2,
+              }),
+              text: f.get('name'),
+              textAlign: 'left',
+            }),
           }),
-        }),
       });
       map.addLayer(lyr);
 
@@ -114,10 +125,11 @@ export default createRestBundle({
 
     selectInstrumentsItemsObjectById: createSelector(
       'selectInstrumentsItems',
-      (items) => items.reduce((out, instrument) => {
-        out[instrument.id] = instrument;
-        return out;
-      }, {})
+      (items) =>
+        items.reduce((out, instrument) => {
+          out[instrument.id] = instrument;
+          return out;
+        }, {})
     ),
 
     selectInstrumentsLayer: (state) => state.instruments._layer,
@@ -166,9 +178,8 @@ export default createRestBundle({
       }
     ),
 
-    selectInstrumentsNames: createSelector(
-      'selectInstrumentsItems',
-      (items) => items.map((item) => item.name)
+    selectInstrumentsNames: createSelector('selectInstrumentsItems', (items) =>
+      items.map((item) => item.name)
     ),
 
     reactInstrumentsShouldInitializeLayer: (state) => {

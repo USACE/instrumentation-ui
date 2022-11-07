@@ -36,7 +36,8 @@ export default createRestBundle({
       });
     },
 
-    selectInstrumentTimeseriesActiveId: (state) => state.instrumentTimeseries._activeId,
+    selectInstrumentTimeseriesActiveId: (state) =>
+      state.instrumentTimeseries._activeId,
 
     selectInstrumentTimeseriesActiveIdParam: createSelector(
       'selectInstrumentTimeseriesActiveId',
@@ -63,8 +64,8 @@ export default createRestBundle({
         if (!timeseries) return {};
         const clone = Object.assign({}, timeseries);
 
-        Object.keys(timeseries).forEach(key => {
-          clone[key] = clone[key].filter(ts => !ts.is_computed);
+        Object.keys(timeseries).forEach((key) => {
+          clone[key] = clone[key].filter((ts) => !ts.is_computed);
         });
 
         return clone;
@@ -117,9 +118,9 @@ export default createRestBundle({
       (timeseries) => {
         if (!timeseries) return [];
 
-        const out = timeseries.filter(ts => !ts.is_computed);
+        const out = timeseries.filter((ts) => !ts.is_computed);
         return out;
-      },
+      }
     ),
   },
 });

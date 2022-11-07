@@ -11,9 +11,7 @@ export default createRestBundle({
   putTemplate: '',
   postTemplate: '/instrument_groups/:groupId/instruments', // Add an instrument
   deleteTemplate: '/instrument_groups/:groupId/instruments/{:item.id}', // Remove an instrument
-  fetchActions: [
-    'INSTRUMENTGROUPS_FETCH_FINISHED',
-  ],
+  fetchActions: ['INSTRUMENTGROUPS_FETCH_FINISHED'],
   forceFetchActions: [
     'INSTRUMENTS_SAVE_FINISHED',
     'INSTRUMENTGROUPINSTRUMENTS_SAVE_FINISHED',
