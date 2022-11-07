@@ -9,13 +9,10 @@ export default createRestBundle({
   persist: false,
   routeParam: 'groupSlug',
   getTemplate: '/projects/:projectId/instrument_groups',
-  putTemplate: '/instrument_groups/:item.id',
+  putTemplate: '/instrument_groups/{:item.id}',
   postTemplate: '/instrument_groups',
-  deleteTemplate: '/instrument_groups/:item.id',
-  fetchActions: [
-    'URL_UPDATED',
-    'PROJECTS_FETCH_FINISHED',
-  ],
+  deleteTemplate: '/instrument_groups/{:item.id}',
+  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
   forceFetchActions: [
     'INSTRUMENTGROUPS_SAVE_FINISHED',
     'INSTRUMENTGROUPS_DELETE_FINISHED',

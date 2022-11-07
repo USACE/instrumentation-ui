@@ -7,9 +7,9 @@ export default createRestBundle({
   persist: false,
   routeParam: 'noteId',
   getTemplate: '/instruments/:instrumentId/notes',
-  putTemplate: '/instruments/notes/:item.id',
+  putTemplate: '/instruments/notes/{:item.id}',
   postTemplate: '/instruments/notes',
-  deleteTemplate: '/instruments/notes/:item.id',
+  deleteTemplate: '/instruments/notes/{:item.id}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',

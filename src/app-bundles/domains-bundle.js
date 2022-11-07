@@ -9,13 +9,10 @@ export default createRestBundle({
   persist: false,
   routeParam: 'groupId',
   getTemplate: '/domains',
-  putTemplate: '/domains/:item.id',
+  putTemplate: '/domains/{:item.id}',
   postTemplate: '/domains',
-  deleteTemplate: '/domains/:item.id',
-  fetchActions: [
-    'URL_UPDATED',
-    'AUTH_LOGGED_IN',
-  ],
+  deleteTemplate: '/domains/{:item.id}',
+  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: [],
   addons: {
     selectDomainsItemsByGroup: createSelector('selectDomainsItems', (items) => {
