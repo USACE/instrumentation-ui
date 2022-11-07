@@ -5,17 +5,7 @@ import { subDays, parseISO, format } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
-
-const getStyle = (_index) => ({
-  type: 'scatter',
-  mode: 'lines+markers',
-  marker: {
-    size: 8,
-  },
-  line: {
-    width: 2,
-  },
-});
+import { generateNewChartData } from './helper';
 
 const BatchPlotChart = connect(
   'doPrintSetData',
@@ -39,12 +29,12 @@ const BatchPlotChart = connect(
     doNotificationFire,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
-    const [measurements, setMeasurements] = useState([]);
-    const [chartData, setChartData] = useState([]);
+    const [measurements, setMeasurements] = useState([{}]);
+    const [chartData, setChartData] = useState([{}]);
     const [lifetimeDate, setLifetimeDate] = useState([]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
-    const [chartSettings, setChartSettings] = useState();
+    const [chartSettings, setChartSettings] = useState({ autorange: false, });
 
     const layout = {
       xaxis: {
@@ -72,85 +62,6 @@ const BatchPlotChart = connect(
       autosize: true,
       dragmode: 'pan',
       height: 600,
-    };
-
-
-    // TODO: the commented line is correct but causes errors in functionality below. Rework this entire function.
-    const generateNewChartData = () => {
-      const { show_comments, show_masked, show_nonvalidated } = chartSettings || {};
-
-      const data = measurements
-        .map((elem, i) => {
-          if (elem && instrumentTimeseriesItemsByRoute.length) {
-            const style = getStyle(i);
-            const { items, timeseries_id } = elem;
-            const {
-              instrument,
-              name,
-              unit,
-              parameter,
-            } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
-
-            const filteredItems = (items || []).filter(el => {
-              if ((show_masked && el?.masked) || (show_nonvalidated && !el?.validated)) return true;
-              else if (!el?.masked || el?.validated) return true;
-              // else if (!el?.masked && el?.validated) return true;
-
-              return false;
-            });
-
-            const sortedItems = filteredItems
-              .slice()
-              .sort((a, b) => new Date(a.time) - new Date(b.time));
-
-            const { x, y, hovertext } = sortedItems.reduce(
-              (accum, item) => ({
-                x: [...accum.x, item.time],
-                y: [...accum.y, item.value],
-                hovertext: [...accum.hovertext, item.annotation],
-              }),
-              { x: [], y: [], hovertext: [] }
-            );
-
-            return parameter === 'precipitation'
-              ? {
-                x,
-                y,
-                type: 'bar',
-                yaxis: 'y2',
-                name: `${instrument} - ${name} (${unit})` || '',
-                hovertext: show_comments ? hovertext : [],
-                hoverinfo: 'x+y+text',
-                showlegend: true,
-              }
-              : {
-                ...style,
-                x,
-                y,
-                name: `${instrument} - ${name} (${unit})` || '',
-                showlegend: true,
-                hovertext: show_comments ? hovertext : [],
-                hoverinfo: 'x+y+text'
-              };
-          }
-        })
-        .filter(e => e);
-      
-      const datedData = data;
-
-      // optimize
-      if (datedData[0] && datedData[0].x && datedData[0].y) {
-        setLifetimeDate(datedData[0].x[0]);
-        for (let i = 0; i < datedData[0].x.length; i++) {
-          const tempDate = new Date(datedData[0].x[i]);
-          if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
-            datedData[0].x.splice(i, 1);
-            datedData[0].y.splice(i, 1);
-            i--;
-          }
-        }
-      }
-      setChartData(datedData);
     };
 
     /** Load specific timeseries ids into state when new configurations are loaded */
@@ -184,7 +95,10 @@ const BatchPlotChart = connect(
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
-    useEffect(() => generateNewChartData(), [measurements, withPrecipitation, chartSettings]);
+    useEffect(
+      () => generateNewChartData(measurements, chartSettings),
+      [measurements, withPrecipitation, chartSettings]
+    );
 
     /** When chart data changes, see if there is precip data to adjust plot */
     useEffect(() => {
@@ -202,7 +116,7 @@ const BatchPlotChart = connect(
     useEffect(() => {
       if (dateRange[0] && dateRange[1]) {
         if (dateRange[0] < dateRange[1]) {
-          generateNewChartData(); 
+          generateNewChartData(measurements, chartSettings); 
         } else {
           const fail = {
             level: 'error',
@@ -234,7 +148,7 @@ const BatchPlotChart = connect(
               lifetimeDate={lifetimeDate}
               dateRange={dateRange}
               setDateRange={setDateRange}
-              setWithPrecipitation={setWithPrecipitation}
+              // setWithPrecipitation={setWithPrecipitation}
               chartSettings={chartSettings || {}}
               setChartSettings={setChartSettings}
             />

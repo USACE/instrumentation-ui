@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef, useEffect } from 'react';
 import isEqual from 'lodash.isequal';
 
@@ -11,7 +12,7 @@ const Chart = ({
   layout = {},
   frames = [],
   config = {},
-  onUpdate,
+  onUpdate = (_figure) => {},
 }) => {
   const updateState = (figure) => {
     if (
@@ -26,10 +27,11 @@ const Chart = ({
   // resizing to the container as it moves
   const containerRef = useRef(null);
   const plotRef = useRef(null);
+
   useEffect(() => {
     if (!containerRef || !plotRef) return undefined;
     const ro = new ResizeObserver(() => {
-      plotRef.current.resizeHandler();
+      plotRef?.current?.resizeHandler();
     });
     ro.observe(containerRef.current);
 

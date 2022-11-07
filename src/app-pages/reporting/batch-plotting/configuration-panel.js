@@ -56,7 +56,7 @@ const ConfigurationPanel = connect(
     const timeseries = useMemo(() => formatOptions(filterTimeseries(instrumentTimeseries)), [instrumentTimeseries]);
     const [selectedTimeseries, setSelectedTimeseries] = useState((currentItem && isEditMode) && currentItem.timeseries_id || []);
     const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || '');
-    const [inputError, setInputError] = useState();
+    const [inputError, setInputError] = useState('');
 
     const handleSave = () => {
       if (!newConfigName || !newConfigName.trim()) {
