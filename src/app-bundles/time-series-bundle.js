@@ -8,9 +8,9 @@ export default createRestBundle({
   persist: false,
   routeParam: '',
   getTemplate: '/projects/:projectId/timeseries',
-  putTemplate: '/timeseries/:item.id',
+  putTemplate: '/timeseries/{:item.id}',
   postTemplate: '/timeseries',
-  deleteTemplate: '/timeseries/:item.id',
+  deleteTemplate: '/timeseries/{:item.id}',
   fetchActions: [],
   forceFetchActions: [
     'INSTRUMENTS_FETCH_FINISHED',
@@ -36,7 +36,8 @@ export default createRestBundle({
       });
     },
 
-    selectInstrumentTimeseriesActiveId: (state) => state.instrumentTimeseries._activeId,
+    selectInstrumentTimeseriesActiveId: (state) =>
+      state.instrumentTimeseries._activeId,
 
     selectInstrumentTimeseriesActiveIdParam: createSelector(
       'selectInstrumentTimeseriesActiveId',
@@ -63,8 +64,8 @@ export default createRestBundle({
         if (!timeseries) return {};
         const clone = Object.assign({}, timeseries);
 
-        Object.keys(timeseries).forEach(key => {
-          clone[key] = clone[key].filter(ts => !ts.is_computed);
+        Object.keys(timeseries).forEach((key) => {
+          clone[key] = clone[key].filter((ts) => !ts.is_computed);
         });
 
         return clone;
@@ -117,9 +118,9 @@ export default createRestBundle({
       (timeseries) => {
         if (!timeseries) return [];
 
-        const out = timeseries.filter(ts => !ts.is_computed);
+        const out = timeseries.filter((ts) => !ts.is_computed);
         return out;
-      },
+      }
     ),
   },
 });
