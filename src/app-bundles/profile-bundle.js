@@ -9,7 +9,7 @@ export default createRestBundle({
   persist: false,
   routeParam: 'id',
   getTemplate: '/my_profile',
-  putTemplate: '/profiles/:item.slug',
+  putTemplate: '/profiles/{:item.slug}',
   postTemplate: '/profiles',
   deleteTemplate: '',
   fetchActions: ['AUTH_LOGGED_IN'],

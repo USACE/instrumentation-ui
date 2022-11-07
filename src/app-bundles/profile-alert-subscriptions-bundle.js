@@ -7,7 +7,7 @@ export default createRestBundle({
   staleAfter: 0,
   persist: false,
   getTemplate: '/my_alert_subscriptions',
-  putTemplate: '/alert_subscriptions/:item.id',
+  putTemplate: '/alert_subscriptions/{:item.id}',
   fetchActions: [
     'PROFILE_FETCH_FINISHED',
     'ALERTSUBSCRIBE_SAVE_FINISHED',
