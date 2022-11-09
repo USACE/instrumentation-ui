@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import Button from '../../../app-components/button';
 
+import Button from '../../../app-components/button';
 import FormulaCard from './formulaCard';
 
 export default connect(
@@ -18,7 +18,7 @@ export default connect(
     instrumentFormulasItems,
     nonComputedTimeseriesItemsByRoute: timeseries,
   }) => {
-    const [formulaIsEditing, setIsFormulaEditing] = useState(false);
+    const [activeFormula, setActiveFormula] = useState(null);
 
     const createNewFormula = () => {
       doInstrumentFormulasSave({
@@ -26,6 +26,18 @@ export default connect(
         formula: '',
         instrument_id: instrumentsIdByRoute?.instrumentId,
       }, null, true, true);
+    };
+
+    const insertParam = (param) => {
+      const { input, formula, setFormula } = activeFormula;
+
+      const start = input.current.selectionStart;
+      const end = input.current.selectionEnd;
+      const txt = `${formula.slice(0, start)}${param}${formula.slice(
+        end,
+        formula.length
+      )}`;
+      setFormula(txt);
     };
 
     return (
@@ -56,8 +68,8 @@ export default connect(
                 <FormulaCard
                   key={f?.id}
                   formulaItem={f}
-                  isAnotherEditing={formulaIsEditing}
-                  handleEditClick={(isEditing) => setIsFormulaEditing(isEditing)}
+                  isAnotherEditing={!!activeFormula}
+                  handleEditClick={f => setActiveFormula(f)}
                   doInstrumentFormulasSave={doInstrumentFormulasSave}
                   doModalOpen={doModalOpen}
                 />

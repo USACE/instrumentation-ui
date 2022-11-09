@@ -27,16 +27,6 @@ const FormulaCard = ({
   const [isEditing, setIsEditing] = useState(false);
   const input = useRef(null);
 
-  const insertParam = (param) => {
-    const start = input.current.selectionStart;
-    const end = input.current.selectionEnd;
-    const txt = `${formula.slice(0, start)}${param}${formula.slice(
-      end,
-      formula.length
-    )}`;
-    setFormula(txt);
-  };
-
   const handleSave = () => {
     doInstrumentFormulasSave({
       id,
@@ -47,13 +37,15 @@ const FormulaCard = ({
   };
 
   useEffect(() => {
-    handleEditClick(isEditing);
-
     if (!isEditing) {
       setFormula(defaultFormula);
       setFormulaName(defaultFormulaName);
+      handleEditClick(null);
     }
-  }, [isEditing]);
+    else {
+      handleEditClick({ input, formula, setFormula });
+    }
+  }, [isEditing, formula, setFormula]);
 
   return (
     <Card className='mb-2'>
@@ -106,6 +98,7 @@ const FormulaCard = ({
                 handleClick={() => setIsEditing(true)}
               />
               <Button
+                isDisabled={isAnotherEditing}
                 variant='danger'
                 size='small'
                 isOutline
