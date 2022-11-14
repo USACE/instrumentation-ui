@@ -5,16 +5,16 @@ import { ModalHeader, ModalFooter } from '../../../app-components/modal';
 
 const DeleteFormulaModal = connect(
   'doModalClose',
-  'doInstrumentFormulaDelete',
+  'doInstrumentFormulasDelete',
   ({
     doModalClose,
-    doInstrumentFormulaDelete,
+    doInstrumentFormulasDelete,
     formulaItem,
   }) => {
     const { formula_name } = formulaItem;
 
     const deleteFormula = () => {
-      doInstrumentFormulaDelete(formulaItem, () => doModalClose(), false);
+      doInstrumentFormulasDelete(formulaItem, () => doModalClose(), false);
     };
 
     return (

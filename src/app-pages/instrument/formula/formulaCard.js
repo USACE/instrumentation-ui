@@ -31,7 +31,7 @@ const FormulaCard = ({
     doInstrumentFormulasSave({
       id,
       instrument_id,
-      formulaName,
+      formula_name: formulaName,
       formula,
     }, () => setIsEditing(false), false, false);
   };

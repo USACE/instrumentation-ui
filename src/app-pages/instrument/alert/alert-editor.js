@@ -54,13 +54,14 @@ export default connect(
               <strong>Select an Alert</strong>
             </span>
             <Button
+              isOutline
               variant='success'
               size='small'
               handleClick={() => {
                 doModalOpen(AlertFormModal, { item: {} });
                 console.log('Clicked the new alert button');
               }}
-              text='New +'
+              text='+ New Alert'
               title='New Alert Configuration'
             />
           </div>
