@@ -75,6 +75,15 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
   return [];
 };
 
+
+/*
+
+Could instead check for first date that is above the lower range and splice out all lower
+and check for first data lower than upper range and splice all higher
+
+assumption: sorted by dates
+
+*/
 export const limitDatabyDateRange = (datedData = [], dateRange) => {
   if (datedData[0] && datedData[0].x && datedData[0].y) {
     for (let i = 0; i < datedData[0].x.length; i++) {
