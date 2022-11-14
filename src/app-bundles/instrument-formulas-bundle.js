@@ -5,6 +5,7 @@ export default createRestBundle({
   uid: 'id',
   staleAfter: 0,
   persist: false,
+  routeParam: 'formulaId',
   getTemplate: '/formulas?instrument_id={:instrumentId}',
   putTemplate: '/formulas/{:item.id}',
   postTemplate: '/formulas',

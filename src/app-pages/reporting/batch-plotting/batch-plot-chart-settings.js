@@ -14,11 +14,9 @@ const BatchPlotChartSettings = ({
   setChartSettings,
   dateRange = [],
   setDateRange,
-  lifetimeDate,
 }) => {
   const [fromTime, endTime] = dateRange;
   const [activeButton, setActiveButton] = useState('1 year');
-  const [displayAllData, setDisplayAllData] = useState(false);
   const { autorange, show_comments, show_masked, show_nonvalidated } = chartSettings;
 
   const alterRange = (daysAgo) => {
@@ -26,7 +24,7 @@ const BatchPlotChartSettings = ({
   };
 
   const calcLifetime = () => {
-    setDateRange([new Date(lifetimeDate), new Date()]);
+    setDateRange([0, new Date()]);
   };
 
   const isDisplayAllActive = () => show_comments && show_masked && show_nonvalidated;

@@ -5,7 +5,7 @@ import { subDays, parseISO, format } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
-import { generateNewChartData } from './helper';
+import { generateNewChartData, limitDatabyDateRange } from './helper';
 
 const BatchPlotChart = connect(
   'doPrintSetData',
@@ -29,12 +29,12 @@ const BatchPlotChart = connect(
     doNotificationFire,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
-    const [measurements, setMeasurements] = useState([{}]);
-    const [chartData, setChartData] = useState([{}]);
+    const [measurements, setMeasurements] = useState([]);
+    const [chartData, setChartData] = useState([]);
     const [lifetimeDate, setLifetimeDate] = useState([]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
-    const [chartSettings, setChartSettings] = useState({ autorange: false, });
+    const [chartSettings, setChartSettings] = useState({ autorange: false });
 
     const layout = {
       xaxis: {
@@ -96,8 +96,11 @@ const BatchPlotChart = connect(
 
     /** When we get new measurements, update chart data */
     useEffect(
-      () => generateNewChartData(measurements, chartSettings),
-      [measurements, withPrecipitation, chartSettings]
+      () => {
+        const newData = generateNewChartData(measurements, instrumentTimeseriesItemsByRoute, chartSettings);
+        setChartData(newData);
+      },
+      [measurements, instrumentTimeseriesItemsByRoute, withPrecipitation, chartSettings]
     );
 
     /** When chart data changes, see if there is precip data to adjust plot */
@@ -113,25 +116,10 @@ const BatchPlotChart = connect(
       doPrintSetData(chartData, layout);
     }, [chartData, setWithPrecipitation]);
 
-    useEffect(() => {
-      if (dateRange[0] && dateRange[1]) {
-        if (dateRange[0] < dateRange[1]) {
-          generateNewChartData(measurements, chartSettings); 
-        } else {
-          const fail = {
-            level: 'error',
-            title: 'Incorrect Date Range',
-            message: 'Begin date must be earlier or the same as the end date',
-          };
-          doNotificationFire(fail);
-        }
-      }
-    }, [dateRange]);
-
     return (
       <>
         <Chart
-          data={chartData}
+          data={limitDatabyDateRange(chartData, dateRange)}
           layout={layout}
           config={{
             responsive: true,
@@ -140,15 +128,12 @@ const BatchPlotChart = connect(
             scrollZoom: true,
           }}
         />
-        {/* @TODO Updates - When API can handle further settings */}
         {chartData.length ? (
           <>
             <hr />
             <ChartSettings
-              lifetimeDate={lifetimeDate}
               dateRange={dateRange}
               setDateRange={setDateRange}
-              // setWithPrecipitation={setWithPrecipitation}
               chartSettings={chartSettings || {}}
               setChartSettings={setChartSettings}
             />

@@ -295,7 +295,9 @@ const createRestBundle = (opts) => {
         const flags = store[selectFlags]();
         const items = store[selectItemsObject]();
 
-        if (url.indexOf('/:') !== -1 || url.indexOf('{:') !== -1) {
+        console.log('test url: ', url);
+
+        if (url.indexOf('/:') !== -1 || url.indexOf('{:') !== -1 || url.indexOf('=:') !== -1) {
           // if we haven't filled in all of our params then bail
           dispatch({
             type: actions.FETCH_ABORT,

@@ -9,88 +9,83 @@ const getStyle = (_index) => ({
   },
 });
 
-export const generateNewChartData = (measurements, chartSettings) => {
+export const generateNewChartData = (measurements, timeseries, chartSettings) => {
   const { show_comments, show_masked, show_nonvalidated } = chartSettings || {};
 
-  console.log('test measurements: ', measurements);
+  if (measurements.length && timeseries.length) {
+    const data = measurements.map((elem, index) => {
+      if (elem && timeseries.length) {
+        const { items, timeseries_id } = elem;
+        const {
+          instrument,
+          name,
+          unit,
+          parameter,
+        } = timeseries.find(t => t.id === timeseries_id);
 
-  const data = measurements.map(el => el);
+        const filteredItems = items.filter(item => {
+          const { masked, validated } = item;
+
+          if (show_masked && show_nonvalidated) return true;
+          if (show_masked && !validated) return false;
+          else if (show_masked && validated) return true;
+
+          if (show_nonvalidated && masked) return false;
+          else if (show_nonvalidated && !masked) return true;
+
+          if (masked || !validated) return false;
+          return true;
+        }).sort((a, b) => new Date(a.time) - new Date(b.time));
+
+        const { x, y, hovertext } = filteredItems.reduce(
+          (accum, item) => ({
+            x: [...accum.x, item.time],
+            y: [...accum.y, item.value],
+            hovertext: [...accum.hovertext, item.annotation],
+          }),
+          { x: [], y: [], hovertext: [] }
+        );
+
+        return parameter === 'precipitation'
+          ? {
+            x: x,
+            y: y,
+            type: 'bar',
+            yaxis: 'y2',
+            name: `${instrument} - ${name} (${unit})` || '',
+            hovertext: show_comments ? hovertext : [],
+            hoverinfo: 'x+y+text',
+            showlegend: true,
+          }
+          : {
+            ...getStyle(index),
+            x: x,
+            y: y,
+            name: `${instrument} - ${name} (${unit})` || '',
+            showlegend: true,
+            hovertext: show_comments ? hovertext : [],
+            hoverinfo: 'x+y+text'
+          };
+      }
+    }).filter(e => e);
+
+    return data;
+  }
+
+  return [];
 };
 
-// TODO: the commented line is correct but causes errors in functionality below. Rework this entire function.
-// export const generateNewChartData = () => {
-//   const { show_comments, show_masked, show_nonvalidated } = chartSettings || {};
+export const limitDatabyDateRange = (datedData = [], dateRange) => {
+  if (datedData[0] && datedData[0].x && datedData[0].y) {
+    for (let i = 0; i < datedData[0].x.length; i++) {
+      const tempDate = new Date(datedData[0].x[i]);
+      if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
+        datedData[0].x.splice(i, 1);
+        datedData[0].y.splice(i, 1);
+        i--;
+      }
+    }
+  }
 
-//   const data = measurements
-//     .map((elem, i) => {
-//       if (elem && instrumentTimeseriesItemsByRoute.length) {
-//         const style = getStyle(i);
-//         const { items, timeseries_id } = elem;
-//         const {
-//           instrument,
-//           name,
-//           unit,
-//           parameter,
-//         } = instrumentTimeseriesItemsByRoute.find(i => i.id === timeseries_id);
-
-//         const filteredItems = (items || []).filter(el => {
-//           if ((show_masked && el?.masked) || (show_nonvalidated && !el?.validated)) return true;
-//           else if (!el?.masked || el?.validated) return true;
-//           // else if (!el?.masked && el?.validated) return true;
-
-//           return false;
-//         });
-
-//         const sortedItems = filteredItems
-//           .slice()
-//           .sort((a, b) => new Date(a.time) - new Date(b.time));
-
-//         const { x, y, hovertext } = sortedItems.reduce(
-//           (accum, item) => ({
-//             x: [...accum.x, item.time],
-//             y: [...accum.y, item.value],
-//             hovertext: [...accum.hovertext, item.annotation],
-//           }),
-//           { x: [], y: [], hovertext: [] }
-//         );
-
-//         return parameter === 'precipitation'
-//           ? {
-//             x,
-//             y,
-//             type: 'bar',
-//             yaxis: 'y2',
-//             name: `${instrument} - ${name} (${unit})` || '',
-//             hovertext: show_comments ? hovertext : [],
-//             hoverinfo: 'x+y+text',
-//             showlegend: true,
-//           }
-//           : {
-//             ...style,
-//             x,
-//             y,
-//             name: `${instrument} - ${name} (${unit})` || '',
-//             showlegend: true,
-//             hovertext: show_comments ? hovertext : [],
-//             hoverinfo: 'x+y+text'
-//           };
-//       }
-//     })
-//     .filter(e => e);
-  
-//   const datedData = data;
-
-//   // optimize
-//   if (datedData[0] && datedData[0].x && datedData[0].y) {
-//     setLifetimeDate(datedData[0].x[0]);
-//     for (let i = 0; i < datedData[0].x.length; i++) {
-//       const tempDate = new Date(datedData[0].x[i]);
-//       if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
-//         datedData[0].x.splice(i, 1);
-//         datedData[0].y.splice(i, 1);
-//         i--;
-//       }
-//     }
-//   }
-//   setChartData(datedData);
-// };
+  return datedData;
+};
