@@ -17,11 +17,14 @@ export default connect(
     doInstrumentTimeseriesDelete,
     instrumentsByRoute: instrument,
     item,
+    isEdit = false,
   }) => {
     const [name, setName] = useState((item && item.name) || '');
     const [instrument_id] = useState(instrument.id);
     const [parameter_id, setParameterId] = useState((item && item.parameter_id) || '');
     const [unit_id, setUnitId] = useState((item && item.unit_id) || '');
+
+    const title = isEdit ? 'Edit Timeseries' : 'New Timeseries';
 
     const handleSave = (e) => {
       e.preventDefault();
@@ -54,7 +57,7 @@ export default connect(
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <form id='instrument-constant-form' onSubmit={handleSave}>
-          <ModalHeader title='Edit Timeseries' />
+          <ModalHeader title={title} />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>

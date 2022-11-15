@@ -37,7 +37,7 @@ export default connect(
               size='small'
               className='float-right'
               isOutline
-              handleClick={() => doModalOpen(ConstantForm, { item })}
+              handleClick={() => doModalOpen(ConstantForm, { item, isEdit: true })}
               icon={<Icon icon='pencil' />}
             />
           </RoleFilter>

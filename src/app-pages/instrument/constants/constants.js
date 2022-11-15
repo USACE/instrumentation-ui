@@ -165,7 +165,7 @@ const Constants = connect(
             <div className='mb-2'>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <Button
-                  variant='secondary'
+                  variant='success'
                   size='small'
                   isOutline
                   isDisabled={!activeConstant}

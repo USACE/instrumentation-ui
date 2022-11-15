@@ -10,9 +10,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "babel-eslint": "^10.1.0",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.2",
+    "eslint": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
     "graceful-fs": "^4.2.10",
     "internal-nav-helper": "^3.1.0",
     "lodash.debounce": "^4.0.8",
@@ -44,20 +46,28 @@
     "util": "^0.12.4",
     "xhr": "^2.6.0"
   },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.3.1"
+  },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx",
-    "lint:fix": "eslint . --ext .js,.jsx --fix",
     "clean-install": "rm -rf node_modules/ && rm -rf package-lock.json && npm i",
     "deploy-develop": "aws s3 rm s3://cwbi-apps-develop/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-develop/midas --recursive",
-    "deploy-stable": "aws s3 rm s3://cwbi-apps-stable/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-stable/midas --recursive"
+    "deploy-stable": "aws s3 rm s3://cwbi-apps-stable/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-stable/midas --recursive",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json,html,scss,css}\""
   },
   "eslintConfig": {
-    "parser": "babel-eslint"
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "prettier"
+    ]
   },
   "browserslist": {
     "production": [

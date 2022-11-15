@@ -29,7 +29,7 @@ export default connect(
             <button
               className='float-right btn btn-sm btn-outline-info'
               onClick={() => {
-                doModalOpen(TimeseriesForm, { item: item });
+                doModalOpen(TimeseriesForm, { item: item, isEdit: true });
               }}
             >
               <Icon icon='pencil' />
