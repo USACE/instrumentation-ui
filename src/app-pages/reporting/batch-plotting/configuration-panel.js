@@ -4,14 +4,6 @@ import { connect } from 'redux-bundler-react';
 import Button from '../../../app-components/button';
 import MultiSelect from '../../../app-components/multi-select';
 
-const filterTimeseries = timeseries => {
-  const validTypes = ['elevation', 'stage', 'precipitation'];
-  return timeseries;
-  // const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
-
-  // return typeFiltered;
-};
-
 const formatOptions = timeseries => (
   timeseries.map(ts => ({
     text: `${ts.instrument} - ${ts.name}`,

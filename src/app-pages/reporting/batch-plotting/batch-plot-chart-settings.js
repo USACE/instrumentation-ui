@@ -1,5 +1,3 @@
-// @TODO: Work In Progress
-
 import React, { useState } from 'react';
 import { subDays, startOfDay } from 'date-fns';
 
@@ -14,6 +12,7 @@ const BatchPlotChartSettings = ({
   setChartSettings,
   dateRange = [],
   setDateRange,
+  savePlotSettings,
 }) => {
   const [fromTime, endTime] = dateRange;
   const [activeButton, setActiveButton] = useState('1 year');
@@ -24,10 +23,14 @@ const BatchPlotChartSettings = ({
   };
 
   const calcLifetime = () => {
-    setDateRange([0, new Date()]);
+    setDateRange([new Date(0), new Date()]);
   };
 
   const isDisplayAllActive = () => show_comments && show_masked && show_nonvalidated;
+  
+  const handleDateChangeRaw = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className='m-2'>
@@ -93,6 +96,7 @@ const BatchPlotChartSettings = ({
               onChange={(update) => {
                 setDateRange(update);
               }}
+              onChangeRaw={handleDateChangeRaw}
               showMonthDropdown
               showYearDropdown
               dateFormat='MMMM d, yyyy'
@@ -173,6 +177,7 @@ const BatchPlotChartSettings = ({
         size='small'
         variant='success'
         text='Save Settings'
+        handleClick={() => savePlotSettings(chartSettings)}
       />
     </div>
   );
