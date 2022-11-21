@@ -46,7 +46,7 @@ const Modal = connect(
           />
           <div className='modal fade show' style={{ display: 'block' }}>
             <div className={modalCls}>
-              <ModalContent {...modalProps} style={{ overflow: 'visible' }} />
+              <ModalContent {...modalProps} style={{ overflow: 'scroll' }} />
             </div>
           </div>
         </>

@@ -6,9 +6,10 @@ import MultiSelect from '../../../app-components/multi-select';
 
 const filterTimeseries = timeseries => {
   const validTypes = ['elevation', 'stage', 'precipitation'];
-  const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
+  return timeseries;
+  // const typeFiltered = timeseries.filter(ts => validTypes.includes(ts.parameter));
 
-  return typeFiltered;
+  // return typeFiltered;
 };
 
 const formatOptions = timeseries => (
@@ -55,7 +56,7 @@ const ConfigurationPanel = connect(
     const timeseries = useMemo(() => formatOptions(filterTimeseries(instrumentTimeseries)), [instrumentTimeseries]);
     const [selectedTimeseries, setSelectedTimeseries] = useState((currentItem && isEditMode) && currentItem.timeseries_id || []);
     const [newConfigName, setNewConfigName] = useState((currentItem && isEditMode) && currentItem.name || '');
-    const [inputError, setInputError] = useState();
+    const [inputError, setInputError] = useState('');
 
     const handleSave = () => {
       if (!newConfigName || !newConfigName.trim()) {

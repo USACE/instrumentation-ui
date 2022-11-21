@@ -31,6 +31,7 @@ import instrumentAlertsBundle from './instrument-alerts-bundle';
 import instrumentBundle from './instrument-bundle';
 import instrumentConstantsBundle from './instrument-constants-bundle';
 import instrumentDrawBundle from './instrument-draw-bundle';
+import instrumentFormulasBundle from './instrument-formulas-bundle';
 import instrumentGroupBundle from './instrument-group-bundle';
 import instrumentGroupInstrumentsBundle from './instrument-group-instruments-bundle';
 import instrumentGroupMapBundle from './instrument-group-map-bundle';
@@ -117,6 +118,7 @@ export default composeBundles(
   instrumentBundle,
   instrumentConstantsBundle,
   instrumentDrawBundle,
+  instrumentFormulasBundle,
   instrumentGroupBundle,
   instrumentGroupMapBundle,
   instrumentGroupInstrumentsBundle,
