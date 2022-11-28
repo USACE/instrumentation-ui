@@ -166,7 +166,7 @@ export default connect(
         <p>
           Timeseries are the data associated with an instrument. Often there
           will be a single timeseries that will be plotted directly or in
-          combination with constants, however some instruments may have multiple
+          combination with constants. However, some instruments may have multiple
           series of measurements associated with them.
         </p>
         <div className='row'>
