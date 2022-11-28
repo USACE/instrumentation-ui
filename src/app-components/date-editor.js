@@ -1,53 +1,76 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { DateTime } from 'luxon';
 
-export default class DateEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: DateTime.fromISO(props.value, { zone: 'utc' }),
-    };
-  }
+const DateEditor = forwardRef(({ value }, ref) => {
+  const [date, setDate] = useState(DateTime.fromISO(value, { zone: 'utc' }));
+  const containerRef = useRef(null);
 
-  componentDidMount() {
-    this.focus();
-  }
+  useImperativeHandle(ref, () => ({
+    getValue() {
+      return date;
+    },
 
-  componentDidUpdate() {
-    this.focus();
-  }
+    isPopup() {
+      return true;
+    },
+  }));
 
-  focus() {
-    window.setTimeout(() => {
-      let container = ReactDOM.findDOMNode(this.refs.container);
-      if (container) {
-        container.focus();
-      }
-    });
-  }
+  return (
+    <DatePicker
+      ref={containerRef}
+      selected={new Date(date)}
+      onChange={val => setDate(val)}
+      dateFormat="MMMM dd, yyyy hh:mm 'GMT'XXX"
+      showTimeInput
+    />
+  );
+});
 
-  getValue() {
-    return this.state.value;
-  }
+export default DateEditor;
 
-  isPopup() {
-    return true;
-  }
+// export default class DateEditor extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       value: DateTime.fromISO(props.value, { zone: 'utc' }),
+//     };
+//   }
 
-  render() {
-    return (
-      <DatePicker
-        ref='container'
-        className='form-control'
-        selected={new Date(this.state.value)}
-        onChange={(value) => {
-          this.setState({ value });
-        }}
-        dateFormat='MMMM d, yyyy h:mm aa zzzz'
-        showTimeInput
-      />
-    );
-  }
-}
+//   componentDidMount() {
+//     this.focus();
+//   }
+
+//   componentDidUpdate() {
+//     this.focus();
+//   }
+
+//   focus() {
+//     window.setTimeout(() => {
+//       let container = ReactDOM.findDOMNode(this.refs.container);
+//       if (container) {
+//         container.focus();
+//       }
+//     });
+//   }
+
+//   getValue() {
+//     return this.state.value;
+//   }
+
+//   isPopup() {
+//     return true;
+//   }
+
+//   render() {
+//     return (
+//       <DatePicker
+//         ref={containerRef}
+//         selected={new Date(this.state.value)}
+//         onChange={value => this.setState({ value })}
+//         dateFormat='MMMM d, yyyy h:mm aa zzzz'
+//         showTimeInput
+//       />
+//     );
+//   }
+// }

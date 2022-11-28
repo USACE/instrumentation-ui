@@ -99,7 +99,7 @@ const Constants = connect(
           resizable: true,
           sortable: false,
           filter: true,
-          editable: key === 'time' ? false : true,
+          editable: true,
           cellEditor: key === 'time' ? 'dateEditor' : undefined,
           // TODO: Add this when DELETE is ready
           // headerCheckboxSelection: key === 'time',
@@ -187,7 +187,7 @@ const Constants = connect(
             <div
               className='ag-theme-balham'
               style={{
-                height: '200px',
+                height: '210px',
                 width: '100%',
               }}
             >
