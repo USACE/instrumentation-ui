@@ -1,7 +1,7 @@
 import createRestBundle from './create-rest-bundle';
 
 const afterDate = '1900-01-01T00:00:00.00Z';
-const beforeDate = '2025-01-01T00:00:00.00Z';
+const beforeDate = '2025-12-31T00:00:00.00Z';
 
 export default createRestBundle({
   name: 'timeseriesMeasurements',
@@ -63,6 +63,44 @@ export default createRestBundle({
           },
         });
         dispatch({ type: 'TIMESERIES_FETCH_BY_ID_FINISHED', payload: {} });
+      });
+    },
+
+    doUpdateTimeseriesMeasurements: ({ timeseries_id, items, before = beforeDate, after = afterDate }) => ({ dispatch, store, apiPut }) => {
+      dispatch({ type: 'TIMESERIES_MEASUREMENT_PUT_START', payload: {} });
+
+      const project = store['selectProjectsIdByRoute']();
+      const { projectId } = project;
+
+      const url = `/projects/${projectId}/timeseries_measurements?after=${after}&before=${before}`;
+      const flags = store['selectTimeseriesMeasurementsFlags']();
+      const itemsById = store['selectTimeseriesMeasurementsItemsObject']();
+      let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();
+
+      const formData = {
+        timeseries_id,
+        items,
+      };
+
+      apiPut(url, formData, (_err, body) => {
+        new Array(body[0].items).forEach(item => itemsById[item['timeseries_id']] = item);
+
+        dispatch({
+          type: 'TIMESERIES_MEASUREMENTS_UPDATED_ITEM',
+          payload: {
+            ...itemsById,
+            ...flags,
+            ...{
+              _isLoading: false,
+              _isSaving: false,
+              _fetchCount: ++fetchCount,
+              _lastFetch: new Date(),
+              _lastResource: url,
+              _abortReason: null,
+            },
+          },
+        });
+        dispatch({ type: 'TIMESERIES_MEASUREMENT_PUT_FINISHED', payload: {} });
       });
     },
   },
