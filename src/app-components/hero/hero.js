@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from '../icon';
 import bg1 from '../../img/bg-1.jpg';
 import cwbiLogo from '../../img/cwbi-logo.png';
+import ggmLogo from '../../img/GGM-Logo.png';
 
 import './hero.scss';
 
@@ -14,7 +15,7 @@ const Hero = () => (
     <div className='logo-left'>
       <img
         src={cwbiLogo}
-        title='Redirect to CWBI Home'
+        title='CWBI Home'
         height='50px'
         className='pointer text-light'
         alt='CWBI Logo'
@@ -32,11 +33,11 @@ const Hero = () => (
     </div>
     <div className='logo-right'>
       <img
-        // src={cwbiLogo}
-        title='Redirect to TEN-GGM'
+        src={ggmLogo}
+        title='USACE TEN-GGM'
         height='50px'
         className='pointer text-light'
-        alt='GG&M Logo'
+        alt='TEN GGM Logo'
         onClick={() => window.open('https://usace.dps.mil/sites/TEN-GGM', '_blank')}
       />
       <a
