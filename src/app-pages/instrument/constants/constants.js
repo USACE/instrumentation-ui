@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { connect } from 'redux-bundler-react';
-import { DateTime } from 'luxon';
 import { isEqual } from 'lodash';
 
 import Button from '../../../app-components/button';
@@ -19,6 +18,7 @@ const Constants = connect(
   'doModalOpen',
   'doInstrumentTimeseriesSetActiveId',
   'doTimeseriesMeasurementsSave',
+  'doUpdateTimeseriesMeasurements',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
   'selectInstrumentTimeseriesItemsObject',
@@ -27,6 +27,7 @@ const Constants = connect(
     doModalOpen,
     doInstrumentTimeseriesSetActiveId,
     doTimeseriesMeasurementsSave,
+    doUpdateTimeseriesMeasurements,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     instrumentTimeseriesItemsObject: timeseries,
@@ -70,7 +71,7 @@ const Constants = connect(
         },
       );
 
-      doTimeseriesMeasurementsSave({
+      doUpdateTimeseriesMeasurements({
         timeseries_id: activeConstant,
         items: workingData,
       }, null, false, true);
@@ -99,14 +100,14 @@ const Constants = connect(
           resizable: true,
           sortable: false,
           filter: true,
-          editable: key === 'time' ? false : true,
+          editable: true,
           cellEditor: key === 'time' ? 'dateEditor' : undefined,
           // TODO: Add this when DELETE is ready
           // headerCheckboxSelection: key === 'time',
           // checkboxSelection: key === 'time',
           valueFormatter:
             key === 'time'
-              ? config => DateTime.fromISO(config.value, { zone: 'utc' })
+              ? config => config.value
               : undefined,
           onCellValueChanged: cell => updateConstant(cell),
         })),
@@ -187,7 +188,7 @@ const Constants = connect(
             <div
               className='ag-theme-balham'
               style={{
-                height: '200px',
+                height: '210px',
                 width: '100%',
               }}
             >

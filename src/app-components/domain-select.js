@@ -22,6 +22,12 @@ export default connect(
             onChange={val => onChange(val.value)}
             placeholder='Select one...'
             options={options}
+            styles={{
+              menuList: base => ({
+                ...base,
+                maxHeight: '200px',
+              })
+            }}
           />
         )}
       </>
