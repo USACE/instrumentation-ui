@@ -64,6 +64,7 @@ const instrumentMapBundle = {
     const lyr = new Layer({
       source: new Source(),
       declutter: true,
+      active: false,
       style: (f, r) => new Style({
         geometry: new Circle(f.getGeometry().getCoordinates(), 5 * r),
         fill: new Fill({
@@ -120,6 +121,15 @@ const instrumentMapBundle = {
     });
     src.addFeatures(features);
     map.addLayer(lyr);
+    map.getInteractions().forEach(interaction => { 
+      interaction.setActive(false);
+    });
+    map.on('singleclick', (_evt) => {
+      map.getInteractions().forEach(interaction => { 
+        interaction.setActive(true);
+      });
+    });
+
     const view = map.getView();
     if (features && features.length) {
       view.fit(src.getExtent(), {
