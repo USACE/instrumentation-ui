@@ -35,6 +35,9 @@ export default connect(
     const [filter, setFilter] = useState('');
     const [filteredInstruments, setFilteredInstruments] = useState(instruments);
 
+    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
+    const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
+
     const commonContent = () => (
       <div className='row'>
         <div className='col-10'>
@@ -76,6 +79,7 @@ export default connect(
                   header: 'Status',
                   isSortable: true,
                   isFilterable: true,
+                  filterOptions: statusOptions,
                   render: (data) => (
                     data?.status ? (
                       <>
@@ -98,6 +102,7 @@ export default connect(
                   header: 'Type',
                   isSortable: true,
                   isFilterable: true,
+                  filterOptions: typeOptions,
                 }, {
                   key: 'tools',
                   header: 'Tools',

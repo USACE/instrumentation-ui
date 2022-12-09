@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-table';
 
 import Icon from '../icon';
+import Filter from './filter';
 import { classArray } from '../../utils';
 
 const columnHelper = createColumnHelper();
@@ -45,6 +46,7 @@ const Table = ({
       cell: val => !!column.render ? column.render(val?.row?.original) : val.getValue(),
       enableSorting: !!column.isSortable,
       enableColumnFilter: !!column.isFilterable,
+      filterOptions: column.filterOptions,
     })
   ));
 
@@ -65,22 +67,20 @@ const Table = ({
             {headerGroup.headers.map(header => (
               <th
                 key={header.id}
-                onClick={header.column.getToggleSortingHandler()}
                 className={headerClasses(header.column.columnDef)}
               >
-                {header.isPlaceholder ? null : flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
+                <span onClick={header.column.getToggleSortingHandler()}>
+                  {header.isPlaceholder ? null : flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </span>
                 {{
                   asc: <Icon icon='menu-up' />,
                   desc: <Icon icon='menu-down' />,
                 }[header.column.getIsSorted()] ?? null}
                 {header.column.getCanFilter() ? (
-                  <span> "filterable"</span>
-                  // <div>
-                  //   <Filter column={header.column} table={table} />
-                  // </div>
+                  <Filter column={header.column} table={table} />
                 ) : null}
               </th>
             ))}
