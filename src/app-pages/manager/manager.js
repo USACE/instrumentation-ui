@@ -74,6 +74,8 @@ export default connect(
                 {
                   key: 'status',
                   header: 'Status',
+                  isSortable: true,
+                  isFilterable: true,
                   render: (data) => (
                     data?.status ? (
                       <>
@@ -82,21 +84,21 @@ export default connect(
                       </>
                     ) : null
                   ),
-                },
-                {
+                }, {
                   key: 'name',
                   header: 'Name',
+                  isSortable: true,
                   render: (data) => (
                     <a href={`/${project.slug}/instruments/${data?.slug}`}>
                       {data?.name}
                     </a>
                   ),
-                },
-                {
+                }, {
                   key: 'type',
                   header: 'Type',
-                },
-                {
+                  isSortable: true,
+                  isFilterable: true,
+                }, {
                   key: 'tools',
                   header: 'Tools',
                   render: (data) => (

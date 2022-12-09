@@ -5,12 +5,26 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
 } from '@tanstack/react-table';
 
 import Icon from '../icon';
 import { classArray } from '../../utils';
 
 const columnHelper = createColumnHelper();
+
+const fuzzyFilter = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
 
 const headerClasses = (colDef, customClass = '') => {
   const { enableSorting } = colDef;
@@ -30,6 +44,7 @@ const Table = ({
       header: () => column.header,
       cell: val => !!column.render ? column.render(val?.row?.original) : val.getValue(),
       enableSorting: !!column.isSortable,
+      enableColumnFilter: !!column.isFilterable,
     })
   ));
 
@@ -38,6 +53,8 @@ const Table = ({
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: fuzzyFilter,
   });
 
   return (
@@ -59,6 +76,12 @@ const Table = ({
                   asc: <Icon icon='menu-up' />,
                   desc: <Icon icon='menu-down' />,
                 }[header.column.getIsSorted()] ?? null}
+                {header.column.getCanFilter() ? (
+                  <span> "filterable"</span>
+                  // <div>
+                  //   <Filter column={header.column} table={table} />
+                  // </div>
+                ) : null}
               </th>
             ))}
           </tr>
