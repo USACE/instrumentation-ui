@@ -30,6 +30,8 @@ exports.pluralize = (single, plural, value) => {
   return plural;
 };
 
+exports.titlize = (str, fallback = 'N/A') => (str ? str.charAt(0).toUpperCase() + str.slice(1) : fallback);
+
 exports.seriesStyles = {
   rainfall: {
     mode: 'lines',
