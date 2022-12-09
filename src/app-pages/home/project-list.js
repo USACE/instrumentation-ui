@@ -5,7 +5,7 @@ import Select from 'react-select';
 import Button from '../../app-components/button';
 import Icon from '../../app-components/icon';
 import ProjectCard from './project-card';
-import ProjectListRow from './project-list-row';
+import Table from '../../app-components/table';
 
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
@@ -418,14 +418,44 @@ export default connect(
                 </div>
                 <>
                   {isTableMode ? (
-                    <table className='table is-fullwidth'>
-                      <ProjectListRow.Heading />
-                      <tbody>
-                        {(filteredProjects.length ? filteredProjects : projects).map(project => (
-                          project.instrumentCount ? <ProjectListRow project={project} key={project.title} /> : null
-                        ))}
-                      </tbody>
-                    </table>
+                    <Table
+                      data={filteredProjects.length ? filteredProjects : projects}
+                      columns={[
+                        {
+                          key: 'title',
+                          header: 'Project Name',
+                          isSortable: true,
+                          render: (data) => (
+                            <>
+                              <a href={data?.href}>
+                                {data?.title}
+                              </a>
+                              <span className='text-muted'>&nbsp;- {data?.subtitle}</span>
+                            </>
+                          ),
+                        }, {
+                          key: 'instrumentCount',
+                          header: 'Instrument Count',
+                          isSortable: true,
+                        }, {
+                          key: 'instrumentGroupCount',
+                          header: 'Instrument Group Count',
+                          isSortable: true,
+                        }, {
+                          key: 'tools',
+                          header: 'Tools',
+                          render: (_data) => (
+                            <Button
+                              size='small'
+                              icon={<Icon icon='star-outline' />}
+                              variant='dark'
+                              isOutline
+                              isDisabled
+                            />
+                          )
+                        }
+                      ]}
+                    />
                   ) : (
                     <div className='d-flex flex-wrap justify-content-around'>
                       {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
