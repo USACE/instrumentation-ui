@@ -37,12 +37,11 @@ const Table = ({
 
   const tableColumns = columns.map(column => (
     columnHelper.accessor(column.key, {
+      ...column,
       header: () => column.header,
       cell: val => !!column.render ? column.render(val?.row?.original) : val.getValue(),
       enableSorting: !!column.isSortable,
       enableColumnFilter: !!column.isFilterable,
-      filterOptions: column.filterOptions,
-      filterFn: column.filterFn,
     })
   ));
 
