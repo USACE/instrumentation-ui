@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   useReactTable,
   createColumnHelper,
@@ -14,19 +14,6 @@ import { classArray } from '../../utils';
 
 const columnHelper = createColumnHelper();
 
-const fuzzyFilter = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value);
-
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  });
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed;
-};
-
 const headerClasses = (colDef, customClass = '') => {
   const { enableSorting } = colDef;
 
@@ -36,10 +23,18 @@ const headerClasses = (colDef, customClass = '') => {
   ]);
 };
 
+const multiFilterFn = (row, columnId, filterValues) => {
+  const values = filterValues.map(el => el.value);
+
+  return values.includes(row.getValue(columnId));
+};
+
 const Table = ({
   data,
   columns,
 }) => {
+  const [columnFilters, setColumnFilters] = useState([]);
+
   const tableColumns = columns.map(column => (
     columnHelper.accessor(column.key, {
       header: () => column.header,
@@ -47,16 +42,23 @@ const Table = ({
       enableSorting: !!column.isSortable,
       enableColumnFilter: !!column.isFilterable,
       filterOptions: column.filterOptions,
+      filterFn: column.filterFn,
     })
   ));
 
   const table = useReactTable({
+    state: {
+      columnFilters,
+    },
+    filterFns: {
+      multi: multiFilterFn,
+    },
     data,
     columns: tableColumns,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    globalFilterFn: fuzzyFilter,
   });
 
   return (

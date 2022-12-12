@@ -80,6 +80,7 @@ export default connect(
                   isSortable: true,
                   isFilterable: true,
                   filterOptions: statusOptions,
+                  filterFn: 'multi',
                   render: (data) => (
                     data?.status ? (
                       <>
@@ -103,6 +104,7 @@ export default connect(
                   isSortable: true,
                   isFilterable: true,
                   filterOptions: typeOptions,
+                  filterFn: 'multi',
                 }, {
                   key: 'tools',
                   header: 'Tools',
@@ -122,7 +124,7 @@ export default connect(
                 },
               ]}
             />
-            <InstrumentTable instruments={filteredInstruments} />
+            {/* <InstrumentTable instruments={filteredInstruments} /> */}
           </Card.Body>
         </Card>
       </div>
