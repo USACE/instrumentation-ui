@@ -24,9 +24,9 @@ const headerClasses = (colDef, customClass = '') => {
 };
 
 const multiFilterFn = (row, columnId, filterValues) => {
-  const values = filterValues.map(el => el.value);
+  const values = filterValues.map(el => el.value.toLowerCase());
 
-  return values.includes(row.getValue(columnId));
+  return values.includes(row.getValue(columnId).toLowerCase());
 };
 
 const Table = ({

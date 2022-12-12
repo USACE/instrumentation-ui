@@ -5,7 +5,6 @@ import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Icon from '../../app-components/icon';
 import InstrumentForm from './forms/instrument-form';
-import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
