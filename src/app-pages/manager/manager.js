@@ -124,7 +124,6 @@ export default connect(
                 },
               ]}
             />
-            {/* <InstrumentTable instruments={filteredInstruments} /> */}
           </Card.Body>
         </Card>
       </div>
