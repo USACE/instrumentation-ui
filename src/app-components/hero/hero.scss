@@ -1,0 +1,19 @@
+.hero {
+  height: 400px;
+  margin-top: -95px;
+  background-size: cover;
+  background-position: top;
+  display: flex;
+  justify-content: space-between;
+
+  .logo-left {
+    margin-top: 95px;
+    margin-left: 15px;
+  }
+
+  .logo-right {
+    margin-top: 95px;
+    margin-right: 25px;
+    text-align: right;
+  }
+}
