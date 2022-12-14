@@ -16,6 +16,9 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
     const data = measurements.map((elem, index) => {
       if (elem && timeseries.length) {
         const { items, timeseries_id } = elem;
+
+        if (!items?.length) return;
+
         const {
           instrument,
           name,
@@ -35,7 +38,7 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
 
           if (masked || !validated) return false;
           return true;
-        }).sort((a, b) => new Date(a.time) - new Date(b.time));
+        });
 
         const { x, y, hovertext } = filteredItems.reduce(
           (accum, item) => ({
@@ -46,30 +49,28 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
           { x: [], y: [], hovertext: [] }
         );
 
-        return parameter === 'precipitation'
-          ? {
-            x: x,
-            y: y,
-            type: 'bar',
-            yaxis: 'y2',
-            name: `${instrument} - ${name} (${unit})` || '',
-            hovertext: show_comments ? hovertext : [],
-            hoverinfo: 'x+y+text',
-            showlegend: true,
-          }
-          : {
-            ...getStyle(index),
-            x: x,
-            y: y,
-            name: `${instrument} - ${name} (${unit})` || '',
-            showlegend: true,
-            hovertext: show_comments ? hovertext : [],
-            hoverinfo: 'x+y+text'
-          };
+        return parameter === 'precipitation' ? {
+          x: x,
+          y: y,
+          type: 'bar',
+          yaxis: 'y2',
+          name: `${instrument} - ${name} (${unit})` || '',
+          hovertext: show_comments ? hovertext : [],
+          hoverinfo: 'x+y+text',
+          showlegend: true,
+        } : {
+          ...getStyle(index),
+          x: x,
+          y: y,
+          name: `${instrument} - ${name} (${unit})` || '',
+          showlegend: true,
+          hovertext: show_comments ? hovertext : [],
+          hoverinfo: 'x+y+text'
+        };
       }
     }).filter(e => e);
 
-    return data;
+    return data || [];
   }
 
   return [];
@@ -84,17 +85,17 @@ and check for first data lower than upper range and splice all higher
 assumption: sorted by dates
 
 */
-export const limitDatabyDateRange = (datedData = [], dateRange) => {
-  if (datedData[0] && datedData[0].x && datedData[0].y) {
-    for (let i = 0; i < datedData[0].x.length; i++) {
-      const tempDate = new Date(datedData[0].x[i]);
-      if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
-        datedData[0].x.splice(i, 1);
-        datedData[0].y.splice(i, 1);
-        i--;
-      }
-    }
-  }
+// export const limitDatabyDateRange = (datedData = [], dateRange) => {
+//   if (datedData[0] && datedData[0].x && datedData[0].y) {
+//     for (let i = 0; i < datedData[0].x.length; i++) {
+//       const tempDate = new Date(datedData[0].x[i]);
+//       if (tempDate > dateRange[1] || tempDate < dateRange[0]) {
+//         datedData[0].x.splice(i, 1);
+//         datedData[0].y.splice(i, 1);
+//         i--;
+//       }
+//     }
+//   }
 
-  return datedData;
-};
+//   return datedData;
+// };

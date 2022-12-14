@@ -35,11 +35,16 @@ export default createRestBundle({
   },
   addons: {
     doTimeseriesMeasurementsFetchById: ({
-      timeseriesId
+      timeseriesId,
+      dateRange,
     }) => ({ dispatch, store, apiGet }) => {
       dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START', payload: {} });
+      const [after, before] = dateRange;
 
-      const url = `/timeseries/${timeseriesId}/measurements?after=${afterDate}&before=${beforeDate}`;
+      const isoAfter = after.toISOString();
+      const isoBefore = before.toISOString();
+
+      const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}`;
       const flags = store['selectTimeseriesMeasurementsFlags']();
       const itemsById = store['selectTimeseriesMeasurementsItemsObject']();
       let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();

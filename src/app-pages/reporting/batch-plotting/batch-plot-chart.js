@@ -1,11 +1,10 @@
-import { setDate } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import { subDays, parseISO, format } from 'date-fns';
+import { subDays } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
 import ChartSettings from './batch-plot-chart-settings';
-import { generateNewChartData, limitDatabyDateRange } from './helper';
+import { generateNewChartData } from './helper';
 
 const BatchPlotChart = connect(
   'doPrintSetData',
@@ -14,7 +13,6 @@ const BatchPlotChart = connect(
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItemsObject',
   'selectTimeseriesMeasurementsItems',
-  'selectTimeseriesMeasurementsItemsObject',
   'selectInstrumentTimeseriesItemsByRoute',
   'doNotificationFire',
   ({
@@ -24,14 +22,12 @@ const BatchPlotChart = connect(
     batchPlotConfigurationsActiveId,
     batchPlotConfigurationsItemsObject,
     timeseriesMeasurementsItems,
-    timeseriesMeasurementsItemsObject,
     instrumentTimeseriesItemsByRoute,
     doNotificationFire,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [lifetimeDate, setLifetimeDate] = useState([]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
     const [chartSettings, setChartSettings] = useState({ autorange: false });
@@ -76,28 +72,25 @@ const BatchPlotChart = connect(
       setChartSettings,
     ]);
 
-    /** Fetch any timeseries measurements not currently in the store for plotting */
+    /** Fetch the timeseries measurements in regards to date range */
     useEffect(() => {
-      timeseriesIds.forEach((id) => {
-        if (!timeseriesMeasurementsItemsObject[id]) {
-          doTimeseriesMeasurementsFetchById({ timeseriesId: id });
-        }
-      });
-    }, [timeseriesIds, doInstrumentTimeseriesSetActiveId]);
+      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange }));
+    }, [timeseriesIds, dateRange, doInstrumentTimeseriesSetActiveId]);
 
     /** Extract specific measurements from the store that relate to our set timeseries */
     useEffect(() => {
-      const measurementItems = timeseriesIds.map((id) =>
+      const measurementItems = timeseriesIds.map(id =>
         timeseriesMeasurementsItems.find(elem => elem.timeseries_id === id)
       );
-      if (measurementItems.every((elem) => !!elem))
-        setMeasurements(measurementItems);
+
+      setMeasurements(measurementItems);
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
     useEffect(
       () => {
         const newData = generateNewChartData(measurements, instrumentTimeseriesItemsByRoute, chartSettings);
+
         setChartData(newData);
       },
       [measurements, instrumentTimeseriesItemsByRoute, withPrecipitation, chartSettings]
@@ -119,7 +112,7 @@ const BatchPlotChart = connect(
     return (
       <>
         <Chart
-          data={limitDatabyDateRange(chartData, dateRange)}
+          data={chartData}
           layout={layout}
           config={{
             responsive: true,
@@ -128,13 +121,13 @@ const BatchPlotChart = connect(
             scrollZoom: true,
           }}
         />
-        {chartData.length ? (
+        {chartSettings ? (
           <>
             <hr />
             <ChartSettings
               dateRange={dateRange}
               setDateRange={setDateRange}
-              chartSettings={chartSettings || {}}
+              chartSettings={chartSettings}
               setChartSettings={setChartSettings}
             />
           </>
