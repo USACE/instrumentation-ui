@@ -1,5 +1,3 @@
-// @TODO: Work In Progress
-
 import React, { useState } from 'react';
 import { subDays, startOfDay } from 'date-fns';
 
@@ -24,7 +22,7 @@ const BatchPlotChartSettings = ({
   };
 
   const calcLifetime = () => {
-    setDateRange([0, new Date()]);
+    setDateRange([new Date(0), new Date()]);
   };
 
   const isDisplayAllActive = () => show_comments && show_masked && show_nonvalidated;
