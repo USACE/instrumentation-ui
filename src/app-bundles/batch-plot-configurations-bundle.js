@@ -10,7 +10,7 @@ export default createRestBundle({
   postTemplate: '/projects/:projectId/plot_configurations',
   deleteTemplate: '/projects/:projectId/plot_configurations/{:item.id}',
   fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
-  forceFetchActions: [],
+  forceFetchActions: ['BATCHPLOTCONFIGURATIONS_SAVE_FINISHED'],
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHashStripQuery();

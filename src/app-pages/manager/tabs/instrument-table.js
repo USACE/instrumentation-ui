@@ -7,8 +7,7 @@ import InstrumentForm from '../forms/instrument-form';
 import MultiSelect from '../../../app-components/multi-select/multi-select';
 import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import RoleFilter from '../../../app-components/role-filter';
-
-const titlize = str => str ? str.charAt(0).toUpperCase() + str.slice(1) : 'N/A';
+import { titlize } from '../../../utils';
 
 const Table = connect(
   'doModalOpen',

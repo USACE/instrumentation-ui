@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Button from '../../app-components/button';
 import Card from '../../app-components/card';
+import Icon from '../../app-components/icon';
 import InstrumentForm from './forms/instrument-form';
-import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
+import Table from '../../app-components/table';
+import { titlize } from '../../utils';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (
@@ -30,6 +33,9 @@ export default connect(
   }) => {
     const [filter, setFilter] = useState('');
     const [filteredInstruments, setFilteredInstruments] = useState(instruments);
+
+    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
+    const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
 
     const commonContent = () => (
       <div className='row'>
@@ -64,7 +70,59 @@ export default connect(
         <Card>
           <Card.Body>
             {commonContent()}
-            <InstrumentTable instruments={filteredInstruments} />
+            <Table
+              data={filteredInstruments}
+              columns={[
+                {
+                  key: 'status',
+                  header: 'Status',
+                  isSortable: true,
+                  isFilterable: true,
+                  filterOptions: statusOptions,
+                  filterFn: 'multi',
+                  render: (data) => (
+                    data?.status ? (
+                      <>
+                        <Icon icon='circle' className={`status-icon ${data.status} pr-2`} />
+                        {titlize(data.status)}
+                      </>
+                    ) : null
+                  ),
+                }, {
+                  key: 'name',
+                  header: 'Name',
+                  isSortable: true,
+                  render: (data) => (
+                    <a href={`/${project.slug}/instruments/${data?.slug}`}>
+                      {data?.name}
+                    </a>
+                  ),
+                }, {
+                  key: 'type',
+                  header: 'Type',
+                  isSortable: true,
+                  isFilterable: true,
+                  filterOptions: typeOptions,
+                  filterFn: 'multi',
+                }, {
+                  key: 'tools',
+                  header: 'Tools',
+                  render: (data) => (
+                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                      <Button
+                        variant='info'
+                        size='small'
+                        isOutline
+                        title='Edit'
+                        className='mr-3'
+                        handleClick={() => doModalOpen(InstrumentForm, { item: data })}
+                        icon={<Icon icon='pencil' />}
+                      />
+                    </RoleFilter>
+                  )
+                },
+              ]}
+            />
           </Card.Body>
         </Card>
       </div>

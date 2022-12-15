@@ -102,6 +102,7 @@ const Constants = connect(
           filter: true,
           editable: true,
           cellEditor: key === 'time' ? 'dateEditor' : undefined,
+          width: key === 'time' ? 300 : 150,
           // TODO: Add this when DELETE is ready
           // headerCheckboxSelection: key === 'time',
           // checkboxSelection: key === 'time',
