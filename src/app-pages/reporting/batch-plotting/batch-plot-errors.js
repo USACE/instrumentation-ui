@@ -25,7 +25,7 @@ const BatchPlotErrors = ({
         The following selected timeseries have no measurements for the given timeframe or settings:
         <ul>
           {emptyDataSets.map(el => (
-            <li>{el}</li>
+            <li key={el}>{el}</li>
           ))}
         </ul>
       </span>
