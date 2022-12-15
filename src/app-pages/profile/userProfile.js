@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 import { formatDistance } from 'date-fns';
 
-import Navbar from '../../app-components/navbar';
-import Tab from '../../app-components/tab';
+import Card from '../../app-components/card';
+import TabContainer from '../../app-components/tab';
 
 import './userProfile.css';
 
@@ -26,7 +26,7 @@ const buildAlertContent = (alerts = []) => {
     <>
       {alerts.map((alert, i) => {
         const { project_name, instrument_name, name, body, read, create_date } = alert;
-        const url = `/instrumentation/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
+        const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
         const timeAgo = formatDistance(new Date(create_date), Date.now());
 
         return (
@@ -67,16 +67,15 @@ const UserProfile = connect(
 
     return (
       <>
-        <Navbar theme='primary' />
         <section className='container-fluid'>
           <div className='row'>
             <div className='col-4 user-container'>
               <p>{user.name}</p>
             </div>
             <div className='col-8'>
-              <div className='card p-0 mt-2'>
-                <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0' />
-              </div>
+              <Card className='p-0 mt-2'>
+                <TabContainer tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body limit-height py-0' />
+              </Card>
             </div>
           </div>
         </section>

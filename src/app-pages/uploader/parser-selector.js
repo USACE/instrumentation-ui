@@ -1,22 +1,21 @@
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
-
-import Select from '../../app-components/select';
+import Select from 'react-select';
 
 export default connect(
   'doUploadSetFieldmap',
+  'doUploadSetSelectedParser',
   'selectProjectsByRoute',
   'selectUploadParsers',
   'selectUploadSelectedParser',
-  'doUploadSetSelectedParser',
   ({
     doUploadSetFieldmap,
+    doUploadSetSelectedParser,
     projectsByRoute: project,
     uploadParsers,
     uploadSelectedParser,
-    doUploadSetSelectedParser,
   }) => {
-    const options = uploadParsers.map(o => ({ value: o.name }));
+    const options = uploadParsers.map(o => ({ value: o.name, label: o.name }));
 
     const handleSelectParser = useCallback((val) => {
       const parser = uploadParsers.find((p) => p.name === val);
@@ -41,11 +40,10 @@ export default connect(
         <label className='col-3 col-form-label text-right'>Import As</label>
         <div className='col-9'>
           <Select
-            defaultOption={uploadSelectedParser ? uploadSelectedParser.name : ''}
-            onChange={handleSelectParser}
+            defaultValue={uploadSelectedParser ? { name: uploadSelectedParser.name, label: uploadSelectedParser.name } : null}
+            onChange={newVal => handleSelectParser(newVal?.value)}
             options={options}
-            placeholderText='Select One...'
-            value={uploadSelectedParser ? uploadSelectedParser.name : ''}
+            placeholder='Select One...'
           />
         </div>
       </div>

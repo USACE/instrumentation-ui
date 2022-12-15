@@ -1,35 +1,36 @@
 import React, { useRef } from 'react';
 import { connect } from 'redux-bundler-react';
-import Navbar from '../../app-components/navbar';
+
+import Card from '../../app-components/card';
 import ProfileForm from '../../app-components/profile-form';
 
 export default connect(
   'doProfileSave',
-  'doUpdateUrlWithHomepage',
+  'doUpdateUrl',
   'selectAuthIsLoggedIn',
   'selectProfileActive',
   ({
     doProfileSave,
-    doUpdateUrlWithHomepage,
+    doUpdateUrl,
     authIsLoggedIn: isLoggedIn,
     profileActive: profile,
   }) => {
     // If user already has a profile or is not logged in,
     // i.e. navigated directly to "/signup", redirect them back to home.
     if (profile || !isLoggedIn) {
-      doUpdateUrlWithHomepage(['/']);
+      doUpdateUrl(['/']);
     }
 
     const form = useRef();
     const handleSave = () => {
       if (form.current) {
         form.current.save();
-        doUpdateUrlWithHomepage(['/']);
+        doUpdateUrl(['/']);
       }
     };
+
     return (
       <div>
-        <Navbar theme='primary' brand='Home' />
         <section
           className='container'
           style={{
@@ -43,8 +44,8 @@ export default connect(
           <div
             style={{ display: 'grid', placeItems: 'center', height: '100%' }}
           >
-            <div className='card' style={{ maxWidth: '32em' }}>
-              <div className='card-body'>
+            <Card style={{ maxWidth: '32em' }}>
+              <Card.Body>
                 <h5>Create your profile to continue</h5>
                 <p>
                   <small>
@@ -70,8 +71,8 @@ export default connect(
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
         </section>
       </div>

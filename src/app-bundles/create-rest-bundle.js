@@ -1,22 +1,35 @@
 import { createSelector } from 'redux-bundler';
 
 /**
- * Replace any :item.* values in the url with the actual value from the item
+ * Replace any :.* values in the url with the actual value from the item.
+ * 
+ * Three flavors of syntax are permitted for substitution:
+ * 1. `/building/:item.pathParamName`
+ * 2. `/building/:item.pathParamName/other`
+ * 3. `/building/path?queryVar={:item.pathParamName}`
+ * 
+ * The third flavor is permissible anywhere in the string. For example, one
+ * can write `/building_{:pathParam}/other`. If `item = { pathParam: 'test' }`,
+ * this would produce `/building_test/other`.
  */
 const decorateUrlWithItem = (urlTemplate, item) => {
-  const regex = /(:.*?)(\/|$)/gi;
+  const prefix = ':item.';
+  const regex = /(:item\.{1,}?)(?:\/|$)|\{(:item\..{1,}?)\}/gi;
   let url = urlTemplate;
   let m;
-  while ((m = regex.exec(urlTemplate)) != null) {
-    if (m.index === regex.lastIndex) {
-      regex.lastIndex++;
-    }
-    const param = m[1];
-    if (param.indexOf('item') !== -1) {
-      const key = param.split('.')[1];
-      url = url.replace(param, item[key]);
-    }
+  while ((m = regex.exec(urlTemplate)) !== null) {
+    const matched = m[0];
+
+    // In the case our group starts with {, we must replace the entire group.
+    // In the case that our group is a /:param/-type, we must replace just the
+    // :param portion (excluding the trailing forward slash). In both cases,
+    // the parameter ID is the match's contained group, which always starts with
+    // ':'.
+    const toReplace = matched.startsWith('{') ? m[0] : m[1];
+    const key = (matched.startsWith('{') ? m[2] : m[1]).slice(prefix.length);
+    url = url.replace(toReplace, (item && item[key] ? item[key] : ''));
   }
+  url = url.replace(/\{|\}/g, '');
   return url;
 };
 
@@ -193,7 +206,7 @@ const createRestBundle = (opts) => {
           _err: null,
           _isSaving: false,
           _isLoading: false,
-          _shouldFetch: config.prefetch,
+          _shouldFetch: config.initialFetch,
           _forceFetch: false,
           _fetchCount: 0,
           _lastFetch: config.lastFetch,
@@ -252,8 +265,7 @@ const createRestBundle = (opts) => {
         };
       },
 
-      // 
-      [doFetch]: () => ({ dispatch, store, apiGet }) => {
+      [doFetch]: (item) => ({ dispatch, store, apiGet }) => {
         dispatch({
           type: actions.FETCH_STARTED,
           payload: {
@@ -275,7 +287,7 @@ const createRestBundle = (opts) => {
           return;
         }
 
-        const url = store[selectGetUrl]();
+        const url = decorateUrlWithItem(store[selectGetUrl](), item);
         let fetchCount = store[selectFetchCount]();
         const isStale = store[selectIsStale]();
         const lastResource = store[selectLastResource]();
@@ -283,7 +295,7 @@ const createRestBundle = (opts) => {
         const flags = store[selectFlags]();
         const items = store[selectItemsObject]();
 
-        if (url.indexOf('/:') !== -1) {
+        if (url.indexOf('/:') !== -1 || url.indexOf('{:') !== -1 || url.indexOf('=:') !== -1) {
           // if we haven't filled in all of our params then bail
           dispatch({
             type: actions.FETCH_ABORT,
@@ -324,6 +336,15 @@ const createRestBundle = (opts) => {
             },
           });
           return;
+        } else if (config.prefetch && typeof config.prefetch == 'function' && !config.prefetch(store)) {
+          // user defined `prefetch` function evaluated to false
+          dispatch({
+            type: actions.FETCH_ABORT,
+            payload: {
+              _isLoading: false,
+              _abortReason: 'Failed user defined evaluation',
+            },
+          });
         } else {
           if (fetchReq) fetchReq.abort();
           fetchReq = null;

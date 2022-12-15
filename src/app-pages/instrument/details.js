@@ -3,17 +3,17 @@ import { connect } from 'redux-bundler-react';
 
 import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
 import Dropdown from '../../app-components/dropdown';
 import Icon from '../../app-components/icon';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../manager/forms/instrument-form';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
-import Navbar from '../../app-components/navbar';
+import NoAlerts from './alert/no-alerts';
 import Notes from './notes';
 import RoleFilter from '../../app-components/role-filter';
 import Settings from './settings';
-import NoAlerts from './alert/no-alerts';
 
 const sortAlertsByDate = alerts => alerts.sort((a, b) => {
   if (a.create_date > b.create_date) return -1;
@@ -31,7 +31,7 @@ export default connect(
   'selectProjectsByRoute',
   'selectAlertsByRouteByInstrumentId',
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesByInstrumentId',
+  'selectNonComputedTimeseriesByInstrumentId',
   ({
     doModalOpen,
     doAlertsFetch,
@@ -41,7 +41,7 @@ export default connect(
     mapsObject,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
+    nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
@@ -60,14 +60,12 @@ export default connect(
     }, [len, firstTimeseries, doInstrumentTimeseriesSetActiveId]);
 
     return (
-      <div style={{ marginBottom: '200px' }}>
-        <Navbar theme='primary' fixed />
-        <section className='container-fluid' style={{ marginTop: '6rem' }}>
+      <div className='mb-5'>
+        <section className='container-fluid'>
           <div className='row'>
             <div className='col'>
-              <div className='card h-100'>
-                <div
-                  className='card-header'
+              <Card className='h-100'>
+                <Card.Header
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -88,52 +86,60 @@ export default connect(
                       icon={<Icon icon='pencil' className='pr-2' />}
                     />
                   </RoleFilter>
-                </div>
+                </Card.Header>
                 <InstrumentDisplay item={instrument} />
-              </div>
+              </Card>
             </div>
             <div className='col'>
-              <div className='card h-100'>
-                <div className='card-header'>
+              <Card className='h-100'>
+                <Card.Header 
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <strong>Alerts</strong>
-                  <Dropdown.Menu
-                    dropdownClasses={['float-right', 'inline']}
-                    buttonClasses={['btn-sm', 'btn-outline-info']}
-                    buttonContent={<Icon icon='cog-outline' />}
-                  >
-                    <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
-                    <Dropdown.Item>Mark All as Read</Dropdown.Item>
-                  </Dropdown.Menu>
-                  <Button
-                    className='float-right mr-2'
-                    handleClick={doAlertsFetch}
-                    variant='info'
-                    size='small'
-                    isOutline
-                    title='Refresh'
-                    icon={<Icon icon='refresh' />}
-                  />
-                </div>
-                <div className='card-body' style={{ maxHeight: 400, overflow: 'auto' }}>
+                  <span>
+                    <Dropdown.Menu
+                      dropdownClasses={['float-right', 'inline']}
+                      buttonClasses={['btn-sm', 'btn-outline-info']}
+                      buttonContent={<Icon icon='cog-outline' />}
+                    >
+                      <Dropdown.Item>Filter Instrument Alerts</Dropdown.Item>
+                      <Dropdown.Item>Mark All as Read</Dropdown.Item>
+                    </Dropdown.Menu>
+                    <Button
+                      className='float-right mr-2'
+                      handleClick={doAlertsFetch}
+                      variant='info'
+                      size='small'
+                      isOutline
+                      title='Refresh'
+                      icon={<Icon icon='refresh' />}
+                    />
+                  </span>
+                </Card.Header>
+                <Card.Body style={{ maxHeight: 400, overflow: 'auto' }}>
                   <div className='list-group pb-2'>
                     {alerts.length ? sortAlertsByDate(alerts).map((a) => (
                       <AlertEntry key={a.id} item={a} />
                     )) : <NoAlerts />}
                   </div>
-                </div>
-              </div>
+                </Card.Body>
+              </Card>
             </div>
             <div className='col'>
-              <div className='card h-100' style={{ position: 'relative' }}>
-                <div className='card-body'>
+              <Card className='h-100'>
+                <Card.Body>
                   <Map
                     mapKey='instrumentMap'
                     mapsObject={mapsObject}
                     doMapsInitialize={doMapsInitialize}
                     doMapsShutdown={doMapsShutdown}
                   />
-                </div>
-              </div>
+                </Card.Body>
+              </Card>
             </div>
           </div>
         </section>

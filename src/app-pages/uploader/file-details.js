@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Card from '../../app-components/card';
 import UploadButton from '../../app-components/upload-button';
 
 export default connect(
@@ -10,15 +11,13 @@ export default connect(
     const { name, size, type, lastModified } = uploadFileData;
 
     return (
-      <div className='card mb-3'>
-        <p className='card-header'>
-          <strong>File Info</strong>
-        </p>
-        <div className='card-body'>
+      <Card className='mb-3'>
+        <Card.Header text='File Info' />
+        <Card.Body>
           <>
             {uploadHasFile ? (
               <div className='text-italic'>
-                <UploadButton text='Change File' icon='mdi-file-replace-outline' buttonClass='float-right' />
+                <UploadButton text='Change File' icon='file-replace-outline' buttonClass='float-right' />
                 <p><strong>{name}</strong></p>
                 <div className='d-flex justify-content-between pt-2'>
                   <span>
@@ -39,8 +38,8 @@ export default connect(
               <UploadButton clearSettings={false} />
             )}
           </>
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     );
   }
 );

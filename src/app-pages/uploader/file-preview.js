@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Card from '../../app-components/card';
 import PreviewTable from './preview-table';
-import Tab from '../../app-components/tab';
+import TabContainer from '../../app-components/tab';
 
 export default connect(
   'selectUploadColumnDefsOriginal',
@@ -17,8 +18,6 @@ export default connect(
     uploadDataParsed: dataParsed,
     projectsByRoute: project,
   }) => {
-    if (!project) return null;
-
     const tabs = [{
       title: 'Original',
       content: <PreviewTable columnDefs={colDefsOriginal} data={dataOriginal} />,
@@ -28,9 +27,11 @@ export default connect(
     }];
 
     return (
-      <div className='card'>
-        <Tab.Container tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
-      </div>
+      project && (
+        <Card>
+          <TabContainer tabs={tabs} tabListClass='card-header pb-0' contentClass='card-body' />
+        </Card>
+      )
     );
   }
 );

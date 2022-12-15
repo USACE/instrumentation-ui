@@ -17,13 +17,14 @@ export default connect(
     doInstrumentConstantsDelete,
     instrumentsByRoute: instrument,
     item,
+    isEdit = false,
   }) => {
-    const [name, setName] = useState((item && item.name) || '');
+    const [name, setName] = useState((item?.name) || '');
     const [instrument_id] = useState(instrument.id);
-    const [parameter_id, setParameterId] = useState(
-      (item && item.parameter_id) || ''
-    );
-    const [unit_id, setUnitId] = useState((item && item.unit_id) || '');
+    const [parameter_id, setParameterId] = useState(item?.parameter_id || '');
+    const [unit_id, setUnitId] = useState((item?.unit_id) || '');
+
+    const title = isEdit ? 'Edit Constant' : 'New Constant';
 
     const handleSave = (e) => {
       e.preventDefault();
@@ -48,7 +49,7 @@ export default connect(
     const handleDelete = (e) => {
       e.preventDefault();
 
-      if (item && item.id) {
+      if (item?.id) {
         doInstrumentConstantsDelete(item, () => doModalClose(), true);
       }
     };
@@ -56,13 +57,13 @@ export default connect(
     return (
       <div className='modal-content' style={{ overflowY: 'auto' }}>
         <form id='instrument-constant-form' onSubmit={handleSave}>
-          <ModalHeader title='Edit Constant' />
+          <ModalHeader title={title} />
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>
               <input
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 className='form-control'
                 type='text'
                 placeholder='Text input'
@@ -72,7 +73,7 @@ export default connect(
               <label>Parameter</label>
               <DomainSelect
                 value={parameter_id}
-                onChange={(val) => setParameterId(val)}
+                onChange={val => setParameterId(val)}
                 domain='parameter'
               />
             </div>
@@ -80,7 +81,7 @@ export default connect(
               <label>Unit</label>
               <DomainSelect
                 value={unit_id}
-                onChange={(val) => setUnitId(val)}
+                onChange={val => setUnitId(val)}
                 domain='unit'
               />
             </div>

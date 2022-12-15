@@ -2,17 +2,17 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
+import Card from '../../app-components/card';
+import Icon from '../../app-components/icon';
 import InstrumentForm from '../manager/forms/instrument-form';
-import InstrumentGroupForm from '../manager/forms/instrument-group-form';
+import InstrumentGroupForm from './instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
 import InstrumentTable from '../manager/tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
-import Navbar from '../../app-components/navbar';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesPanel from './group-time-series-panel';
-import Icon from '../../app-components/icon';
 
 export default connect(
   'doModalOpen',
@@ -35,13 +35,11 @@ export default connect(
 
     return (
       <>
-        <Navbar theme='primary' fixed />
-        <section className='container' style={{ marginTop: '6rem' }}>
+        <section className='container'>
           <div className='row'>
             <div className='col'>
-              <div className='card' style={{ height: '300px' }}>
-                <div
-                  className='card-header'
+              <Card style={{ height: '300px' }}>
+                <Card.Header
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -62,32 +60,30 @@ export default connect(
                       icon={<Icon icon='pencil' className='pr-2' />}
                     />
                   </RoleFilter>
-                </div>
-                <div className='card-body'>{group.description}</div>
-              </div>
+                </Card.Header>
+                <Card.Body>
+                  {group.description}
+                </Card.Body>
+              </Card>
             </div>
             <div className='col'>
-              <div
-                className='card'
-                style={{ position: 'relative', height: '100%' }}
-              >
-                <div className='card-body'>
+              <Card className='h-100'>
+                <Card.Body>
                   <Map
                     mapKey='groupMap'
                     mapsObject={mapsObject}
                     doMapsInitialize={doMapsInitialize}
                     doMapsShutdown={doMapsShutdown}
                   />
-                </div>
-              </div>
+                </Card.Body>
+              </Card>
             </div>
           </div>
         </section>
 
         <section className='container mt-3'>
-          <div className='card'>
-            <div
-              className='card-header'
+          <Card>
+            <Card.Header
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -115,14 +111,14 @@ export default connect(
                   />
                 </div>
               </RoleFilter>
-            </div>
-            <div className='card-body'>
+            </Card.Header>
+            <Card.Body>
               <InstrumentTable
                 instruments={instruments}
                 tools={[InstrumentRemove]}
               />
-            </div>
-          </div>
+            </Card.Body>
+          </Card>
           <TimeseriesPanel />
         </section>
       </>

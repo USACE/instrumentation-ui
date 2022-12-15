@@ -4,15 +4,14 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'alertConfigs',
   uid: 'id',
-  prefetch: false,
   staleAfter: 10000,
   persist: false,
   routeParam: 'id',
-  getTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs', // "/:" disables any accidental trigger of a fetch
-  putTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
+  getTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs',
+  putTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/{:item.id}',
   postTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs',
-  deleteTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/:item.id',
-  fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN', 'INSTRUMENTS_FETCH_FINISHED'],
+  deleteTemplate: '/projects/:projectId/instruments/:instrumentId/alert_configs/{:item.id}',
+  fetchActions: ['INSTRUMENTS_FETCH_FINISHED', 'INSTRUMENTCONSTANTS_DELETE_FINISHED'],
   urlParamSelectors: ['selectProjectsIdByRoute', 'selectInstrumentsIdByRoute'],
   addons: {
     selectAlertConfigsByInstrumentId: createSelector(

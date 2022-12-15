@@ -1,20 +1,36 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Button from '../../../app-components/button';
+import FormulaCard from './formulaCard';
+
 export default connect(
-  'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'doModalOpen',
+  'doInstrumentFormulasSave',
+  'selectInstrumentsIdByRoute',
+  'selectInstrumentFormulasItems',
+  'selectNonComputedTimeseriesItemsByRoute',
   'selectTimeseriesMeasurementsItemsObject',
-  'doInstrumentsSave',
   ({
-    instrumentsByRoute: instrument,
-    instrumentTimeseriesItemsByRoute: timeseries,
-    doInstrumentsSave,
+    doModalOpen,
+    doInstrumentFormulasSave,
+    instrumentsIdByRoute,
+    instrumentFormulasItems,
+    nonComputedTimeseriesItemsByRoute: timeseries,
   }) => {
-    const [formula, setFormula] = useState(instrument.formula || '');
-    const input = useRef(null);
+    const [activeFormula, setActiveFormula] = useState(null);
+
+    const createNewFormula = () => {
+      doInstrumentFormulasSave({
+        formula_name: '',
+        formula: '',
+        instrument_id: instrumentsIdByRoute?.instrumentId,
+      }, null, true, true);
+    };
 
     const insertParam = (param) => {
+      const { input, formula, setFormula } = activeFormula;
+
       const start = input.current.selectionStart;
       const end = input.current.selectionEnd;
       const txt = `${formula.slice(0, start)}${param}${formula.slice(
@@ -22,11 +38,6 @@ export default connect(
         formula.length
       )}`;
       setFormula(txt);
-    };
-
-    const handleSave = () => {
-      instrument.formula = formula;
-      doInstrumentsSave(instrument);
     };
 
     return (
@@ -52,28 +63,28 @@ export default connect(
             </ul>
           </div>
           <div className='col'>
-            <textarea
-              ref={input}
-              className='form-control'
-              value={formula}
-              onChange={(e) => setFormula(e.target.value)}
-              rows={6}
+            {instrumentFormulasItems.length ? (
+              instrumentFormulasItems.map(f => (
+                <FormulaCard
+                  key={f?.id}
+                  formulaItem={f}
+                  isAnotherEditing={!!activeFormula}
+                  handleEditClick={f => setActiveFormula(f)}
+                  doInstrumentFormulasSave={doInstrumentFormulasSave}
+                  doModalOpen={doModalOpen}
+                />
+              ))
+            ) : (
+              <i>No formulas for this instrument. To create one, click the button below.</i>
+            )}
+            <Button
+              handleClick={() => createNewFormula()}
+              className='d-block mt-2'
+              variant='success'
+              size='small'
+              text='+ New Formula'
+              isOutline
             />
-            <div className='float-right mt-2'>
-              <button
-                onClick={() => {
-                  setFormula(instrument.formula || '');
-                }}
-                className='btn btn-sm btn-secondary mr-1'
-                title='Cancel'
-              >
-                Cancel
-              </button>
-              <button onClick={handleSave} className='btn btn-sm btn-success' title='Save Formula'>
-                Save
-              </button>
-            </div>
-            <small className='hidden text-danger'>Error parsing formula</small>
           </div>
         </div>
       </div>

@@ -1,23 +1,21 @@
 import React, { useRef, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact } from '@ag-grid-community/react';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
+import '../../css/grids.scss';
 
 const PreviewTable = ({ columnDefs, data }) => {
   const grid = useRef(null);
 
   useEffect(() => {
-    if (grid && grid.current) grid.current.api.refreshCells();
+    grid?.current?.api?.refreshCells();
   }, [grid, data]);
 
-  return data && data.length ? (
+  return data?.length ? (
     <div
       className='ag-theme-balham'
       style={{
-        height: `${window.innerHeight * 0.75}px`,
+        height: `${window.innerHeight * 0.70}px`,
         width: '100%',
       }}
     >
@@ -28,6 +26,7 @@ const PreviewTable = ({ columnDefs, data }) => {
         }}
         columnDefs={columnDefs}
         rowData={data}
+        modules={[ClientSideRowModelModule]}
       />
     </div>
   ) : <p>No Data to show yet</p>;    

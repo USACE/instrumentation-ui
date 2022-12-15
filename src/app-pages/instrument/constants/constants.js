@@ -1,56 +1,99 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import React, { useState, useEffect } from 'react';
+import { AgGridReact } from '@ag-grid-community/react';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { connect } from 'redux-bundler-react';
-import { format } from 'date-fns';
+import { isEqual } from 'lodash';
 
 import Button from '../../../app-components/button';
 import ConstantListItem from './constant-list-item';
 import ConstantForm from './constant-form';
-import DateEditor from './date-editor';
+import DateEditor from '../../../app-components/date-editor';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
+import usePrevious from '../../../customHooks/usePrevious';
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import '../../../css/grids.scss';
 
-export default connect(
+const Constants = connect(
+  'doModalOpen',
+  'doInstrumentTimeseriesSetActiveId',
+  'doTimeseriesMeasurementsSave',
+  'doUpdateTimeseriesMeasurements',
   'selectProjectsByRoute',
   'selectInstrumentsByRoute',
   'selectInstrumentTimeseriesItemsObject',
   'selectTimeseriesMeasurementsItemsObject',
-  'doModalOpen',
-  'doInstrumentTimeseriesSetActiveId',
   ({
+    doModalOpen,
+    doInstrumentTimeseriesSetActiveId,
+    doTimeseriesMeasurementsSave,
+    doUpdateTimeseriesMeasurements,
     projectsByRoute: project,
     instrumentsByRoute: instrument,
     instrumentTimeseriesItemsObject: timeseries,
     timeseriesMeasurementsItemsObject: measurements,
-    doModalOpen,
-    doInstrumentTimeseriesSetActiveId,
   }) => {
-    const grid = useRef(null);
-
     const { constants } = instrument;
+
     const [activeConstant, setActiveConstant] = useState(null);
+    const [gridApi, setGridApi] = useState(null);
+    const [rowData, setRowData] = useState([]);
 
-    // trigger the fetch for our measurements
-    useEffect(() => {
-      if (activeConstant) {
-        doInstrumentTimeseriesSetActiveId(activeConstant);
-      }
-    }, [activeConstant, doInstrumentTimeseriesSetActiveId]);
+    const previousMeasurements = usePrevious(measurements);
 
-    const data = measurements[activeConstant];
-    const [items, setItems] = useState((data && data.items) || []);
+    const onGridReady = (params) => {
+      setGridApi(params.api);
+    };
 
-    const keys = items && items.length ? Object.keys(items[0]) : [];
+    const addNewConstant = () => {
+      doTimeseriesMeasurementsSave({
+        timeseries_id: activeConstant,
+        items: [
+          ...(rowData || []),
+          {
+            time: new Date(),
+            value: 0,
+          }
+        ]
+      }, null, false, true);
+    };
+
+    const updateConstant = cell => {
+      const { node, data } = cell;
+      const { time, value } = data;
+      const workingData = [...rowData];
+
+      workingData.splice(
+        node.rowIndex, 1,
+        {
+          time: new Date(time),
+          value: Number(value),
+        },
+      );
+
+      doUpdateTimeseriesMeasurements({
+        timeseries_id: activeConstant,
+        items: workingData,
+      }, null, false, true);
+    };
+
+    const deleteConstants = () => {
+      const rowIds = gridApi.getSelectedNodes().map(elem => elem.rowIndex).reverse();
+      const workingData = [...rowData];
+
+      rowIds.forEach(id => {
+        workingData.splice(id, 1);
+      });
+
+      /* TODO: Update to DELETE when endpoint is ready */
+      doTimeseriesMeasurementsSave({
+        timeseries_id: activeConstant,
+        items: workingData,
+      });
+    };
+
     const columnDefs = [
-      { headerName: '', valueGetter: 'node.rowIndex + 1', width: 40 },
-      ...keys
-        .filter(key => key !== 'id')
+      ...['time', 'value']
         .map(key => ({
           headerName: key.toUpperCase(),
           field: key,
@@ -59,29 +102,32 @@ export default connect(
           filter: true,
           editable: true,
           cellEditor: key === 'time' ? 'dateEditor' : undefined,
+          width: key === 'time' ? 300 : 150,
+          // TODO: Add this when DELETE is ready
+          // headerCheckboxSelection: key === 'time',
+          // checkboxSelection: key === 'time',
           valueFormatter:
-              key === 'time'
-                ? (config) => {
-                  const d = new Date(config.value);
-                  return format(d, 'MMMM d, yyyy h:mm aa zzzz');
-                }
-                : undefined,
-          onCellValueChanged: (e) => {
-            console.log(e);
-          },
+            key === 'time'
+              ? config => config.value
+              : undefined,
+          onCellValueChanged: cell => updateConstant(cell),
         })),
     ];
 
-    const addNew = () => {
-      const newArr = [
-        ...items,
-        {
-          time: new Date(),
-          value: 0,
-        },
-      ];
-      setItems(newArr);
-    };
+    useEffect(() => {
+      if(!isEqual(previousMeasurements, measurements)) {
+        setRowData(measurements[activeConstant] ? measurements[activeConstant].items : []);
+      }
+    }, [measurements]);
+
+    useEffect(() => {
+      if (activeConstant) {
+        doInstrumentTimeseriesSetActiveId(activeConstant);
+        setRowData(measurements[activeConstant] ? measurements[activeConstant].items : []);
+      } else {
+        setRowData([]);
+      }
+    }, [activeConstant, doInstrumentTimeseriesSetActiveId]);
 
     return (
       <div>
@@ -109,9 +155,9 @@ export default connect(
                   key={i}
                   active={activeConstant === id}
                   item={timeseries[id]}
-                  onClick={(item) => {
+                  onClick={(itemId) => {
                     if (activeConstant === id) return setActiveConstant(null);
-                    setActiveConstant(item.id);
+                    setActiveConstant(itemId);
                   }}
                 />
               ))}
@@ -121,32 +167,43 @@ export default connect(
             <div className='mb-2'>
               <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                 <Button
-                  variant='secondary'
+                  variant='success'
                   size='small'
                   isOutline
                   isDisabled={!activeConstant}
                   text='Add Value'
-                  handleClick={addNew}
+                  handleClick={() => addNewConstant()}
                   icon={<Icon icon='plus' className='mr-1' />}
                 />
+                {/* TODO: Add when DELETE is ready
+                <Button
+                  variant='danger'
+                  size='small'
+                  className='ml-2'
+                  isOutline
+                  text='Delete Selected'
+                  handleClick={() => deleteConstants()}
+                /> */}
               </RoleFilter>
             </div>
             <div
               className='ag-theme-balham'
               style={{
-                height: '200px',
+                height: '210px',
                 width: '100%',
               }}
             >
               <AgGridReact
-                ref={grid}
+                onGridReady={onGridReady}
                 columnDefs={columnDefs}
-                rowData={items}
+                rowData={rowData}
+                rowSelection={'multiple'}
                 stopEditingWhenGridLosesFocus={true}
+                modules={[ClientSideRowModelModule]}
                 frameworkComponents={{
                   dateEditor: DateEditor,
                 }}
-              ></AgGridReact>
+              />
             </div>
           </div>
         </div>
@@ -154,3 +211,5 @@ export default connect(
     );
   }
 );
+
+export default Constants;

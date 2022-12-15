@@ -1,0 +1,20 @@
+.nav-item {
+  user-select: none;
+
+  &.active {
+    border-top: solid 2px white;
+    font-weight: 700;
+  }
+
+  >.padding-small {
+    padding: .5rem 1rem !important;
+  }
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #c8cacb !important;
+
+  .nav-link.active {
+    border-color: #c8cacb #c8cacb #fff !important;
+  }
+}

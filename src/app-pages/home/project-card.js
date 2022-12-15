@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Card from '../../app-components/card';
+
 const ProjectCard = ({ project }) => {
   const { img, title, subtitle, href } = project;
   const [isFavorite, setIsFavorite] = useState(false);
@@ -14,8 +16,8 @@ const ProjectCard = ({ project }) => {
   return (
     <>
       <a href={href} tabIndex={0}>
-        <div className='card mb-5' style={{ maxWidth: '300px' }}>
-          <button className='favorite' onClick={toggleFavorite}>
+        <Card className='mb-5' style={{ width: '300px' }}>
+          <button className='favorite' onClick={toggleFavorite} disabled>
             <span
               className={`mdi ${
                 isFavorite ? 'mdi-star gold' : 'mdi-star-outline'
@@ -30,11 +32,11 @@ const ProjectCard = ({ project }) => {
             />
           ) : null}
 
-          <div className='card-body'>
+          <Card.Body>
             <h5 className='card-title overflow-ellipsis'>{title}</h5>
             <h6 className='card-subtitle text-muted'>{subtitle}</h6>
-          </div>
-        </div>
+          </Card.Body>
+        </Card>
       </a>
     </>
   );

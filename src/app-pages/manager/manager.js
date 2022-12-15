@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import CollectionGroupTable from './tabs/collection-group-table';
-import CollectionGroupForm from './forms/collection-group-form';
+import Button from '../../app-components/button';
+import Card from '../../app-components/card';
+import Icon from '../../app-components/icon';
 import InstrumentForm from './forms/instrument-form';
-import InstrumentGroupForm from './forms/instrument-group-form';
-import InstrumentGroupTable from './tabs/instrument-group-table';
-import InstrumentTable from './tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
-import Navbar from '../../app-components/navbar';
 import RoleFilter from '../../app-components/role-filter';
 import SearchBar from '../home/search-bar';
-import Tab from '../../app-components/tab';
+import Table from '../../app-components/table';
+import { titlize } from '../../utils';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (
@@ -26,35 +24,18 @@ const filterItems = (filter, items) => {
 
 export default connect(
   'selectProjectsByRoute',
-  'selectInstrumentGroupsItems',
   'selectInstrumentsItems',
-  'selectCollectionGroupItems',
   'doModalOpen',
   ({
     projectsByRoute: project,
-    instrumentGroupsItems: groups,
     instrumentsItems: instruments,
-    collectionGroupItems: collectionGroups,
     doModalOpen,
   }) => {
-    if (!project) return null;
-
     const [filter, setFilter] = useState('');
-    const [form, setForm] = useState('Instrument Groups');
-    const forms = {
-      'Instrument Groups': InstrumentGroupForm,
-      'All Instruments': InstrumentForm,
-      'Collection Groups': CollectionGroupForm,
-    };
-    const data = {
-      'Instrument Groups': filterItems(filter, groups),
-      'All Instruments': filterItems(filter, instruments),
-      'Collection Groups': filterItems(filter, collectionGroups),
-    };
+    const [filteredInstruments, setFilteredInstruments] = useState(instruments);
 
-    const handleAdd = () => {
-      doModalOpen(forms[form]);
-    };
+    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
+    const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
 
     const commonContent = () => (
       <div className='row'>
@@ -67,7 +48,7 @@ export default connect(
               allowRoles={[`${project.slug.toUpperCase()}.*`]}
               alt={LoginMessage}
             >
-              <button onClick={() => handleAdd()} className='btn btn-primary'>
+              <button onClick={() => doModalOpen(InstrumentForm, { isEdit: false })} className='btn btn-primary'>
                 Add New
               </button>
             </RoleFilter>
@@ -76,46 +57,75 @@ export default connect(
       </div>
     );
 
-    const tabs = [{
-      title: 'Instrument Groups',
-      content: (
-        <>
-          {commonContent()}
-          <InstrumentGroupTable groups={data[form]} />
-        </>
-      ),
-    }, {
-      title: 'All Instruments',
-      content: (
-        <>
-          {commonContent()}
-          <InstrumentTable instruments={data[form]} />
-        </>
-      ),
-    }, {
-      title: 'Collection Groups',
-      content: (
-        <>
-          {commonContent()}
-          <CollectionGroupTable collectionGroups={data[form]} />
-        </>
-      )
-    }];
+    useEffect(() => {
+      if (filter) {
+        setFilteredInstruments(filterItems(filter, instruments));
+      } else {
+        setFilteredInstruments(instruments);
+      }
+    }, [filter, instruments, filterItems, setFilteredInstruments]);
 
     return (
-      <>
-        <Navbar theme='primary' />
-        <div className='container mt-3'>
-          <div className='card'>
-            <Tab.Container
-              tabs={tabs}
-              onTabChange={(title) => { setForm(title); setFilter(''); }}
-              tabListClass='card-header pb-0'
-              contentClass='card-body'
+      <div className='container'>
+        <Card>
+          <Card.Body>
+            {commonContent()}
+            <Table
+              data={filteredInstruments}
+              columns={[
+                {
+                  key: 'status',
+                  header: 'Status',
+                  isSortable: true,
+                  isFilterable: true,
+                  filterOptions: statusOptions,
+                  filterFn: 'multi',
+                  render: (data) => (
+                    data?.status ? (
+                      <>
+                        <Icon icon='circle' className={`status-icon ${data.status} pr-2`} />
+                        {titlize(data.status)}
+                      </>
+                    ) : null
+                  ),
+                }, {
+                  key: 'name',
+                  header: 'Name',
+                  isSortable: true,
+                  render: (data) => (
+                    <a href={`/${project.slug}/instruments/${data?.slug}`}>
+                      {data?.name}
+                    </a>
+                  ),
+                }, {
+                  key: 'type',
+                  header: 'Type',
+                  isSortable: true,
+                  isFilterable: true,
+                  filterOptions: typeOptions,
+                  filterFn: 'multi',
+                }, {
+                  key: 'tools',
+                  header: 'Tools',
+                  render: (data) => (
+                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                      <Button
+                        variant='info'
+                        size='small'
+                        isOutline
+                        title='Edit'
+                        className='mr-3'
+                        handleClick={() => doModalOpen(InstrumentForm, { item: data })}
+                        icon={<Icon icon='pencil' />}
+                      />
+                    </RoleFilter>
+                  )
+                },
+              ]}
             />
-          </div>
-        </div>
-      </>
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
 );

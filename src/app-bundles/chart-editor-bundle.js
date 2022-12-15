@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-bundler';
-import { trendline } from '../utils';
 import { subDays } from 'date-fns';
 
-const now = new Date();
+import { trendline } from '../utils';
+
 const initialData = {
   selectionVersion: null,
   showSettings: false,
@@ -10,10 +10,10 @@ const initialData = {
   series: {},
   correlationSeriesX: '',
   correlationSeriesY: '',
-  correlationMinDate: subDays(now, 60),
-  correlationMaxDate: now,
-  showToday: false,
-  showRainfall: true,
+  correlationMinDate: subDays(new Date(), 7),
+  correlationMaxDate: new Date(),
+  showToday: true,
+  showRainfall: false,
   exactMatchesOnly: true,
   layout: {
     title: {
@@ -24,9 +24,6 @@ const initialData = {
     autosize: true,
     showlegend: true,
     dragmode: 'pan',
-    margin: {
-      t: 150,
-    },
     yaxis: {
       autorange: true,
       range: [0, 100],
@@ -42,7 +39,7 @@ const initialData = {
     },
     xaxis: {
       autorange: true,
-      range: [0, 100],
+      range: [0, 0],
       title: {
         text: '',
       },
@@ -60,6 +57,19 @@ const initialData = {
     modeBarButtonsToRemove: ['select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d'],
     scrollZoom: true,
   },
+};
+
+const getDomainName = (domains, parameter_id) => {
+  if (!(domains && domains.parameter) || !parameter_id) return 'Unknown Parameter';
+
+  const domain = domains.parameter.find(param => param.id === parameter_id);
+
+  if (!domain) return 'Unknown Parameter';
+  const name = domain.value;
+
+  if (name === 'unknown') return 'Formula';
+
+  return name.split('-').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
 };
 
 const chartEditorBundle = {
@@ -204,6 +214,27 @@ const chartEditorBundle = {
     dispatch,
     store,
   }) => {
+    const chartType = store.selectChartEditorChartType();
+    const layout = store.selectChartEditorLayout();
+    const minDate = store.selectChartEditorCorrelationMinDate();
+    const maxDate = store.selectChartEditorCorrelationMaxDate();
+
+    const from =
+      chartType === 'timeseries'
+        ? layout.xaxis.range[0]
+          ? layout.xaxis.range[0]
+          : null
+        : minDate;
+    const to =
+      chartType === 'timeseries'
+        ? layout.xaxis.range[1]
+          ? layout.xaxis.range[1]
+          : null
+        : maxDate;
+
+    const afterString = from ? new Date(from).toISOString() : '';
+    const beforeString = to ? new Date(to).toISOString() : '';
+
     dispatch({
       type: 'CHART_EDITOR_TRIGGER_MEASURE_LOAD',
       payload: {
@@ -211,7 +242,8 @@ const chartEditorBundle = {
       },
     });
 
-    store.doExploreDataLoad(idsToLoad);
+    store.doExploreDataLoad(idsToLoad, beforeString, afterString);
+    store.doInclinometerDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,
@@ -248,43 +280,106 @@ const chartEditorBundle = {
     'selectExploreDataByInstrumentId',
     'selectChartEditorShowRainfall',
     'selectRainfallData',
-    (dataByInstrumentId, showRainfall, rainfallData) => {
-      const chartSeries = [];
+    'selectDomainsItemsByGroup',
+    (dataByInstrumentId, showRainfall, rainfallData, domains) => {
+      const chartData = [];
+
       Object.keys(dataByInstrumentId).forEach((id) => {
         const { timeseries } = dataByInstrumentId[id];
         if (!timeseries || !timeseries.length) return undefined;
+
+        timeseries.sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        });
+
         timeseries.forEach((series) => {
-          const { items, style, instrument: instrumentName, name } = series;
+          const { items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
           if (!items || !items.length) return undefined;
+
           const x = [];
           const y = [];
-          items
-            .map((item) => ({
+          let plotData = [];
+
+          if (isInclinometer) {
+            const negateDepth = val => val < 0 ? val : -val;
+
+            items.forEach(item => {
+              const time = Object.keys(item)[0];
+              const data = Object.values(item)[0];
+
+              // Push A CheckSums
+              plotData.push({
+                type: 'scattergl',
+                name: `aChecksum - ${time}`,
+                x: data.map(d => d.aChecksum),
+                y: data.map(d => negateDepth(d.depth)),
+                isInclinometer: true,
+              });
+              // Push B CheckSums
+              plotData.push({
+                type: 'scattergl',
+                name: `bChecksum - ${time}`,
+                x: data.map(d => d.bChecksum),
+                y: data.map(d => negateDepth(d.depth)),
+                isInclinometer: true,
+              });
+            });
+          } else {
+            items.map(item => ({
               time: Object.keys(item)[0],
               value: Object.values(item)[0],
-            }))
-            .sort((a, b) => {
+            })).sort((a, b) => {
               if (a.time > b.time) return 1;
               if (a.time < b.time) return -1;
               return 0;
-            })
-            .forEach((item) => {
+            }).forEach(item => {
               x.push(new Date(item.time));
               y.push(item.value);
             });
-          chartSeries.push({
-            type: 'scattergl',
-            name: `${instrumentName} - ${name}`,
-            x: x,
-            y: y,
-            ...style,
-          });
+
+            plotData = [{
+              type: 'scattergl',
+              name: `${instrumentName} - ${name}`,
+              x: x,
+              y: y,
+              ...style,
+            }];
+          }
+
+          const domainName = getDomainName(domains, parameter_id);
+
+          if (!chartData.find(y => y.name === parameter_id)) {
+            chartData.push({
+              id: series.id,
+              name: parameter_id,
+              domainName,
+              unit: unit_id,
+              data: plotData,
+            });
+          } else if (
+            chartData.find(x => x.name === parameter_id).unit !== unit_id &&
+            chartData.findIndex(y => y.name === parameter_id) !== -1
+          ) {
+            chartData.push({
+              id: series.id,
+              name: parameter_id,
+              domainName,
+              unit: unit_id,
+              data: plotData,
+            });
+          } else {
+            const found = chartData.find(x => x.name === parameter_id);
+            found.id = series.id;
+            found.data.concat(plotData);
+          }
         });
       });
       if (showRainfall) {
-        chartSeries.push(...rainfallData);
+        chartData.push(...rainfallData);
       }
-      return chartSeries;
+      return chartData;
     }
   ),
 
@@ -314,8 +409,8 @@ const chartEditorBundle = {
         });
       });
 
-      let xItems = [],
-          yItems = [];
+      let xItems = [];
+      let yItems = [];
       if (
         itemsByTimeseriesId[correlationSeriesX] &&
         itemsByTimeseriesId[correlationSeriesY]

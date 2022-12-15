@@ -1,55 +1,74 @@
 {
   "name": "hhd-ui",
-  "homepage": "https://apps.rsgis.dev/instrumentation",
-  "version": "0.4.4",
+  "version": "0.10.1",
   "private": true,
   "dependencies": {
-    "@corpsmap/corpsmap-bundles": "^2.0.2",
-    "@corpsmap/create-auth-bundle": "0.x",
-    "@corpsmap/create-jwt-api-bundle": "^0.5.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "ag-grid-community": "^23.2.1",
-    "ag-grid-react": "^23.2.1",
-    "date-fns": "^2.16.1",
+    "@ag-grid-community/client-side-row-model": "^28.1.1",
+    "@ag-grid-community/core": "^28.1.1",
+    "@ag-grid-community/react": "^28.1.1",
+    "@corpsmap/corpsmap": "^4.0.36",
+    "@tanstack/react-table": "^8.7.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "buffer": "^6.0.3",
+    "date-fns": "^2.29.2",
+    "eslint": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "graceful-fs": "^4.2.10",
     "internal-nav-helper": "^3.1.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
-    "money-clip": "^3.0.1",
-    "neat-csv": "^5.2.0",
-    "node-sass": "^4.14.1",
-    "ol": "^6.2.1",
-    "plotly.js": "^1.57.1",
-    "proj4": "^2.6.1",
-    "react": "^16.13.0",
-    "react-color": "^2.18.1",
-    "react-datepicker": "^3.3.0",
-    "react-dom": "^16.13.0",
-    "react-notification-system": "^0.4.0",
-    "react-panelgroup": "^1.0.10",
-    "react-plotly.js": "^2.4.0",
-    "react-scripts": "^4.0.1",
-    "redux-bundler": "^27.0.1",
+    "luxon": "^3.0.3",
+    "money-clip": "^3.0.5",
+    "ol": "^7.1.0",
+    "plotly.js": "^2.14.0",
+    "process": "^0.11.10",
+    "proj4": "^2.8.0",
+    "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
+    "react-color": "^2.19.3",
+    "react-csv": "^2.2.2",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "^18.2.0",
+    "react-papaparse": "^4.1.0",
+    "react-plotly.js": "^2.6.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.4.0",
+    "react-toastify": "^9.0.8",
+    "redux-bundler": "^28.0.3",
     "redux-bundler-react": "^1.2.0",
+    "sass": "^1.54.9",
     "source-map-explorer": "^2.5.2",
-    "xhr": "^2.5.0"
+    "stream": "^0.0.2",
+    "stream-browserify": "^3.0.0",
+    "url": "^0.11.0",
+    "util": "^0.12.4",
+    "xhr": "^2.6.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.3.1"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx",
-    "lint:fix": "eslint . --ext .js,.jsx --fix",
-    "deploy-dev": "aws s3 rm s3://corpsmap-appz/instrumentation --recursive && aws s3 cp ./build/ s3://corpsmap-appz/instrumentation --recursive",
-    "deploy-test": "aws s3 rm s3://rsgis-apps/instrumentation --recursive && aws s3 cp ./build/ s3://rsgis-apps/instrumentation --recursive",
-    "refresh-cache": "aws cloudfront create-invalidation --distribution-id EKSG6UUQLUVXW --paths \"/index.html\"",
-    "publish": "npm run build-dev && npm run deploy && npm run refresh-cache && echo $npm_package_version deployed to $npm_package_homepage"
+    "clean-install": "rm -rf node_modules/ && rm -rf package-lock.json && npm i",
+    "deploy-develop": "aws s3 rm s3://cwbi-apps-develop/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-develop/midas --recursive",
+    "deploy-stable": "aws s3 rm s3://cwbi-apps-stable/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-stable/midas --recursive",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json,html,scss,css}\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "prettier"
+    ]
   },
   "browserslist": {
     "production": [
@@ -62,9 +81,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "eslint": "^7.18.0",
-    "eslint-plugin-react": "^7.22.0"
   }
 }

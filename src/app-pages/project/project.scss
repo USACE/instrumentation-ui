@@ -1,0 +1,82 @@
+.dashboard-card {
+  max-height: 501.5px;
+  overflow: auto;
+
+  .dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    #dropdown {
+      margin-top: -2px;
+      margin-bottom: -2px;
+    }
+  }
+}
+
+.details-container {
+  display: flex;
+  justify-content: space-between;
+
+  >:nth-child(1) {
+    border: none;
+  }
+  
+  >* {
+    border-left: 2px solid #c8cacb;
+    flex: 1;
+    justify-self: center;
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .measurement {
+    font-size: 24px;
+    color: #434343;
+  }
+}
+
+.table-heading {
+  font-size: 16px;
+}
+
+.measurement-row {
+  border-top: 1px solid #c8cacb;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 10px;
+
+  >:nth-child(1) {
+    flex: 2;
+  }
+
+  >:nth-child(2) {
+    flex: 4;
+  }
+
+  .measurement {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.table.dashboard-table {
+  th {
+    border-top: 0;
+  }
+}
+
+.report-row {
+  border-bottom: 1px solid #c8cacb;
+  display: flex;
+  padding: 5px 0;
+  text-align: center;
+
+  >:nth-child(1) {
+    font-size: 24px;
+    color: gray;
+  }
+
+  a {
+    padding: 6px;
+  }
+}

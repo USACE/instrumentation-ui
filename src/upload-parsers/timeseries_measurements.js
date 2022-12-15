@@ -1,15 +1,5 @@
-import formatISO from 'date-fns/formatISO';
+import { DateTime } from 'luxon';
 import { isNumeric } from '../utils';
-
-const formatTime = t => {
-  try {
-    const formatted = formatISO(new Date(t));
-    return formatted;
-  }
-  catch (_e) {
-    return undefined;
-  }
-};
 
 const timeseriesMeasurementParser = {
   name: 'Timeseries Measurement',
@@ -17,15 +7,18 @@ const timeseriesMeasurementParser = {
   prePostFilter: (data) => (
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
-      const { timeseries_id, time, value, project_id } = current;
+      const { timeseries_id, time, value, masked, validated, annotation, project_id } = current;
 
       return ({
         ...accum,
         timeseries_id,
         project_id,
         items: (accum['items'] || []).concat([{
-          time: formatTime(time),
+          time: DateTime.fromISO(time, { zone: 'utc' }),
           value,
+          masked,
+          validated,
+          annotation,
         }])
       });
     }, {})
@@ -50,15 +43,15 @@ const timeseriesMeasurementParser = {
       },
       parse: val => val,
       validate: val => !!val,
-      helpText: 'Should map to an timeseries name that exists in the system for the selected instrument.',
+      helpText: 'Should map to a timeseries name that exists in the system for the selected instrument.',
     },
     time: {
       label: 'Time',
       type: 'string',
       required: true,
-      parse: val => formatTime(val),
-      validate: val => !!val,
-      helpText: 'Value should be able to be parsed into a Javascript Date String (see MDN docs for this)',
+      parse: val => DateTime.fromISO(val, { zone: 'utc' }),
+      validate: val => DateTime.fromISO(val).isValid,
+      helpText: 'A valid ISO-8601 string. See Luxon docs (https://moment.github.io/luxon/docs/manual/parsing.html#iso-8601) for more information.',
     },
     value: {
       label: 'Value',
@@ -67,6 +60,30 @@ const timeseriesMeasurementParser = {
       parse: val => isNumeric(val) ? Number(val) : null,
       validate: val => !!val,
       helpText: 'Numeric value of the measurement at the specified time',
+    },
+    masked: {
+      label: 'Masked',
+      type: 'boolean',
+      required: false,
+      parse: val => val === 'true' || val === 'T' || val ==='Y',
+      validate: val => !!val,
+      helpText: 'Boolean value of whether the measurement should be masked (Optional, default to false)',
+    },
+    validated: {
+      label: 'Validated',
+      type: 'boolean',
+      required: false,
+      parse: val => val === 'true' || val === 'T' || val ==='Y',
+      validate: val => !!val,
+      helpText: 'Boolean value of whether the measurement is already validated (Optional, default to false)',
+    },
+    annotation: {
+      label: 'Annotation',
+      type: 'string',
+      required: false,
+      parse: val => val,
+      validate: val => !!val,
+      helpText: 'String note to be associated with the measurement (Optional, can be empty)',
     },
   },
 };

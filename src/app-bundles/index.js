@@ -3,13 +3,11 @@ import {
   createCacheBundle,
   createUrlBundle,
 } from 'redux-bundler';
-import { createNestedUrlBundle } from '@corpsmap/corpsmap-bundles';
 // Required change from @corpsmap/create-auth-bundle;
 import createAuthBundle from './create-auth-bundle';
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from './create-jwt-api-bundle';
 import cache from '../cache';
-import pkg from '../../package.json';
 
 import alertReadBundle from './alert-read-bundle';
 import alertSubscribeBundle from './alert-subscribe-bundle';
@@ -27,11 +25,13 @@ import exploreDataBundle from './explore-data-bundle';
 import exploreMapBundle from './explore-map-bundle';
 import exploreMapInteractionBundle from './explore-map-interaction-bundle';
 import homeDataBundle from './home-data-bundle';
+import inclinometerMeasurements from './inclinometer-measurements';
 import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 import instrumentAlertsBundle from './instrument-alerts-bundle';
 import instrumentBundle from './instrument-bundle';
 import instrumentConstantsBundle from './instrument-constants-bundle';
 import instrumentDrawBundle from './instrument-draw-bundle';
+import instrumentFormulasBundle from './instrument-formulas-bundle';
 import instrumentGroupBundle from './instrument-group-bundle';
 import instrumentGroupInstrumentsBundle from './instrument-group-instruments-bundle';
 import instrumentGroupMapBundle from './instrument-group-map-bundle';
@@ -40,11 +40,12 @@ import instrumentNotesBundle from './instrument-notes-bundle';
 import instrumentStatusBundle from './instrument-status-bundle';
 import mapsBundle from './maps-bundle';
 import modalBundle from './modal-bundle';
-import nestedUrlBundle from './nested-url-bundle';
 import notificationBundle from './notification-bundle';
+import printBundle from './print-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
+import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
 import rainfallBundle from './rainfall-bundle';
@@ -52,30 +53,37 @@ import routesBundle from './routes-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
+import usersBundle from './users-bundle';
 
 // Mock Token User
-const mockTokenUser =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6WyJQVUJMSUMuVVNFUiIsIkJMVUUtV0FURVItREFNLUVYQU1QTEUtUFJPSkVDVC5NRU1CRVIiXX0.5K6-bBpWrleRdewkpVOyyHjzbyJmZqsib_J_YL1Vn6o';
+const mockTokenPublic =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119._N-sAWgMhYsWhwIf44_SGSMGSgnnM8tntlswsBqjYDo';
+const mockTokenApplicationAdmin =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmFtZSI6IlVzZXIuQXBwbGljYXRpb25BZG1pbiIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.aKaDNBnuhQyXI6zvzn-dAg8SxJSP3mQEx5FTSmJbYog';
+const mockTokenProjectAdmin =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwibmFtZSI6IlVzZXIuUHJvamVjdEFkbWluIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjIwMDAwMDAwMDAsInJvbGVzIjpbXX0.P2Cb6s3Kq0hHsfXEczFcUvpQuR8TTV88U4RDvcPabMM';
+const mockTokenProjectMember =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwibmFtZSI6IlVzZXIuUHJvamVjdE1lbWJlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.ujBvw9bCksuSbXGJreIpdXZcVIHtb8GhgviBTvrO9AQ';
 
 export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
-    redirectOnLogout: pkg.homepage,
+    redirectOnLogout: '/',
     mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenUser : null,
+    token: process.env.NODE_ENV === 'development' ? mockTokenApplicationAdmin : null,
   }),
   createJwtApiBundle({
     root:
       process.env.NODE_ENV === 'development'
-        ? 'http://localhost:80/instrumentation'
-        : 'https://midas-api.rsgis.dev',
+        ? 'http://localhost:8080'
+        : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
-      // GET requests do not include token unless path starts with /my_
+      // GET requests do not include token unless path starts with /my_ or includes /members/
       // Need token to figure out who "me" is
       custom: ({ method, path }) => {
         if (method === 'GET') {
-          if (path.slice(0, 4) === '/my_') {
+          if (path.slice(0, 4) === '/my_' || path.includes('/members')) {
             return false;
           }
           return true;
@@ -88,9 +96,6 @@ export default composeBundles(
     cacheFn: cache.set,
   }),
   createUrlBundle(),
-  createNestedUrlBundle({
-    pkg: pkg,
-  }),
   alertReadBundle,
   alertSubscribeBundle,
   alertUnreadBundle,
@@ -107,11 +112,13 @@ export default composeBundles(
   exploreMapBundle,
   exploreMapInteractionBundle,
   homeDataBundle,
+  inclinometerMeasurements,
   instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
   instrumentBundle,
   instrumentConstantsBundle,
   instrumentDrawBundle,
+  instrumentFormulasBundle,
   instrumentGroupBundle,
   instrumentGroupMapBundle,
   instrumentGroupInstrumentsBundle,
@@ -120,16 +127,18 @@ export default composeBundles(
   instrumentStatusBundle,
   mapsBundle,
   modalBundle,
-  nestedUrlBundle,
   notificationBundle,
+  printBundle,
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
+  projectMembersBundle,
   projectionBundle,
   projectsBundle,
   rainfallBundle,
   routesBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle,
-  uploadBundle
+  uploadBundle,
+  usersBundle,
 );

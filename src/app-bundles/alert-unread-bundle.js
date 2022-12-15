@@ -5,6 +5,6 @@ export default createRestBundle({
   uid: 'id',
   prefetch: false,
   persist: false,
-  postTemplate: '/my_alerts/:item.id/unread',
+  postTemplate: '/my_alerts/{:item.id}/unread',
   fetchActions: [],
 });

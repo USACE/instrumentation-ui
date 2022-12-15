@@ -3,7 +3,6 @@ import createRestBundle from './create-rest-bundle';
 export default createRestBundle({
   name: 'collectionGroupDetail',
   uid: 'slug',
-  prefetch: true,
   staleAfter: 10000,
   persist: false,
   sortBy: 'name',
@@ -11,8 +10,8 @@ export default createRestBundle({
   getTemplate: '/projects/:projectId/collection_groups/:collectionGroupId',
   putTemplate: '/:',
   postTemplate: '/projects/:projectId/collection_groups',
-  deleteTemplate: '/projects/:projectId/collection_groups/:item.id',
-  fetchActions: ['URL_UPDATED', 'PROJECTS_FETCH_FINISHED'],
+  deleteTemplate: '/projects/:projectId/collection_groups/{:item.id}',
+  fetchActions: [],
   forceFetchActions: [
     'COLLECTIONGROUP_FETCH_FINISHED',
     'COLLECTIONGROUP_SAVE_FINISHED',

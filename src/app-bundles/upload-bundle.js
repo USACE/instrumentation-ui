@@ -1,6 +1,7 @@
-import neat from 'neat-csv';
 import { createSelector } from 'redux-bundler';
+import { readString } from 'react-papaparse';
 
+import inclinometerMeasurements from '../upload-parsers/inclinometer_measurements';
 import instrumentParser from '../upload-parsers/instrument';
 import timeseriesParser from '../upload-parsers/timeseries';
 import timeseriesMeasurementsParser from '../upload-parsers/timeseries_measurements';
@@ -32,6 +33,7 @@ const uploadBundle = {
       json: null,
       ignoreRows: '',
       parsers: [
+        inclinometerMeasurements,
         instrumentParser,
         timeseriesParser,
         timeseriesMeasurementsParser,
@@ -86,15 +88,21 @@ const uploadBundle = {
 
     const csv = store.selectUploadCsv();
     const text = await csv.text();
-    const json = await neat(text);
 
-    dispatch({
-      type: 'UPLOAD_PARSE_CSV_FINISH',
-      payload: {
-        _isParsing: false,
-        json: json,
+    readString(text, {
+      worker: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        dispatch({
+          type: 'UPLOAD_PARSE_CSV_FINISH',
+          payload: {
+            _isParsing: false,
+            json: results?.data,
+          },
+        });
       },
-    });
+    });    
   },
 
   doUploadClear: () => ({ dispatch }) => {
@@ -163,15 +171,18 @@ const uploadBundle = {
     const parsedData = store.selectUploadDataParsed();
 
     let filteredData = parsedData
-      .filter(row => !row.ignore)
-      .map(row => {
+      .filter((row) => !row.ignore)
+      .map((row) => {
         delete row.ignore;
         delete row.errors;
         row.project_id = project.id;
         return row;
       });
 
-    if (selectedParser.prePostFilter && typeof selectedParser.prePostFilter === 'function') {
+    if (
+      selectedParser.prePostFilter &&
+      typeof selectedParser.prePostFilter === 'function'
+    ) {
       filteredData = selectedParser.prePostFilter(filteredData);
     }
 
@@ -181,9 +192,11 @@ const uploadBundle = {
       if (err) {
         console.error(err.message);
         store.doNotificationFire({
-          message: err ? `${err.name}: ${err.Detail}` : 'An unexpected error occured. Please try again later.',
-          level: 'error',
-          autoDismiss: 0,
+          message: err
+            ? `${err.name}: ${err.Detail}`
+            : 'An unexpected error occured. Please try again later.',
+          type: 'error',
+          autoClose: false,
         });
       } else {
         const data = body;
@@ -194,8 +207,8 @@ const uploadBundle = {
               console.error(err.message);
               store.doNotificationFire({
                 message: 'An unexpected error occured. Please try again later.',
-                level: 'error',
-                autoDismiss: 0,
+                type: 'error',
+                autoClose: false,
               });
             } else {
               dispatch({
@@ -203,11 +216,8 @@ const uploadBundle = {
               });
               store.doNotificationFire({
                 message: 'Data Uploaded Successfully',
-                level: 'success',
-                autoDismiss: 10,
-                onRemove: () => {
-                  store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
-                },
+                type: 'success',
+                autoClose: 10000,
               });
             }
           });
@@ -219,18 +229,15 @@ const uploadBundle = {
             });
             store.doNotificationFire({
               message: 'Data Uploaded Successfully',
-              level: 'success',
-              autoDismiss: 10,
-              onRemove: () => {
-                store.doUpdateUrlWithHomepage(`/${project.slug}/manager`);
-              },
+              type: 'success',
+              autoClose: 10000,
             });
           } else {
             data.errors.forEach((error) => {
               store.doNotificationFire({
                 message: error,
-                level: 'error',
-                autoDismiss: 20,
+                type: 'error',
+                autoClose: 20000,
               });
             });
           }
@@ -264,7 +271,8 @@ const uploadBundle = {
 
   selectUploadColumnDefsOriginal: createSelector('selectUploadJson', (json) => {
     if (!json || !json.length) return [];
-    const keys = Object.keys(json[Math.round(json.length / 2)]);
+
+    const keys = Object.keys(json[0]);
     return [
       { headerName: '', valueGetter: 'node.rowIndex + 1', width: 60 },
       ...keys.map((key) => ({
@@ -423,13 +431,21 @@ const uploadBundle = {
 
   selectUploadIsParsing: (state) => state.upload._isParsing,
 
-  selectUploadFileName: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.name),
+  selectUploadFileName: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : csv.name
+  ),
 
-  selectUploadFileType: createSelector('selectUploadCsv', (csv) => !csv ? null : csv.type),
+  selectUploadFileType: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : csv.type
+  ),
 
-  selectUploadFileSize: createSelector('selectUploadCsv', (csv) => !csv ? null : formatBytes(csv.size)),
+  selectUploadFileSize: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : formatBytes(csv.size)
+  ),
 
-  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) => !csv ? null : new Date(csv.lastModified).toLocaleString()),
+  selectUploadFileLastModified: createSelector('selectUploadCsv', (csv) =>
+    !csv ? null : new Date(csv.lastModified).toLocaleString()
+  ),
 
   selectUploadFileData: createSelector(
     'selectUploadFileName',

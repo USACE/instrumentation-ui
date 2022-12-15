@@ -4,19 +4,14 @@ import { createSelector } from 'redux-bundler';
 export default createRestBundle({
   name: 'instrumentGroupInstruments',
   uid: 'id',
-  prefetch: true,
   staleAfter: 10000,
   persist: false,
   routeParam: 'groupId',
   getTemplate: '/instrument_groups/:groupId/instruments',
   putTemplate: '',
   postTemplate: '/instrument_groups/:groupId/instruments', // Add an instrument
-  deleteTemplate: '/instrument_groups/:groupId/instruments/:item.id', // Remove an instrument
-  fetchActions: [
-    'URL_UPDATED',
-    'AUTH_LOGGED_IN',
-    'INSTRUMENTGROUPS_FETCH_FINISHED',
-  ],
+  deleteTemplate: '/instrument_groups/:groupId/instruments/{:item.id}', // Remove an instrument
+  fetchActions: ['INSTRUMENTGROUPS_FETCH_FINISHED'],
   forceFetchActions: [
     'INSTRUMENTS_SAVE_FINISHED',
     'INSTRUMENTGROUPINSTRUMENTS_SAVE_FINISHED',

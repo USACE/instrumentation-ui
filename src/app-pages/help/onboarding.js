@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
-import Tab from '../../app-components/tab';
+import Card from '../../app-components/card';
+import TabContainer from '../../app-components/tab';
 
 const csvSampleProjects = [
   ['Project Name'],
@@ -69,9 +70,18 @@ const csvSampleTimeseries = [
 
 const csvSampleTimeseriesMeasurements = [
   ['Timeseries', 'Date', 'Reading'],
-  ['My Example Timeseries 1A', '3/31/19 0:00', '2557.495189'],
-  ['My Example Timeseries 1A', '3/31/19 1:00', '2557.496789'],
-  ['My Example Timeseries 1A', '3/31/19 2:00', '2557.504244'],
+  ['My Example Timeseries 1A', '2021-07-14T00:00:00', '2557.495189'],
+  ['My Example Timeseries 1A', '2021-07-14T01:00:00', '2557.496789'],
+  ['My Example Timeseries 1A', '2021-07-14T02:00:00', '2557.504244'],
+];
+
+const csvSampleInclinometerMeasurements = [
+  ['Survey DateTime', 'Depth', 'A0', 'A180', 'B0', 'B180'],
+  ['2020-10-08T11:48:00', '2', '36',	'-54',	'-180',	'225'],
+  ['2020-10-08T11:48:00', '4',	'-229',	'206',	'-111',	'166'],
+  ['2020-10-08T11:48:00', '6',	'-169',	'148',	'-105',	'159'],
+  ['2020-10-08T11:48:00', '8',	'-85',	'65',	'-95',	'139'],
+  ['2020-10-08T11:48:00', '10',	'-65',	'43',	'-73',	'122'],
 ];
 
 const DownloadCSVButton = ({ csvContent, filename }) => {
@@ -143,15 +153,11 @@ export default connect(
           {domainsItemsByGroup.unit.map((t, idx) => (
             <li key={idx}>{t.value}</li>
           ))}
-          {/* <li>Inches</li>
-          <li>Feet</li>
-          <li>Volts</li>
-          <li>Millibar</li>
-          <li>Inches mercury (Hg)</li> */}
         </ul>
       </div>
     );
     const NotesTimeseriesMeasurements = ({ props }) => <></>;
+    const NotesInclinometerMeasurements = ({ props }) => <></>;
 
     const CSV = ({ arr }) => (
       <pre>
@@ -195,28 +201,31 @@ export default connect(
         title: 'Timeseries Measurements',
         content: buildContent('Timeseries Measurements', csvSampleTimeseriesMeasurements, <NotesTimeseriesMeasurements />),
       },
+      {
+        title: 'Inclinometer Measurements',
+        content: buildContent('Inclinometer Measurements', csvSampleInclinometerMeasurements, <NotesInclinometerMeasurements />),
+      },
     ];
 
     return (
-      <div className='card'>
-        <div className='card-body'>
+      <Card>
+        <Card.Body>
           <p>
             <strong className='pr-3'>Q:</strong>I want to try the site with my
             own projects. How should I organize my dataset for upload?
           </p>
           <p className='text-muted'>
-            Glad you asked! The site supports .csv uploads of Instruments at
-            this time. Uploaders for Projects, Timeseries, and Timeseries
-            measurements are coming in the next few weeks. To get organized,
+            Glad you asked! The site supports .csv uploads of Instruments, Timeseries, Timeseries
+            measurements and Inclinometer measurements at this time. Uploaders for Projects are coming soon. To get organized,
             start with <span className='has-text-weight-bold'>projects</span>{' '}
             and <span className='has-text-weight-bold'>instruments</span>.
             Create a separate .csv file for each. You can download the template
             .csv files below and modify them with your own data.
           </p>
           <p></p>
-          <Tab.Container tabs={tabs} />
-        </div>
-      </div>
+          <TabContainer tabs={tabs} />
+        </Card.Body>
+      </Card>
     );
   }
 );
