@@ -11,20 +11,20 @@ const BatchPlotChart = connect(
   'doPrintSetData',
   'doInstrumentTimeseriesSetActiveId',
   'doTimeseriesMeasurementsFetchById',
+  'doBatchPlotConfigurationsSave',
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItemsObject',
   'selectTimeseriesMeasurementsItems',
   'selectInstrumentTimeseriesItemsByRoute',
-  'doNotificationFire',
   ({
     doPrintSetData,
     doInstrumentTimeseriesSetActiveId,
     doTimeseriesMeasurementsFetchById,
+    doBatchPlotConfigurationsSave,
     batchPlotConfigurationsActiveId,
     batchPlotConfigurationsItemsObject,
     timeseriesMeasurementsItems,
     instrumentTimeseriesItemsByRoute,
-    doNotificationFire,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
@@ -135,6 +135,7 @@ const BatchPlotChart = connect(
               setDateRange={setDateRange}
               chartSettings={chartSettings}
               setChartSettings={setChartSettings}
+              savePlotSettings={doBatchPlotConfigurationsSave}
             />
           </>
         ) : null}

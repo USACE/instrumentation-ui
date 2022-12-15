@@ -12,6 +12,7 @@ const BatchPlotChartSettings = ({
   setChartSettings,
   dateRange = [],
   setDateRange,
+  savePlotSettings,
 }) => {
   const [fromTime, endTime] = dateRange;
   const [activeButton, setActiveButton] = useState('1 year');
@@ -176,6 +177,7 @@ const BatchPlotChartSettings = ({
         size='small'
         variant='success'
         text='Save Settings'
+        handleClick={() => savePlotSettings(chartSettings)}
       />
     </div>
   );

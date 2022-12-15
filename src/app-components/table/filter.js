@@ -14,8 +14,8 @@ const ValueContainer = ({ children, getValue, ...props }) => {
   );
 };
 
-const Filter = ({ table, column }) => {
-  const { columnDef, getFilterValue } = column;
+const Filter = ({ column }) => {
+  const { columnDef } = column;
 
   return (
     <Select
