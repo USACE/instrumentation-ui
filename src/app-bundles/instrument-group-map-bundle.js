@@ -119,6 +119,14 @@ const instrumentGroupMapBundle = {
     });
     src.addFeatures(features);
     map.addLayer(lyr);
+    map.getInteractions().forEach(interaction => { 
+      interaction.setActive(false);
+    });
+    map.on('singleclick', (_evt) => {
+      map.getInteractions().forEach(interaction => { 
+        interaction.setActive(true);
+      });
+    });
     const view = map.getView();
     if (features && features.length) {
       view.fit(src.getExtent(), {

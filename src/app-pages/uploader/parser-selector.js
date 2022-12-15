@@ -17,8 +17,6 @@ export default connect(
   }) => {
     const options = uploadParsers.map(o => ({ value: o.name, label: o.name }));
 
-    console.log('test uploadSelectedParser?.name', uploadSelectedParser?.name);
-
     const handleSelectParser = useCallback((val) => {
       const parser = uploadParsers.find((p) => p.name === val);
 

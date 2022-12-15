@@ -7,6 +7,7 @@ import Card from '../../../app-components/card';
 import DeleteConfirm from '../../../app-components/delete-confirm';
 import Dropdown from '../../../app-components/dropdown';
 import Icon from '../../../app-components/icon';
+import Table from '../../../app-components/table';
 import MemberDeleteForm from './memberDeleteForm';
 import MemberForm from './memberForm';
 
@@ -22,7 +23,8 @@ const AdminPage = connect(
     membersObject: members,
   }) => {
     const memberKeys = Object.keys(members);
-
+    const membersById = memberKeys.map(key => members[key]);
+  
     return (
       <div className='container-fluid'>
         <Card className='m-2'>
@@ -41,49 +43,54 @@ const AdminPage = connect(
           </Card.Header>
           <Card.Body className='mx-3'>
             {memberKeys.length ? (
-              <table className='table'>
-                <thead>
-                  <tr className='row'>
-                    <th className='col-3'>Name</th>
-                    <th className='col-4'>Email</th>
-                    <th className='col-2'>Role</th>
-                    <th className='col-3'>Tools</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {memberKeys.map(key => {
-                    const { profile_id, username, email, role, role_id } = members[key];
-
-                    return (
-                      <tr key={profile_id} className='row'>
-                        <td className='col-3'>{username}</td>
-                        <td className='col-4'>{email}</td>
-                        <td className='col-2'>{role.sort().join(', ')}</td>
-                        <td className='col-3'>
-                          {role_id.length > 1 ? (
-                            <Button
-                              isOutline
-                              size='small'
-                              title='Delete'
-                              variant='danger'
-                              icon={<Icon icon='trash-can-outline' />}
-                              handleClick={() => doModalOpen(MemberDeleteForm, { member: members[key] })}
-                            />
-                          ) : (
-                            <DeleteConfirm
-                              size='small'
-                              isOutline
-                              deleteText=''
-                              deleteIcon={<Icon icon='trash-can-outline' />}
-                              handleDelete={() => doUsersDeleteUser(profile_id, role_id[0])}
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <Table
+                data={membersById}
+                columns={[
+                  {
+                    key: 'username',
+                    header: 'Name',
+                    isSortable: true,
+                  }, {
+                    key: 'email',
+                    header: 'Email',
+                    isSortable: true,
+                  }, {
+                    key: 'role',
+                    header: 'Role',
+                    isSortable: true,
+                    render: (data) => (
+                      <>
+                        {data?.role?.sort()?.join(', ')}
+                      </>
+                    )
+                  }, {
+                    key: 'tools',
+                    header: 'Tools',
+                    render: (data) => (
+                      <>
+                        {data?.role_id?.length > 1 ? (
+                          <Button
+                            isOutline
+                            size='small'
+                            title='Delete'
+                            variant='danger'
+                            icon={<Icon icon='trash-can-outline' />}
+                            handleClick={() => doModalOpen(MemberDeleteForm, { member: data })}
+                          />
+                        ) : (
+                          <DeleteConfirm
+                            size='small'
+                            isOutline
+                            deleteText=''
+                            deleteIcon={<Icon icon='trash-can-outline' />}
+                            handleDelete={() => doUsersDeleteUser(data?.profile_id, data?.role_id[0])}
+                          />
+                        )}
+                      </>
+                    )
+                  }
+                ]}
+              />
             ) : <p>No Members in this Project</p>}
           </Card.Body>
         </Card>
