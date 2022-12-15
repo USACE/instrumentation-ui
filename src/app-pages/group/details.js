@@ -139,10 +139,6 @@ export default connect(
               </RoleFilter>
             </Card.Header>
             <Card.Body>
-              {/* <InstrumentTable
-                instruments={instruments}
-                tools={[InstrumentRemove]}
-              /> */}
               <Table
                 data={filteredInstruments}
                 columns={[

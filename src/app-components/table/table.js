@@ -88,7 +88,7 @@ const Table = ({
                   desc: <Icon icon='menu-down' />,
                 }[header.column.getIsSorted()] ?? null}
                 {header.column.getCanFilter() ? (
-                  <Filter column={header.column} table={table} />
+                  <Filter column={header.column} />
                 ) : null}
               </th>
             ))}
