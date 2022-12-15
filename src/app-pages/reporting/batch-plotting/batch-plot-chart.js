@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { subDays } from 'date-fns';
 
 import Chart from '../../../app-components/chart/chart';
+import ChartErrors from './batch-plot-errors';
 import ChartSettings from './batch-plot-chart-settings';
 import { generateNewChartData } from './helper';
 
@@ -120,6 +121,11 @@ const BatchPlotChart = connect(
             displayModeBar: true,
             scrollZoom: true,
           }}
+        />
+        <ChartErrors
+          chartData={chartData}
+          timeseries={instrumentTimeseriesItemsByRoute}
+          plotConfig={batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId]}
         />
         {chartSettings ? (
           <>

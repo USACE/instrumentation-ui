@@ -18,6 +18,7 @@ export default createRestBundle({
     'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
     'INSTRUMENTTIMESERIES_FETCH_FINISHED',
     'TIMESERIESMEASUREMENTS_SAVE_FINISHED',
+    'TIMESERIESMEASUREMENTS_DELETE_FINISHED',
   ],
   urlParamSelectors: [
     'selectInstrumentTimeseriesActiveIdParam',
@@ -41,8 +42,8 @@ export default createRestBundle({
       dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START', payload: {} });
       const [after, before] = dateRange;
 
-      const isoAfter = after.toISOString();
-      const isoBefore = before.toISOString();
+      const isoAfter = after ? after.toISOString() : afterDate;
+      const isoBefore = before ? before.toISOString() : beforeDate;
 
       const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}`;
       const flags = store['selectTimeseriesMeasurementsFlags']();

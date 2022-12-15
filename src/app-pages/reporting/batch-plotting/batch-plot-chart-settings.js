@@ -26,6 +26,10 @@ const BatchPlotChartSettings = ({
   };
 
   const isDisplayAllActive = () => show_comments && show_masked && show_nonvalidated;
+  
+  const handleDateChangeRaw = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className='m-2'>
@@ -91,6 +95,7 @@ const BatchPlotChartSettings = ({
               onChange={(update) => {
                 setDateRange(update);
               }}
+              onChangeRaw={handleDateChangeRaw}
               showMonthDropdown
               showYearDropdown
               dateFormat='MMMM d, yyyy'

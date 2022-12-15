@@ -48,7 +48,6 @@ const Filter = ({ table, column }) => {
       defaultValue={columnDef.filterOptions}
       components={{ ValueContainer }}
       onChange={val => {
-        console.log('test val on change: ', val);
         column.setFilterValue(val);
       }}
     />

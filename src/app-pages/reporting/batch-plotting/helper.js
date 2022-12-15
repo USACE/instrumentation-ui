@@ -58,6 +58,7 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
           hovertext: show_comments ? hovertext : [],
           hoverinfo: 'x+y+text',
           showlegend: true,
+          timeseriesId: timeseries_id,
         } : {
           ...getStyle(index),
           x: x,
@@ -65,7 +66,8 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
           name: `${instrument} - ${name} (${unit})` || '',
           showlegend: true,
           hovertext: show_comments ? hovertext : [],
-          hoverinfo: 'x+y+text'
+          hoverinfo: 'x+y+text',
+          timeseriesId: timeseries_id,
         };
       }
     }).filter(e => e);
