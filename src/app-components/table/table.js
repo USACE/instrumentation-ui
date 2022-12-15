@@ -14,12 +14,13 @@ import { classArray } from '../../utils';
 
 const columnHelper = createColumnHelper();
 
-const headerClasses = (colDef, customClass = '') => {
-  const { enableSorting } = colDef;
+const headerClasses = colDef => {
+  const { enableSorting, isRightAlign } = colDef;
 
   return classArray([
+    'no-select',
     enableSorting ? 'pointer' : 'default-cursor',
-    customClass,
+    isRightAlign ? 'text-right' : '',
   ]);
 };
 
@@ -32,8 +33,14 @@ const multiFilterFn = (row, columnId, filterValues) => {
 const Table = ({
   data,
   columns,
+  className,
 }) => {
   const [columnFilters, setColumnFilters] = useState([]);
+  const tableClasses = classArray([
+    'table',
+    'is-fullwidth',
+    className,
+  ]);
 
   const tableColumns = columns.map(column => (
     columnHelper.accessor(column.key, {
@@ -61,7 +68,7 @@ const Table = ({
   });
 
   return (
-    <table className='table is-fullwidth'>
+    <table className={tableClasses}>
       <thead>
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
