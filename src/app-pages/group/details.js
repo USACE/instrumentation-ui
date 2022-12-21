@@ -108,7 +108,8 @@ export default connect(
         </section>
 
         <section className='container mt-3'>
-          <Card>
+          <TimeseriesPanel />
+          <Card className='mt-3 mb-4'>
             <Card.Header
               style={{
                 display: 'flex',
@@ -195,7 +196,6 @@ export default connect(
               />
             </Card.Body>
           </Card>
-          <TimeseriesPanel />
         </section>
       </>
     );

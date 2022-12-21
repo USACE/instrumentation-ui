@@ -60,7 +60,7 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
           <TimeseriesCheckbox
             key={i}
             instrument={instrument}
-            checked={series[ts.id] && series[ts.id].active}
+            checked={series[ts.id]?.active}
             timeseries={ts}
             onChange={onChange}
           />
@@ -114,7 +114,7 @@ export default connect(
     });
 
     return (
-      <Card className='mt-3 mb-5'>
+      <Card className='mt-3'>
         <Card.Header text='Timeseries' />
         <Card.Body>
           <div className='container'>
