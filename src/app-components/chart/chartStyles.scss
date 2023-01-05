@@ -29,11 +29,22 @@
   width: 100%;
   opacity: 1;
   position: absolute;
-  display: block;
+  display: flex;
+  justify-content: center; /* Align horizontal */
+  align-items: center; /* Align vertical */
   z-index: -1;
 
   &.enabled {
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 1000;
+  }
+
+  .overlay-text {
+    color: rgb(46, 44, 44);
+    cursor: default;
+    display: block;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 200;
   }
 }

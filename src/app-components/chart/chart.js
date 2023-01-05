@@ -15,7 +15,9 @@ const Overlay = () => {
   ]);
 
   return (
-    <div className={classes} onClick={() => setIsEnabled(false)} />
+    <div className={classes} onClick={() => setIsEnabled(false)}>
+      <span className='overlay-text'>Click to Enable Interactions</span>
+    </div>
   );
 };
 
