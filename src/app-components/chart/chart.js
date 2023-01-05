@@ -68,12 +68,12 @@ const Chart = ({
     <div ref={containerRef} style={{ height: '100%', position: 'relative' }}>
       {withOverlay && <Overlay />}
       <Plot
+        useResizeHandler
         ref={plotRef}
         data={data}
         layout={layout}
         config={config}
         frames={frames}
-        useResizeHandler
         style={{ width: '100%', height: '100%' }}
         onInitialized={updateState}
         onUpdate={updateState}
