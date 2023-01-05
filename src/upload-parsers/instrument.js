@@ -104,9 +104,8 @@ const instrumentParser = {
       type: 'number*100',
       required: false,
       template: '',
-      parse: (val) => Number(val),
-      helpText:
-        'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
+      helpText: 'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
+      parse: (val) => Number(val.replace('+', '')),
     },
   },
 };

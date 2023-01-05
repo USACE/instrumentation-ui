@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../app-components/button';
@@ -8,11 +8,23 @@ import InstrumentForm from '../manager/forms/instrument-form';
 import InstrumentGroupForm from './instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
-import InstrumentTable from '../manager/tabs/instrument-table';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import RoleFilter from '../../app-components/role-filter';
+import Table from '../../app-components/table';
 import TimeseriesPanel from './group-time-series-panel';
+import { titlize } from '../../utils';
+
+const filterItems = (filter, items) => {
+  const filtered = items.filter(item => (
+    Object.values(item)
+      .join(' ')
+      .toUpperCase()
+      .indexOf(filter.toUpperCase()) !== -1
+  ));
+
+  return filtered;
+};
 
 export default connect(
   'doModalOpen',
@@ -32,6 +44,20 @@ export default connect(
     instrumentGroupInstrumentsItems: instruments,
   }) => {
     if (!group) return null;
+
+    const [filter, setFilter] = useState('');
+    const [filteredInstruments, setFilteredInstruments] = useState(instruments);
+
+    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
+    const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
+
+    useEffect(() => {
+      if (filter) {
+        setFilteredInstruments(filterItems(filter, instruments));
+      } else {
+        setFilteredInstruments(instruments);
+      }
+    }, [filter, instruments, filterItems, setFilteredInstruments]);
 
     return (
       <>
@@ -82,7 +108,8 @@ export default connect(
         </section>
 
         <section className='container mt-3'>
-          <Card>
+          <TimeseriesPanel />
+          <Card className='mt-3 mb-4'>
             <Card.Header
               style={{
                 display: 'flex',
@@ -113,13 +140,62 @@ export default connect(
               </RoleFilter>
             </Card.Header>
             <Card.Body>
-              <InstrumentTable
-                instruments={instruments}
-                tools={[InstrumentRemove]}
+              <Table
+                data={filteredInstruments}
+                columns={[
+                  {
+                    key: 'status',
+                    header: 'Status',
+                    isSortable: true,
+                    isFilterable: true,
+                    filterOptions: statusOptions,
+                    filterFn: 'multi',
+                    render: (data) => (
+                      data?.status ? (
+                        <>
+                          <Icon icon='circle' className={`status-icon ${data.status} pr-2`} />
+                          {titlize(data.status)}
+                        </>
+                      ) : null
+                    ),
+                  }, {
+                    key: 'name',
+                    header: 'Name',
+                    isSortable: true,
+                    render: (data) => (
+                      <a href={`/${project.slug}/instruments/${data?.slug}`}>
+                        {data?.name}
+                      </a>
+                    ),
+                  }, {
+                    key: 'type',
+                    header: 'Type',
+                    isSortable: true,
+                    isFilterable: true,
+                    filterOptions: typeOptions,
+                    filterFn: 'multi',
+                  }, {
+                    key: 'tools',
+                    header: 'Tools',
+                    render: (data) => (
+                      <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                        <Button
+                          variant='info'
+                          size='small'
+                          isOutline
+                          title='Edit'
+                          className='mr-1'
+                          handleClick={() => doModalOpen(InstrumentForm, { item: data })}
+                          icon={<Icon icon='pencil' />}
+                        />
+                        <InstrumentRemove item={data} />
+                      </RoleFilter>
+                    )
+                  },
+                ]}
               />
             </Card.Body>
           </Card>
-          <TimeseriesPanel />
         </section>
       </>
     );

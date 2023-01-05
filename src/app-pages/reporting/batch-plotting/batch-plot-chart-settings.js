@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Tooltip } from 'react-tooltip';
 import { subDays, startOfDay } from 'date-fns';
 
-import PrintButton from './print-button';
 import Button from '../../../app-components/button';
 import DatePicker from 'react-datepicker';
+import Icon from '../../../app-components/icon';
+import PrintButton from './print-button';
 
 const dateAgo = (days) => subDays(new Date(), days);
 
@@ -114,6 +116,24 @@ const BatchPlotChartSettings = ({
             />
             Auto-range
           </label>
+          <Icon
+            id='auto-range-help'
+            className='pl-2 d-inline'
+            icon='help-circle-outline'
+            style={{
+              fontSize: '18px',
+            }}
+          />
+          <Tooltip
+            anchorId='auto-range-help'
+            effect='solid'
+            place='right'
+            content={
+              <span>
+                Selecting this option will allow the plot to <br/>attempt a 'best-fit' view for the data selected.
+              </span>
+            }
+          />
           <hr />
           <label className='checkbox'>
             <input 

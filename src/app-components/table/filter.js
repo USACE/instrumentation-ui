@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import Select from 'react-select';
 
 import Icon from '../icon';
 
-const ValueContainer = ({ children, getValue, ...props }) => {
-  var length = getValue().length;
+const ValueContainer = ({ children, getValue }) => {
+  const length = getValue().length;
 
   return (
-    <span {...props} className='text-info' style={{ minWidth: '70px', paddingLeft: '10px' }}>
+    <span className='text-info' style={{ minWidth: '70px', paddingLeft: '10px' }}>
       <span><Icon icon='filter' /> ({length})</span>
-      {React.cloneElement(children[1])}
+      {cloneElement(children[1])}
     </span>
   );
 };

@@ -58,7 +58,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the measurement at the specified time',
     },
     masked: {

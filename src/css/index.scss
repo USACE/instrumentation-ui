@@ -45,6 +45,10 @@ $error-color: #f04124;
   overflow: hidden;
 }
 
+.no-select {
+  user-select: none;
+}
+
 .overflow-ellipsis {
   white-space: nowrap;
   overflow: hidden;

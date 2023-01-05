@@ -2,6 +2,15 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 import TimelineList from './timeline-list';
 
+const stationDisplay = station => {
+  if (!station) return 'N/A';
+
+  if (station.length < 3) return station;
+  const asStr = String(station);
+
+  return `${asStr.slice(0, -2)}+${asStr.slice(-2)}`;
+};
+
 export default connect(
   'selectInstrumentStatusItems',
   'selectInstrumentGroupsItemsObjectById',
@@ -44,7 +53,7 @@ export default connect(
 
         <div className='row mb-2'>
           <div className='col-4 text-right font-weight-light'>Station</div>
-          <div className='col'>{item.station || 'N/A'}</div>
+          <div className='col'>{stationDisplay(item.station)}</div>
         </div>
 
         <div className='row mb-2'>
