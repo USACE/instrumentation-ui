@@ -1,9 +1,23 @@
 // @ts-nocheck
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import isEqual from 'lodash.isequal';
 
 import Plotly from './minify-plotly';
 import createPlotlyComponent from 'react-plotly.js/factory';
+import { classArray } from '../../utils';
+
+const Overlay = () => {
+  const [isEnabled, setIsEnabled] = useState(true);
+
+  const classes = classArray([
+    'chart-overlay',
+    isEnabled && 'enabled',
+  ]);
+
+  return (
+    <div className={classes} onClick={() => setIsEnabled(false)} />
+  );
+};
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -13,6 +27,7 @@ const Chart = ({
   frames = [],
   config = {},
   onUpdate = (_figure) => {},
+  withOverlay = false,
 }) => {
   const updateState = (figure) => {
     if (
@@ -48,7 +63,8 @@ const Chart = ({
   }
 
   return (
-    <div ref={containerRef} style={{ height: '100%' }}>
+    <div ref={containerRef} style={{ height: '100%', position: 'relative' }}>
+      {withOverlay && <Overlay />}
       <Plot
         ref={plotRef}
         data={data}

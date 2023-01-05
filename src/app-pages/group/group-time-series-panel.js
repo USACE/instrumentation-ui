@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
-import TimeSeries from './group-time-series-chart';
+import TimeSeriesChart from './group-time-series-chart';
 import { seriesStyles } from '../../utils';
 
 let styleIterator = 0;
@@ -20,7 +20,7 @@ const TimeseriesCheckbox = ({
 
   return (
     <>
-      <label className='checkbox' style={{ paddingLeft: '3.5rem' }}>
+      <label className='checkbox pl-4'>
         <input
           type='checkbox'
           checked={checked}
@@ -34,18 +34,8 @@ const TimeseriesCheckbox = ({
             });
           }}
         />
-        {`${timeseries.name} (${timeseries.parameter} in ${timeseries.unit})`}
-        {''}
+        <span> {timeseries.name} <i>({timeseries.parameter} in {timeseries.unit})</i></span>
       </label>
-      <div
-        style={{
-          position: 'relative',
-          right: 0,
-          top: '-12px',
-          width: '40px',
-          borderBottom: `solid ${style.line.width} ${style.line.color}`,
-        }}
-      />
     </>
   );
 };
@@ -53,8 +43,8 @@ const TimeseriesCheckbox = ({
 const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
   if (!series || !timeseries || !instrument) return null;
   return (
-    <div className='mb-2 ml-2'>
-      <div className='control'>{instrument.name}</div>
+    <div className='mb-2'>
+      <b className='control'>{instrument.name}</b>
       <div>
         {timeseries.map((ts, i) => (
           <TimeseriesCheckbox
@@ -70,10 +60,6 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
   );
 };
 
-// using the useReducer hook instead of useState for more complex
-// data handling, it's internal to our component, the rest of the
-// app doesn't care, so we keep it here instead of moving it to
-// a bundle.
 const reducer = (series, { type, payload }) => {
   switch (type) {
     case 'UPDATE_SERIES':
@@ -95,6 +81,14 @@ export default connect(
     nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
   }) => {
     const [series, dispatch] = useReducer(reducer, {});
+    const chartSeries = {};
+
+    Object.keys(measurements).forEach((id) => {
+      if (series.hasOwnProperty(id)) {
+        if (series[id].active)
+          chartSeries[id] = Object.assign(measurements[id], series[id]);
+      }
+    });
 
     useEffect(() => {
       if (series) {
@@ -104,14 +98,6 @@ export default connect(
         });
       }
     }, [series, doInstrumentTimeseriesSetActiveId]);
-
-    const chartSeries = {};
-    Object.keys(measurements).forEach((id) => {
-      if (series.hasOwnProperty(id)) {
-        if (series[id].active)
-          chartSeries[id] = Object.assign(measurements[id], series[id]);
-      }
-    });
 
     return (
       <Card className='mt-3'>
@@ -138,7 +124,7 @@ export default connect(
                   ))}
               </div>
               <div className='col-9'>
-                <TimeSeries data={chartSeries} />
+                <TimeSeriesChart data={chartSeries} />
               </div>
             </div>
           </div>

@@ -62,7 +62,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the depth at the specified time',
     },
     a0: {
@@ -70,7 +70,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the a0 measurement at the specified time',
     },
     a180: {
@@ -78,7 +78,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the a180 measurement at the specified time',
     },
     b0: {
@@ -86,7 +86,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the a0 measurement at the specified time',
     },
     b180: {
@@ -94,7 +94,7 @@ const timeseriesMeasurementParser = {
       type: 'number',
       required: true,
       parse: val => isNumeric(val) ? Number(val) : null,
-      validate: val => !!val,
+      validate: val => val !== null,
       helpText: 'Numeric value of the b180 measurement at the specified time',
     },
   },
