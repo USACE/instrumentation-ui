@@ -4,11 +4,11 @@ import { connect } from 'redux-bundler-react';
 import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
-import CollectionGroupForm from '../../../collectiongroup/collection-group-form';
 import Dropdown from '../../../../app-components/dropdown';
 import Icon from '../../../../app-components/icon';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
+import { CollectionGroupForm } from '../../../collection-group';
 
 import '../../project.scss';
 
