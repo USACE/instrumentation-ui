@@ -68,6 +68,7 @@ export default createRestBundle({
             },
           },
         });
+
         dispatch({ type: 'TIMESERIES_FETCH_BY_ID_FINISHED', payload: {} });
       });
     },
@@ -106,6 +107,7 @@ export default createRestBundle({
             },
           },
         });
+
         dispatch({ type: 'TIMESERIES_MEASUREMENT_PUT_FINISHED', payload: {} });
       });
     },

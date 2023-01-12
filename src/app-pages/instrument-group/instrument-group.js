@@ -12,7 +12,7 @@ import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import RoleFilter from '../../app-components/role-filter';
 import Table from '../../app-components/table';
-import TimeseriesPanel from './group-time-series-panel';
+import TimeseriesPanel from './time-series-panel';
 import { titlize } from '../../utils';
 
 const filterItems = (filter, items) => {

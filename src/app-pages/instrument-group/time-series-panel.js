@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
+import isEqual from 'lodash.isequal';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
-import TimeSeriesChart from './group-time-series-chart';
+import TimeSeriesChart from './time-series-chart';
 import { seriesStyles } from '../../utils';
+import { subDays } from 'date-fns';
+
 
 let styleIterator = 0;
 
 const TimeseriesCheckbox = ({
   timeseries,
   instrument,
-  checked = false,
+  checked = true,
   onChange,
 }) => {
   // give each instance of the checkbox a unique ordered index value so
@@ -42,6 +45,7 @@ const TimeseriesCheckbox = ({
 
 const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
   if (!series || !timeseries || !instrument) return null;
+
   return (
     <div className='mb-2'>
       <b className='control'>{instrument.name}</b>
@@ -70,34 +74,38 @@ const reducer = (series, { type, payload }) => {
 };
 
 export default connect(
-  'doInstrumentTimeseriesSetActiveId',
-  'selectInstrumentGroupInstrumentsItemsObject',
-  'selectTimeseriesMeasurementsItemsObject',
+  'doFetchInstrumentGroupTimeseriesMeasurements',
+  'selectInstrumentGroupInstrumentsInstruments',
+  'selectInstrumentGroupInstrumentsMeasurements',
   'selectNonComputedTimeseriesByInstrumentId',
   ({
-    doInstrumentTimeseriesSetActiveId,
-    instrumentGroupInstrumentsItemsObject: instruments,
-    timeseriesMeasurementsItemsObject: measurements,
+    doFetchInstrumentGroupTimeseriesMeasurements,
+    instrumentGroupInstrumentsInstruments: instruments,
+    instrumentGroupInstrumentsMeasurements: measurements,
     nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
   }) => {
+    const instrumentsRef = useRef({});
     const [series, dispatch] = useReducer(reducer, {});
     const chartSeries = {};
 
-    Object.keys(measurements).forEach((id) => {
-      if (series.hasOwnProperty(id)) {
-        if (series[id].active)
-          chartSeries[id] = Object.assign(measurements[id], series[id]);
-      }
-    });
+    if (!isEqual(instrumentsRef.current, instruments)) {
+      instrumentsRef.current = instruments;
+    }
 
     useEffect(() => {
-      if (series) {
-        Object.keys(series).forEach((key) => {
-          if (!measurements.hasOwnProperty(key))
-            doInstrumentTimeseriesSetActiveId(key);
-        });
+      // Load group's instruments and associated timeseries:
+      if (Object.keys(instruments).length) {
+        const beforeDate = new Date();
+        const afterDate = subDays(beforeDate, 365);
+
+        const before = beforeDate.toISOString();
+        const after = afterDate.toISOString();
+
+        doFetchInstrumentGroupTimeseriesMeasurements({ before, after });
       }
-    }, [series, doInstrumentTimeseriesSetActiveId]);
+
+      // Save timeseries into local state for checkbox changes
+    }, [instrumentsRef.current]);
 
     return (
       <Card className='mt-3'>
@@ -108,13 +116,13 @@ export default connect(
               <div className='col-3'>
                 {Object.keys(instruments)
                   .sort()
-                  .map((instrumentId, i) => (
+                  .map(instrumentId => (
                     <InstrumentControl
-                      key={i}
+                      key={instrumentId}
                       instrument={instruments[instrumentId]}
                       timeseries={timeseriesByInstrumentId[instrumentId]}
                       series={series}
-                      onChange={(e) => {
+                      onChange={e => {
                         dispatch({
                           type: 'UPDATE_SERIES',
                           payload: e,
