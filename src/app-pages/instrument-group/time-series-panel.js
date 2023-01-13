@@ -1,76 +1,95 @@
-import React, { useState, useEffect, useReducer, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
 import TimeSeriesChart from './time-series-chart';
-import { seriesStyles } from '../../utils';
-import { subDays } from 'date-fns';
-
-
-let styleIterator = 0;
+import { subYears } from 'date-fns';
 
 const TimeseriesCheckbox = ({
   timeseries,
-  instrument,
-  checked = true,
+  checked,
   onChange,
-}) => {
-  // give each instance of the checkbox a unique ordered index value so
-  // we can consistently get the style settings
-  const [styleIdx] = useState(styleIterator++);
-  const style = seriesStyles[styleIdx % 11];
+}) => (
+  <>
+    <label className='checkbox pl-4'>
+      <input
+        type='checkbox'
+        checked={checked}
+        onChange={onChange}
+      />
+      <span> {timeseries.name} <i>({timeseries.parameter} in {timeseries.unit})</i></span>
+    </label>
+  </>
+);
 
-  return (
-    <>
-      <label className='checkbox pl-4'>
-        <input
-          type='checkbox'
-          checked={checked}
-          onChange={(e) => {
-            onChange({
-              [timeseries.id]: {
-                name: `${instrument.name} - ${timeseries.name}`,
-                active: e.target.checked,
-                style: style,
-              },
-            });
-          }}
-        />
-        <span> {timeseries.name} <i>({timeseries.parameter} in {timeseries.unit})</i></span>
-      </label>
-    </>
-  );
-};
-
-const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
-  if (!series || !timeseries || !instrument) return null;
+const InstrumentControl = ({ instrument, timeseries, activeTimeseries, onChange }) => {
+  if (!timeseries || !instrument) return null;
 
   return (
     <div className='mb-2'>
       <b className='control'>{instrument.name}</b>
       <div>
-        {timeseries.map((ts, i) => (
-          <TimeseriesCheckbox
-            key={i}
-            instrument={instrument}
-            checked={series[ts.id]?.active}
-            timeseries={ts}
-            onChange={onChange}
-          />
-        ))}
+        {timeseries.map(ts => {
+          const { id } = ts;
+
+          return (
+            <TimeseriesCheckbox
+              key={id}
+              timeseries={ts}
+              checked={activeTimeseries[id]}
+              onChange={() => onChange(id)}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
 
-const reducer = (series, { type, payload }) => {
-  switch (type) {
-    case 'UPDATE_SERIES':
-      return Object.assign({}, series, payload);
-    default:
-      return series;
-  }
+const getChartData = (measurements = {}, timeseries = {}) => {
+  const ret = [];
+
+  const instrumentIds = Object.keys(measurements);
+
+  instrumentIds.forEach(instrumentId => {
+    measurements[instrumentId].forEach(el => {
+      const { timeseries_id, items } = el;
+
+      const ts = timeseries[instrumentId]?.find(el => el.id === timeseries_id);
+
+      if (ts) {
+        const { instrument, name } = ts;
+
+        ret.push({
+          name: `${instrument} - ${name}`,
+          timeseriesId: timeseries_id,
+          items: items.map(item => ({
+            time: Object.keys(item)[0],
+            value: Object.values(item)[0],
+          })),
+        });
+      }
+    });
+  });
+
+  return ret;
+};
+
+const setDefaultState = (measurements = {}) => {
+  const instrumentIds = Object.keys(measurements);
+
+  const ret = {};
+
+  instrumentIds.forEach(instrumentId => {
+    measurements[instrumentId].forEach(el => {
+      const { timeseries_id } = el;
+
+      ret[timeseries_id] = true;
+    });
+  });
+
+  return ret;
 };
 
 export default connect(
@@ -82,29 +101,26 @@ export default connect(
     doFetchInstrumentGroupTimeseriesMeasurements,
     instrumentGroupInstrumentsInstruments: instruments,
     instrumentGroupInstrumentsMeasurements: measurements,
-    nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
+    nonComputedTimeseriesByInstrumentId: timeseries,
   }) => {
+    const [activeTimeseries, setActiveTimeseries] = useState(setDefaultState(measurements));
+
     const instrumentsRef = useRef({});
-    const [series, dispatch] = useReducer(reducer, {});
-    const chartSeries = {};
 
     if (!isEqual(instrumentsRef.current, instruments)) {
       instrumentsRef.current = instruments;
     }
 
     useEffect(() => {
-      // Load group's instruments and associated timeseries:
       if (Object.keys(instruments).length) {
         const beforeDate = new Date();
-        const afterDate = subDays(beforeDate, 365);
+        const afterDate = subYears(beforeDate, 5);
 
         const before = beforeDate.toISOString();
         const after = afterDate.toISOString();
 
         doFetchInstrumentGroupTimeseriesMeasurements({ before, after });
       }
-
-      // Save timeseries into local state for checkbox changes
     }, [instrumentsRef.current]);
 
     return (
@@ -120,19 +136,20 @@ export default connect(
                     <InstrumentControl
                       key={instrumentId}
                       instrument={instruments[instrumentId]}
-                      timeseries={timeseriesByInstrumentId[instrumentId]}
-                      series={series}
-                      onChange={e => {
-                        dispatch({
-                          type: 'UPDATE_SERIES',
-                          payload: e,
-                        });
-                      }}
+                      timeseries={timeseries[instrumentId]}
+                      activeTimeseries={activeTimeseries}
+                      onChange={(id) => setActiveTimeseries(state => ({
+                        ...state,
+                        [id]: !state[id],
+                      }))}
                     />
                   ))}
               </div>
               <div className='col-9'>
-                <TimeSeriesChart data={chartSeries} />
+                <TimeSeriesChart
+                  data={getChartData(measurements, timeseries)}
+                  activeTimeseries={activeTimeseries}
+                />
               </div>
             </div>
           </div>
