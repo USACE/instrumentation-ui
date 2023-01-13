@@ -61,6 +61,10 @@ export default connect(
       }
     }, [filter, instrumentArray, filterItems, setFilteredInstruments]);
 
+    useEffect(() => {
+      setInstrumentArray(instrumentIds.map(id => instruments[id]));
+    }, [instruments, setInstrumentArray]);
+
     return (
       <>
         <section className='container'>
