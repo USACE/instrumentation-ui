@@ -1,7 +1,7 @@
 import { createRouteBundle } from 'redux-bundler';
 
-import CollectionGroup from '../app-pages/collectiongroup/collectiongroup';
-import Group from '../app-pages/group/details';
+import CollectionGroup from '../app-pages/collection-group';
+import InstrumentGroup from '../app-pages/instrument-group';
 import Help from '../app-pages/help/help';
 import Home from '../app-pages/home/home';
 import Instrument from '../app-pages/instrument/details';
@@ -21,7 +21,7 @@ export default createRouteBundle(
     '/profile': Profile,
     '/not-found': NotFound,
     '/:projectSlug': Project,
-    '/:projectSlug/groups/:groupSlug': Group,
+    '/:projectSlug/groups/:groupSlug': InstrumentGroup,
     '/:projectSlug/instruments/:instrumentSlug': Instrument,
     '/:projectSlug/collection-groups/:collectionGroupSlug': CollectionGroup,
     '*': NotFound,

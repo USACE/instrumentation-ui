@@ -2,9 +2,7 @@ import React from 'react';
 
 import Chart from '../../app-components/chart/chart';
 
-const GroupTimeseriesChart = ({ data, title }) => {
-  if (!data) return null;
-
+const GroupTimeseriesChart = ({ data = [], activeTimeseries }) => {
   const chartData = [];
   const layout = {
     autosize: true,
@@ -18,10 +16,10 @@ const GroupTimeseriesChart = ({ data, title }) => {
     scrollZoom: true,
   };
 
-  Object.keys(data).forEach(id => {
-    const { items, style, name } = data[id];
+  data.forEach(datum => {
+    const { items, name, timeseriesId } = datum;
 
-    if (!items || !items.length) return 'no data to show';
+    if (!activeTimeseries[timeseriesId]) return;
 
     const x = [];
     const y = [];
@@ -40,7 +38,6 @@ const GroupTimeseriesChart = ({ data, title }) => {
       x: x,
       y: y,
       showLegend: false,
-      ...style,
     });
   });
 

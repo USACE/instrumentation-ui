@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import Icon from '../../../app-components/icon';
 import PrintButton from './print-button';
 
-const dateAgo = (days) => subDays(new Date(), days);
+const dateAgo = days => subDays(new Date(), days);
 
 const BatchPlotChartSettings = ({
   chartSettings,

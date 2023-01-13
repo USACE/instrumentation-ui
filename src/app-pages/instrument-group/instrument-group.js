@@ -12,7 +12,7 @@ import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import RoleFilter from '../../app-components/role-filter';
 import Table from '../../app-components/table';
-import TimeseriesPanel from './group-time-series-panel';
+import TimeseriesPanel from './time-series-panel';
 import { titlize } from '../../utils';
 
 const filterItems = (filter, items) => {
@@ -33,7 +33,7 @@ export default connect(
   'selectMapsObject',
   'selectProjectsByRoute',
   'selectInstrumentGroupsByRoute',
-  'selectInstrumentGroupInstrumentsItems',
+  'selectInstrumentGroupInstrumentsInstruments',
   ({
     doModalOpen,
     doMapsInitialize,
@@ -41,23 +41,25 @@ export default connect(
     mapsObject,
     projectsByRoute: project,
     instrumentGroupsByRoute: group,
-    instrumentGroupInstrumentsItems: instruments,
+    instrumentGroupInstrumentsInstruments: instruments,
   }) => {
     if (!group) return null;
+    const instrumentIds = Object.keys(instruments);
 
+    const [instrumentArray, setInstrumentArray] = useState(instrumentIds.map(id => instruments[id]));
     const [filter, setFilter] = useState('');
-    const [filteredInstruments, setFilteredInstruments] = useState(instruments);
+    const [filteredInstruments, setFilteredInstruments] = useState(instrumentArray);
 
-    const statusOptions = [...new Set(instruments.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
-    const typeOptions = [...new Set(instruments.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
+    const statusOptions = [...new Set(instrumentArray.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));
+    const typeOptions = [...new Set(instrumentArray.map(instrument => instrument.type))].map(type => ({ value: type, label: type }));
 
     useEffect(() => {
       if (filter) {
-        setFilteredInstruments(filterItems(filter, instruments));
+        setFilteredInstruments(filterItems(filter, instrumentArray));
       } else {
-        setFilteredInstruments(instruments);
+        setFilteredInstruments(instrumentArray);
       }
-    }, [filter, instruments, filterItems, setFilteredInstruments]);
+    }, [filter, instrumentArray, filterItems, setFilteredInstruments]);
 
     return (
       <>

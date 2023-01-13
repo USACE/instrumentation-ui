@@ -6,9 +6,9 @@ import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import Dropdown from '../../../../app-components/dropdown';
 import Icon from '../../../../app-components/icon';
-import InstrumentGroupForm from '../../../group/instrument-group-form';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
+import { InstrumentGroupForm } from '../../../instrument-group';
 
 import '../../project.scss';
 
