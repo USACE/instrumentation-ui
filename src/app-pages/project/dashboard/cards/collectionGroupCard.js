@@ -4,10 +4,11 @@ import { connect } from 'redux-bundler-react';
 import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
-import CollectionGroupForm from '../../../collectiongroup/collection-group-form';
 import Dropdown from '../../../../app-components/dropdown';
 import Icon from '../../../../app-components/icon';
 import RoleFilter from '../../../../app-components/role-filter';
+import Table from '../../../../app-components/table';
+import { CollectionGroupForm } from '../../../collection-group';
 
 import '../../project.scss';
 
@@ -56,39 +57,36 @@ const CollectionGroupCard = connect(
           </RoleFilter>
         </div>
       </Card.Header>
-      <Card.Body className='mx-3 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
+      <Card.Body className='mx-2 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
         {collectionGroups.length ? (
-          <table className='table dashboard-table'>
-            <thead>
-              <tr className='row'>
-                <th className='col-10'>Name</th>
-                <th className='col-2 pl-3'>Tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              {collectionGroups.map(group => (
-                <tr key={group.id} className='row'>
-                  <td className='col-10'>
-                    <a href={`/${project.slug}/collection-groups/${group.slug}`}>
-                      {group.name}
-                    </a>
-                  </td>
-                  <td className='col-2 pl-3'>
-                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                      <Button
-                        isOutline
-                        size='small'
-                        variant='info'
-                        title='Edit'
-                        handleClick={() => doModalOpen(CollectionGroupForm, { item: group })}
-                        icon={<Icon icon='pencil' />}
-                      />
-                    </RoleFilter>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table
+            className='dashboard-table'
+            data={collectionGroups}
+            columns={[{
+              key: 'name',
+              header: 'Name',
+              render: (data) => (
+                <a href={`/${project.slug}/collection-groups/${data.slug}`}>
+                  {data.name}
+                </a>
+              ),
+            }, {
+              key: 'tools',
+              header: 'Tools',
+              render: (data) => (
+                <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    title='Edit'
+                    handleClick={() => doModalOpen(CollectionGroupForm, { item: data })}
+                    icon={<Icon icon='pencil' />}
+                  />
+                </RoleFilter>
+              ),
+            }]}
+          />
         ) : <NoGroupsDisplay doModalOpen={doModalOpen} project={project} />}
       </Card.Body>
     </Card>

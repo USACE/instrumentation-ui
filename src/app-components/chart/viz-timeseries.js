@@ -55,9 +55,9 @@ export default connect(
     }, [showRainfall, showToday]);
 
     return (
-      <Accordion.List className='m-2'>
-        {data.length ? (
-          data.map(x => (
+      data.length ? (
+        <Accordion.List className='m-2'>
+          {data.map(x => (
             <Accordion.Item headingText={x.domainName} key={x.id}>
               <div style={{ height: x.data[0].isInclinometer ? '800px' : '600px' }}>
                 {x.data[0].isInclinometer
@@ -66,11 +66,13 @@ export default connect(
                 }
               </div>
             </Accordion.Item>
-          ))
-        ) : (
-          <Chart data={null} layout={finalLayout} config={config} />
-        )}
-      </Accordion.List>
+          ))}
+        </Accordion.List>
+      ) : (
+        <i className='mt-2 ml-3'>
+          No data to be shown for selected instrument(s).
+        </i>
+      )
     );
   }
 );

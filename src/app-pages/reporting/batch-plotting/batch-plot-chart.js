@@ -113,6 +113,7 @@ const BatchPlotChart = connect(
     return (
       <>
         <Chart
+          withOverlay
           data={chartData}
           layout={layout}
           config={{

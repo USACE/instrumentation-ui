@@ -6,8 +6,9 @@ import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import Dropdown from '../../../../app-components/dropdown';
 import Icon from '../../../../app-components/icon';
-import InstrumentGroupForm from '../../../group/instrument-group-form';
 import RoleFilter from '../../../../app-components/role-filter';
+import Table from '../../../../app-components/table';
+import { InstrumentGroupForm } from '../../../instrument-group';
 
 import '../../project.scss';
 
@@ -58,59 +59,49 @@ const InstrumentGroupCard = connect(
           </RoleFilter>
         </div>
       </Card.Header>
-      <Card.Body className='mx-3 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
+      <Card.Body className='mx-2 my-1' hasPaddingVertical={false} hasPaddingHorizontal={false}>
         {groups.length ? (
-          <table className='table dashboard-table'>
-            <thead>
-              <tr className='row'>
-                <th className='col-4'>Name</th>
-                <th className='col-3'>
-                  <span className='float-right'>Instrument Count</span>
-                </th>
-                {/* <th className='col-3'>
-                  <span className='float-right'>Last Measurement</span>
-                </th> */}
-                {/* Temp */}
-                <th className='col-3'>
-                  <span className='float-right'>Timeseries Count</span>
-                </th>
-                <th className='col-2 pl-3'>Tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groups.map(group => (
-                <tr key={group.id} className='row'>
-                  <td className='col-4'>
-                    <a href={`/${project.slug}/groups/${group.slug}`}>
-                      {group.name}
-                    </a>
-                  </td>
-                  <td className='col-3'>
-                    <span className='float-right'>{group.instrument_count}</span>
-                  </td>
-                  {/* <td className='col-3'>
-                    <span className='float-right'>Some Time Ago</span>
-                  </td> */}
-                  {/* vvv Temp vvv */}
-                  <td className='col-3'>
-                    <span className='float-right'>{group.timeseries_count}</span>
-                  </td>
-                  <td className='col-2 pl-3'>
-                    <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
-                      <Button
-                        isOutline
-                        size='small'
-                        variant='info'
-                        title='Edit'
-                        handleClick={() => doModalOpen(InstrumentGroupForm, { item: group })}
-                        icon={<Icon icon='pencil' />}
-                      />
-                    </RoleFilter>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table
+            className='dashboard-table'
+            data={groups}
+            columns={[{
+              key: 'name',
+              header: 'Name',
+              isSortable: true,
+              render: (data) => (
+                <a href={`/${project.slug}/groups/${data.slug}`}>
+                  {data.name}
+                </a>
+              ),
+            }, {
+              key: 'instrument_count',
+              isSortable: true,
+              isRightAlign: true,
+              header: 'Instrument Count',
+              render: (data) => <span className='float-right'>{data.instrument_count}</span>,
+            }, {
+              key: 'timeseries_count',
+              isSortable: true,
+              isRightAlign: true,
+              header: 'Timeseries Count',
+              render: (data) => <span className='float-right'>{data.timeseries_count}</span>,
+            }, {
+              key: 'username',
+              header: 'Tools',
+              render: (data) => (
+                <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    title='Edit'
+                    handleClick={() => doModalOpen(InstrumentGroupForm, { item: data })}
+                    icon={<Icon icon='pencil' />}
+                  />
+                </RoleFilter>
+              )
+            }]}
+          />
         ) : <NoGroupsDisplay doModalOpen={doModalOpen} project={project} />}
       </Card.Body>
     </Card>
