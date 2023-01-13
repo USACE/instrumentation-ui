@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
+import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
@@ -60,6 +61,10 @@ export default connect(
         setFilteredInstruments(instrumentArray);
       }
     }, [filter, instrumentArray, filterItems, setFilteredInstruments]);
+
+    useDeepCompareEffect(() => {
+      setInstrumentArray(instrumentIds.map(id => instruments[id]));
+    }, [instruments, setInstrumentArray]);
 
     return (
       <>

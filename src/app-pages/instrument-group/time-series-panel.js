@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import isEqual from 'lodash.isequal';
+import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { useDeepCompareEffect } from 'react-use';
 
 import Card from '../../app-components/card';
 import TimeSeriesChart from './time-series-chart';
@@ -104,14 +104,9 @@ export default connect(
     nonComputedTimeseriesByInstrumentId: timeseries,
   }) => {
     const [activeTimeseries, setActiveTimeseries] = useState(setDefaultState(measurements));
+    const [chartData, setChartData] = useState(getChartData(measurements, timeseries));
 
-    const instrumentsRef = useRef({});
-
-    if (!isEqual(instrumentsRef.current, instruments)) {
-      instrumentsRef.current = instruments;
-    }
-
-    useEffect(() => {
+    useDeepCompareEffect(() => {
       if (Object.keys(instruments).length) {
         const beforeDate = new Date();
         const afterDate = subYears(beforeDate, 5);
@@ -121,7 +116,14 @@ export default connect(
 
         doFetchInstrumentGroupTimeseriesMeasurements({ before, after });
       }
-    }, [instrumentsRef.current]);
+    }, [instruments]);
+
+    useDeepCompareEffect(() => {
+      if (!!measurements && !!timeseries) {
+        setActiveTimeseries(setDefaultState(measurements));
+        setChartData(getChartData(measurements, timeseries));
+      }
+    }, [measurements]);
 
     return (
       <Card className='mt-3'>
@@ -147,7 +149,7 @@ export default connect(
               </div>
               <div className='col-9'>
                 <TimeSeriesChart
-                  data={getChartData(measurements, timeseries)}
+                  data={chartData}
                   activeTimeseries={activeTimeseries}
                 />
               </div>
