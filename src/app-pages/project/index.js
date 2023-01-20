@@ -10,6 +10,7 @@ import AllInstruments from './all-instruments';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
 import Uploader from './uploader';
 import { isUserAllowed } from '../../app-components/role-filter';
+import DataLoggers from './data-loggers';
 
 const Title = ({ text, icon }) => (
   <span><Icon icon={icon} />&nbsp;{text}</span>
@@ -60,6 +61,11 @@ const Project = connect(
       }] : [],
       // Active if User === Admin
       ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
+        title: <Title text='Data Loggers' icon='waveform' />,
+        context: <DataLoggers />,
+        paddingSmall: true,
+        uri: '#data-loggers',
+      }, {
         title: <Title text='Admin' icon='shield-account' />,
         content: <AdminPage />,
         paddingSmall: true,
