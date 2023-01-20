@@ -7,7 +7,7 @@ import {
 import createAuthBundle from './create-auth-bundle';
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from './create-jwt-api-bundle';
-import cache from '../cache';
+import cache from '../common/helpers/cache';
 
 import alertReadBundle from './alert-read-bundle';
 import alertSubscribeBundle from './alert-subscribe-bundle';
