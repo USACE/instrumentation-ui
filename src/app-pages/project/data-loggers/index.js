@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DataLoggers = () => (
-  <div>
+  <div className='container-fluid'>
     Data Logger Tab
   </div>
 );
