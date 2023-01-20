@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 const Modal = connect(
   'doModalClose',

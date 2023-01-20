@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { connect } from 'redux-bundler-react';
 
-import DomainSelect from '../../../app-components/domain-select';
-import Map from '../../../app-components/classMap';
-import { ModalFooter, ModalHeader } from '../../../app-components/modal';
+import DomainSelect from '../../app-components/domain-select';
+import Map from '../../app-components/classMap';
+import { ModalFooter, ModalHeader } from '../../app-components/modal';
 
 import 'react-datepicker/dist/react-datepicker.css';
 

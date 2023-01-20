@@ -7,7 +7,7 @@ import DataConfiguration from './data-configuration';
 import Icon from '../../../app-components/icon';
 import Map from '../../../app-components/classMap';
 
-import '../reporting.scss';
+import './batch-plotting.scss';
 
 const BatchPlotting = connect(
   'doMapsInitialize',

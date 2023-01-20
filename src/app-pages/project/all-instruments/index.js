@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../app-components/button';
-import Card from '../../app-components/card';
-import Icon from '../../app-components/icon';
-import InstrumentForm from './forms/instrument-form';
-import LoginMessage from '../../app-components/login-message';
-import RoleFilter from '../../app-components/role-filter';
-import SearchBar from '../home/search-bar';
-import Table from '../../app-components/table';
-import { titlize } from '../../utils';
+import Button from '../../../app-components/button';
+import Card from '../../../app-components/card';
+import Icon from '../../../app-components/icon';
+import InstrumentForm from '../../../common/forms/instrument-form';
+import LoginMessage from '../../../app-components/login-message';
+import RoleFilter from '../../../app-components/role-filter';
+import SearchBar from '../../home/search-bar';
+import Table from '../../../app-components/table';
+import { titlize } from '../../../common/helpers/utils';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (

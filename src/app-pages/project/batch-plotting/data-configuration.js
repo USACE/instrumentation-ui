@@ -8,7 +8,7 @@ import Icon from '../../../app-components/icon';
 import Select from '../../../app-components/select';
 import usePrevious from '../../../customHooks/usePrevious';
 
-import '../reporting.scss';
+import './batch-plotting.scss';
 
 const DataConfiguration = connect(
   'selectBatchPlotConfigurationsItems',

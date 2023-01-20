@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Card from '../../app-components/card';
+import Card from '../../../app-components/card';
 import PreviewTable from './preview-table';
-import TabContainer from '../../app-components/tab';
+import TabContainer from '../../../app-components/tab';
 
 export default connect(
   'selectUploadColumnDefsOriginal',

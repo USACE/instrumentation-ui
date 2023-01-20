@@ -6,7 +6,7 @@ import { getNavHelper } from 'internal-nav-helper';
 import App from './App';
 import cache from './cache';
 import getStore from './app-bundles';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './common/helpers/serviceWorker';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

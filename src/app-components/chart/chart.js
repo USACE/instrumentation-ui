@@ -4,7 +4,7 @@ import isEqual from 'lodash.isequal';
 
 import Plotly from './minify-plotly';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 const Overlay = () => {
   const [isEnabled, setIsEnabled] = useState(true);

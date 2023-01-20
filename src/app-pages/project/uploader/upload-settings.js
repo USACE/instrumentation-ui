@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Card from '../../app-components/card';
+import Card from '../../../app-components/card';
 import FieldMapper from './field-mapper';
 import IgnoreRows from './ignore-rows';
 import ParserSelector from './parser-selector';

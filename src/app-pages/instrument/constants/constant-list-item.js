@@ -5,7 +5,7 @@ import Button from '../../../app-components/button';
 import ConstantForm from './constant-form';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
-import { classArray } from '../../../utils';
+import { classArray } from '../../../common/helpers/utils';
 
 export default connect(
   'doModalOpen',

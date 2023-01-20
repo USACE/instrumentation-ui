@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Card from '../../app-components/card';
-import UploadButton from '../../app-components/upload-button';
+import Card from '../../../app-components/card';
+import UploadButton from '../../../app-components/upload-button';
 
 export default connect(
   'selectUploadFileData',

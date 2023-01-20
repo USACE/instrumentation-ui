@@ -2,7 +2,7 @@ import React, { createContext, forwardRef, useEffect, useImperativeHandle, useRe
 
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 import useWindowListener from '../customHooks/useWindowListener';
-import { classArray } from '../utils';
+import { classArray } from '../common/helpers/utils';
 
 const defaultVal = { closeDropdown: () => {}};
 const DropdownContext = createContext(defaultVal);

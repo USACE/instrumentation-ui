@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import AdminPage from './admin/admin';
-import BatchPlotting from '../reporting/batch-plotting';
+import AdminPage from './admin';
+import BatchPlotting from './batch-plotting';
 import Explorer from '../explorer/explorer';
 import Icon from '../../app-components/icon';
-import ProjectDashboard from './dashboard/dashboard';
-import Manager from '../manager/manager';
+import ProjectDashboard from './dashboard';
+import AllInstruments from './all-instruments';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
-import Uploader from '../uploader/uploader';
+import Uploader from './uploader';
 import { isUserAllowed } from '../../app-components/role-filter';
 
 const Title = ({ text, icon }) => (
@@ -42,7 +42,7 @@ const Project = connect(
         uri: '#explorer',
       }, {
         title: <Title text='All Instruments' icon='speedometer' />,
-        content: <Manager style={{ width: '100vw' }}/>,
+        content: <AllInstruments style={{ width: '100vw' }}/>,
         paddingSmall: true,
         uri: '#all-instruments',
       }],

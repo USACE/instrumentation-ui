@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
-import CollectionGroupForm from '../../../app-pages/collectiongroup/collection-group-form';
+import CollectionGroupForm from '../../common/forms/collection-group-form';
 import Icon from '../../../app-components/icon';
 import Pagination, { handlePageChange } from '../../../app-components/pagination';
 import RoleFilter from '../../../app-components/role-filter';

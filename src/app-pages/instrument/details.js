@@ -7,7 +7,7 @@ import Card from '../../app-components/card';
 import Dropdown from '../../app-components/dropdown';
 import Icon from '../../app-components/icon';
 import InstrumentDisplay from './instrument-display';
-import InstrumentForm from '../manager/forms/instrument-form';
+import InstrumentForm from '../../common/forms/instrument-form';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import NoAlerts from './alert/no-alerts';

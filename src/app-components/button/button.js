@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 /**
  * @typedef {Object} ButtonProps

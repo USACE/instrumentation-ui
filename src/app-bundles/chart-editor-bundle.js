@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-bundler';
 import { subDays } from 'date-fns';
 
-import { trendline } from '../utils';
+import { trendline } from '../common/helpers/utils';
 
 const initialData = {
   selectionVersion: null,

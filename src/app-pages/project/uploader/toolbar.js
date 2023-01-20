@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Button from '../../app-components/button';
+import Button from '../../../app-components/button';
 
 export default connect(
   'doUploadSettingsClear',

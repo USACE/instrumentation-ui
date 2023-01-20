@@ -4,7 +4,7 @@ import { connect } from 'redux-bundler-react';
 import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
-import { classnames } from '../../../utils';
+import { classnames } from '../../../common/helpers/utils';
 
 export default connect(
   'selectProjectsByRoute',

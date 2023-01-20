@@ -5,7 +5,7 @@ import inclinometerMeasurements from '../upload-parsers/inclinometer_measurement
 import instrumentParser from '../upload-parsers/instrument';
 import timeseriesParser from '../upload-parsers/timeseries';
 import timeseriesMeasurementsParser from '../upload-parsers/timeseries_measurements';
-import { formatBytes } from '../utils';
+import { formatBytes } from '../common/helpers/utils';
 
 const cellStyle = (params, key) => {
   const style = {};
