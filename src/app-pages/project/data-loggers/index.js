@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
+import DataLoggerDetails from './dataLoggerDetails';
 import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
 import DataLoggerModal from './dataLoggerModal';
 import IncomingRawDataTable from './tables/incomingRawDataTable';
@@ -47,13 +48,13 @@ const DataLoggers = connect(
             />
           </Card.Body>
         </Card>
-        {selectedDataLogger ?? (
+        {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggers[selectedDataLogger.value]} />
             <IncomingRawDataTable />
             <DataLoggerMappingTable />
           </>
-        )}
+        ) : null}
       </div>
     );
   }
