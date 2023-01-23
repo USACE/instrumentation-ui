@@ -4,7 +4,9 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
+import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
 import DataLoggerModal from './dataLoggerModal';
+import IncomingRawDataTable from './tables/incomingRawDataTable';
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
   dataLoggers.map(logger => ({
@@ -32,6 +34,7 @@ const DataLoggers = connect(
               <Select
                 placeholder='Select a Data Logger...'
                 options={generateDataLoggerOptions(dataLoggers)}
+                onChange={val => setSelectedDataLogger(val)}
               />
             ) : <span>No Data Loggers for this project. Add one using the <i>Add New Data Logger</i> button to the right.</span>}
             <Button
@@ -44,6 +47,13 @@ const DataLoggers = connect(
             />
           </Card.Body>
         </Card>
+        {selectedDataLogger ?? (
+          <>
+            <DataLoggerDetails dataLogger={dataLoggers[selectedDataLogger.value]} />
+            <IncomingRawDataTable />
+            <DataLoggerMappingTable />
+          </>
+        )}
       </div>
     );
   }
