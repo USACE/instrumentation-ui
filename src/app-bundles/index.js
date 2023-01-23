@@ -45,6 +45,7 @@ import printBundle from './print-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
+import projectDataLoggersBundle from './project-data-loggers-bundle';
 import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
@@ -132,6 +133,7 @@ export default composeBundles(
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
+  projectDataLoggersBundle,
   projectMembersBundle,
   projectionBundle,
   projectsBundle,
