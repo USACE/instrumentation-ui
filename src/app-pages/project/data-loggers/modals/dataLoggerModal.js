@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import * as Modal from '../../../app-components/modal';
+import * as Modal from '../../../../app-components/modal';
 
 const DataLoggerModal = ({
   isEdit = false,

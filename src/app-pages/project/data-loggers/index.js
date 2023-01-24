@@ -6,7 +6,7 @@ import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import DataLoggerDetails from './dataLoggerDetails';
 import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
-import DataLoggerModal from './dataLoggerModal';
+import DataLoggerModal from './modals/dataLoggerModal';
 import IncomingRawDataTable from './tables/incomingRawDataTable';
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
@@ -23,7 +23,7 @@ const DataLoggers = connect(
     doModalOpen,
     projectDataLoggersItems: dataLoggers,
   }) => {
-    const [selectedDataLogger, setSelectedDataLogger] = useState();
+    const [selectedDataLogger, setSelectedDataLogger] = useState('test');
 
     console.log('test dataLoggers: ', dataLoggers);
 
@@ -50,8 +50,8 @@ const DataLoggers = connect(
         </Card>
         {selectedDataLogger ? (
           <>
-            <DataLoggerDetails dataLogger={dataLoggers[selectedDataLogger.value]} />
-            <IncomingRawDataTable />
+            <DataLoggerDetails dataLogger={{}} />
+            <IncomingRawDataTable doModalOpen={doModalOpen} />
             <DataLoggerMappingTable />
           </>
         ) : null}
