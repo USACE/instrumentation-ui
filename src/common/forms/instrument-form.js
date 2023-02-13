@@ -48,12 +48,13 @@ export default connect(
     item = {},
     isEdit = true,
   }) => {
-    const [name, setName] = useState((item && item.name) || '');
-    const [type_id, setTypeId] = useState((item && item.type_id) || '');
-    const [station, setStation] = useState((item && item.station) || '');
-    const [offset, setOffset] = useState((item && item.offset) || '');
-    const [project_id] = useState((item && item.project_id) || project.id);
-    const [status_id, setStatusId] = useState((item && item.status_id) || '');
+    const [name, setName] = useState(item?.name || '');
+    const [type_id, setTypeId] = useState(item.type_id || '');
+    const [station, setStation] = useState(item.station || '');
+    const [offset, setOffset] = useState(item.offset || '');
+    const [offsetDescriptor, setOffsetDescriptor] = useState(item?.offsetDescriptor || '');
+    const [project_id] = useState(item?.project_id || project.id);
+    const [status_id, setStatusId] = useState(item?.status_id || '');
     const [status_time, setStatusTime] = useState(new Date());
 
     const projected =
@@ -249,6 +250,11 @@ export default connect(
               <small className='form-text text-muted'>
                 Offset should be positive on land side, negative on water side
               </small>
+            </div>
+
+            <div className='form-group'>
+              <label>Offset Descriptor</label>
+              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain='offset_descriptor' />
             </div>
 
             <div className='form-group'>

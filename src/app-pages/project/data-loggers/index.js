@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
 
@@ -18,14 +18,29 @@ const generateDataLoggerOptions = (dataLoggers = []) => (
 
 const DataLoggers = connect(
   'doModalOpen',
-  'selectProjectDataLoggersItems',
+  'doFetchDataLoggersByProjectId',
+  'doFetchDataLoggerEquivalency',
+  'selectProjectDataLoggers',
+  'selectDataLoggerEquivalencyTable',
   ({
     doModalOpen,
-    projectDataLoggersItems: dataLoggers,
+    doFetchDataLoggersByProjectId,
+    doFetchDataLoggerEquivalency,
+    projectDataLoggers: dataLoggers,
+    selectDataLoggerEquivalencyTable: equivalencyTable,
   }) => {
-    const [selectedDataLogger, setSelectedDataLogger] = useState('test');
+    const [selectedDataLogger, setSelectedDataLogger] = useState('');
+    const dataLoggerInfo = dataLoggers?.find(el => el?.id === selectedDataLogger?.value);
 
-    console.log('test dataLoggers: ', dataLoggers);
+    useEffect(() => {
+      doFetchDataLoggersByProjectId();
+    }, [doFetchDataLoggersByProjectId]);
+
+    useEffect(() => {
+      if (!!selectedDataLogger) {
+        doFetchDataLoggerEquivalency({ dataLoggerId: selectedDataLogger?.value });
+      }
+    }, [selectedDataLogger, doFetchDataLoggerEquivalency]);
 
     return (
       <div className='container-fluid'>
@@ -33,6 +48,7 @@ const DataLoggers = connect(
           <Card.Body>
             {dataLoggers.length ? (
               <Select
+                className='d-inline-block w-50'
                 placeholder='Select a Data Logger...'
                 options={generateDataLoggerOptions(dataLoggers)}
                 onChange={val => setSelectedDataLogger(val)}
@@ -40,7 +56,7 @@ const DataLoggers = connect(
             ) : <span>No Data Loggers for this project. Add one using the <i>Add New Data Logger</i> button to the right.</span>}
             <Button
               isOutline
-              className='float-right'
+              className='d-inline-block float-right'
               size='small'
               variant='success'
               text='+ Add New Data Logger'
@@ -50,9 +66,9 @@ const DataLoggers = connect(
         </Card>
         {selectedDataLogger ? (
           <>
-            <DataLoggerDetails dataLogger={{}} />
-            <IncomingRawDataTable doModalOpen={doModalOpen} />
-            <DataLoggerMappingTable />
+            <DataLoggerDetails dataLogger={dataLoggerInfo} />
+            <IncomingRawDataTable doModalOpen={doModalOpen} rawData={{}} />
+            <DataLoggerMappingTable equivalency={equivalencyTable} />
           </>
         ) : null}
       </div>

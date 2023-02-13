@@ -19,6 +19,8 @@ import chartEditorBundle from './chart-editor-bundle';
 import chartsBundle from './charts-bundle';
 import collectionGroupBundle from './collection-group-bundle';
 import collectionGroupDetailBundle from './collection-group-detail-bundle';
+import dataLoggerBundle from './data-logger-bundle';
+import dataLoggerEquivalencyBundle from './data-logger-equivalency-bundle';
 import domainsBundle from './domains-bundle';
 import exploreChartSyncBundle from './explore-chart-sync-bundle';
 import exploreDataBundle from './explore-data-bundle';
@@ -45,7 +47,6 @@ import printBundle from './print-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
-import projectDataLoggersBundle from './project-data-loggers-bundle';
 import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
@@ -66,6 +67,11 @@ const mockTokenProjectAdmin =
 const mockTokenProjectMember =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwibmFtZSI6IlVzZXIuUHJvamVjdE1lbWJlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.ujBvw9bCksuSbXGJreIpdXZcVIHtb8GhgviBTvrO9AQ';
 
+const jwtPaths = [
+  '/members',
+  '/datalogger',
+];
+
 export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
@@ -80,11 +86,11 @@ export default composeBundles(
         : process.env.REACT_APP_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
-      // GET requests do not include token unless path starts with /my_ or includes /members/
+      // GET requests do not include token unless path starts with /my_ or includes any path in the jwtPaths array.
       // Need token to figure out who "me" is
       custom: ({ method, path }) => {
         if (method === 'GET') {
-          if (path.slice(0, 4) === '/my_' || path.includes('/members')) {
+          if (path.slice(0, 4) === '/my_' || jwtPaths.some(el => path.includes(el))) {
             return false;
           }
           return true;
@@ -107,6 +113,8 @@ export default composeBundles(
   chartsBundle,
   collectionGroupBundle,
   collectionGroupDetailBundle,
+  dataLoggerBundle,
+  dataLoggerEquivalencyBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,
@@ -133,7 +141,6 @@ export default composeBundles(
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
-  projectDataLoggersBundle,
   projectMembersBundle,
   projectionBundle,
   projectsBundle,
