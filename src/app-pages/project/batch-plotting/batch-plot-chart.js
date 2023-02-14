@@ -31,11 +31,11 @@ const BatchPlotChart = connect(
     const [chartData, setChartData] = useState([]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
-    const [chartSettings, setChartSettings] = useState({ autorange: false });
+    const [chartSettings, setChartSettings] = useState({ auto_range: false });
 
     const layout = {
       xaxis: {
-        autorange: chartSettings?.autorange,
+        autorange: chartSettings?.auto_range,
         range: dateRange,
         title: 'Date',
         showline: true,

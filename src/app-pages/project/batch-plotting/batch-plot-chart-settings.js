@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
-import { Tooltip } from 'react-tooltip';
+import DatePicker from 'react-datepicker';
+import { DateTime } from 'luxon';
 import { subDays, startOfDay } from 'date-fns';
+import { Tooltip } from 'react-tooltip';
 
 import Button from '../../../app-components/button';
-import DatePicker from 'react-datepicker';
 import Icon from '../../../app-components/icon';
 import PrintButton from './print-button';
 
 const dateAgo = days => subDays(new Date(), days);
+
+const customDateFormat = (fromTime, endTime) => {
+  const fromISO = fromTime.toISOString();
+  const endISO = endTime.toISOString();
+  const fromDate = DateTime.fromISO(fromISO).toFormat('MM/dd/yyyy');
+  const endDate = DateTime.fromISO(endISO).toFormat('MM/dd/yyyy');
+
+  return `${fromDate} - ${endDate}`;
+};
 
 const BatchPlotChartSettings = ({
   chartSettings,
@@ -18,7 +28,7 @@ const BatchPlotChartSettings = ({
 }) => {
   const [fromTime, endTime] = dateRange;
   const [activeButton, setActiveButton] = useState('1 year');
-  const { autorange, show_comments, show_masked, show_nonvalidated } = chartSettings;
+  const { auto_range, show_comments, show_masked, show_nonvalidated } = chartSettings;
 
   const alterRange = (daysAgo) => {
     setDateRange([startOfDay(dateAgo(daysAgo)), new Date()]);
@@ -95,9 +105,7 @@ const BatchPlotChartSettings = ({
               selectsRange={true}
               startDate={fromTime}
               endDate={endTime}
-              onChange={(update) => {
-                setDateRange(update);
-              }}
+              onChange={(update) => setDateRange(update)}
               onChangeRaw={handleDateChangeRaw}
               showMonthDropdown
               showYearDropdown
@@ -110,8 +118,8 @@ const BatchPlotChartSettings = ({
             <input 
               className='mr-1'
               type='checkbox'
-              checked={autorange}
-              onClick={() => setChartSettings({ ...chartSettings, autorange: !autorange})}
+              checked={auto_range}
+              onClick={() => setChartSettings({ ...chartSettings, auto_range: !auto_range})}
               onChange={() => {}}
             />
             Auto-range
@@ -197,7 +205,10 @@ const BatchPlotChartSettings = ({
         size='small'
         variant='success'
         text='Save Settings'
-        handleClick={() => savePlotSettings(chartSettings)}
+        handleClick={() => savePlotSettings({
+          ...chartSettings,
+          date_range: activeButton === 'Custom' ? customDateFormat(fromTime, endTime) : activeButton,
+        })}
       />
     </div>
   );

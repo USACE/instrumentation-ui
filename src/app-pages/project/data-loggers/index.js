@@ -8,6 +8,7 @@ import DataLoggerDetails from './dataLoggerDetails';
 import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
 import DataLoggerModal from './modals/dataLoggerModal';
 import IncomingRawDataTable from './tables/incomingRawDataTable';
+import Icon from '../../../app-components/icon';
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
   dataLoggers.map(logger => ({
@@ -27,7 +28,7 @@ const DataLoggers = connect(
     doFetchDataLoggersByProjectId,
     doFetchDataLoggerEquivalency,
     projectDataLoggers: dataLoggers,
-    selectDataLoggerEquivalencyTable: equivalencyTable,
+    dataLoggerEquivalencyTable: equivalencyTable,
   }) => {
     const [selectedDataLogger, setSelectedDataLogger] = useState('');
     const dataLoggerInfo = dataLoggers?.find(el => el?.id === selectedDataLogger?.value);
@@ -54,20 +55,43 @@ const DataLoggers = connect(
                 onChange={val => setSelectedDataLogger(val)}
               />
             ) : <span>No Data Loggers for this project. Add one using the <i>Add New Data Logger</i> button to the right.</span>}
-            <Button
-              isOutline
-              className='d-inline-block float-right'
-              size='small'
-              variant='success'
-              text='+ Add New Data Logger'
-              handleClick={() => doModalOpen(DataLoggerModal)}
-            />
+            <div className='d-inline-block float-right'>
+              {selectedDataLogger ? (
+                <>
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    className='mr-2'
+                    icon={<Icon icon='pencil' />}
+                    title='Edit Data Logger'
+                    handleClick={() => {}}
+                  />
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='danger'
+                    className='mr-2'
+                    icon={<Icon icon='trash-can' />}
+                    title='Delete Data Logger'
+                    handleClick={() => {}}
+                  />
+                </>
+              ) : null}
+              <Button
+                isOutline
+                size='small'
+                variant='success'
+                text='+ Add New Data Logger'
+                handleClick={() => doModalOpen(DataLoggerModal)}
+              />
+            </div>
           </Card.Body>
         </Card>
         {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
-            <IncomingRawDataTable doModalOpen={doModalOpen} rawData={{}} />
+            <IncomingRawDataTable doModalOpen={doModalOpen} />
             <DataLoggerMappingTable equivalency={equivalencyTable} />
           </>
         ) : null}

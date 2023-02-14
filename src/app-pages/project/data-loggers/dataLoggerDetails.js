@@ -14,7 +14,6 @@ const DataLoggerDetails = ({ dataLogger }) => {
   return (
     <Card className='mt-3'>
       <Card.Body>
-        {/* {JSON.stringify(dataLogger)} */}
         <div className='row'>
           <div className='col-3'>
             <b>Name: </b>
@@ -29,11 +28,11 @@ const DataLoggerDetails = ({ dataLogger }) => {
             {model}
           </div>
         </div>
-        <div className='row mt-1'>
-          <i className='col-6'>
+        <div className='row mt-2'>
+          <i className='col-12'>
             Created by <b>{creator}</b> on {dateDisplay(create_date)}
           </i>
-          <i className='col-6'>
+          <i className='col-12'>
             Last updated by <b>{updater}</b> on {dateDisplay(update_date)}
           </i>
         </div>
