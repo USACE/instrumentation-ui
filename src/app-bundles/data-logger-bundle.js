@@ -112,7 +112,7 @@ export default {
     });
   },
 
-  doUpdateNewDataLogger: (data) => ({ dispatch, store, apiPut }) => {
+  doUpdateDataLogger: (data) => ({ dispatch, store, apiPut }) => {
     const { dataLoggerId, name } = data;
 
     const uri = `/datalogger/${dataLoggerId}`;
@@ -140,5 +140,13 @@ export default {
 
   doDeleteDataLogger: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
     const uri = `/datalogger/${dataLoggerId}`;
+
+    apiDelete(uri, (err, body) => {
+      if (err) {
+        console.log('todo', err);
+      } else {
+        store.doFetchDataLoggersByProjectId();
+      }
+    });
   },
 };

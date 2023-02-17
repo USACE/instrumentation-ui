@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
+import EditMappingRowModal from '../modals/editMappingRowModal';
 import Icon from '../../../../app-components/icon';
 import Table from '../../../../app-components/table';
 
@@ -27,9 +28,11 @@ const timeseriesSort = (rowA, rowB, timeseries) => {
 };
 
 const DataLoggerMappingTable = connect(
+  'doModalOpen',
   'selectInstrumentsItems',
   'selectInstrumentTimeseriesItemsObject',
   ({
+    doModalOpen,
     instrumentsItems: instruments,
     instrumentTimeseriesItemsObject: timeseries,
     equivalency = {},
@@ -44,13 +47,14 @@ const DataLoggerMappingTable = connect(
             data={rows}
             columns={[{
               key: 'edit',
-              render: () => (
+              render: (data) => (
                 <Button
                   isOutline
                   size='small'
                   variant='info'
                   icon={<Icon icon='pencil' />}
                   title='Edit Field Mapping'
+                  handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
                 />
               ),
             }, {
