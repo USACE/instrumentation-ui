@@ -102,7 +102,7 @@ const DataLoggers = connect(
                     className='mr-2'
                     icon={<Icon icon='trash-can' />}
                     title='Delete Data Logger'
-                    handleClick={() => doModalOpen(DeleteDataLoggerModal, { callback: () => setSelectedDataLogger(null) })}
+                    handleClick={() => doModalOpen(DeleteDataLoggerModal, { dataLoggerInfo, callback: () => setSelectedDataLogger(null) })}
                   />
                 </>
               ) : null}

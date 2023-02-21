@@ -7,11 +7,15 @@ const DeleteDataLoggerModal = connect(
   'doDeleteDataLogger',
   ({
     doDeleteDataLogger,
-    dataLogger = {},
+    dataLoggerInfo = {},
     callback = () => {},
   }) => {
+    const { id } = dataLoggerInfo;
+
+    console.log('test id: ', id);
+
     const deleteDataLogger = () => {
-      doDeleteDataLogger(dataLogger);
+      doDeleteDataLogger({ dataLoggerId: id });
       callback();
     };
     

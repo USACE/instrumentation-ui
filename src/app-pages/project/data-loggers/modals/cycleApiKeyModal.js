@@ -43,10 +43,16 @@ const CycleApiKeyModal = connect(
         <Modal.ModalBody>
           <i>
             Cycling an API Key will render any connections made with the old key obsolete. A new key will
-            be generated and will need to be entered into the data logger's config to connect with the API.
-            <b className='text-danger d-block my-2'>
-              WARNING: This action cannot be undone!
-            </b>
+            be generated and will need to be added to the <b>X-Api-Key</b> header in order to securely upload measurements.
+            {!dataLoggerAPIKey ? (
+              <b className='text-danger d-block my-2'>
+                WARNING: This action cannot be undone!
+              </b>
+            ) : (
+              <i className='d-block my-2'>
+                <b className='text-warning'>WARNING: This key will not be displayed again and should be stored somewhere secure.</b>
+              </i>
+            )}
           </i>
           {!dataLoggerAPIKey ? (
             <Button
@@ -73,7 +79,6 @@ const CycleApiKeyModal = connect(
                 text='Copy to Clipboard'
                 handleClick={copyKey}
               />
-              <i className='d-block'>Make sure to have this key saved before closing this modal.</i>
             </>
           )}
         </Modal.ModalBody>

@@ -21,9 +21,13 @@ const CopyApiKeyModal = ({
     <Modal.ModalContent>
       <Modal.ModalHeader title='Data Logger API Key' />
       <Modal.ModalBody>
+        <i className='mb-3 d-block'>
+          <b className='text-warning d-block mb-2'>WARNING: This key will not be displayed again and should be stored somewhere secure.</b>
+          When programming the data logger, this key will need to be added to the <b>X-Api-Key</b> header in order to securely upload measurements.
+        </i>
         <textarea
           readOnly
-          className='form-control'
+          className='form-control mb-2'
           value={apiKey}
         />
         <Button
