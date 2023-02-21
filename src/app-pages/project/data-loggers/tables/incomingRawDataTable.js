@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'redux-bundler-react';
+import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
@@ -50,7 +51,7 @@ const IncomingRawDataTable = connect(
                     icon={<Icon icon='refresh' />}
                     title='Refresh Raw Data'
                     className='mr-2'
-                    handleClick={() => {}}
+                    handleClick={() => doFetchDataLoggerPreview({ dataLoggerId: id })}
                   />
                   <Button
                     isOutline
@@ -77,6 +78,28 @@ const IncomingRawDataTable = connect(
                         console.error(e);
                       }
                     }}
+                  />
+                  <Icon
+                    id='preview-help'
+                    className='pl-2 d-inline float-right'
+                    icon='help-circle-outline'
+                    style={{
+                      fontSize: '18px',
+                    }}
+                  />
+                  <Tooltip
+                    anchorId='preview-help'
+                    effect='solid'
+                    place='left'
+                    content={
+                      <span>
+                        This preview shows the most recent payload received from the data logger. If you are not seeing <br/>
+                        data you are expecting to see here, check the connection and make sure the data logger is still <br />
+                        transmitting correctly. <br /><br />
+                        For historical data, please view the associated instrument and timeseries. Historical data will not<br/>
+                        be shown in this preview window.
+                      </span>
+                    }
                   />
                 </div>
               </div>
