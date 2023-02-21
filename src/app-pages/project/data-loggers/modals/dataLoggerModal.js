@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import * as Modal from '../../../../app-components/modal';
+import DomainSelect from '../../../../app-components/domain-select';
 
 const DataLoggerModal = connect(
   'doCreateNewDataLogger',
@@ -15,20 +16,20 @@ const DataLoggerModal = connect(
       id: '',
       sn: '',
       name: '',
-      model: '',
+      model_id: '',
     },
   }) => {
     const {
       id,
       sn: initSn,
       name: initName,
-      model: initModel,
+      model_id: initModelId,
     } = dataLogger;
     const title = `${isEdit ? 'Edit' : 'Add New'} Data Logger`;
     
     const [sn, setSN] = useState(initSn);
     const [name, setName] = useState(initName);
-    const [model, setModel] = useState(initModel);
+    const [modelId, setModelId] = useState(initModelId);
 
     const saveDataLoggerDetails = () => {
       if (isEdit) {
@@ -40,9 +41,9 @@ const DataLoggerModal = connect(
     };
 
     return (
-      <Modal.ModalContent>
+      <Modal.ModalContent style={{ overflow: 'visible' }}>
         <Modal.ModalHeader title={title} />
-        <Modal.ModalBody>
+        <Modal.ModalBody style={{ overflow: 'visible' }}>
           <div className='form-group'>
             <label>Name</label>
             <input
@@ -67,12 +68,10 @@ const DataLoggerModal = connect(
               </div>
               <div className='form-group'>
                 <label>Model</label>
-                <input
-                  value={model}
-                  onChange={e => setModel(e.target.value)}
-                  className='form-control text-primary'
-                  type='text'
-                  placeholder='Model'
+                <DomainSelect
+                  value={modelId}
+                  onChange={val => setModelId(val)}
+                  domain='datalogger_model'
                 />
               </div>
             </>

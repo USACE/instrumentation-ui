@@ -9,7 +9,7 @@ const dateDisplay = date => {
 };
 
 const DataLoggerDetails = ({ dataLogger }) => {
-  const { name, sn, model, creator, create_date, updater, update_date } = dataLogger;
+  const { name, sn, model, creator_username, create_date, updater_username, update_date } = dataLogger;
   
   return (
     <Card className='mt-3'>
@@ -30,10 +30,10 @@ const DataLoggerDetails = ({ dataLogger }) => {
         </div>
         <div className='row mt-2'>
           <i className='col-12'>
-            Created by <b>{creator}</b> on {dateDisplay(create_date)}
+            Created by <b>{creator_username}</b> on {dateDisplay(create_date)}
           </i>
           <i className='col-12'>
-            Last updated by <b>{updater}</b> on {dateDisplay(update_date)}
+            Last updated by <b>{updater_username}</b> on {dateDisplay(update_date)}
           </i>
         </div>
       </Card.Body>
