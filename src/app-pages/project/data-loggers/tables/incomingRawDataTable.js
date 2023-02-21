@@ -73,7 +73,7 @@ const IncomingRawDataTable = connect(
                     handleClick={() => {
                       try {
                         navigator.clipboard.writeText(dataString);
-                        toast.success('Copied to Clipboard!', { autoClose: 1500 });
+                        toast.success('Copied to Clipboard!', { autoClose: 1200 });
                       } catch (e) {
                         console.error(e);
                       }

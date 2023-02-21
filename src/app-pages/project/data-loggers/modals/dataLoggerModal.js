@@ -36,7 +36,7 @@ const DataLoggerModal = connect(
         doUpdateDataLogger({ name, dataLoggerId: id });
         callback({ label: name, value: id });
       } else {
-        doCreateNewDataLogger({ sn, name, model });
+        doCreateNewDataLogger({ sn, name, model_id: modelId });
       }
     };
 

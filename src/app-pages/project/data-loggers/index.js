@@ -5,12 +5,13 @@ import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
+import CycleApiKeyModal from './modals/cycleApiKeyModal';
 import DataLoggerDetails from './dataLoggerDetails';
 import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
 import DataLoggerModal from './modals/dataLoggerModal';
 import DeleteDataLoggerModal from './modals/deleteDataLoggerModal';
-import IncomingRawDataTable from './tables/incomingRawDataTable';
 import Icon from '../../../app-components/icon';
+import IncomingRawDataTable from './tables/incomingRawDataTable';
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
   dataLoggers.map(logger => ({
@@ -84,6 +85,15 @@ const DataLoggers = connect(
                         callback: (val) => setSelectedDataLogger(val),
                       }
                     )}
+                  />
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='warning'
+                    className='mr-2'
+                    icon={<Icon icon='key' />}
+                    title='Cycle API Key'
+                    handleClick={() => doModalOpen(CycleApiKeyModal, { dataLoggerInfo })}
                   />
                   <Button
                     isOutline

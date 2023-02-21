@@ -1,10 +1,9 @@
-// import { createSelector } from 'redux-bundler';
+import CopyApiKeyModal from '../app-pages/project/data-loggers/modals/copyApiKeyModal';
 
 export default {
   name: 'dataLoggers',
   getReducer: () => {
     const initialState = {
-      dataLoggerDetails: {},
       dataLoggerPreview: {},
       projectDataLoggers: [],
       apiKey: '',
@@ -12,11 +11,6 @@ export default {
     
     return (state = initialState, { type, payload }) => {
       switch (type) {
-        case 'UPDATE_DATA_LOGGER_DETAILS':
-          return {
-            ...state,
-            dataLoggerDetails: payload,
-          };
         case 'UPDATE_PROJECT_DATA_PREVIEW':
           return {
             ...state,
@@ -27,7 +21,7 @@ export default {
             ...state,
             projectDataLoggers: payload,
           };
-        case 'UPDATE_API_KEY':
+        case 'UPDATE_DATA_LOGGER_API_KEY':
           return {
             ...state,
             apiKey: payload,
@@ -39,7 +33,6 @@ export default {
   },
 
   selectDataLoggersRaw: state => state.dataLoggers,
-  selectDataLoggerDetails: state => state.dataLoggers.dataLoggerDetails,
   selectDataLoggerPreview: state => state.dataLoggers.dataLoggerPreview,
   selectProjectDataLoggers: state => state.dataLoggers.projectDataLoggers,
   selectDataLoggerAPIKey: state => state.dataLoggers.apiKey,
@@ -54,21 +47,6 @@ export default {
       } else {
         dispatch({
           type: 'UPDATE_PROJECT_DATA_LOGGERS',
-          payload: body,
-        });
-      }
-    });
-  },
-
-  doFetchDataLoggerById: ({ dataLoggerId }) => ({ dispatch, store, apiGet }) => {
-    const uri = `/datalogger/${dataLoggerId}`;
-
-    apiGet(uri, (err, body) => {
-      if (err) {
-        console.log('todo', err);
-      } else {
-        dispatch({
-          type: 'UPDATE_DATA_LOGGER_DETAILS',
           payload: body,
         });
       }
@@ -103,11 +81,7 @@ export default {
         console.log('todo', err);
       } else {
         store.doFetchDataLoggersByProjectId();
-
-        dispatch({
-          type: 'UPDATE_API_KEY',
-          payload: body?.key,
-        });
+        store.doModalOpen(CopyApiKeyModal, { apiKey: body?.key} );
       }
     });
   },
@@ -132,10 +106,21 @@ export default {
 
   doCycleDataLoggerKey: ({ dataLoggerId }) => ({ dispatch, store, apiPut }) => {
     const uri = `/datalogger/${dataLoggerId}/key`;
+
+    apiPut(uri, {}, (err, body) => {
+      if (err) {
+        console.log('test err:', err);
+      } else {
+        dispatch({
+          type: 'UPDATE_DATA_LOGGER_API_KEY',
+          payload: body?.key,
+        });
+      }
+    });
   },
 
   doClearDataLoggerKey: () => ({ dispatch }) => {
-    dispatch({ type: 'UPDATE_API_KEY', payload: '' });
+    dispatch({ type: 'UPDATE_DATA_LOGGER_API_KEY', payload: '' });
   },
 
   doDeleteDataLogger: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
