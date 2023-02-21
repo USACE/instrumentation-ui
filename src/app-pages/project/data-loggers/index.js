@@ -109,7 +109,7 @@ const DataLoggers = connect(
         {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
-            <IncomingRawDataTable doModalOpen={doModalOpen} />
+            <IncomingRawDataTable doModalOpen={doModalOpen} dataLogger={dataLoggerInfo} />
             <DataLoggerMappingTable equivalency={equivalencyTable} />
           </>
         ) : null}

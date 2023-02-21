@@ -83,7 +83,7 @@ export default {
         console.log('todo', err);
       } else {
         dispatch({
-          type: 'UPDATE_DATA_LOGGER_DETAILS',
+          type: 'UPDATE_PROJECT_DATA_PREVIEW',
           payload: body,
         });
       }
