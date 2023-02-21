@@ -25,13 +25,11 @@ const DataLoggers = connect(
   'doFetchDataLoggersByProjectId',
   'doFetchDataLoggerEquivalency',
   'selectProjectDataLoggers',
-  'selectDataLoggerEquivalencyTable',
   ({
     doModalOpen,
     doFetchDataLoggersByProjectId,
     doFetchDataLoggerEquivalency,
     projectDataLoggers: dataLoggers,
-    dataLoggerEquivalencyTable: equivalencyTable,
   }) => {
     const [selectedDataLogger, setSelectedDataLogger] = useState('');
     const [dataLoggerOptions, setDataLoggerOptions] = useState(generateDataLoggerOptions(dataLoggers));
@@ -119,8 +117,8 @@ const DataLoggers = connect(
         {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
-            <IncomingRawDataTable doModalOpen={doModalOpen} dataLogger={dataLoggerInfo} />
-            <DataLoggerMappingTable equivalency={equivalencyTable} />
+            <IncomingRawDataTable dataLogger={dataLoggerInfo} />
+            <DataLoggerMappingTable />
           </>
         ) : null}
       </div>

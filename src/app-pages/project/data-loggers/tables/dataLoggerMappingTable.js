@@ -31,13 +31,14 @@ const DataLoggerMappingTable = connect(
   'doModalOpen',
   'selectInstrumentsItems',
   'selectInstrumentTimeseriesItemsObject',
+  'selectDataLoggerEquivalencyTable',
   ({
     doModalOpen,
     instrumentsItems: instruments,
     instrumentTimeseriesItemsObject: timeseries,
-    equivalency = {},
+    dataLoggerEquivalencyTable: equivalencyTable,
   }) => {
-    const { rows = [] } = equivalency;
+    const { rows = [] } = equivalencyTable;
     
     return (
       <Card className='mt-3'>
@@ -46,16 +47,27 @@ const DataLoggerMappingTable = connect(
           <Table
             data={rows}
             columns={[{
-              key: 'edit',
+              key: 'actions',
               render: (data) => (
-                <Button
-                  isOutline
-                  size='small'
-                  variant='info'
-                  icon={<Icon icon='pencil' />}
-                  title='Edit Field Mapping'
-                  handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
-                />
+                <>
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    className='mr-2'
+                    icon={<Icon icon='pencil' />}
+                    title='Edit Field Mapping'
+                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
+                  />
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='danger'
+                    icon={<Icon icon='trash-can' />}
+                    title='Remove Field Mapping'
+                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
+                  />
+                </>
               ),
             }, {
               key: 'field_name',

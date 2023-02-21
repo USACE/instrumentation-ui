@@ -81,7 +81,7 @@ export default {
         console.log('todo', err);
       } else {
         store.doFetchDataLoggersByProjectId();
-        store.doModalOpen(CopyApiKeyModal, { apiKey: body?.key} );
+        store.doModalOpen(CopyApiKeyModal, { apiKey: body?.key } );
       }
     });
   },

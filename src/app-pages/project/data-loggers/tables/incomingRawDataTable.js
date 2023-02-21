@@ -3,16 +3,18 @@ import { connect } from 'redux-bundler-react';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'react-tooltip';
 
+import AddMappingRowsModal from '../modals/addMappingRowsModal';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import Icon from '../../../../app-components/icon';
-
 import * as extractorFns from '../dataLoggerFieldMappers';
 
 const IncomingRawDataTable = connect(
+  'doModalOpen',
   'doFetchDataLoggerPreview',
   'selectDataLoggerPreview',
   ({
+    doModalOpen,
     doFetchDataLoggerPreview,
     dataLoggerPreview,
     dataLogger,
@@ -62,7 +64,8 @@ const IncomingRawDataTable = connect(
                     className='mr-2'
                     handleClick={() => {
                       const myExtractor = extractorFns[`${model}_fieldNameExtractor`];
-                      myExtractor(preview);
+                      const fieldNames = myExtractor(preview);
+                      doModalOpen(AddMappingRowsModal, { fieldNames });
                     }}
                   />
                   <Button
