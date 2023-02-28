@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Tooltip } from 'react-tooltip';
-// import { toast } from 'react-toastify';
 
 import * as Modal from '../../../../app-components/modal';
-// import Button from '../../../../app-components/button';
 import Icon from '../../../../app-components/icon';
 
 const AddMappingRowsModal = connect(
@@ -15,8 +13,12 @@ const AddMappingRowsModal = connect(
   }) => {
     const { rows = [] } = equivalencyTable;
     const newFieldNames = fieldNames.map(field => field.fieldName);
+    const oldFieldNames = rows.map(row => row.field_name);
     const unusedRows = rows.map(row => {
       if (!newFieldNames.includes(row.field_name)) return row;
+    });
+    const newRows = newFieldNames.map(fieldName => {
+      if (!oldFieldNames.includes(fieldName)) return fieldName;
     });
 
     const [isDeleteChecked, setIsDeleteChecked] = useState(false);
@@ -35,7 +37,7 @@ const AddMappingRowsModal = connect(
           </ul>
           New Field Names to Map:
           <ul>
-            {newFieldNames.map(name => (
+            {newRows.map(name => (
               <li key={name}>
                 {name}
               </li>

@@ -39,31 +39,43 @@ export default {
   },
 
   doCreateDataLoggerEquivalency: (data) => ({ dispatch, store, apiPost }) => {
-    const uri = `/datalogger/${data.dataLoggerId}/equivalency_table`;
+    const { dataLoggerId, ...rest } = data;
+    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
     const body = {
-      ...data,
+      ...rest,
     };
 
     apiPost(uri, body, (err, body) => {
       if (err) {
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency();
+        store.doFetchDataLoggerEquivalency({ dataLoggerId });
       }
     });
   },
 
   doUpdateDataLoggerEquivalency: (data) => ({ dispatch, store, apiPut }) => {
-    const uri = `/datalogger/${data.dataLoggerId}/equivalency_table`;
-    const body = {
-      ...data,
+    const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
+    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+
+    const payload = {
+      datalogger_id: dataLoggerId,
+      rows: [
+        {
+          id,
+          field_name: fieldName,
+          display_name: displayName,
+          instrument_id: instrumentId,
+          timeseries_id: timeseriesId,
+        },
+      ],
     };
 
-    apiPut(uri, body, (err, body) => {
+    apiPut(uri, payload, (err, body) => {
       if (err) {
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency();
+        store.doFetchDataLoggerEquivalency({ dataLoggerId });
       }
     });
   },
@@ -72,7 +84,15 @@ export default {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
   },
 
-  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table/row`;
+  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id }) => ({ dispatch, store, apiDelete }) => {
+    const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;
+
+    apiDelete(uri, (err, body) => {
+      if (err) {
+        console.log('todo', err);
+      } else {
+        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+      }
+    });
   },
 };

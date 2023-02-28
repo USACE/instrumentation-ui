@@ -12,8 +12,6 @@ const DeleteDataLoggerModal = connect(
   }) => {
     const { id } = dataLoggerInfo;
 
-    console.log('test id: ', id);
-
     const deleteDataLogger = () => {
       doDeleteDataLogger({ dataLoggerId: id });
       callback();

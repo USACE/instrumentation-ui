@@ -118,7 +118,7 @@ const DataLoggers = connect(
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
             <IncomingRawDataTable dataLogger={dataLoggerInfo} />
-            <DataLoggerMappingTable />
+            <DataLoggerMappingTable dataLogger={dataLoggerInfo} />
           </>
         ) : null}
       </div>

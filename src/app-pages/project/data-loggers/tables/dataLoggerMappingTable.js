@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
+import DeleteDataLoggerMappingRowModal from '../modals/deleteDataLoggerMappingRowModal';
 import EditMappingRowModal from '../modals/editMappingRowModal';
 import Icon from '../../../../app-components/icon';
 import Table from '../../../../app-components/table';
@@ -37,8 +38,10 @@ const DataLoggerMappingTable = connect(
     instrumentsItems: instruments,
     instrumentTimeseriesItemsObject: timeseries,
     dataLoggerEquivalencyTable: equivalencyTable,
+    dataLogger,
   }) => {
     const { rows = [] } = equivalencyTable;
+    const { id } = dataLogger;
     
     return (
       <Card className='mt-3'>
@@ -57,7 +60,7 @@ const DataLoggerMappingTable = connect(
                     className='mr-2'
                     icon={<Icon icon='pencil' />}
                     title='Edit Field Mapping'
-                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
+                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data, dataLoggerId: id })}
                   />
                   <Button
                     isOutline
@@ -65,7 +68,7 @@ const DataLoggerMappingTable = connect(
                     variant='danger'
                     icon={<Icon icon='trash-can' />}
                     title='Remove Field Mapping'
-                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data })}
+                    handleClick={() => doModalOpen(DeleteDataLoggerMappingRowModal, { dataLoggerId: id, id: data?.id })}
                   />
                 </>
               ),
