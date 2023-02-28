@@ -65,7 +65,7 @@ const IncomingRawDataTable = connect(
                     handleClick={() => {
                       const myExtractor = extractorFns[`${model}_fieldNameExtractor`];
                       const fieldNames = myExtractor(preview);
-                      doModalOpen(AddMappingRowsModal, { fieldNames });
+                      doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id });
                     }}
                   />
                   <Button

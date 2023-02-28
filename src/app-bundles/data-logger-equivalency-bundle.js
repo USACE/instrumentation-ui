@@ -38,14 +38,25 @@ export default {
     });
   },
 
-  doCreateDataLoggerEquivalency: (data) => ({ dispatch, store, apiPost }) => {
-    const { dataLoggerId, ...rest } = data;
+  doCreateDataLoggerEquivalency: ({ dataLoggerId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ dispatch, store, apiPost }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
-    const body = {
-      ...rest,
+
+    if (isDeleteChecked) {
+      // delete old Rows
+      console.log('test delete unusedRows: ', unusedRows);
+    }
+    
+    const payload = {
+      datalogger_id: dataLoggerId,
+      rows: newRows.map(row => ({
+        field_name: row,
+        display_name: row,
+        instrument_id: null,
+        timeseries_id: null,
+      })),
     };
 
-    apiPost(uri, body, (err, body) => {
+    apiPost(uri, payload, (err, body) => {
       if (err) {
         console.log('todo', err);
       } else {
