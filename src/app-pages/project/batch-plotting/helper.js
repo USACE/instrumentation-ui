@@ -63,6 +63,8 @@ export const generateNewChartData = (measurements, timeseries, chartSettings) =>
           ...getStyle(index),
           x: x,
           y: y,
+          type: 'scattergl',
+          mode: 'lines',
           name: `${instrument} - ${name} (${unit})` || '',
           showlegend: true,
           hovertext: show_comments ? hovertext : [],

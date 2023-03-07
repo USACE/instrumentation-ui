@@ -52,6 +52,7 @@ const CSIJSON = rawData => {
   return fields.map(el => ({ fieldName: el.name }));
 };
 
+
 export {
   CSIJSON as CR6_fieldNameExtractor,
   CSIJSON as CR1000X_fieldNameExtractor,

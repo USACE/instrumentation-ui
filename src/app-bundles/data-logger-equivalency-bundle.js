@@ -42,7 +42,7 @@ export default {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
 
     if (isDeleteChecked) {
-      // delete old Rows
+      // TODO: delete old Rows
       console.log('test delete unusedRows: ', unusedRows);
     }
     
@@ -51,8 +51,6 @@ export default {
       rows: newRows.map(row => ({
         field_name: row,
         display_name: row,
-        instrument_id: null,
-        timeseries_id: null,
       })),
     };
 
