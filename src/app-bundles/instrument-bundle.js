@@ -38,6 +38,7 @@ export default createRestBundle({
       'explorer',
       'all-instruments',
       'batch-plotting',
+      'data-loggers',
     ];
     const pathnameWhitelist = [
       '/instruments/',

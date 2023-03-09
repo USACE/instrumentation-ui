@@ -38,7 +38,7 @@ const CollectionGroupCard = connect(
     projectsByRoute: project,
     collectionGroupItems: collectionGroups,
   }) => (
-    <Card className='dashboard-card mt-4'>
+    <Card className='dashboard-card mt-3'>
       <Card.Header>
         <div className='dashboard-card-header'>
           <b>
@@ -73,6 +73,7 @@ const CollectionGroupCard = connect(
             }, {
               key: 'tools',
               header: 'Tools',
+              isRightAlign: true,
               render: (data) => (
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <Button
@@ -80,6 +81,7 @@ const CollectionGroupCard = connect(
                     size='small'
                     variant='info'
                     title='Edit'
+                    className='float-right'
                     handleClick={() => doModalOpen(CollectionGroupForm, { item: data })}
                     icon={<Icon icon='pencil' />}
                   />

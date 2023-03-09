@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import { seriesStyles } from '../../utils';
+import { seriesStyles } from '../../common/helpers/utils';
 import LineStyle from './line-style';
 
 let styleIterator = 0;

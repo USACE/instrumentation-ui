@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 const Modal = connect(
   'doModalClose',
@@ -19,7 +19,7 @@ const Modal = connect(
       'modal-dialog',
       'modal-dialog-scrollable',
       'modal-dialog-centered',
-      `modal-${modalSize}`,
+      modalSize && `modal-${modalSize}`,
     ]);
 
     const closeModalWithEscape = useCallback((e) => {
@@ -27,12 +27,12 @@ const Modal = connect(
     }, [doModalClose]);
 
     useEffect(() => {
-      if (closeWithEscape) {
+      if (!!ModalContent && closeWithEscape) {
         document.addEventListener('keydown', closeModalWithEscape);
+      }
 
-        if (!ModalContent) {
-          document.removeEventListener('keydown', closeModalWithEscape);
-        }
+      if (!ModalContent) {
+        document.removeEventListener('keydown', closeModalWithEscape);
       }
     }, [ModalContent, closeModalWithEscape]);
 

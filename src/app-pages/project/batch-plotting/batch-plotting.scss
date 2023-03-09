@@ -1,0 +1,31 @@
+.page-body {
+  position: relative;
+}
+
+.right-panel {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  border-left: 1px solid #D8D8D8;
+  padding: 15px;
+
+  >* {
+    flex: 1 0 50%;
+  }
+
+  .input-container {
+    flex: 1 0 50%;
+    margin-right: 10px;
+  }
+}
+
+.left-panel {
+  flex: 1;
+  padding: 15px;
+}
+
+.panel-actions {
+  margin: 10px 0 0 0;
+  display: block;
+  float: left;
+}

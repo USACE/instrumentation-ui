@@ -10,7 +10,7 @@ import {
 
 import Icon from '../icon';
 import Filter from './filter';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 const columnHelper = createColumnHelper();
 

@@ -5,16 +5,16 @@ import Select from 'react-select';
 export default connect(
   'selectDomainsItemsByGroup',
   ({ value, onChange, domain, domainsItemsByGroup }) => {
-    const options = domainsItemsByGroup[domain].map(item => (
+    const options = domainsItemsByGroup[domain]?.map(item => (
       { value: item.id, label: item.value }
     ));
 
-    const initValue = domainsItemsByGroup[domain].find(el => el.id === value);
+    const initValue = domainsItemsByGroup[domain]?.find(el => el.id === value);
 
     return (
       <>
-        {!options.length ? (
-          <p>No Options...</p>
+        {!options || !options.length ? (
+          <i className='d-block pl-3'>No Options...</i>
         ) : (
           <Select
             isSearchable

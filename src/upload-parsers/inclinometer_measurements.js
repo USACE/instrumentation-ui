@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { isNumeric } from '../utils';
+import { isNumeric } from '../common/helpers/utils';
 
 const timeseriesMeasurementParser = {
   name: 'Inclinometer Measurements',

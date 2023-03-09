@@ -5,7 +5,7 @@ import { useDeepCompareEffect } from 'react-use';
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Icon from '../../app-components/icon';
-import InstrumentForm from '../manager/forms/instrument-form';
+import InstrumentForm from '../../common/forms/instrument-form';
 import InstrumentGroupForm from './instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
@@ -14,7 +14,7 @@ import Map from '../../app-components/classMap';
 import RoleFilter from '../../app-components/role-filter';
 import Table from '../../app-components/table';
 import TimeseriesPanel from './time-series-panel';
-import { titlize } from '../../utils';
+import { titlize } from '../../common/helpers/utils';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (

@@ -5,7 +5,7 @@ import DevBanner from './devBanner.js';
 import Icon from '../icon';
 import NavItem from './navItem';
 import ProfileMenu from './profileMenu';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 import './navigation.scss';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Icon from '../../app-components/icon';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 import './accordion.scss';
 

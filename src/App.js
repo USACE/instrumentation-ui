@@ -9,7 +9,7 @@ import PageContent from './app-components/pageContent';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import './css/bootstrap/css/bootstrap.water.min.css';
-import './css/mdi/css/materialdesignicons.min.css';
+
 import './css/ms/css/mapskin.min.css';
 import './css/index.scss';
 
