@@ -17,14 +17,14 @@ const createReportRow = (project, plot) => {
   );
 };
 
-const ReportsCard = connect(
+const BatchPlotCard = connect(
   'selectProjectsByRoute',
   'selectBatchPlotConfigurationsItems',
   ({
     projectsByRoute: project,
     batchPlotConfigurationsItems: plots,
   }) => (
-    <Card className='mt-4'>
+    <Card className='mt-3'>
       <Card.Header text='Batch Plots' />
       <Card.Body hasPaddingVertical={false} className='pt-2'>
         {plots.length ? (
@@ -44,4 +44,4 @@ const ReportsCard = connect(
   )
 );
 
-export default ReportsCard;
+export default BatchPlotCard;

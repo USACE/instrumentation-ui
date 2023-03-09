@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'react-tooltip';
+import { useDeepCompareEffect } from 'react-use';
 
 import AddMappingRowsModal from '../modals/addMappingRowsModal';
 import Button from '../../../../app-components/button';
@@ -25,9 +26,9 @@ const IncomingRawDataTable = connect(
     const [isOpen, setIsOpen] = useState(false);
     const dataString = JSON.stringify(preview, null, 4);
 
-    useEffect(() => {
+    useDeepCompareEffect(() => {
       doFetchDataLoggerPreview({ dataLoggerId: id });
-    }, [doFetchDataLoggerPreview]);
+    }, [dataLogger, doFetchDataLoggerPreview]);
     
     return (
       <Card className='mt-3'>

@@ -9,7 +9,7 @@ const dateDisplay = date => {
 };
 
 const DataLoggerDetails = ({ dataLogger }) => {
-  const { name, sn, model, creator_username, create_date, updater_username, update_date } = dataLogger;
+  const { name, sn, model, creator_username, create_date, updater_username, update_date, errors } = dataLogger;
   
   return (
     <Card className='mt-3'>
@@ -36,6 +36,13 @@ const DataLoggerDetails = ({ dataLogger }) => {
             Last updated by <b>{updater_username}</b> on {dateDisplay(update_date)}
           </i>
         </div>
+        {errors.length ? (
+          <div className='row mt-2'>
+            {errors.map(el => (
+              <i className='text-danger col-12'>{el}</i>
+            ))}
+          </div>
+        ) : null}
       </Card.Body>
     </Card>
   );

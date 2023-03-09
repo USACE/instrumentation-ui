@@ -42,8 +42,10 @@ export default {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
 
     if (isDeleteChecked) {
-      // TODO: delete old Rows
-      console.log('test delete unusedRows: ', unusedRows);
+      unusedRows.forEach(el => {
+        const { id } = el;
+        store.doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id, refreshData: false });
+      });
     }
     
     const payload = {
@@ -93,14 +95,16 @@ export default {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
   },
 
-  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id }) => ({ dispatch, store, apiDelete }) => {
+  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ dispatch, store, apiDelete }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;
 
     apiDelete(uri, (err, body) => {
       if (err) {
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        if (refreshData) {
+          store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        }
       }
     });
   },

@@ -25,12 +25,16 @@ const DataLoggers = connect(
   'doFetchDataLoggersByProjectId',
   'doFetchDataLoggerEquivalency',
   'selectProjectDataLoggers',
+  'selectHashQuery',
   ({
     doModalOpen,
     doFetchDataLoggersByProjectId,
     doFetchDataLoggerEquivalency,
     projectDataLoggers: dataLoggers,
+    hashQuery,
   }) => {
+    const queryParamId = hashQuery?.id;
+
     const [selectedDataLogger, setSelectedDataLogger] = useState('');
     const [dataLoggerOptions, setDataLoggerOptions] = useState(generateDataLoggerOptions(dataLoggers));
     const dataLoggerInfo = dataLoggers?.find(el => el?.id === selectedDataLogger?.value);
@@ -47,7 +51,11 @@ const DataLoggers = connect(
 
     useDeepCompareEffect(() => {
       setDataLoggerOptions(generateDataLoggerOptions(dataLoggers));
-    }, [dataLoggers]);
+
+      if (queryParamId && dataLoggers?.length) {
+        setSelectedDataLogger({ value: queryParamId, label: dataLoggers.find(el => el.id === queryParamId).name });
+      }
+    }, [dataLoggers, queryParamId]);
 
     return (
       <div className='container-fluid'>
