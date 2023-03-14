@@ -23,7 +23,7 @@ const InstrumentStatusCard = connect(
     const dataValues = Object.values(instrumentsByStatus);
 
     return (
-      <Card className='mt-4'>
+      <Card className='mt-3'>
         <Card.Header text='Instrument Status' />
         <Card.Body hasPaddingHorizontal={false} hasPaddingVertical={false}>
           {dataValues.length ? (

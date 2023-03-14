@@ -11,6 +11,24 @@ const stationDisplay = station => {
   return `${asStr.slice(0, -2)}+${asStr.slice(-2)}`;
 };
 
+const offsetDisplay = (offset, descriptor) => {
+  if (!offset) return 'N/A';
+  if (!descriptor) return offset;
+
+  const descriptorClean = descriptor.replace(/ /g, '');
+  const match = descriptorClean.split(/[/]/g);
+
+  if (match.length > 1) {
+    if (match[0] === '+') {
+      return `${offset >= 0 ? match[0] : match[1]}${Math.abs(offset)}`;
+    } else {
+      return `${Math.abs(offset)} ${offset >= 0 ? match[0] : match[1]}`;
+    }
+  }
+
+  return 'N/A';
+};
+
 export default connect(
   'selectInstrumentStatusItems',
   'selectInstrumentGroupsItemsObjectById',
@@ -58,7 +76,7 @@ export default connect(
 
         <div className='row mb-2'>
           <div className='col-4 text-right font-weight-light'>Offset</div>
-          <div className='col'>{item.offset || 'N/A'}</div>
+          <div className='col'>{offsetDisplay(item.offset, item.offsetDescriptor) || 'N/A'}</div>
         </div>
 
         <div className='row mb-2'>

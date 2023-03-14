@@ -19,20 +19,24 @@ const ModalBundle = {
     dispatch({
       type: 'MODAL_UPDATED',
       payload: {
-        content: content,
-        props: props,
+        content,
+        props,
+        size,
       },
     });
   },
+
   doModalClose: () => ({ dispatch }) => {
     dispatch({
       type: 'MODAL_UPDATED',
       payload: {
         content: null,
         props: null,
+        size: null,
       },
     });
   },
+
   selectModalContent: (state) => state.modal.content,
   selectModalProps: (state) => state.modal.props,
   selectModalSize: (state) => state.modal.size,

@@ -8,7 +8,7 @@ import MapLegend from './map-legend';
 import MapTools from './map-tools';
 import Visualizations from './explorer-visualizations';
 import useWindowListener from '../../customHooks/useWindowListener';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 import './explorer.scss';
 

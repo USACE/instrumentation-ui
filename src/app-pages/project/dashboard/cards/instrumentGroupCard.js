@@ -88,6 +88,7 @@ const InstrumentGroupCard = connect(
             }, {
               key: 'username',
               header: 'Tools',
+              isRightAlign: true,
               render: (data) => (
                 <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
                   <Button
@@ -95,6 +96,7 @@ const InstrumentGroupCard = connect(
                     size='small'
                     variant='info'
                     title='Edit'
+                    className='float-right'
                     handleClick={() => doModalOpen(InstrumentGroupForm, { item: data })}
                     icon={<Icon icon='pencil' />}
                   />

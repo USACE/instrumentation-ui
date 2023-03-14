@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-bundler';
 
-import { seriesStyles } from '../utils';
+import { seriesStyles } from '../common/helpers/utils';
 
 const exploreDataBundle = {
   name: 'exploreData',

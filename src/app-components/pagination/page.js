@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classnames } from '../../utils';
+import { classnames } from '../../common/helpers/utils';
 
 const Page = ({ pageNo, isCurrent, onClick }) => {
   const pageClass = classnames({

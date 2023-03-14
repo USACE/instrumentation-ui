@@ -6,7 +6,7 @@ import AlertFormModal from './alert-form';
 import AlertConfigSettings from './alert-config-form';
 import Button from '../../../app-components/button';
 import Icon from '../../../app-components/icon';
-import { classArray } from '../../../utils';
+import { classArray } from '../../../common/helpers/utils';
 
 export default connect(
   'selectAlertConfigsByRouteByInstrumentId',

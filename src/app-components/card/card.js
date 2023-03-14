@@ -2,7 +2,7 @@ import React from 'react';
 
 import CardBody from './cardBody';
 import CardHeader from './cardHeader';
-import { classArray } from '../../utils';
+import { classArray } from '../../common/helpers/utils';
 
 import './card.scss';
 
