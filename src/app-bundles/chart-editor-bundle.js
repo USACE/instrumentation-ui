@@ -12,7 +12,7 @@ const initialData = {
   correlationSeriesY: '',
   correlationMinDate: subDays(new Date(), 7),
   correlationMaxDate: new Date(),
-  showToday: true,
+  showToday: false,
   showRainfall: false,
   exactMatchesOnly: true,
   layout: {
