@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Button from './button';
@@ -16,6 +16,7 @@ export default connect(
     clearSettings = true,
   }) => {
     const inputEl = useRef(null);
+    const [dirty, setDirty] = useState(false);
 
     const handleClick = (_e) => {
       inputEl.current.click();
@@ -24,7 +25,9 @@ export default connect(
     const handleInputChange = (_e) => {
       if (clearSettings) doUploadSettingsClear();
       
-      doUploadQueueCsv(inputEl.current.files[0]);
+      doUploadQueueCsv(inputEl.current.files[0], dirty);
+
+      setDirty(true);
     };
 
     return (

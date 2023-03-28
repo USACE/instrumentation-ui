@@ -45,7 +45,6 @@ const Filter = ({ column }) => {
         }),
       }}
       options={columnDef.filterOptions}
-      defaultValue={columnDef.filterOptions}
       components={{ ValueContainer }}
       onChange={val => {
         column.setFilterValue(val);

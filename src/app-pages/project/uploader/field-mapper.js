@@ -43,7 +43,7 @@ export default connect(
     activeTs,
   }) => {
     const { model } = uploadSelectedParser;
-    const modelKeys = Object.keys(model);
+    const modelKeys = Object.keys(model || {});
 
     const updateFieldMap = useCallback((val, key) => {
       if (uploadFieldMap[key] !== val) {
