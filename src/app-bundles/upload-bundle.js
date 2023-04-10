@@ -25,6 +25,13 @@ const cellStyle = (params, key) => {
   return style;
 };
 
+const toa5JsonMap = json => {
+  json.splice(0, 1);
+  json.splice(1, 2);
+
+  return json;
+};
+
 const uploadBundle = {
   name: 'upload',
 
@@ -60,6 +67,7 @@ const uploadBundle = {
         case 'UPLOAD_POST_START':
         case 'UPLOAD_POST_HAS_ERRORS':
         case 'UPLOAD_SET_FIELD_MAP':
+        case 'UPLOAD_SET_JSON':
           return Object.assign({}, state, payload);
         case 'UPLOAD_POST_FINISH':
           return Object.assign({}, initialData);
@@ -85,7 +93,7 @@ const uploadBundle = {
     });
   },
 
-  doUploadParseCsv: () => async ({ dispatch, store }) => {
+  doUploadParseCsv: (hasHeaderRow = true, onComplete = () => {}) => async ({ dispatch, store }) => {
     dispatch({
       type: 'UPLOAD_PARSE_CSV_START',
       payload: {
@@ -99,7 +107,7 @@ const uploadBundle = {
 
     readString(text, {
       worker: true,
-      header: true,
+      header: hasHeaderRow,
       skipEmptyLines: true,
       complete: (results) => {
         dispatch({
@@ -109,6 +117,7 @@ const uploadBundle = {
             json: results?.data,
           },
         });
+        onComplete(results?.data);
       },
     });    
   },
@@ -148,13 +157,30 @@ const uploadBundle = {
     });
   },
 
-  doUploadSetSelectedParser: (parser) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SET_PARSER',
-      payload: {
-        selectedParser: parser,
-      },
-    });
+  doUploadSetSelectedParser: (parser) => ({ dispatch, store }) => {
+    const { name } = parser;
+
+    if (name === 'TOA5 Measurements') {
+      store.doUploadParseCsv(
+        false,
+        (json) => {
+          store.doUploadSetJsonManually(toa5JsonMap(json));
+          dispatch({
+            type: 'UPLOAD_SET_PARSER',
+            payload: {
+              selectedParser: parser,
+            },
+          });
+        },
+      );
+    } else {
+      dispatch({
+        type: 'UPLOAD_SET_PARSER',
+        payload: {
+          selectedParser: parser,
+        },
+      });
+    }
   },
 
   doUploadSetFieldmap: (fieldMap) => ({ dispatch }) => {
@@ -267,6 +293,15 @@ const uploadBundle = {
       type: 'UPLOAD_SET_IGNORE_ROWS',
       payload: {
         ignoreRows: errRows,
+      },
+    });
+  },
+
+  doUploadSetJsonManually: (data) => ({ dispatch }) => {
+    dispatch({
+      type: 'UPLOAD_SET_JSON',
+      payload: {
+        json: data,
       },
     });
   },

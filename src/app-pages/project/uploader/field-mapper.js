@@ -31,6 +31,7 @@ export default connect(
   'selectDomainsItemsByGroup',
   'selectUploadFieldMap',
   'selectUploadJsonKeys',
+  'selectUploadJson',
   'selectUploadSelectedParser',
   'selectStateData',
   ({
@@ -38,12 +39,19 @@ export default connect(
     domainsItemsByGroup: domains,
     uploadFieldMap,
     uploadJsonKeys,
+    uploadJson,
     uploadSelectedParser,
     stateData,
     activeTs,
   }) => {
-    const { model } = uploadSelectedParser;
-    const modelKeys = Object.keys(model || {});
+    const { model, dynamic } = uploadSelectedParser;
+    const modelKeys = () => {
+      if (model) return Object.keys(model);
+      else if (dynamic) return Object.keys(dynamic(uploadJson));
+      else return {};
+    };
+
+    const mapperModel = model ?? dynamic ? dynamic(uploadJson) : {};
 
     const updateFieldMap = useCallback((val, key) => {
       if (uploadFieldMap[key] !== val) {
@@ -77,24 +85,24 @@ export default connect(
 
     return (
       <>
-        {modelKeys.map(key => (
+        {modelKeys().map(key => (
           <div key={key}>
-            {model[key].hidden ? null : (
+            {mapperModel[key].hidden ? null : (
               <div className='form-group row'>
                 <label className='col-3 col-form-label text-right'>
-                  {model[key].label}
+                  {mapperModel[key].label}
                 </label>
                 <div className='col-9'>
                   <Select
-                    isClearable={model[key].useFilterComponent}
-                    isSearchable={model[key].useFilterComponent}
+                    isClearable={mapperModel[key].useFilterComponent}
+                    isSearchable={mapperModel[key].useFilterComponent}
                     placeholder='Select One...'
                     defaultValue={key === 'timeseries_id' && activeTs ? { value: activeTs, label: getTsData()?.text} : undefined}
                     onChange={newValue => updateFieldMap(newValue?.value, key)}
-                    options={generateOptions(model[key], uploadJsonKeys, domains, stateData)}
+                    options={generateOptions(mapperModel[key], uploadJsonKeys, domains, stateData)}
                   />
-                  {model[key] && model[key].helpText ? (
-                    <small className='text-muted'>{model[key].helpText}</small>
+                  {mapperModel[key] && mapperModel[key].helpText ? (
+                    <small className='text-muted'>{mapperModel[key].helpText}</small>
                   ) : null}
                 </div>
               </div>

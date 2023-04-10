@@ -15,7 +15,10 @@ const instrumentSort = (rowA, rowB, instruments) => {
   const instrumentAName = instruments.find(el => el.id === instrumentIdA)?.name;
   const instrumentBName = instruments.find(el => el.id === instrumentIdB)?.name;
 
-  return instrumentAName?.localeCompare(instrumentBName);
+  if (!instrumentAName) return 1;
+  if (!instrumentBName) return -1;
+
+  return (instrumentAName || '').localeCompare(instrumentBName);
 };
 
 const timeseriesSort = (rowA, rowB, timeseries) => {
@@ -25,7 +28,10 @@ const timeseriesSort = (rowA, rowB, timeseries) => {
   const timeseriesAName = timeseries[timeseriesIdA]?.name;
   const timeseriesBName = timeseries[timeseriesIdB]?.name;
 
-  return timeseriesAName?.localeCompare(timeseriesBName);
+  if (!timeseriesAName) return 1;
+  if (!timeseriesBName) return -1;
+
+  return (timeseriesAName || '').localeCompare(timeseriesBName);
 };
 
 const DataLoggerMappingTable = connect(

@@ -12,6 +12,7 @@ import DataLoggerModal from './modals/dataLoggerModal';
 import DeleteDataLoggerModal from './modals/deleteDataLoggerModal';
 import Icon from '../../../app-components/icon';
 import IncomingRawDataTable from './tables/incomingRawDataTable';
+import Toa5Modal from './modals/toa5Modal';
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
   dataLoggers.map(logger => ({
@@ -73,6 +74,15 @@ const DataLoggers = connect(
             <div className='d-inline-block float-right'>
               {selectedDataLogger ? (
                 <>
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    className='mr-2'
+                    title='Upload TOA5 File'
+                    icon={<Icon icon='upload-outline' />}
+                    handleClick={() => doModalOpen(Toa5Modal, { dataLoggerInfo }, 'lg')}
+                  />
                   <Button
                     isOutline
                     size='small'
