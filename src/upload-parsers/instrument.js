@@ -51,7 +51,6 @@ const instrumentParser = {
       type: 'domain',
       domainGroup: 'status',
       required: true,
-      template: '',
       helpText: 'Acceptable data values include \'active\', \'inactive\', \'lost\', \'destroyed\', or \'abandoned\' and are case-insensitive, all others will be ignored',
     },
     type_id: {
@@ -59,14 +58,12 @@ const instrumentParser = {
       type: 'domain',
       domainGroup: 'instrument_type',
       required: true,
-      template: '',
       helpText: 'Acceptable data values include \'Piezometer\' or \'Staff Gage\' others will be ignored',
     },
     lon: {
       label: 'Lon.',
       type: 'coord',
       required: true,
-      template: '',
       parse: (val) => {
         if (val.toUpperCase().indexOf('W') !== -1)
           return parseStupidCoords(val);
@@ -80,7 +77,6 @@ const instrumentParser = {
       label: 'Lat.',
       type: 'coord',
       required: true,
-      template: '',
       parse: (val) => {
         if (val.toUpperCase().indexOf('N') !== -1)
           return parseStupidCoords(val);
@@ -94,7 +90,6 @@ const instrumentParser = {
       label: 'Station',
       type: 'number',
       required: false,
-      template: '',
       helpText: 'Station notation i.e. 100+50 will be parsed to numeric values in feet, only the + character is allowed.',
       parse: (val) => Number(val.replace('+', '')),
       validate: isNumeric,
@@ -103,7 +98,6 @@ const instrumentParser = {
       label: 'Offset',
       type: 'number*100',
       required: false,
-      template: '',
       helpText: 'Only numeric values will be parsed, positive values are water-side and negative values are land-side',
       parse: (val) => Number(val.replace('+', '')),
     },

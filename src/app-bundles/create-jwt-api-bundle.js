@@ -62,6 +62,7 @@ const commonFetch = (root, path, options, callback) => {
       throw new ApiError(response.json, `Request returned a ${response.status}`);
     })
     .catch(err => {
+      console.error(err);
       callback(err);
     });
 };

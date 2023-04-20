@@ -13,7 +13,7 @@ export const reduceSelections = (selection, currentSelections) => {
 };
 
 export const generateOption = (option, handleClick, optionIsSelected, i) => {
-  const icon = optionIsSelected ? 'check-box-outline' : 'checkbox-blank-outline';
+  const icon = optionIsSelected ? 'checkbox-outline' : 'checkbox-blank-outline';
 
   return (
     <Dropdown.Item key={i} onClick={(_e) => handleClick()}>

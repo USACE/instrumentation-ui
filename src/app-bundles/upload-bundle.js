@@ -24,6 +24,13 @@ const cellStyle = (params, key) => {
   return style;
 };
 
+const toa5JsonMap = json => {
+  json.splice(0, 1);
+  json.splice(1, 2);
+
+  return json;
+};
+
 const uploadBundle = {
   name: 'upload',
 
@@ -58,6 +65,7 @@ const uploadBundle = {
         case 'UPLOAD_POST_START':
         case 'UPLOAD_POST_HAS_ERRORS':
         case 'UPLOAD_SET_FIELD_MAP':
+        case 'UPLOAD_SET_JSON':
           return Object.assign({}, state, payload);
         case 'UPLOAD_POST_FINISH':
           return Object.assign({}, initialData);
@@ -67,17 +75,23 @@ const uploadBundle = {
     };
   },
 
-  doUploadQueueCsv: (csv) => ({ dispatch }) => {
+  doUploadQueueCsv: (csv, isDirty) => ({ dispatch }) => {
     dispatch({
       type: 'UPLOAD_QUEUE_CSV',
       payload: {
         csv: csv,
+        ignoreRows: '',
         _shouldParseCsv: true,
+        ...isDirty && {
+          selectedParser: null,
+          fieldMap: null,
+          _errors: [],
+        }
       },
     });
   },
 
-  doUploadParseCsv: () => async ({ dispatch, store }) => {
+  doUploadParseCsv: (hasHeaderRow = true, onComplete = () => {}) => async ({ dispatch, store }) => {
     dispatch({
       type: 'UPLOAD_PARSE_CSV_START',
       payload: {
@@ -91,7 +105,7 @@ const uploadBundle = {
 
     readString(text, {
       worker: true,
-      header: true,
+      header: hasHeaderRow,
       skipEmptyLines: true,
       complete: (results) => {
         dispatch({
@@ -101,6 +115,7 @@ const uploadBundle = {
             json: results?.data,
           },
         });
+        onComplete(results?.data);
       },
     });    
   },
@@ -140,13 +155,30 @@ const uploadBundle = {
     });
   },
 
-  doUploadSetSelectedParser: (parser) => ({ dispatch }) => {
-    dispatch({
-      type: 'UPLOAD_SET_PARSER',
-      payload: {
-        selectedParser: parser,
-      },
-    });
+  doUploadSetSelectedParser: (parser) => ({ dispatch, store }) => {
+    const { name } = parser;
+
+    if (name === 'TOA5 Measurements') {
+      store.doUploadParseCsv(
+        false,
+        (json) => {
+          store.doUploadSetJsonManually(toa5JsonMap(json));
+          dispatch({
+            type: 'UPLOAD_SET_PARSER',
+            payload: {
+              selectedParser: parser,
+            },
+          });
+        },
+      );
+    } else {
+      dispatch({
+        type: 'UPLOAD_SET_PARSER',
+        payload: {
+          selectedParser: parser,
+        },
+      });
+    }
   },
 
   doUploadSetFieldmap: (fieldMap) => ({ dispatch }) => {
@@ -263,10 +295,24 @@ const uploadBundle = {
     });
   },
 
+  doUploadSetJsonManually: (data) => ({ dispatch }) => {
+    dispatch({
+      type: 'UPLOAD_SET_JSON',
+      payload: {
+        json: data,
+      },
+    });
+  },
+
+  selectCurrentState: (state) => state,
+  selectUploadIsParsing: (state) => state.upload._isParsing,
+  selectUploadIsUploading: (state) => state.upload._isUploading,
+  selectUploadParsers: (state) => state.upload.parsers,
+  selectUploadSelectedParser: (state) => state.upload.selectedParser,
+  selectUploadFieldMap: (state) => state.upload.fieldMap,
+  selectUploadIgnoreRows: (state) => state.upload.ignoreRows,
   selectUploadErrors: (state) => state.upload._errors,
-
   selectUploadCsv: (state) => state.upload.csv,
-
   selectUploadJson: (state) => state.upload.json,
 
   selectUploadColumnDefsOriginal: createSelector('selectUploadJson', (json) => {
@@ -322,8 +368,6 @@ const uploadBundle = {
       ];
     }
   ),
-
-  selectCurrentState: (state) => state,
 
   selectUploadDataParsed: createSelector(
     'selectCurrentState',
@@ -403,7 +447,7 @@ const uploadBundle = {
     (fieldMap, parser) => {
       let ready = true;
       if (fieldMap) {
-        const keys = Object.keys(parser.model);
+        const keys = Object.keys(parser.model || {});
         for (let i = 0; i < keys.length; i++) {
           const field = parser.model[keys[i]];
           if (field.required && fieldMap[keys[i]] === '') {
@@ -428,8 +472,6 @@ const uploadBundle = {
     });
     return keys;
   }),
-
-  selectUploadIsParsing: (state) => state.upload._isParsing,
 
   selectUploadFileName: createSelector('selectUploadCsv', (csv) =>
     !csv ? null : csv.name
@@ -464,8 +506,6 @@ const uploadBundle = {
 
   selectUploadHasFile: createSelector('selectUploadCsv', (csv) => !!csv),
 
-  selectUploadIgnoreRows: (state) => state.upload.ignoreRows,
-
   selectUploadIgnoreRowsList: createSelector(
     'selectUploadIgnoreRows',
     (rows) => {
@@ -494,14 +534,6 @@ const uploadBundle = {
       return rowNumbers;
     }
   ),
-
-  selectUploadParsers: (state) => state.upload.parsers,
-
-  selectUploadSelectedParser: (state) => state.upload.selectedParser,
-
-  selectUploadIsUploading: (state) => state.upload._isUploading,
-
-  selectUploadFieldMap: (state) => state.upload.fieldMap,
 
   /** NOTE: Only add required data for mapping to minimize overhead. */
   selectStateData: (state) => ({

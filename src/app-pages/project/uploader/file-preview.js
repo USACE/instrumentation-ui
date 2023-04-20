@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../../app-components/card';
