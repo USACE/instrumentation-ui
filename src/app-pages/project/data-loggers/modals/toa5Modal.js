@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { readString } from 'react-papaparse';
 import { Tooltip } from 'react-tooltip';
@@ -6,6 +6,7 @@ import { Tooltip } from 'react-tooltip';
 import * as Modal from '../../../../app-components/modal';
 import Button from '../../../../app-components/button';
 import Icon from '../../../../app-components/icon';
+import { pluralize } from '../../../../common/helpers/utils';
 
 const parseFile = async (file, onComplete) => {
   const text = await file.text();
@@ -27,20 +28,30 @@ const determineEquivalency = (equivalencyTable = {}, data = []) => {
       notFound: [],
       noTimeseries: [],
     },
+    matches: [],
   };
 
   const { rows = [] } = equivalencyTable;
   const oldFieldNames = rows.map(row => row?.field_name);
 
   if (data.length >= 2) {
-    data[1].splice(0, 2);
-    equivalency.fieldNames = data[1];
+    const clone = [...data[1]];
+    clone.splice(0, 2);
+    equivalency.fieldNames = clone;
 
     equivalency.fieldNames.forEach(field => {
       if (!oldFieldNames.includes(field)) {
         equivalency.errors.notFound.push(field);
-      } else if (!rows.find(el => el.field_name === field).timeseries_id) {
-        equivalency.errors.noTimeseries.push(field);
+      } else {
+        const el = rows.find(el => el.field_name === field);
+        if (!el?.timeseries_id) {
+          equivalency.errors.noTimeseries.push(field);
+        } else {
+          equivalency.matches.push({
+            field,
+            timeseriesId: el.timeseries_id,
+          });
+        }
       }
     });
   }
@@ -48,13 +59,40 @@ const determineEquivalency = (equivalencyTable = {}, data = []) => {
   return equivalency;
 };
 
+const uploadToaMeasurements = (data, equivalency, doPostTimeseriesMeasurements) => {
+  const { matches } = equivalency;
+  const fieldIndexes = data[1];
+
+  data.splice(0, 4);
+
+  const measurements = matches.map(el => {
+    const { timeseriesId, field } = el;
+    const index = fieldIndexes.findIndex(datum => datum === field);
+
+    return {
+      timeseries_id: timeseriesId,
+      items: data.map(datum => ({
+        time: new Date(datum[0]).toISOString(),
+        value: Number(datum[index]),
+        masked: false,
+        validated: false,
+        annotation: '',
+      })),
+    };
+  });
+
+  doPostTimeseriesMeasurements({ measurements });
+};
+
 const Toa5Modal = connect(
   'doModalClose',
   'doCreateDataLoggerEquivalency',
+  'doPostTimeseriesMeasurements',
   'selectDataLoggerEquivalencyTable',
   ({
     doModalClose,
     doCreateDataLoggerEquivalency,
+    doPostTimeseriesMeasurements,
     dataLoggerEquivalencyTable: equivalencyTable,
     dataLoggerInfo,
   }) => {
@@ -113,6 +151,7 @@ const Toa5Modal = connect(
                 <span className='d-block mt-2'><b>File Format: </b>{data[0][0]}</span>
                 <span className='d-block mt-1'><b>Data Logger Model: </b>{data[0][2]}</span>
                 <span className='d-block mt-1'><b>Data Logger Serial Number: </b>{data[0][3]}</span>
+                {/* <span className='d-block mt-1'><b>Mapping Table: </b>{data[0][7]}</span> */}
                 <hr />
                 {(!!equivalency?.errors?.notFound?.length || !!equivalency?.errors?.noTimeseries?.length) ? (
                   <>
@@ -196,7 +235,7 @@ const Toa5Modal = connect(
                         checked={ignoreErrors}
                         onChange={() => setIgnoreErrors(prev => !prev)}
                       />
-                      Ignore Errors
+                      Ignore Errors <i>({equivalency?.matches?.length + pluralize(' match', ' matches', equivalency?.matches?.length)})</i>
                       <Icon
                         id='ignore-errors-help'
                         className='pl-2 d-inline'
@@ -227,9 +266,10 @@ const Toa5Modal = connect(
         </Modal.ModalBody>
         <Modal.ModalFooter
           showCancelButton
-          saveIsDisabled={!(data.length && (!equivalency.errors.length || ignoreErrors))}
+          saveIsDisabled={!(data.length && ((!equivalency.errors.notFound.length && !equivalency.errors.noTimeseries.length) || ignoreErrors))}
           cancelText='Close'
           saveText='Upload'
+          onSave={() => uploadToaMeasurements(data, equivalency, doPostTimeseriesMeasurements)}
         />
       </Modal.ModalContent>
     );
