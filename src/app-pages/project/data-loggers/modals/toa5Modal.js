@@ -74,9 +74,6 @@ const uploadToaMeasurements = (data, equivalency, doPostTimeseriesMeasurements) 
       items: data.map(datum => ({
         time: new Date(datum[0]).toISOString(),
         value: Number(datum[index]),
-        masked: false,
-        validated: false,
-        annotation: '',
       })),
     };
   });
