@@ -173,7 +173,7 @@ const Toa5Modal = connect(
                             text='Add Missing Fields'
                             title='Add Missing Fields to Field Mapping Table'
                             handleClick={() => {
-                              doCreateDataLoggerEquivalency({ dataLoggerId: id, newRows: equivalency.errors });
+                              doCreateDataLoggerEquivalency({ dataLoggerId: id, newRows: equivalency.errors.notFound });
                               doModalClose();
                             }}
                           />
