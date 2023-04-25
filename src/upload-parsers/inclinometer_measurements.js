@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { isNumeric } from '../common/helpers/utils';
 
-const timeseriesMeasurementParser = {
+const inclinometerMeasurementParser = {
   name: 'Inclinometer Measurements',
   url: '/projects/:projectId/inclinometer_measurements',
   prePostFilter: (data) => {
@@ -100,4 +100,4 @@ const timeseriesMeasurementParser = {
   },
 };
 
-export default timeseriesMeasurementParser;
+export default inclinometerMeasurementParser;

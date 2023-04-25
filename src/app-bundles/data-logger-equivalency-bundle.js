@@ -1,4 +1,5 @@
-// import { createSelector } from 'redux-bundler';
+import { toast } from 'react-toastify';
+import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
 
 export default {
   name: 'dataLoggerEquivalency',
@@ -68,6 +69,7 @@ export default {
   doUpdateDataLoggerEquivalency: (data) => ({ dispatch, store, apiPut }) => {
     const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+    // const toastId = toast.loading('Updating Field Mapping...');
 
     const payload = {
       datalogger_id: dataLoggerId,
@@ -84,9 +86,11 @@ export default {
 
     apiPut(uri, payload, (err, body) => {
       if (err) {
-        console.log('todo', err);
+        console.log('test err: ', JSON.stringify(err));
+        // tUpdateError(toastId, 'Failed');
       } else {
         store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        // tUpdateSuccess(toastId, 'Successfully updated Field Mapping!');
       }
     });
   },

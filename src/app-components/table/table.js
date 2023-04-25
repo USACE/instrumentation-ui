@@ -25,6 +25,8 @@ const headerClasses = colDef => {
 };
 
 const multiFilterFn = (row, columnId, filterValues) => {
+  if (!filterValues.length) return true;
+  
   const values = filterValues.map(el => el.value.toLowerCase());
 
   return values.includes(row.getValue(columnId).toLowerCase());
