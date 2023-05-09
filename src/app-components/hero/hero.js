@@ -16,7 +16,7 @@ const Hero = () => (
       <img
         src={cwbiLogo}
         title='CWBI Home'
-        height='50px'
+        height='150px'
         className='pointer text-light'
         alt='CWBI Logo'
         onClick={() => window.open('https://cwbi.usace.army.mil/', '_blank')}
@@ -34,16 +34,16 @@ const Hero = () => (
     <div className='logo-right'>
       <img
         src={ggmLogo}
-        title='USACE TEN-GGM'
-        height='50px'
+        title='USACE KMP-GGM'
+        height='175px'
         className='pointer text-light'
         alt='TEN GGM Logo'
-        onClick={() => window.open('https://usace.dps.mil/sites/TEN-GGM', '_blank')}
+        onClick={() => window.open('https://usace.dps.mil/sites/KMP-GGM', '_blank')}
       />
       <a
         className='mt-2 d-block pointer'
-        title='Link to TEN-GGM IPM'
-        href='https://usace.dps.mil/sites/TEN-GGM/SitePages/Instrumentation-and-Performance-Monitoring.aspx'
+        title='Link to KMP-GGM IPM'
+        href='https://usace.dps.mil/sites/KMP-GGM/SitePages/Instrumentation-and-Performance-Monitoring.aspx'
         target='_blank'
       >
         IPM SubCOP
