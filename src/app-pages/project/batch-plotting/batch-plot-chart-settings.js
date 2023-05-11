@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import { DateTime } from 'luxon';
 import { subDays, startOfDay } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
+import { CSVLink } from 'react-csv';
 
 import Button from '../../../app-components/button';
 import Icon from '../../../app-components/icon';
@@ -25,6 +26,7 @@ const BatchPlotChartSettings = ({
   dateRange = [],
   setDateRange,
   savePlotSettings,
+  chartData,
 }) => {
   const [fromTime, endTime] = dateRange;
   const [activeButton, setActiveButton] = useState('1 year');
@@ -39,7 +41,7 @@ const BatchPlotChartSettings = ({
   };
 
   const isDisplayAllActive = () => show_comments && show_masked && show_nonvalidated;
-  
+
   const handleDateChangeRaw = (e) => {
     e.preventDefault();
   };
@@ -115,7 +117,7 @@ const BatchPlotChartSettings = ({
         </div>
         <div className='col-md-6 col-xs-12'>
           <label className='checkbox mt-1'>
-            <input 
+            <input
               className='mr-1'
               type='checkbox'
               checked={auto_range}
@@ -144,7 +146,7 @@ const BatchPlotChartSettings = ({
           />
           <hr />
           <label className='checkbox'>
-            <input 
+            <input
               className='mr-1'
               type='checkbox'
               checked={isDisplayAllActive()}
@@ -210,6 +212,20 @@ const BatchPlotChartSettings = ({
           date_range: activeButton === 'Custom' ? customDateFormat(fromTime, endTime) : activeButton,
         })}
       />
+      <CSVLink
+        data={chartData
+          .map(({ name, x, y }) => x.map((time, index) => ({ [name + ' Time']: time, [name + ' Value']: y[index] })))
+          .reduce((acc, curr) => [...acc, ...curr], [])
+        }
+        filename={chartSettings.name + '.csv'}
+      >
+        <Button
+          isOutline
+          size='small'
+          variant='success'
+          text='Download Plotted Data to .csv'
+        />
+      </CSVLink>
     </div>
   );
 };
