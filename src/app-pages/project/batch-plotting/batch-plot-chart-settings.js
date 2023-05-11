@@ -224,6 +224,7 @@ const BatchPlotChartSettings = ({
           size='small'
           variant='success'
           text='Download Plotted Data to .csv'
+          isDisabled={!chartData || chartData.length === 0}
         />
       </CSVLink>
     </div>
