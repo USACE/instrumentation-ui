@@ -214,8 +214,20 @@ const BatchPlotChartSettings = ({
       />
       <CSVLink
         data={chartData
-          .map(({ name, x, y }) => x.map((time, index) => ({ [name + ' Time']: time, [name + ' Value']: y[index] })))
-          .reduce((acc, curr) => [...acc, ...curr], [])
+          .map(({ name, x, y }) => x.map((time, index) => ({ Time:time, [name + ' Value']: y[index] })))
+          .reduce((acc, curr) => {
+            const lookup = acc.reduce((lookup, { Time }) => {
+              lookup[Time] = true;
+              return lookup;
+            }, {});
+        
+            const filtered = curr.filter(({ Time }) => !lookup[Time]);
+        
+            return [...acc, ...filtered];
+          }, [])
+          .sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime())
+          // Remove characters from ISO 8601 strings for common spreadsheet software to recognize dates
+          .map(({ Time, ...rest }) => ({ Time: Time.replace('T', ' ').replace('Z', ''), ...rest }))
         }
         filename={chartSettings.name + '.csv'}
       >
