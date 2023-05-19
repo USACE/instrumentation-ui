@@ -9,6 +9,7 @@ import Icon from '../../app-components/icon';
 import ProjectDashboard from './dashboard';
 import AllInstruments from './all-instruments';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
+import QaQc from './qa-qc';
 import Uploader from './uploader';
 import { isUserAllowed } from '../../app-components/role-filter';
 
@@ -54,7 +55,7 @@ const Project = connect(
         paddingSmall: true,
         uri: '#uploader',
       }, {
-        title: <Title text='Batch Plotting' icon='file-chart' />,
+        title: <Title text='Batch Plotting' icon='chart-areaspline' />,
         content: <BatchPlotting />,
         paddingSmall: true,
         uri: '#batch-plotting',
@@ -70,6 +71,11 @@ const Project = connect(
         content: <AdminPage />,
         paddingSmall: true,
         uri: '#admin',
+      }, {
+        title: <Title text='QA/QC' icon='file-chart-check-outline' />,
+        content: <QaQc />,
+        paddingSmall: true,
+        uri: '#qa-qc',
       }] : [],
     ];
 

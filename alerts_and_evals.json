@@ -1,0 +1,113 @@
+// ---------------------------
+// Updating multiple timeseries notes at once
+// ---------------------------
+
+// PUT /project/{project_id}/update_timeseries_notes
+{
+  "timeseries_id": ["UUID", "UUID", ...],
+  "date_range": "[ISO-TS, ISO-TS]",
+  "masked": true,
+  "validated": false,
+  "annotation": "some string"
+}
+
+// ---------------------------
+// QA/QC Evaluation Endpoints
+// ---------------------------
+
+// GET /project/{project_id}/evaluation
+[
+  {
+    "name": "New Evaluation",
+    "body": "balh blah",
+    "date_range": "[ISO-TS, ISO-TS]",
+    *"instrument_ids": ["UUID", "UUID", ...],
+    "creator": "",
+    "create_date": "ISO Date",
+
+    // vv ADMIN ONLY vv
+    "updator": "",
+    "update_date": ""
+  }
+]
+
+// POST /project/{project_id}/evaluation
+{
+  "name": "New Evaluation",
+  "body": "balh blah",
+  "date_range": "[ISO-TS, ISO-TS]",
+  *"instrument_ids": ["UUID", "UUID", ...]
+}
+
+// *PUT /project/{project_id}/evaluation (NOT IN LOE)
+{
+  "name": "New Evaluation",
+  "body": "balh blah",
+  "date_range": "[ISO-TS, ISO-TS]",
+  *"instrument_ids": ["UUID", "UUID", ...]
+}
+
+// ---------------------------
+// Alert Endpoints - All (*) endpoints Project Admin Only
+// ---------------------------
+
+// GET /project/{project_id}/alerts
+{
+  "name": "Test Alert", // email subject  |  MIDAS ALERT // {project_name} - {name}
+  "body": "Alert Body", // email body
+  "alert_type_id": 3, // one of the 'alert-type' domain values (automated-missing-measurements, manual-missing, overdue eval)
+  "start_date": "ISO_TS", // default to TS when user clicked "new alert"
+  "schedule": "1 month",  // expected upload frequency / evaluation frequency
+  "n_missed_before_alert": 1,  // number of missed uploads before alert triggers (automatic missing can change from default 1)
+  "warning_interval": "1 week",  // will only be needed for manual upload or eval - time before schedule. eg: 1 week
+  "reminder_interval": "1 day", // will tell lambda how often to send out follow ups emails with last checked info (most recent missing measurements/eval)
+  "instrument_ids": null, // *if we need to include specific instrument checking during evaluation
+  "last_checked": "ISO-TS",
+  "last_reminded": "ISO-TS",
+  "alert_status_id": 1 // this will be in the 'alert-status' domain (green = before warning | yellow = after warning, before deadline | red = after deadline)
+}
+
+// *POST /project/{project_id}/alerts
+
+// automated missing measurement POST body
+{
+  "name": "Test Alert", // email subject  |  MIDAS ALERT // {project_name} - {name}
+  "body": "Alert Body", // email body
+  "alert_type_id": 1, // one of the 'alert-type' domain values (automated-missing-measurements, manual-missing, overdue eval)
+  "start_date": "ISO_TS", // default to TS when user clicked "new alert"
+  "schedule": "15 minutes",  // expected upload frequency / evaluation frequency
+  "n_missed_before_alert": 4,  // number of missed uploads before alert triggers (automatic missing can change from default 1)
+  "warning_interval": null,  // will only be needed for manual upload or eval - time before schedule. eg: 1 week
+  "reminder_interval": "1 hour", // will tell lambda how often to send out follow ups emails with last checked info (most recent missing measurements/eval)
+  "instrument_ids": ["UUID", "UUID", ...],
+}
+
+// overdue eval POST body
+{
+  "name": "Test Alert", // email subject  |  MIDAS ALERT // {project_name} - {name}
+  "body": "Alert Body", // email body
+  "alert_type_id": 3, // one of the 'alert-type' domain values (automated-missing-measurements, manual-missing, overdue eval)
+  "start_date": "ISO_TS", // default to TS when user clicked "new alert"
+  "schedule": "1 month",  // expected upload frequency / evaluation frequency
+  "n_missed_before_alert": 1,  // number of missed uploads before alert triggers (automatic missing can change from default 1)
+  "warning_interval": "1 week",  // will only be needed for manual upload or eval - time before schedule. eg: 1 week
+  "reminder_interval": "1 day", // will tell lambda how often to send out follow ups emails with last checked info (most recent missing measurements/eval)
+  "instrument_ids": null // *if we need to include specific instrument checking during evaluation
+}
+
+
+// *PUT /project/{project_id}/alerts/{alert_id}
+{
+  "name": "Test Alert", // email subject  |  MIDAS ALERT // {project_name} - {name}
+  "body": "Alert Body", // email body
+  "alert_type_id": 3, // one of the 'alert-type' domain values (automated-missing-measurements, manual-missing, overdue eval)
+  "start_date": "ISO_TS", // default to TS when user clicked "new alert"
+  "schedule": "1 month",  // expected upload frequency / evaluation frequency
+  "n_missed_before_alert": 1,  // number of missed uploads before alert triggers (automatic missing can change from default 1)
+  "warning_interval": "1 week",  // will only be needed for manual upload or eval - time before schedule. eg: 1 week
+  "reminder_interval": "1 day", // will tell lambda how often to send out follow ups emails with last checked info (most recent missing measurements/eval)
+  "instrument_ids": null // *if we need to include specific instrument checking during evaluation
+}
+
+// *DELETE /project/{project_id}/alerts/{alert_id}
+{}

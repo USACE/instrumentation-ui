@@ -50,6 +50,7 @@ import profileBundle from './profile-bundle';
 import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
+import qualityControl from './quality-control';
 import rainfallBundle from './rainfall-bundle';
 import routesBundle from './routes-bundle';
 import timeseriesBundle from './time-series-bundle';
@@ -144,6 +145,7 @@ export default composeBundles(
   projectMembersBundle,
   projectionBundle,
   projectsBundle,
+  qualityControl,
   rainfallBundle,
   routesBundle,
   timeseriesBundle,

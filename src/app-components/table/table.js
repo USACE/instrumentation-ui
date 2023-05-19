@@ -61,8 +61,8 @@ const Table = ({
     filterFns: {
       multi: multiFilterFn,
     },
-    data,
-    columns: tableColumns,
+    data: data || [],
+    columns: tableColumns || [],
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -72,7 +72,7 @@ const Table = ({
   return (
     <table className={tableClasses}>
       <thead>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups()?.map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
               <th
@@ -98,7 +98,7 @@ const Table = ({
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map(row => (
+        {table.getRowModel()?.rows?.map(row => (
           <tr key={row.id}>
             {row.getVisibleCells().map(cell => (
               <td key={cell.id}>
