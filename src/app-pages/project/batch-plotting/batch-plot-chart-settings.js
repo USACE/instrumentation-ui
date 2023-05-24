@@ -46,6 +46,8 @@ const BatchPlotChartSettings = ({
     e.preventDefault();
   };
 
+  const isChartDataDownloadable = () => chartData && chartData.every(({x, y}) => x && y && x.length == y.length);
+
   return (
     <div className='m-2'>
       <b>Plot Settings:</b>
@@ -213,22 +215,26 @@ const BatchPlotChartSettings = ({
         })}
       />
       <CSVLink
-        data={chartData
+        data={isChartDataDownloadable ? chartData
           .map(({ name, x, y }) => x.map((time, index) => ({ Time:time, [name + ' Value']: y[index] })))
-          .reduce((acc, curr) => {
-            const lookup = acc.reduce((lookup, { Time }) => {
-              lookup[Time] = true;
+          .reduce((acc, curr) => [...acc, ...curr], [])
+          .reduce((acc, {Time, ...rest}) => {
+            const lookup = acc.reduce((lookup, { Time }, index) => {
+              lookup[Time] = index;
               return lookup;
             }, {});
-        
-            const filtered = curr.filter(({ Time }) => !lookup[Time]);
-        
-            return [...acc, ...filtered];
+
+            if (lookup[Time]) {
+              acc[lookup[Time]] = { ...acc[lookup[Time]], ...rest };
+              return acc;
+            } else {
+              return [...acc, {Time, ...rest}];
+            }
           }, [])
-          .sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime())
           // Remove characters from ISO 8601 strings for common spreadsheet software to recognize dates
+          .sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime())
           .map(({ Time, ...rest }) => ({ Time: Time.replace('T', ' ').replace('Z', ''), ...rest }))
-        }
+          : {} }
         filename={chartSettings.name + '.csv'}
       >
         <Button
@@ -236,7 +242,7 @@ const BatchPlotChartSettings = ({
           size='small'
           variant='success'
           text='Download Plotted Data to .csv'
-          isDisabled={!chartData || chartData.length === 0}
+          isDisabled={!isChartDataDownloadable}
         />
       </CSVLink>
     </div>
