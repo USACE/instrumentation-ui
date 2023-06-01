@@ -137,6 +137,7 @@ const BatchPlotChart = connect(
               chartSettings={chartSettings}
               setChartSettings={setChartSettings}
               savePlotSettings={doBatchPlotConfigurationsSave}
+              chartData={chartData}
             />
           </>
         ) : null}
