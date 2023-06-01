@@ -66,7 +66,9 @@ export const isSaveDisabled = (data, optionalFields = []) => {
   const keys = Object.keys(data);
 
   keys.forEach(key => {
-    if (!data[key]?.val && !optionalFields.includes(key)) {
+    if (Array.isArray(data[key]?.val) && !data[key]?.val?.length){
+      disabled = true;
+    } else if (!data[key]?.val && !optionalFields.includes(key)) {
       disabled = true;
     }
   });

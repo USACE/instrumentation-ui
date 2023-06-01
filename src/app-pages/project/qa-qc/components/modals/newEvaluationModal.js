@@ -9,13 +9,28 @@ import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
 
 const buildInstrumentOptions = (instruments = []) => (
   instruments.map(instrument => {
-    const { name, id } = instrument;
+    const { name, id, status } = instrument;
+
+    if (status !== 'active') return null;
     
     return {
       label: name,
       value: id,
     };
-  })
+  }).filter(el => el)
+);
+
+const buildAlertOptions = (alerts = [], evalAlertTypeId) => (
+  alerts.map(alert => {
+    const { name, id, alert_type_id } = alert;
+
+    if (alert_type_id !== evalAlertTypeId) return null;
+
+    return {
+      label: name,
+      value: id,
+    };
+  }).filter(el => el)
 );
 
 const defaultFormState = {
@@ -24,18 +39,27 @@ const defaultFormState = {
   instruments: [],
   start_date: '',
   end_date: '',
+  alert_config_id: '',
 };
+
+const optionalFields = ['alert_config_id'];
 
 const NewEvaluationModal = connect(
   'doModalClose',
   'doCreateQualityControlEvaluation',
   'selectInstrumentsItems',
+  'selectProjectAlertConfigs',
+  'selectDomainsItemsByGroup',
   ({
     doModalClose,
     doCreateQualityControlEvaluation,
     instrumentsItems: instruments,
+    projectAlertConfigs,
+    domainsItemsByGroup: domains,
   }) => {
     const [formState, dispatch] = useReducer(reduceState, initState(defaultFormState));
+
+    const evalAlertTypeId = domains['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id;
 
     return (
       <ModalContent style={{ overflowY: 'visible' }}>
@@ -61,6 +85,17 @@ const NewEvaluationModal = connect(
               value={formState.body?.val}
               onChange={e => dispatch({ type: 'update', key: 'body', data: e.target.value })}
             />
+          </div>
+          <div className='form-group'>
+            <label>Associated Alert (Optional): </label>
+            {projectAlertConfigs.length ? (
+              <Select
+                isClearable
+                isSearchable
+                options={buildAlertOptions(projectAlertConfigs, evalAlertTypeId)}
+                onChange={(value) => dispatch({ type: 'update', key: 'alert_config_id', data: value?.value })}
+              />
+            ) : <div><i>No Alerts Configured for this Project</i></div>}
           </div>
           {instruments.length && (
             <div className='form-group'>
@@ -100,7 +135,7 @@ const NewEvaluationModal = connect(
         </ModalBody>
         <ModalFooter
           saveText='Submit'
-          saveIsDisabled={isSaveDisabled(formState)}
+          saveIsDisabled={isSaveDisabled(formState, optionalFields)}
           onSave={() => doCreateQualityControlEvaluation(formState)}
           onCancel={doModalClose}
         />

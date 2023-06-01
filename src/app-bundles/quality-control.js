@@ -47,8 +47,6 @@ export default {
 
   doCreateQualityControlEvaluation: (formState) => ({ dispatch, store, apiPost }) => {
     dispatch({ type: 'EVALUATIONS_CREATE_START' });
-    console.log('test formState: ', formState);
-
 
     const formData = Object.keys(formState).reduce((accum, current) => {
       if (current === 'instruments') {

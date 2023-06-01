@@ -48,7 +48,7 @@ const Project = connect(
         paddingSmall: true,
         uri: '#all-instruments',
       }],
-      // Active if User === Member
+      // Active if User === Project Member
       ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='Uploader' icon='cloud-upload-outline' />,
         content: <Uploader />,
@@ -59,8 +59,13 @@ const Project = connect(
         content: <BatchPlotting />,
         paddingSmall: true,
         uri: '#batch-plotting',
+      }, {
+        title: <Title text='QA/QC' icon='file-chart-check-outline' />,
+        content: <QaQc />,
+        paddingSmall: true,
+        uri: '#qa-qc',
       }] : [],
-      // Active if User === Admin
+      // Active if User === Project Admin
       ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Data Loggers' icon='waveform' />,
         content: <DataLoggers />,
@@ -71,11 +76,6 @@ const Project = connect(
         content: <AdminPage />,
         paddingSmall: true,
         uri: '#admin',
-      }, {
-        title: <Title text='QA/QC' icon='file-chart-check-outline' />,
-        content: <QaQc />,
-        paddingSmall: true,
-        uri: '#qa-qc',
       }] : [],
     ];
 
