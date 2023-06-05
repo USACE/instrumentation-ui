@@ -123,4 +123,23 @@ export default {
       });
     }
   },
+
+  doDeleteProjectAlertConfig: (alertConfigId) => ({ dispatch, store, apiDelete }) => {
+    dispatch({ type: 'PROJECT_ALERT_CONFIGS_DELETE_START' });
+    const { projectId } = store.selectProjectsIdByRoute();
+
+    const url = `/projects/${projectId}/alert_configs/${alertConfigId}`;
+
+    const toastId = toast.loading('Deleting alert configuration...');
+
+    apiDelete(url, (err, _body) => {
+      if (err) {
+        console.log('todo', err);
+        tUpdateError(toastId, 'Failed to delete alert configuration. Try again later.');
+      } else {
+        tUpdateSuccess(toastId, 'Successfully deleted alert configuration!');
+        store.doFetchProjectAlertConfigs();
+      }
+    });
+  },
 };
