@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
+import { DateTime } from 'luxon';
 
 import AlertConfigDetailModal from './modals/alertConfigDetailModal';
 import Button from '../../../../app-components/button/button';
@@ -78,6 +79,16 @@ const AlertConfigList = connect(
               key: 'alert_type',
               header: 'Alert Type',
               isSortable: true,
+            }, {
+              key: 'create_date',
+              header: 'Created On',
+              isSortable: true,
+              render: (data) => {
+                const { create_date } = data;
+                const formatted = DateTime.fromISO(create_date).toFormat('LLL dd, yyyy');
+
+                return <span>{formatted}</span>;
+              },
             }
           ]}
         />
