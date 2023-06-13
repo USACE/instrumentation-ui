@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 
-const IntervalSelection = ({ defaultSelection = {}, onChange }) => {
+const IntervalSelection = ({ defaultSelection = {}, onChange, isMinDays = false }) => {
+  const defaultVal = useRef(defaultSelection, []);
   const {
     number: defaultNumber = 0,
     duration: defaultDuration = null,
-  } = defaultSelection;
+  } = defaultVal.current;
+
   const [number, setNumber] = useState(defaultNumber);
   const [duration, setDuration] = useState(defaultDuration);
-
 
   useEffect(() => {
     if (!number || !Number(number) || !duration?.value) {
@@ -44,13 +45,13 @@ const IntervalSelection = ({ defaultSelection = {}, onChange }) => {
           value={duration}
           placeholder='Select one...'
           options={[
-            { label: 'minutes', value: 'minutes' },
-            { label: 'hours', value: 'hours' },
+            !isMinDays && { label: 'minutes', value: 'minutes' },
+            !isMinDays && { label: 'hours', value: 'hours' },
             { label: 'days', value: 'days' },
             { label: 'weeks', value: 'weeks' },
             { label: 'months', value: 'months' },
             { label: 'years', value: 'years' },
-          ]}
+          ].filter(e => e)}
           onChange={val => setDuration(val)}
         />
       </div>

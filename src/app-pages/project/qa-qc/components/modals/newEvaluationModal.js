@@ -116,7 +116,7 @@ const NewEvaluationModal = connect(
               <ReactDatePicker
                 placeholderText='mm/dd/yyyy'
                 className='form-control'
-                maxDate={Date.now()}
+                maxDate={formState.end_date?.val || Date.now()}
                 selected={formState.start_date?.val}
                 onChange={(date) => dispatch({ type: 'update', key: 'start_date', data: date })}
               />
@@ -126,6 +126,7 @@ const NewEvaluationModal = connect(
               <ReactDatePicker
                 placeholderText='mm/dd/yyyy'
                 className='form-control'
+                minDate={formState.start_date?.val || null}
                 maxDate={Date.now()}
                 selected={formState.end_date?.val}
                 onChange={(date) => dispatch({ type: 'update', key: 'end_date', data: date })}

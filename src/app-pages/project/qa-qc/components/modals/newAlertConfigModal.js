@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import { connect } from 'redux-bundler-react';
 import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
+import { connect } from 'redux-bundler-react';
 import { Tooltip } from 'react-tooltip';
 
 import DomainSelect from '../../../../../app-components/domain-select';
@@ -10,6 +10,7 @@ import IntervalSelection from '../intervalSelection';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
 import { reduceState, initState } from '../../../../../common/helpers/form-helpers';
 import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
+import { DateTime, Duration } from 'luxon';
 
 const buildInstrumentOptions = (instruments = []) => (
   instruments.map(instrument => {
@@ -23,6 +24,66 @@ const buildInstrumentOptions = (instruments = []) => (
     };
   }).filter(e => e)
 );
+
+const cleanInstrumentOptions = (instruments = []) => (
+  instruments.map(instrument => {
+    const { instrument_id, instrument_name } = instrument;
+
+    return {
+      label: instrument_name,
+      value: instrument_id,
+    };
+  }).filter(e => e)
+);
+
+const cleanInterval = isoInterval => {
+  const obj = Duration.fromISO(isoInterval).toObject();
+  const keys = Object.keys(obj);
+
+  return keys.length ? {
+    number: obj[keys[0]],
+    duration: {
+      label: keys[0],
+      value: keys[0],
+    }
+  } : {};
+};
+
+const cleanEmails = (email_subscriptions = [], hasProfile) => {
+  if (hasProfile) {
+    const profileEmails = email_subscriptions.filter(el => el.user_type === 'profile');
+
+    return profileEmails.map(el => ({
+      ...el,
+      label: `${el.username} | ${el.email}`,
+      value: el.id,
+    }));
+  } else {
+    const emails = email_subscriptions.filter(el => el.user_type === 'email');
+
+    return emails.map(el => el.email).join(', ');
+  }
+};
+
+const cleanFormat = initConfig => {
+  const { last_checked, last_reminded, updater_username, updater, update_date, ...rest } = initConfig;
+  const { start_date, schedule_interval, warning_interval, remind_interval, instruments, alert_email_subscriptions } = rest;
+
+  const cleanStartDate = DateTime.fromISO(start_date).toJSDate();
+
+  const ret = {
+    ...rest,
+    start_date: cleanStartDate,
+    schedule_interval: cleanInterval(schedule_interval),
+    warning_interval: cleanInterval(warning_interval),
+    remind_interval: cleanInterval(remind_interval),
+    instruments: cleanInstrumentOptions(instruments),
+    alert_email_subscriptions: cleanEmails(alert_email_subscriptions, true),
+    additional_emails: cleanEmails(alert_email_subscriptions, false),
+  };
+
+  return ret;
+};
 
 const defaultFormState = {
   name: '',
@@ -42,6 +103,7 @@ const NewAlertConfigModal = connect(
   'doModalClose',
   'doTypeaheadQueryUpdated',
   'doCreateProjectAlertConfigs',
+  'doUpdateProjectAlertConfigs',
   'selectUsersItems',
   'selectInstrumentsItems',
   'selectDomainsItemsByGroup',
@@ -49,12 +111,17 @@ const NewAlertConfigModal = connect(
     doModalClose,
     doTypeaheadQueryUpdated,
     doCreateProjectAlertConfigs,
+    doUpdateProjectAlertConfigs,
     usersItems,
     instrumentsItems: instruments,
     domainsItemsByGroup,
+    isEdit = false,
+    initAlertConfig = {},
   }) => {
-    const [formState, dispatch] = useReducer(reduceState, initState(defaultFormState));
+    const [formState, dispatch] = useReducer(reduceState, initState(isEdit ? cleanFormat(initAlertConfig) : defaultFormState));
     const [filterItems, setFilterItems] = useState([]);
+
+    const { id: alertConfigId } = initAlertConfig;
 
     const optionalFields = [
       'warning_interval',
@@ -80,7 +147,7 @@ const NewAlertConfigModal = connect(
 
     return (
       <ModalContent style={{ overflowY: 'visible' }}>
-        <ModalHeader title='New Alert Configuration' />
+        <ModalHeader title={`${isEdit ? 'Edit' : 'New'} Alert Configuration`} />
         <ModalBody style={{ overflowY: 'visible' }}>
           <div className='form-group'>
             <label>Alert Name: </label>
@@ -131,6 +198,7 @@ const NewAlertConfigModal = connect(
                 isClearable
                 isSearchable
                 closeMenuOnSelect={false}
+                defaultValue={formState.instruments?.val || undefined}
                 options={buildInstrumentOptions(instruments)}
                 onChange={(values) => dispatch({ type: 'update', key: 'instruments', data: values })}
               />
@@ -140,21 +208,25 @@ const NewAlertConfigModal = connect(
             <div className='col-4'>
               <label>Schedule Interval: </label>
               <div className='row no-gutters'>
-                <IntervalSelection onChange={(value) => dispatch({ type: 'update', key: 'schedule_interval', data: value })} />
+                <IntervalSelection
+                  defaultSelection={isEdit ? formState.schedule_interval?.val : {}}
+                  onChange={(value) => dispatch({ type: 'update', key: 'schedule_interval', data: value })}
+                />
               </div>
             </div>
             <div className='col-4'>
               <label>Warning Interval (optional): </label>
               <IntervalSelection
-                defaultSelection={{ number: 1, duration: { label: 'weeks', value: 'weeks' } }}
+                defaultSelection={isEdit ? formState.warning_interval?.val : { number: 1, duration: { label: 'weeks', value: 'weeks' } }}
                 onChange={(value) => dispatch({ type: 'update', key: 'warning_interval', data: value })}
               />
             </div>
             <div className='col-4'>
               <label>Reminder Interval (optional): </label>
               <IntervalSelection
-                defaultSelection={{ number: 3, duration: { label: 'days', value: 'days' } }}
+                defaultSelection={isEdit ? formState.remind_interval?.val : { number: 3, duration: { label: 'days', value: 'days' } }}
                 onChange={(value) => dispatch({ type: 'update', key: 'remind_interval', data: value })}
+                isMinDays
               />
             </div>
           </div>
@@ -181,6 +253,7 @@ const NewAlertConfigModal = connect(
               isClearable
               isMulti
               options={filterItems}
+              defaultValue={isEdit ? formState.alert_email_subscriptions?.val : undefined}
               onChange={values => dispatch({ type: 'update', key: 'alert_email_subscriptions', data: values })}
               onInputChange={input => doTypeaheadQueryUpdated(input)}
             />
@@ -202,6 +275,8 @@ const NewAlertConfigModal = connect(
                   Manually enter additional emails in the box below to include in the email alerts.
                   <br/>
                   Separate multiple emails with a comma (<b> , </b>).
+                  <br /><br />
+                  <b>Verify any email addresses entered are valid and correct prior to saving.</b>
                 </span>
               }
             />
@@ -218,7 +293,11 @@ const NewAlertConfigModal = connect(
           customClosingLogic
           saveText='Submit'
           saveIsDisabled={isSaveDisabled(formState, optionalFields)}
-          onSave={() => doCreateProjectAlertConfigs(formState, doModalClose)}
+          onSave={() => {
+            isEdit
+              ? doUpdateProjectAlertConfigs(formState, alertConfigId, doModalClose)
+              : doCreateProjectAlertConfigs(formState, doModalClose);
+          }}
           onCancel={doModalClose}
         />
       </ModalContent>
