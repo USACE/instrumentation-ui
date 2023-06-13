@@ -7,6 +7,7 @@ import Card, { CardBody, CardHeader } from '../../../../../app-components/card';
 import Icon from '../../../../../app-components/icon';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
 import { titlize } from '../../../../../common/helpers/utils';
+import NewAlertConfigModal from './newAlertConfigModal';
 
 const formatDuration = isoDuration => {
   if (!isoDuration) return null;
@@ -62,7 +63,7 @@ const AlertConfigDetailModal = connect(
                 title='Edit Alert Configuration'
                 handleClick={() => {
                   doModalClose();
-                  // doModalOpen();
+                  doModalOpen(NewAlertConfigModal, { isEdit: true, initAlertConfig: config }, 'lg');
                 }}
               />
             </CardHeader>

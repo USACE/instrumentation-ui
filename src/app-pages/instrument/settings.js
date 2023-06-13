@@ -16,7 +16,8 @@ export default connect(
     timeseriesMeasurementsItemsObject: measurements,
     instrumentsByRoute: instrument,
   }) => {
-    const alertsReady = process.env.REACT_APP_ALERT_EDITOR;
+    // const alertsReady = process.env.REACT_APP_ALERT_EDITOR;
+    const alertsReady = false;
     const forumlaReady = process.env.REACT_APP_FORMULA_EDITOR;
     const chartReady = process.env.REACT_APP_INSTRUMENT_CHART;
 
