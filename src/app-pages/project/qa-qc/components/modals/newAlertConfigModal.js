@@ -2,15 +2,20 @@ import React, { useState, useReducer, useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
-import { Tooltip } from 'react-tooltip';
+import { DateTime, Duration } from 'luxon';
 
 import DomainSelect from '../../../../../app-components/domain-select';
-import Icon from '../../../../../app-components/icon';
 import IntervalSelection from '../intervalSelection';
+import HelperTooltip from '../../../../../app-components/helper-tooltip';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
 import { reduceState, initState } from '../../../../../common/helpers/form-helpers';
 import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
-import { DateTime, Duration } from 'luxon';
+
+const initStartDate = () => {
+  const date = new Date(Date.now());
+  date.setHours(8, 0 , 0);
+  return date;
+};
 
 const buildInstrumentOptions = (instruments = []) => (
   instruments.map(instrument => {
@@ -89,7 +94,7 @@ const defaultFormState = {
   name: '',
   body: '',
   instruments: [],
-  start_date: '',
+  start_date: initStartDate(),
   alert_type_id: '',
   schedule_interval: {},
   warning_interval: { 'weeks': 1 },
@@ -180,9 +185,21 @@ const NewAlertConfigModal = connect(
               />
             </div>
             <div className='form-group pl-2 col-6'>
-              <label>Alert Start Date:</label>
+              <label>Alert Check Start Date:</label>
+              <HelperTooltip
+                id='alert-start-help'
+                content={
+                  <span>
+                    The date at which the system will begin to evaluate the supplied
+                    <br />
+                    conditions. Alert messages will not be sent prior to this date.
+                  </span>
+                }
+              />
               <ReactDatePicker
-                placeholderText='mm/dd/yyyy'
+                showTimeInput
+                placeholderText='mm/dd/yyyy h:mm'
+                dateFormat='MM/dd/yyyy  h:mm aa'
                 className='form-control'
                 minDate={Date.now()}
                 selected={formState.start_date?.val}
@@ -204,8 +221,28 @@ const NewAlertConfigModal = connect(
               />
             </div>
           )}
-          <div className='row mx-0'>
+          <div className='row mx-0 border p-2 pt-3 mb-2'>
             <div className='col-4'>
+              <HelperTooltip
+                id='interval-help'
+                className='pr-2 d-inline'
+                content={
+                  <span>
+                    The following intervals are used to determine the frequency of messages sent to the subscribed emails.
+                    <br /><br />
+                    <b>Schedule Interval:&nbsp;</b>The frequency at which the alerts' conditions need to be fulfilled by. An alert<br />
+                    &emsp;will be sent once on this interval timeframe. <i>Note that consecutive intervals with failed conditions will</i><br />
+                    &emsp;<i>only send reminder messages.</i>
+                    <br/>
+                    <b>Warning Interval:&nbsp;</b>The timeframe prior to the alerts' next scheduled check. A message will<br />
+                    &emsp;be sent at this timeframe once per scheduled interval.
+                    <br />
+                    <b>Reminder Interval:&nbsp;</b>The timeframe after an alert has been sent to send a follow-up message.<br />
+                    &emsp;This reminder interval will continue to send messages at the given interval until the <br />
+                    &emsp;alerts' conditions have been fulfilled.
+                  </span>
+                }
+              />
               <label>Schedule Interval: </label>
               <div className='row no-gutters'>
                 <IntervalSelection
@@ -258,17 +295,8 @@ const NewAlertConfigModal = connect(
               onInputChange={input => doTypeaheadQueryUpdated(input)}
             />
             <label className='mt-2 font-italic'>Non-MIDAS Users (Optional):</label>
-            <Icon
+            <HelperTooltip
               id='auto-range-help'
-              className='pl-2 d-inline'
-              icon='help-circle-outline'
-              style={{
-                fontSize: '18px',
-              }}
-            />
-            <Tooltip
-              anchorId='auto-range-help'
-              effect='solid'
               place='right'
               content={
                 <span>
