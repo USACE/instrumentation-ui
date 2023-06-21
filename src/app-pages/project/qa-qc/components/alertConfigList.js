@@ -9,6 +9,19 @@ import Table from '../../../../app-components/table';
 import RoleFilter from '../../../../app-components/role-filter';
 import NewAlertConfigModal from './modals/newAlertConfigModal';
 
+const sortStatus = (rowA, rowB) => {
+  const { alert_status: alert_statusA } = rowA?.original;
+  const { alert_status: alert_statusB } = rowB?.original;
+
+  const colorEnum = {
+    red: 1,
+    yellow: 0,
+    green: -1,
+  };
+
+  return colorEnum[alert_statusA] - colorEnum[alert_statusB];
+};
+
 const AlertConfigList = connect(
   'doModalOpen',
   'doFetchProjectAlertConfigs',
@@ -43,6 +56,7 @@ const AlertConfigList = connect(
               key: 'alert_status',
               header: 'Status',
               isSortable: true,
+              sortingFn: (rowA, rowB) => sortStatus(rowA, rowB),
               render: (data) => {
                 const { alert_status } = data;
 

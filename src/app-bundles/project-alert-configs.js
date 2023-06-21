@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
 
@@ -41,6 +41,13 @@ const cleanFormState = formState => (
       } else {
         return { ...accum };
       }
+    } else if (current === 'start_date') {
+      const utcDate = DateTime.fromJSDate(formState[current].val).toUTC().toISO();
+
+      return {
+        ...accum,
+        [current]: utcDate,
+      };
     } else if (['schedule_interval', 'warning_interval', 'remind_interval'].includes(current)) {
       const duration = formState[current].val;
       if (!duration) return { ...accum };
