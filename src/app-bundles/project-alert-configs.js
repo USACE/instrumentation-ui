@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
 
@@ -41,6 +41,13 @@ const cleanFormState = formState => (
       } else {
         return { ...accum };
       }
+    } else if (current === 'start_date') {
+      const utcDate = DateTime.fromJSDate(formState[current].val).toUTC().toISO();
+
+      return {
+        ...accum,
+        [current]: utcDate,
+      };
     } else if (['schedule_interval', 'warning_interval', 'remind_interval'].includes(current)) {
       const duration = formState[current].val;
       if (!duration) return { ...accum };
@@ -114,17 +121,17 @@ export default {
     if (warning_interval && Duration.fromISO(warning_interval).toMillis() >= Duration.fromISO(schedule_interval).toMillis()) {
       tUpdateError(toastId, 'Failed to create alert configuration. Warning Interval timeframe exceeded Schedule Interval.');
     } else {
-      apiPost(url, formData, (err, _body) => {
-        dispatch({ type: 'PROJECT_ALERT_CONFIGS_CREATE_FINISHED' });
-        if (err) {
-          console.log('error: ', err);
-          tUpdateError(toastId, 'Failed to create alert configuration. Try again later.');
-        } else {
-          tUpdateSuccess(toastId, 'Successfully created new alert configuration!');
-          store.doFetchProjectAlertConfigs();
-        }
-        callback();
-      });
+      // apiPost(url, formData, (err, _body) => {
+      //   dispatch({ type: 'PROJECT_ALERT_CONFIGS_CREATE_FINISHED' });
+      //   if (err) {
+      //     console.log('error: ', err);
+      //     tUpdateError(toastId, 'Failed to create alert configuration. Try again later.');
+      //   } else {
+      //     tUpdateSuccess(toastId, 'Successfully created new alert configuration!');
+      //     store.doFetchProjectAlertConfigs();
+      //   }
+      //   callback();
+      // });
     }
   },
 

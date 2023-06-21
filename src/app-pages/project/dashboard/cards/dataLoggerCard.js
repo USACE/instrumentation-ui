@@ -6,16 +6,15 @@ import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
-import { InstrumentGroupForm } from '../../../instrument-group';
+
+import '../../project.scss';
 
 const errorCountSort = (rowA, rowB) => {
-  const { errorsA } = rowA?.original;
-  const { errorsB } = rowB?.original;
+  const { errors: errorsA } = rowA?.original;
+  const { errors: errorsB } = rowB?.original;
 
   return errorsA?.length - errorsB?.length;
 };
-
-import '../../project.scss';
 
 const NoDataLoggersDisplay = ({ doUpdateUrl, project }) => (
   <div className='m-3'>

@@ -13,7 +13,7 @@ import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
 
 const initStartDate = () => {
   const date = new Date(Date.now());
-  date.setHours(8, 0 , 0);
+  date.setHours(8, 0, 0);
   return date;
 };
 
@@ -74,7 +74,7 @@ const cleanFormat = initConfig => {
   const { last_checked, last_reminded, updater_username, updater, update_date, ...rest } = initConfig;
   const { start_date, schedule_interval, warning_interval, remind_interval, instruments, alert_email_subscriptions } = rest;
 
-  const cleanStartDate = DateTime.fromISO(start_date).toJSDate();
+  const cleanStartDate = DateTime.fromISO(start_date).toLocal().toJSDate();
 
   const ret = {
     ...rest,

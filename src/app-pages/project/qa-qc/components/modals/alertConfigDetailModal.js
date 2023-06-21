@@ -82,7 +82,7 @@ const AlertConfigDetailModal = connect(
               </div>
               <div className='row col-12'>
                 <b>Alert Start Date:&nbsp;</b>
-                <span>{DateTime.fromISO(start_date).toFormat('LLL dd, yyyy hh:MM:ss')}</span>
+                <span>{DateTime.fromISO(start_date).toLocal().toFormat('LLL dd, yyyy hh:mm:ss')}</span>
               </div>
               <div className='row col-12'>
                 <b>Schedule Interval:&nbsp;</b>
@@ -150,11 +150,11 @@ const AlertConfigDetailModal = connect(
               </div>
               <div className='row col-12'>
                 <b>Last Checked:&nbsp;</b>
-                <span>{last_checked ? DateTime.fromISO(last_checked).toFormat('LLL dd, yyyy hh:MM:ss') : <i>Not checked</i>}</span>
+                <span>{last_checked ? DateTime.fromISO(last_checked).toFormat('LLL dd, yyyy hh:mm:ss') : <i>Not checked</i>}</span>
               </div>
               <div className='row col-12'>
                 <b>Last Reminded:&nbsp;</b>
-                <span>{last_reminded ? DateTime.fromISO(last_reminded).toFormat('LLL dd, yyyy hh:MM:ss') : <i>No reminders sent</i>}</span>
+                <span>{last_reminded ? DateTime.fromISO(last_reminded).toFormat('LLL dd, yyyy hh:mm:ss') : <i>No reminders sent</i>}</span>
               </div>
             </CardBody>
           </Card>
@@ -168,7 +168,7 @@ const AlertConfigDetailModal = connect(
               </div>
               <div className='row col-12'>
                 <b>Created On:&nbsp;</b>
-                <span>{DateTime.fromISO(create_date).toFormat('LLL dd, yyyy hh:MM:ss')}</span>
+                <span>{DateTime.fromISO(create_date).toFormat('LLL dd, yyyy hh:mm:ss')}</span>
               </div>
               <div className='row col-12'>
                 <b>Last Updated By:&nbsp;</b>
@@ -176,7 +176,7 @@ const AlertConfigDetailModal = connect(
               </div>
               <div className='row col-12'>
                 <b>Last Updated On:&nbsp;</b>
-                <span>{update_date ? DateTime.fromISO(update_date).toFormat('LLL dd, yyyy hh:MM:ss') : <i>Not Updated</i>}</span>
+                <span>{update_date ? DateTime.fromISO(update_date).toFormat('LLL dd, yyyy hh:mm:ss') : <i>Not Updated</i>}</span>
               </div>
             </CardBody>
           </Card>
