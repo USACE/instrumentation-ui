@@ -121,17 +121,17 @@ export default {
     if (warning_interval && Duration.fromISO(warning_interval).toMillis() >= Duration.fromISO(schedule_interval).toMillis()) {
       tUpdateError(toastId, 'Failed to create alert configuration. Warning Interval timeframe exceeded Schedule Interval.');
     } else {
-      // apiPost(url, formData, (err, _body) => {
-      //   dispatch({ type: 'PROJECT_ALERT_CONFIGS_CREATE_FINISHED' });
-      //   if (err) {
-      //     console.log('error: ', err);
-      //     tUpdateError(toastId, 'Failed to create alert configuration. Try again later.');
-      //   } else {
-      //     tUpdateSuccess(toastId, 'Successfully created new alert configuration!');
-      //     store.doFetchProjectAlertConfigs();
-      //   }
-      //   callback();
-      // });
+      apiPost(url, formData, (err, _body) => {
+        dispatch({ type: 'PROJECT_ALERT_CONFIGS_CREATE_FINISHED' });
+        if (err) {
+          console.log('error: ', err);
+          tUpdateError(toastId, 'Failed to create alert configuration. Try again later.');
+        } else {
+          tUpdateSuccess(toastId, 'Successfully created new alert configuration!');
+          store.doFetchProjectAlertConfigs();
+        }
+        callback();
+      });
     }
   },
 
