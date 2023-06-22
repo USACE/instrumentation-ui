@@ -9,6 +9,7 @@ import Icon from '../../app-components/icon';
 import ProjectDashboard from './dashboard';
 import AllInstruments from './all-instruments';
 import SecondaryNavBar from '../../app-components/navigation/secondaryNavBar';
+import QaQc from './qa-qc';
 import Uploader from './uploader';
 import { isUserAllowed } from '../../app-components/role-filter';
 
@@ -47,19 +48,24 @@ const Project = connect(
         paddingSmall: true,
         uri: '#all-instruments',
       }],
-      // Active if User === Member
+      // Active if User === Project Member
       ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.*`]) ? [{
         title: <Title text='Uploader' icon='cloud-upload-outline' />,
         content: <Uploader />,
         paddingSmall: true,
         uri: '#uploader',
       }, {
-        title: <Title text='Batch Plotting' icon='file-chart' />,
+        title: <Title text='Batch Plotting' icon='chart-areaspline' />,
         content: <BatchPlotting />,
         paddingSmall: true,
         uri: '#batch-plotting',
+      }, {
+        title: <Title text='QA/QC' icon='file-chart-check-outline' />,
+        content: <QaQc />,
+        paddingSmall: true,
+        uri: '#qa-qc',
       }] : [],
-      // Active if User === Admin
+      // Active if User === Project Admin
       ...isUserAllowed(profileRolesObject, profileIsAdmin, [`${project.slug.toUpperCase()}.ADMIN`]) ? [{
         title: <Title text='Data Loggers' icon='waveform' />,
         content: <DataLoggers />,

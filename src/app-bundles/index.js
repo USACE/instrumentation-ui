@@ -47,9 +47,11 @@ import printBundle from './print-bundle';
 import profileAlertsBundle from './profile-alerts-bundle';
 import profileAlertSubscriptionsBundle from './profile-alert-subscriptions-bundle';
 import profileBundle from './profile-bundle';
+import projectAlertConfigs from './project-alert-configs';
 import projectMembersBundle from './project-members-bundle';
 import projectionBundle from './projection-bundle';
 import projectsBundle from './projects-bundle';
+import qualityControl from './quality-control';
 import rainfallBundle from './rainfall-bundle';
 import routesBundle from './routes-bundle';
 import timeseriesBundle from './time-series-bundle';
@@ -141,9 +143,11 @@ export default composeBundles(
   profileAlertsBundle,
   profileAlertSubscriptionsBundle,
   profileBundle,
+  projectAlertConfigs,
   projectMembersBundle,
   projectionBundle,
   projectsBundle,
+  qualityControl,
   rainfallBundle,
   routesBundle,
   timeseriesBundle,
