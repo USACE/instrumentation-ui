@@ -115,16 +115,13 @@ const TimeseriesListEntry = ({
 };
 
 const CollectionGroupTimeseriesList = ({
-  items,
   handleItemDelete,
   handleItemSaveValue,
   localTimeseriesOrder,
   handleLocalTimeseriesOrderChange,
 }) => (
   <div className='w-100 list-group'>
-    {items.sort((a, b) =>
-      (a.list_order === null) - (b.list_order === null) || a - b
-    )
+    {localTimeseriesOrder
       .map((item, idx) => (
         <TimeseriesListEntry
           key={idx}

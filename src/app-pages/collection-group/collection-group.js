@@ -14,6 +14,7 @@ import TimestampModeSwitcher from './collectiongroup-timestamp-mode-switcher';
 
 export default connect(
   'doCollectionGroupRemoveTimeseries',
+  'doCollectionGroupDetailsTimeseriesUpdate',
   'doModalOpen',
   'doNotificationFire',
   'doTimeseriesMeasurementsSave',
@@ -22,6 +23,7 @@ export default connect(
   'selectProjectsByRoute',
   ({
     doCollectionGroupRemoveTimeseries,
+    doCollectionGroupDetailsTimeseriesUpdate,
     doModalOpen,
     doNotificationFire,
     doTimeseriesMeasurementsSave,
@@ -32,9 +34,7 @@ export default connect(
     const [isShown, setIsShown] = useState(true);
     const [timestampMode, setTimestampMode] = useState('now'); // One of ['now', 'choose']
     const [date, setDate] = useState(new Date());
-    const [localTimeseriesOrder, setLocalTimeseriesOrder] = useState(detail?.timeseries.sort((a, b) =>
-      (a.list_order === null) - (b.list_order === null) || a - b
-    ));
+    const [localTimeseriesOrder, setLocalTimeseriesOrder] = useState([]);
 
     useEffect(
       (appTime) => {
@@ -48,9 +48,11 @@ export default connect(
 
     useEffect(
       () => {
-        console.log(localTimeseriesOrder);
+        setLocalTimeseriesOrder(detail?.timeseries.sort((a, b) =>
+          (a.list_order === null) - (b.list_order === null) || a.list_order - b.list_order
+        ));
       },
-      [localTimeseriesOrder]
+      [detail]
     );
 
     const handleTimeseriesSaveValue = (
@@ -88,6 +90,15 @@ export default connect(
       }
     };
 
+    const updateLocalTimeseriesOrder = (newLocalTimeseriesOrder) => {
+      setLocalTimeseriesOrder(
+        newLocalTimeseriesOrder.map((item, index) => {
+          item.list_order = index;
+          return item;
+        })
+      );
+    };
+
     const handleLocalTimeseriesOrderChange = (
       item,
       type
@@ -95,7 +106,7 @@ export default connect(
       switch (type) {
         case '++': {
           const newLocalTimeseriesOrder = [item, ...localTimeseriesOrder.filter(x => x != item)];
-          setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
 
           break;
         }
@@ -104,13 +115,13 @@ export default connect(
 
           if (idx === 0) {
             const newLocalTimeseriesOrder = [...localTimeseriesOrder.filter(x => x != item), item];
-            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
           } else {
             const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
-            const store = localTimeseriesOrder[idx + 1];
-            newLocalTimeseriesOrder[idx + 1] = item;
+            const store = localTimeseriesOrder[idx - 1];
+            newLocalTimeseriesOrder[idx - 1] = item;
             newLocalTimeseriesOrder[idx] = store;
-            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
           }
 
           break;
@@ -120,24 +131,23 @@ export default connect(
 
           if (idx === (localTimeseriesOrder.length - 1)) {
             const newLocalTimeseriesOrder = [item, ...localTimeseriesOrder.filter(x => x != item)];
-            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
           } else {
             const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
-            const store = localTimeseriesOrder[idx - 1];
-            newLocalTimeseriesOrder[idx - 1] = item;
+            const store = localTimeseriesOrder[idx + 1];
+            newLocalTimeseriesOrder[idx + 1] = item;
             newLocalTimeseriesOrder[idx] = store;
-            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
           }
 
           break;
         }
         case '--':
           const newLocalTimeseriesOrder = [...localTimeseriesOrder.filter(x => x != item), item];
-          setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
 
           break;
         default:
-
       }
     };
 
@@ -197,9 +207,12 @@ export default connect(
                         <Button
                           variant='success'
                           size='small'
-                          handleClick={(e) => {
-                            doModalOpen(collectionGroupTimeseriesPicker);
-                            e.stopPropagation();
+                          handleClick={() => {
+                            updateLocalTimeseriesOrder(localTimeseriesOrder);
+                            doCollectionGroupDetailsTimeseriesUpdate({
+                              id: detail.id,
+                              timeseries: localTimeseriesOrder
+                            });
                           }}
                           text='Save Order'
                         />
@@ -213,7 +226,7 @@ export default connect(
                     />
                   </Card.Header>
 
-                  {isShown ? (
+                  {isShown && localTimeseriesOrder ? (
                     <Card.Body>
                       <div style={{ maxHeight: '600px', overflow: 'auto' }}>
                         <TimeseriesList
