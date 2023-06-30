@@ -32,6 +32,9 @@ export default connect(
     const [isShown, setIsShown] = useState(true);
     const [timestampMode, setTimestampMode] = useState('now'); // One of ['now', 'choose']
     const [date, setDate] = useState(new Date());
+    const [localTimeseriesOrder, setLocalTimeseriesOrder] = useState(detail?.timeseries.sort((a, b) =>
+      (a.list_order === null) - (b.list_order === null) || a - b
+    ));
 
     useEffect(
       (appTime) => {
@@ -41,6 +44,13 @@ export default connect(
         }
       },
       [timestampMode, appTime]
+    );
+
+    useEffect(
+      () => {
+        console.log(localTimeseriesOrder);
+      },
+      [localTimeseriesOrder]
     );
 
     const handleTimeseriesSaveValue = (
@@ -75,6 +85,59 @@ export default connect(
           false,
           true
         );
+      }
+    };
+
+    const handleLocalTimeseriesOrderChange = (
+      item,
+      type
+    ) => {
+      switch (type) {
+        case '++': {
+          const newLocalTimeseriesOrder = [item, ...localTimeseriesOrder.filter(x => x != item)];
+          setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+
+          break;
+        }
+        case '+': {
+          const idx = localTimeseriesOrder.indexOf(item);
+
+          if (idx === 0) {
+            const newLocalTimeseriesOrder = [...localTimeseriesOrder.filter(x => x != item), item];
+            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          } else {
+            const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
+            const store = localTimeseriesOrder[idx + 1];
+            newLocalTimeseriesOrder[idx + 1] = item;
+            newLocalTimeseriesOrder[idx] = store;
+            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          }
+
+          break;
+        }
+        case '-': {
+          const idx = localTimeseriesOrder.indexOf(item);
+
+          if (idx === (localTimeseriesOrder.length - 1)) {
+            const newLocalTimeseriesOrder = [item, ...localTimeseriesOrder.filter(x => x != item)];
+            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          } else {
+            const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
+            const store = localTimeseriesOrder[idx - 1];
+            newLocalTimeseriesOrder[idx - 1] = item;
+            newLocalTimeseriesOrder[idx] = store;
+            setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          }
+
+          break;
+        }
+        case '--':
+          const newLocalTimeseriesOrder = [...localTimeseriesOrder.filter(x => x != item), item];
+          setLocalTimeseriesOrder(newLocalTimeseriesOrder);
+
+          break;
+        default:
+
       }
     };
 
@@ -131,6 +194,15 @@ export default connect(
                           text='Add'
                           icon={<Icon icon='plus' />}
                         />
+                        <Button
+                          variant='success'
+                          size='small'
+                          handleClick={(e) => {
+                            doModalOpen(collectionGroupTimeseriesPicker);
+                            e.stopPropagation();
+                          }}
+                          text='Save Order'
+                        />
                       </RoleFilter>
                     </div>
                     <TimestampModeSwitcher
@@ -155,6 +227,8 @@ export default connect(
                             });
                           }}
                           handleItemSaveValue={handleTimeseriesSaveValue}
+                          handleLocalTimeseriesOrderChange={handleLocalTimeseriesOrderChange}
+                          localTimeseriesOrder={localTimeseriesOrder}
                         />
                       </div>
                     </Card.Body>
