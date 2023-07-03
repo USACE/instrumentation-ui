@@ -40,17 +40,7 @@ export default createRestBundle({
       apiPut(url, formData, (err, body) => {
         dispatch({
           type: 'COLLECTIONGROUPDETAILS_UPDATE_TIMESERIES_FINISH',
-          payload: {
-            ...body,
-            ...{
-              _isLoading: false,
-              _isSaving: false,
-              _fetchCount: ++fetchCount,
-              _lastFetch: new Date(),
-              _lastResource: url,
-              _abortReason: null,
-            },
-          },
+          payload: {},
         });
       });
     },
