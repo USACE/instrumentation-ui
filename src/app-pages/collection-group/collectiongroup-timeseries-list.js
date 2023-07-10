@@ -50,6 +50,7 @@ const TimeseriesListEntry = ({
         <div className='d-flex flex-row justify-content-between align-items-center'>
           <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
             <Button
+              size='small'
               variant='link'
               className='text-secondary h-50'
               handleClick={() => handleItemDelete(item)}
@@ -57,6 +58,7 @@ const TimeseriesListEntry = ({
               title='Remove from group'
             />
             <Button
+              size='small'
               variant='link'
               className='text-secondary h-50'
               handleClick={() => handleLocalTimeseriesOrderChange(item, '++')}
@@ -64,6 +66,7 @@ const TimeseriesListEntry = ({
               title='Increase order to first'
             />
             <Button
+              size='small'
               variant='link'
               className='text-secondary h-50'
               handleClick={() => handleLocalTimeseriesOrderChange(item, '+')}
@@ -71,6 +74,7 @@ const TimeseriesListEntry = ({
               title='Increase order by 1'
             />
             <Button
+              size='small'
               variant='link'
               className='text-secondary h-50'
               handleClick={() => handleLocalTimeseriesOrderChange(item, '-')}
@@ -78,6 +82,7 @@ const TimeseriesListEntry = ({
               title='Decrease order by 1'
             />
             <Button
+              size='small'
               variant='link'
               className='text-secondary h-50'
               handleClick={() => handleLocalTimeseriesOrderChange(item, '--')}
