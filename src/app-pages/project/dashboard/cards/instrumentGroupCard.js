@@ -13,7 +13,7 @@ import { InstrumentGroupForm } from '../../../instrument-group';
 import '../../project.scss';
 
 const NoGroupsDisplay = ({ doModalOpen, project }) => (
-  <div className='my-3'>
+  <div className='m-3'>
     No Instrument Groups in this project.
     <br />
     <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>

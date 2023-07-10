@@ -13,7 +13,7 @@ import { CollectionGroupForm } from '../../../collection-group';
 import '../../project.scss';
 
 const NoGroupsDisplay = ({ doModalOpen, project }) => (
-  <div className='my-3'>
+  <div className='m-3'>
     No Collection Groups in this project.
     <br />
     <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>

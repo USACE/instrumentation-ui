@@ -92,6 +92,7 @@ const NewEvaluationModal = connect(
               <Select
                 isClearable
                 isSearchable
+                // TODO: integrate isMulti w/ api
                 options={buildAlertOptions(projectAlertConfigs, evalAlertTypeId)}
                 onChange={(value) => dispatch({ type: 'update', key: 'alert_config_id', data: value?.value })}
               />

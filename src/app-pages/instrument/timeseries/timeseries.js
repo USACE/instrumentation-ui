@@ -9,6 +9,8 @@ import Icon from '../../../app-components/icon';
 import RoleFilter from '../../../app-components/role-filter';
 import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
+import ToggleMaskedModal from './modals/ToggleMaskedModal';
+import ToggleValidatedModal from './modals/ToggleValidatedModal';
 
 import '../../../css/grids.scss';
 import './timeseries.css';
@@ -104,6 +106,7 @@ export default connect(
     const grid = useRef(null);
     const [activeTimeseries, setActiveTimeseries] = useState(null);
     const [isInclinometer, setIsInclinometer] = useState(false);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     // filter out any timeseries used for constants
     const actualSeries = timeseries.filter((ts) => (
@@ -208,22 +211,42 @@ export default connect(
                   title='Upload'
                   icon={<Icon icon='upload' className='mr-1' />}
                 />
-                <Button
-                  variant='danger'
-                  size='small'
-                  isOutline
-                  isDisabled={!activeTimeseries}
-                  className='ml-2'
-                  text='Delete Selected Rows'
-                  title='Delete Rows'
-                  handleClick={deleteSelectedRows}
-                />
+                {selectedRows.length ? (
+                  <div className='ml-2 border-left d-inline-block'>
+                    <Button
+                      isOutline
+                      className='ml-2'
+                      variant='info'
+                      size='small'
+                      text='Toggle Masked'
+                      handleClick={() => doModalOpen(ToggleMaskedModal, { selectedRows })}
+                    />
+                    <Button
+                      isOutline
+                      className='ml-2'
+                      variant='info'
+                      size='small'
+                      text='Toggle Validated'
+                      handleClick={() => doModalOpen(ToggleValidatedModal, { selectedRows })}
+                    />
+                    <Button
+                      variant='danger'
+                      size='small'
+                      isOutline
+                      isDisabled={!activeTimeseries}
+                      className='ml-2'
+                      text='Delete Selected Rows'
+                      title='Delete Rows'
+                      handleClick={deleteSelectedRows}
+                    />
+                  </div>
+                ) : null}
               </RoleFilter>
             </div>
             <div
               className='ag-theme-balham'
               style={{
-                minHeight: '200px',
+                minHeight: '400px',
                 height: '85%',
                 width: '100%',
               }}
@@ -233,14 +256,15 @@ export default connect(
                 columnDefs={columnDefs}
                 rowData={rowData}
                 modules={[ClientSideRowModelModule]}
+                components={{
+                  'dateEditor': DateEditor,
+                }}
                 editType='fullRow'
                 rowSelection='multiple'
                 rowMultiSelectWithClick
                 suppressRowClickSelection
                 stopEditingWhenCellsLoseFocus
-                frameworkComponents={{
-                  'dateEditor': DateEditor,
-                }}
+                onSelectionChanged={({ api }) => setSelectedRows(api.getSelectedRows())}
               />
             </div>
           </div>

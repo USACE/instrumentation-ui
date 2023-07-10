@@ -72,7 +72,7 @@ export default {
     
     return (state = initialState, { type, payload }) => {
       switch (type) {
-        case 'PORJECT_ALERT_CONFIGS_UPDATED':
+        case 'PROJECT_ALERT_CONFIGS_UPDATED':
           return {
             ...state,
             alertConfigs: payload,
@@ -97,7 +97,7 @@ export default {
         console.log('error: ', err);
       } else {
         dispatch({
-          type: 'PORJECT_ALERT_CONFIGS_UPDATED',
+          type: 'PROJECT_ALERT_CONFIGS_UPDATED',
           payload: body,
         });
       }
