@@ -34,7 +34,7 @@ const exploreMapBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         if (!ignoreActions.includes(type))
           console.log(type, payload);
       };

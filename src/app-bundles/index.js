@@ -78,14 +78,14 @@ export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
     redirectOnLogout: '/',
-    mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenApplicationAdmin : null,
+    mock: import.meta.env.DEV ? true : false,
+    token: import.meta.env.DEV ? mockTokenApplicationAdmin : null,
   }),
   createJwtApiBundle({
     root:
-      process.env.NODE_ENV === 'development'
+      import.meta.env.DEV
         ? 'http://localhost:8080'
-        : process.env.REACT_APP_API_URL,
+        : import.meta.env.VITE_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
       // GET requests do not include token unless path starts with /my_ or includes any path in the jwtPaths array.

@@ -71,7 +71,7 @@ const createAuthBundle = (opts) => {
             }
           });
         } catch (err) {
-          if (process.env.NODE_ENV === 'development') console.error(err);
+          if (import.meta.env.DEV) console.error(err);
           dispatch({
             type: 'AUTH_ERROR',
             payload: { msg: 'Error Logging In', err: err },
