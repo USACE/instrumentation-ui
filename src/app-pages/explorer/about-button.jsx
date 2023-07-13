@@ -10,6 +10,7 @@ const AboutButton = () => {
   return (
     <>
       <Button
+        size='small'
         variant='info'
         className={show ? 'active' : ''}
         handleClick={() => setShow(!show)}

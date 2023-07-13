@@ -29,6 +29,7 @@ export default connect(
       <div style={{ position: 'absolute', left: 10, top: 10, right: 10 }}>
         <div className='btn-group'>
           <Button
+            size='small'
             variant='info'
             className={`${!selectMode ? 'active' : ''}`}
             title='Pan / Zoom'
@@ -36,6 +37,7 @@ export default connect(
             icon={<ZoomOutMap fontSize='small' />}
           />
           <Button
+            size='small'
             variant='info'
             className={`${selectMode ? 'active' : ''} mr-2`}
             title='Select by box'
