@@ -37,7 +37,7 @@ const BatchPlotCard = connect(
           <p>
             Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations here.
           </p>
-        )}-l
+        )}
       </Card.Body>
     </Card>
   )
