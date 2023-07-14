@@ -27,6 +27,7 @@ export default connect(
           timeseriesId: timeseriesSelected.id,
         });
       } else {
+        // eslint-disable-next-line no-console
         console.log('No Timeseries Selected; Skipping POST');
       }
     };

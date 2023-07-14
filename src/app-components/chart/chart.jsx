@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useRef, useEffect, useState } from 'react';
 import isEqual from 'lodash.isequal';
 
@@ -59,7 +58,7 @@ const Chart = ({
   layout.annotations = [];
   if (data && data.length) {
     data.forEach((series) => {
-      if (series && series.hasOwnProperty('annotations'))
+      if (series && Object.prototype.hasOwnProperty.call(series, 'annotations'))
         layout.annotations = [...layout.annotations, ...series.annotations];
     });
   }
@@ -77,6 +76,7 @@ const Chart = ({
         style={{ width: '100%', height: '100%' }}
         onInitialized={updateState}
         onUpdate={updateState}
+        // eslint-disable-next-line no-console
         onClick={(e) => console.log(e)}
       />
     </div>

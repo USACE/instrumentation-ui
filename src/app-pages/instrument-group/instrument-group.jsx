@@ -48,7 +48,7 @@ export default connect(
     const instrumentIds = Object.keys(instruments);
 
     const [instrumentArray, setInstrumentArray] = useState(instrumentIds.map(id => instruments[id]));
-    const [filter, setFilter] = useState('');
+    const [filter] = useState('');
     const [filteredInstruments, setFilteredInstruments] = useState(instrumentArray);
 
     const statusOptions = [...new Set(instrumentArray.map(instrument => titlize(instrument.status)))].map(status => ({ value: status, label: status }));

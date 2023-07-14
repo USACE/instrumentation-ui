@@ -59,6 +59,7 @@ export default connect(
               size='small'
               handleClick={() => {
                 doModalOpen(AlertFormModal, { item: {} });
+                // eslint-disable-next-line no-console
                 console.log('Clicked the new alert button');
               }}
               text='+ New Alert'

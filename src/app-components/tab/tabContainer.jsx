@@ -20,7 +20,6 @@ const TabContainer = ({
   tabListClass = '',
   contentClass = '',
   onTabChange = () => {},
-  theme = 'default',
   defaultTab = 0,
   changeTabDelay = 0,
   ...customProps

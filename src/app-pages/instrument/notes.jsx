@@ -62,7 +62,7 @@ const NoteEditor = connect(
   }
 );
 
-const NoteItem = ({ note, editable, save, del }) => {
+const NoteItem = ({ note, editable, save }) => {
   const [isEditing, setEditing] = useState(false);
   const date = new Date(note.time);
 

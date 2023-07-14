@@ -71,6 +71,7 @@ const createAuthBundle = (opts) => {
             }
           });
         } catch (err) {
+          // eslint-disable-next-line no-console
           if (import.meta.env.DEV) console.error(err);
           dispatch({
             type: 'AUTH_ERROR',
@@ -130,7 +131,7 @@ const createAuthBundle = (opts) => {
     // select info about token expiration
 
     selectAuthTokenExp: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('exp')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'exp')) return null;
       return payload.exp;
     }),
 
@@ -142,17 +143,17 @@ const createAuthBundle = (opts) => {
     // select parts of the payload
 
     selectAuthUsername: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('name')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'name')) return null;
       return payload.name;
     }),
 
     selectAuthEdipi: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('sub')) return null;
+      if (!Object.prototype.hasOwnProperty.call(payload, 'sub')) return null;
       return payload.sub;
     }),
 
     selectAuthRoles: createSelector('selectAuthTokenPayload', (payload) => {
-      if (!payload.hasOwnProperty('roles')) return [];
+      if (!Object.prototype.hasOwnProperty.call(payload, 'roles')) return [];
       return payload.roles;
     }),
 
@@ -166,7 +167,7 @@ const createAuthBundle = (opts) => {
       roles
         .map((role) => role.split('.'))
         .forEach((role) => {
-          if (!groupRoles.hasOwnProperty(role[0])) groupRoles[role[0]] = [];
+          if (!Object.prototype.hasOwnProperty.call(groupRoles, role[0])) groupRoles[role[0]] = [];
           groupRoles[role[0]].push(role[1]);
         });
       return groupRoles;

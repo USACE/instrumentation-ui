@@ -10,8 +10,8 @@ import RoleFilter from '../../../../app-components/role-filter';
 import NewAlertConfigModal from './modals/newAlertConfigModal';
 
 const sortStatus = (rowA, rowB) => {
-  const { alert_status: alert_statusA } = rowA?.original;
-  const { alert_status: alert_statusB } = rowB?.original;
+  const { alert_status: alert_statusA } = rowA?.original || {};
+  const { alert_status: alert_statusB } = rowB?.original || {};
 
   const colorEnum = {
     red: 1,

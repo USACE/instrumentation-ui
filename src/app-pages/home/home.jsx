@@ -7,8 +7,7 @@ import ProjectList from './project-list';
 
 export default connect(
   'selectHomeData',
-  'doNotificationFire',
-  ({ homeData, doNotificationFire }) => (
+  ({ homeData }) => (
     <div className='container-fluid px-0'>
       <section>
         <Hero />

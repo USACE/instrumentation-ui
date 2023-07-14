@@ -7,7 +7,7 @@ import Card from '../../../../app-components/card';
 import '../../project.scss';
 
 const createReportRow = (project, plot) => {
-  const { create_date, update_date, name, id } = plot;
+  const { name, id } = plot;
 
   return (
     <div className='report-row' key={id}>
@@ -37,7 +37,7 @@ const BatchPlotCard = connect(
           <p>
             Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations here.
           </p>
-        )}
+        )}-l
       </Card.Body>
     </Card>
   )

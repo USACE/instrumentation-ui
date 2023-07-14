@@ -45,7 +45,7 @@ const DataLoggers = connect(
     }, [doFetchDataLoggersByProjectId]);
 
     useEffect(() => {
-      if (!!selectedDataLogger) {
+      if (selectedDataLogger) {
         doFetchDataLoggerEquivalency({ dataLoggerId: selectedDataLogger?.value });
       }
     }, [selectedDataLogger, doFetchDataLoggerEquivalency]);

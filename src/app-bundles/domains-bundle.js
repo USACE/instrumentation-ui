@@ -19,7 +19,7 @@ export default createRestBundle({
       if (!items) return null;
       const byGroup = {};
       items.forEach((item) => {
-        if (!byGroup.hasOwnProperty(item.group)) byGroup[item.group] = [];
+        if (!Object.prototype.hasOwnProperty.call(byGroup, item.group)) byGroup[item.group] = [];
         byGroup[item.group].push(item);
       });
       return byGroup;

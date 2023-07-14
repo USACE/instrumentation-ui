@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Edit } from '@mui/icons-material';
 
-import Button from '../../../app-components/button';
-import InstrumentGroupForm from '../../group/instrument-group-form';
-import Pagination, { handlePageChange } from '../../../app-components/pagination';
-import RoleFilter from '../../../app-components/role-filter';
+import Button from '../../app-components/button';
+import Pagination, { handlePageChange } from '../../app-components/pagination';
+import RoleFilter from '../../app-components/role-filter';
+import { InstrumentGroupForm } from '../../app-pages/instrument-group';
 
 const Table = connect(
   'doModalOpen',

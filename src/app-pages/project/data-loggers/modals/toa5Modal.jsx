@@ -99,7 +99,7 @@ const Toa5Modal = connect(
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState({});
     const [ignoreErrors, setIgnoreErrors] = useState(false);
-    const { data = [], errors, meta } = fileData;
+    const { data = [] } = fileData;
 
     const handleClick = (_e) => {
       inputEl.current.click();

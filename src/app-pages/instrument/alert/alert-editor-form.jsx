@@ -48,6 +48,7 @@ export default connect(
             size='small'
             className='mr-1'
             text='Cancel'
+            // eslint-disable-next-line no-console
             handleClick={() => console.log('Clicked the cancel button')}
           />
           <Button
@@ -58,6 +59,7 @@ export default connect(
             handleClick={() => {
               const updatedAlert = { ...alert, formula, body };
               doAlertConfigsSave(updatedAlert);
+              // eslint-disable-next-line no-console
               console.log('Clicked the save button', updatedAlert);
             }}
           />

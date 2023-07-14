@@ -10,8 +10,8 @@ import Table from '../../../../app-components/table';
 import '../../project.scss';
 
 const errorCountSort = (rowA, rowB) => {
-  const { errors: errorsA } = rowA?.original;
-  const { errors: errorsB } = rowB?.original;
+  const { errors: errorsA } = rowA?.original || {};
+  const { errors: errorsB } = rowB?.original || {};
 
   return errorsA?.length - errorsB?.length;
 };

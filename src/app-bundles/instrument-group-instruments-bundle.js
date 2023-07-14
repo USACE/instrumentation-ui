@@ -22,6 +22,7 @@ export default createRestBundle({
     selectInstrumentGroupInstrumentsRaw: (state) => state.instrumentGroupInstruments,
     selectInstrumentGroupInstrumentsInstruments: (state) => {
       const raw = state.instrumentGroupInstruments;
+      // eslint-disable-next-line no-unused-vars
       const { measurements, ...rest } = raw;
 
       const items = {};

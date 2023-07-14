@@ -35,7 +35,7 @@ const MapsBundle = {
     };
   },
 
-  doMapsInitialize: (key, el, options) => ({ dispatch, store }) => {
+  doMapsInitialize: (key, el, options) => ({ dispatch }) => {
     const map = new olMap(
       Object.assign(
         {

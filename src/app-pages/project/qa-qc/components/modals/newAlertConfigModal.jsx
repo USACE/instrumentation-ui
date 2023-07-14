@@ -8,8 +8,7 @@ import DomainSelect from '../../../../../app-components/domain-select';
 import IntervalSelection from '../intervalSelection';
 import HelperTooltip from '../../../../../app-components/helper-tooltip';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
-import { reduceState, initState } from '../../../../../common/helpers/form-helpers';
-import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
+import { isSaveDisabled, reduceState, initState } from '../../../../../common/helpers/form-helpers';
 
 const initStartDate = () => {
   const date = new Date(Date.now());
@@ -71,6 +70,7 @@ const cleanEmails = (email_subscriptions = [], hasProfile) => {
 };
 
 const cleanFormat = initConfig => {
+  // eslint-disable-next-line no-unused-vars
   const { last_checked, last_reminded, updater_username, updater, update_date, ...rest } = initConfig;
   const { start_date, schedule_interval, warning_interval, remind_interval, instruments, alert_email_subscriptions } = rest;
 

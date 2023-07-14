@@ -9,8 +9,8 @@ import EditMappingRowModal from '../modals/editMappingRowModal';
 import Table from '../../../../app-components/table';
 
 const instrumentSort = (rowA, rowB, instruments) => {
-  const { instrument_id: instrumentIdA } = rowA?.original;
-  const { instrument_id: instrumentIdB } = rowB?.original;
+  const { instrument_id: instrumentIdA } = rowA?.original || {};
+  const { instrument_id: instrumentIdB } = rowB?.original || {};
 
   const instrumentAName = instruments.find(el => el.id === instrumentIdA)?.name;
   const instrumentBName = instruments.find(el => el.id === instrumentIdB)?.name;
@@ -22,8 +22,8 @@ const instrumentSort = (rowA, rowB, instruments) => {
 };
 
 const timeseriesSort = (rowA, rowB, timeseries) => {
-  const { timeseries_id: timeseriesIdA } = rowA?.original;
-  const { timeseries_id: timeseriesIdB } = rowB?.original;
+  const { timeseries_id: timeseriesIdA } = rowA?.original || {};
+  const { timeseries_id: timeseriesIdB } = rowB?.original || {};
 
   const timeseriesAName = timeseries[timeseriesIdA]?.name;
   const timeseriesBName = timeseries[timeseriesIdB]?.name;

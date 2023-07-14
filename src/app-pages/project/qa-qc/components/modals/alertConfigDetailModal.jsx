@@ -121,7 +121,7 @@ const AlertConfigDetailModal = connect(
                 <b>Email Subscriptions:&nbsp;</b>
                 <span>{alert_email_subscriptions.length ? (
                   <ul>
-                    {alert_email_subscriptions.map((email_sub, i) => {
+                    {alert_email_subscriptions.map(email_sub => {
                       const { email, username, id } = email_sub;
 
                       return (

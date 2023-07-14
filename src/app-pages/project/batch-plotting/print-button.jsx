@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-console */
+
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 // import {

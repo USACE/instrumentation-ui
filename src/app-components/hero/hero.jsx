@@ -45,6 +45,7 @@ const Hero = () => (
         title='Link to KMP-GGM IPM'
         href='https://usace.dps.mil/sites/KMP-GGM/SitePages/Instrumentation-and-Performance-Monitoring.aspx'
         target='_blank'
+        rel='noreferrer'
       >
         IPM SubCOP
       </a>

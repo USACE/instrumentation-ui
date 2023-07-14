@@ -43,7 +43,7 @@ const AlertConfigSettings = connect(
         doAlertConfigsSave(configSettings, null, true, false);
       }
 
-      if (!!subscription) {
+      if (subscription) {
         const putBody = {
           ...subscription,
           mute_ui: userPreferences.muteUi,

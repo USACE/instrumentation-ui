@@ -39,7 +39,7 @@ const DataLoggerDetails = ({ dataLogger }) => {
         {errors.length ? (
           <div className='row mt-2'>
             {errors.map(el => (
-              <i className='text-danger col-12'>{el}</i>
+              <i key={el} className='text-danger col-12'>{el}</i>
             ))}
           </div>
         ) : null}

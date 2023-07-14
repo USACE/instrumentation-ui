@@ -36,7 +36,7 @@ const Constants = connect(
     const { constants } = instrument;
 
     const [activeConstant, setActiveConstant] = useState(null);
-    const [gridApi, setGridApi] = useState(null);
+    const [, setGridApi] = useState(null);
     const [rowData, setRowData] = useState([]);
 
     const previousMeasurements = usePrevious(measurements);
@@ -77,20 +77,20 @@ const Constants = connect(
       }, null, false, true);
     };
 
-    const deleteConstants = () => {
-      const rowIds = gridApi.getSelectedNodes().map(elem => elem.rowIndex).reverse();
-      const workingData = [...rowData];
+    /* TODO: Update to DELETE when endpoint is ready */
+    // const deleteConstants = () => {
+    //   const rowIds = gridApi.getSelectedNodes().map(elem => elem.rowIndex).reverse();
+    //   const workingData = [...rowData];
 
-      rowIds.forEach(id => {
-        workingData.splice(id, 1);
-      });
+    //   rowIds.forEach(id => {
+    //     workingData.splice(id, 1);
+    //   });
 
-      /* TODO: Update to DELETE when endpoint is ready */
-      doTimeseriesMeasurementsSave({
-        timeseries_id: activeConstant,
-        items: workingData,
-      });
-    };
+    //   doTimeseriesMeasurementsSave({
+    //     timeseries_id: activeConstant,
+    //     items: workingData,
+    //   });
+    // };
 
     const columnDefs = [
       ...['time', 'value']

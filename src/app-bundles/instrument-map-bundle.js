@@ -26,7 +26,7 @@ const instrumentMapBundle = {
             _shouldAddData: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('instrumentMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'instrumentMap')) {
             return Object.assign({}, state, {
               _mapLoaded: true,
               _shouldAddData: true,
@@ -35,7 +35,7 @@ const instrumentMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('instrumentMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'instrumentMap')) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
@@ -53,7 +53,7 @@ const instrumentMapBundle = {
     };
   },
 
-  doInstrumentMapInitialize: () => ({ dispatch, store }) => {
+  doInstrumentMapInitialize: () => ({ dispatch }) => {
     dispatch({
       type: 'INSTRUMENTMAP_INITIALIZE_START',
       payload: {

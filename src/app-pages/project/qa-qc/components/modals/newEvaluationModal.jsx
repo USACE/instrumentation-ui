@@ -4,8 +4,7 @@ import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
 
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
-import { reduceState, initState } from '../../../../../common/helpers/form-helpers';
-import { isSaveDisabled } from '../../../../../common/helpers/form-helpers';
+import { isSaveDisabled, reduceState, initState } from '../../../../../common/helpers/form-helpers';
 
 const buildInstrumentOptions = (instruments = []) => (
   instruments.map(instrument => {

@@ -64,6 +64,7 @@ const IncomingRawDataTable = connect(
                     title='Send Field Names to Mapping Table'
                     className='mr-2'
                     handleClick={() => {
+                      // eslint-disable-next-line import/namespace
                       const myExtractor = extractorFns[`${model}_fieldNameExtractor`];
                       const fieldNames = myExtractor(preview);
                       doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id });
@@ -79,6 +80,7 @@ const IncomingRawDataTable = connect(
                         navigator.clipboard.writeText(dataString);
                         toast.success('Copied to Clipboard!', { autoClose: 1200 });
                       } catch (e) {
+                        // eslint-disable-next-line no-console
                         console.error(e);
                       }
                     }}

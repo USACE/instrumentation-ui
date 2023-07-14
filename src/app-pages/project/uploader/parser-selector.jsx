@@ -26,7 +26,7 @@ export default connect(
     }, [doUploadSetSelectedParser, uploadParsers]);
 
     useEffect(() => {
-      if (!!uploadSelectedParser) {
+      if (uploadSelectedParser) {
         let fieldMap = {};
 
         if (!uploadSelectedParser.model && uploadSelectedParser.dynamic) {

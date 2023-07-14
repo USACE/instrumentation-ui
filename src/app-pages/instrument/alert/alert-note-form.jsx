@@ -27,6 +27,7 @@ const AlertNoteForm = ({ item }) => {
         <textarea className='form-control' value={noteValue} onChange={(e) => setNoteValue(e.target.value)} />
       </section>
       <ModalFooter
+        // eslint-disable-next-line no-console
         onSave={() => console.log('save note')}
         showCancelButton
       />

@@ -77,7 +77,8 @@ const MemberForm = connect(
           saveIsDisabled={!(selectedUser && selectedRole)}
           saveText={isEdit ? 'Save' : 'Add'}
           onSave={() => handleSave()}
-          onDelete={isEdit ? () => handleDelete() : undefined}
+          // @TODO - Delete Member?
+          // onDelete={isEdit ? () => handleDelete() : undefined}
         />
       </div>
     );

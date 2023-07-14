@@ -33,15 +33,12 @@ export default connect(
     const [timestampMode, setTimestampMode] = useState('now'); // One of ['now', 'choose']
     const [date, setDate] = useState(new Date());
 
-    useEffect(
-      (appTime) => {
-        if (timestampMode === 'now') {
-          const d = roundToNearestMinutes(new Date());
-          setDate(d);
-        }
-      },
-      [timestampMode, appTime]
-    );
+    useEffect(() => {
+      if (timestampMode === 'now') {
+        const d = roundToNearestMinutes(new Date());
+        setDate(d);
+      }
+    }, [timestampMode, appTime]);
 
     const handleTimeseriesSaveValue = (
       { id, instrument, name, unit },

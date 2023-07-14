@@ -34,7 +34,7 @@ const timeseriesParser = {
       parse: (val) => val,
       validate: (val, state) => {
         const existingInstruments = Object.keys(state.instruments);
-        return !!val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
+        return val ? existingInstruments.indexOf(val.toLowerCase()) === -1 : false;
       },
       helpText: 'Should map to an instrument name that exists in the system.',
     },

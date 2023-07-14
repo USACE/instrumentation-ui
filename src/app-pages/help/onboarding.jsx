@@ -87,7 +87,7 @@ const csvSampleInclinometerMeasurements = [
 const DownloadCSVButton = ({ csvContent, filename }) => {
   // Used as a reference:
   // https://code-maven.com/create-and-download-csv-with-javascript
-  const handleClick = (e) => {
+  const handleClick = () => {
     var csv = '';
     csvContent.forEach((row) => {
       csv += `${row.join(',')}\n`;
@@ -118,7 +118,7 @@ export default connect(
   'selectDomainsItemsByGroup',
   ({ domainsItemsByGroup }) => {
     // NotesXYZ are additional information to be included with each tab
-    const NotesInstruments = ({ props }) => (
+    const NotesInstruments = () => (
       <div>
         <p className='text-info'>Optional Fields:</p>
         <ul>
@@ -139,8 +139,8 @@ export default connect(
         </ul>
       </div>
     );
-    const NotesProjects = ({ props }) => <></>;
-    const NotesTimeseries = ({ props }) => (
+    const NotesProjects = () => <></>;
+    const NotesTimeseries = () => (
       <div>
         <p className='text-info'>Parameter can be one of the following:</p>
         <ul>
@@ -156,8 +156,8 @@ export default connect(
         </ul>
       </div>
     );
-    const NotesTimeseriesMeasurements = ({ props }) => <></>;
-    const NotesInclinometerMeasurements = ({ props }) => <></>;
+    const NotesTimeseriesMeasurements = () => <></>;
+    const NotesInclinometerMeasurements = () => <></>;
 
     const CSV = ({ arr }) => (
       <pre>

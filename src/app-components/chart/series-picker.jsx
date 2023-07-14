@@ -74,11 +74,11 @@ const InstrumentControl = ({ instrument, timeseries, series, onChange }) => {
 
 export default connect(
   'selectExploreMapSelectedInstruments',
-  'selectExploreMapInteractionsVersion',
+  // 'selectExploreMapInteractionsVersion',
   'selectInstrumentTimeseriesByInstrumentId',
   ({
     exploreMapSelectedInstruments: instruments,
-    exploreMapInteractionsVersion: version,
+    // exploreMapInteractionsVersion: version,
     instrumentTimeseriesByInstrumentId: timeseriesByInstrumentId,
     state,
     dispatch,

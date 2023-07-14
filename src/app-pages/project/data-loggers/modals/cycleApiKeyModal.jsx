@@ -33,6 +33,7 @@ const CycleApiKeyModal = connect(
         navigator.clipboard.writeText(dataLoggerAPIKey);
         toast.success('Copied Key to Clipboard!', { autoClose: 1200 });
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
       }
     };

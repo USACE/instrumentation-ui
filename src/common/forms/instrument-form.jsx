@@ -52,7 +52,8 @@ export default connect(
     const [type_id, setTypeId] = useState(item.type_id || '');
     const [station, setStation] = useState(item.station || '');
     const [offset, setOffset] = useState(item.offset || '');
-    const [offsetDescriptor, setOffsetDescriptor] = useState(item?.offsetDescriptor || '');
+    // @TODO - utilize this for setting offset
+    // const [offsetDescriptor, setOffsetDescriptor] = useState(item?.offsetDescriptor || '');
     const [project_id] = useState(item?.project_id || project.id);
     const [status_id, setStatusId] = useState(item?.status_id || '');
     const [status_time, setStatusTime] = useState(new Date());

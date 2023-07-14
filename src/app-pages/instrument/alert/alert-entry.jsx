@@ -71,6 +71,7 @@ const AlertEntry = connect(
                     size='small'
                     isOutline
                     isDisabled={!userAlert}
+                    // eslint-disable-next-line no-console
                     handleClick={() => console.log('delete instrument alert')}
                     title='Delete Alert'
                     icon={<DeleteOutlined sx={{ fontSize: '12px' }} color='error' />}
