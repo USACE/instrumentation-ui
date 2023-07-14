@@ -7,7 +7,7 @@ const ValueContainer = ({ children, getValue }) => {
 
   return (
     <span className='text-info' style={{ minWidth: '70px', paddingLeft: '10px' }}>
-      <span><FilterAlt fontSize='small' /> ({length})</span>
+      <span><FilterAlt sx={{ fontSize: '16px', marginBottom: '2px' }} /> ({length})</span>
       {cloneElement(children[1])}
     </span>
   );
