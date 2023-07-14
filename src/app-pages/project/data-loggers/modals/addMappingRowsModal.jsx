@@ -24,12 +24,19 @@ const AddMappingRowsModal = connect(
       if (!oldFieldNames.includes(fieldName)) return fieldName;
     }).filter(e => e);
 
+    const noChanges = !unusedRows.length && !newRows.length;
+
     const [isDeleteChecked, setIsDeleteChecked] = useState(false);
 
     return (
       <Modal.ModalContent>
         <Modal.ModalHeader title='Add Rows to Field Mapping Table' />
         <Modal.ModalBody>
+          {noChanges ? (
+            <span>
+              All field names are already mapped in the table.
+            </span>
+          ) : null}
           {unusedRows?.length ? (
             <>
             Unused Rows/Field Names:
@@ -84,6 +91,7 @@ const AddMappingRowsModal = connect(
         <Modal.ModalFooter
           showCancelButton
           saveText='Update Table'
+          showSaveButton={!noChanges}
           onSave={() => doCreateDataLoggerEquivalency({ dataLoggerId, newRows, unusedRows, isDeleteChecked })}
         />
       </Modal.ModalContent>
