@@ -44,6 +44,7 @@ const processResponse = response => (
           'status': response.status,
           'json': json,
         }))
+          // eslint-disable-next-line no-console
         .catch(e => console.error(e));
     }
   })
@@ -62,6 +63,7 @@ const commonFetch = (root, path, options, callback) => {
       throw new ApiError(response.json, `Request returned a ${response.status}`);
     })
     .catch(err => {
+      // eslint-disable-next-line no-console
       console.error(err);
       callback(err);
     });

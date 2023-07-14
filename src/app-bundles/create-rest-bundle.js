@@ -471,7 +471,7 @@ const createRestBundle = (opts) => {
           });
 
           // save changes to the server
-          apiPut(url, item, (err, body) => {
+          apiPut(url, item, (err, _body) => {
             if (err) {
               dispatch({
                 type: actions.ERROR,
@@ -525,7 +525,7 @@ const createRestBundle = (opts) => {
           });
 
           // update the state on the server now
-          apiDelete(url, (err, body) => {
+          apiDelete(url, (err, _body) => {
             if (err) {
               dispatch({
                 type: actions.ERROR,
@@ -643,7 +643,7 @@ const createRestBundle = (opts) => {
         (items, sortBy, sortAsc) => {
           if (sortBy) {
             const sorted = items.sort((a, b) => {
-              if (!a.hasOwnProperty(sortBy) || !b.hasOwnProperty(sortBy))
+              if (!Object.prototype.hasOwnProperty.call(a, sortBy) || !Object.prototype.hasOwnProperty.call(b, sortBy))
                 return 0;
               if (a[sortBy] > b[sortBy]) return 1;
               if (a[sortBy] < b[sortBy]) return -1;
@@ -661,8 +661,8 @@ const createRestBundle = (opts) => {
         selectItemsObject,
         'selectRouteParams',
         (items, params) => {
-          if (params.hasOwnProperty(config.routeParam)) {
-            if (items.hasOwnProperty(params[config.routeParam])) {
+          if (Object.prototype.hasOwnProperty.call(params, config.routeParam)) {
+            if (Object.prototype.hasOwnProperty.call(items, params[config.routeParam])) {
               return items[params[config.routeParam]];
             } else {
               return null;

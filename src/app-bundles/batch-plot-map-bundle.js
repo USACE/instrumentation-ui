@@ -26,7 +26,7 @@ const batchPlotMapBundle = {
             _shouldAddData: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('batchPlotMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: true,
               _shouldAddData: true,
@@ -35,7 +35,7 @@ const batchPlotMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('batchPlotMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'batchPlotMap')) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
@@ -53,7 +53,7 @@ const batchPlotMapBundle = {
     };
   },
 
-  doBatchPlotMapInitialize: () => ({ dispatch, store }) => {
+  doBatchPlotMapInitialize: () => ({ dispatch }) => {
     dispatch({
       type: 'BATCHPLOTMAP_INITIALIZE_START',
       payload: {

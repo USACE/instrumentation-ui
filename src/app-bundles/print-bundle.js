@@ -17,7 +17,7 @@ const printBundle = {
     };
   },
 
-  doPrintSetData: (data, layout) => ({ dispatch, store }) => {
+  doPrintSetData: (data, layout) => ({ dispatch }) => {
     dispatch({
       type: 'PRINT_SET_DATA',
       payload: {

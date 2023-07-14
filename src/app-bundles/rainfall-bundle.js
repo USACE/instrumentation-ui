@@ -31,7 +31,7 @@ const rainfallBundle = {
     const apiRoot = store.selectApiRoot();
 
     const tsId =
-      process.env.NODE_ENV === 'development'
+      import.meta.env.DEV
         ? '05ddb512-b865-433d-b2db-81e75bb69b65'
         : '9a3864a8-8766-4bfa-bad1-0328b166f6a8';
     fetch(

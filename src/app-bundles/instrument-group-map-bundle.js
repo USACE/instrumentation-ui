@@ -26,7 +26,7 @@ const instrumentGroupMapBundle = {
             _shouldAddData: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('groupMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'groupMap')) {
             return Object.assign({}, state, {
               _mapLoaded: true,
             });
@@ -34,7 +34,7 @@ const instrumentGroupMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty('groupMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'groupMap')) {
             return Object.assign({}, state, {
               _mapLoaded: false,
             });
@@ -52,7 +52,7 @@ const instrumentGroupMapBundle = {
     };
   },
 
-  doInstrumentGroupMapInitialize: () => ({ dispatch, store }) => {
+  doInstrumentGroupMapInitialize: () => ({ dispatch }) => {
     dispatch({
       type: 'INSTRUMENTGROUPMAP_INITIALIZE_START',
       payload: {

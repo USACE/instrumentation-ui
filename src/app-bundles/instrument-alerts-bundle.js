@@ -21,7 +21,7 @@ export default createRestBundle({
         if (!alerts || !alerts.length) return {};
         const out = {};
         alerts.forEach((a) => {
-          if (!out.hasOwnProperty(a.instrument_id)) out[a.instrument_id] = [];
+          if (!Object.prototype.hasOwnProperty.call(out, a.instrument_id)) out[a.instrument_id] = [];
           out[a.instrument_id].push(a);
         });
         return out;
@@ -33,7 +33,7 @@ export default createRestBundle({
       (instruments, alertsByInstrumentId) => {
         if (
           !instruments ||
-          !alertsByInstrumentId.hasOwnProperty(instruments.id)
+          !Object.prototype.hasOwnProperty.call(alertsByInstrumentId, instruments.id)
         )
           return [];
         return alertsByInstrumentId[instruments.id];

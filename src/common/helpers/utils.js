@@ -1,5 +1,5 @@
 export const classnames = (opts) => Object.keys(opts)
-  .map((key) => !!opts[key] ? key : '')
+  .map((key) => opts[key] ? key : '')
   .join(' ');
 
 export const classArray = (arr) => arr.filter(e => e).join(' ');

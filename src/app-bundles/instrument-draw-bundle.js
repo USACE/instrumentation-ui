@@ -22,7 +22,7 @@ const instrumentDrawBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (type === 'MAPS_INITIALIZED' && payload.hasOwnProperty('inst-edit')) {
+      if (type === 'MAPS_INITIALIZED' && Object.prototype.hasOwnProperty.call(payload, 'inst-edit')) {
         return Object.assign({}, state, {
           map: payload['inst-edit'],
           _shouldAddToMap: true,
