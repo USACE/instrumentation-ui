@@ -22,16 +22,24 @@ const sortStatus = (rowA, rowB) => {
   return colorEnum[alert_statusA] - colorEnum[alert_statusB];
 };
 
+const determineStatus = (submittals, alertConfigId) => {
+  const filteredSubmittals = submittals.filter(el => el.alert_config_id === alertConfigId);
+
+  return filteredSubmittals.length ? 'red' : 'green';
+};
+
 const AlertConfigList = connect(
   'doModalOpen',
   'doFetchProjectAlertConfigs',
   'selectProjectAlertConfigs',
   'selectProjectsByRoute',
+  'selectSubmittalsMissing',
   ({
     doModalOpen,
     doFetchProjectAlertConfigs,
     projectAlertConfigs,
     projectsByRoute: project,
+    submittalsMissing,
   }) => {
     useEffect(() => {
       doFetchProjectAlertConfigs();
@@ -58,12 +66,14 @@ const AlertConfigList = connect(
               isSortable: true,
               sortingFn: (rowA, rowB) => sortStatus(rowA, rowB),
               render: (data) => {
-                const { alert_status } = data;
+                const { id } = data;
+
+                const status = determineStatus(submittalsMissing, id);
 
                 return (
                   <Circle
                     sx={{ fontSize: '14px', margin: '0 0 2px 14px' }}
-                    style={{ color: `${alert_status}` }}
+                    style={{ color: `${status}` }}
                   />
                 );
               },

@@ -2,8 +2,8 @@ export default {
   name: 'districtRollup',
   getReducer: () => {
     const initialState = {
-      evaluation: {},
-      measurement: {},
+      evaluation: [],
+      measurement: [],
     };
     
     return (state = initialState, { type, payload }) => {
@@ -20,7 +20,8 @@ export default {
   },
 
   selectDistrictRollupRaw: (state) => state.districtRollup,
-  selectDistrictRollupDetails: (state) => state.districtRollup.details,
+  selectDistrictRollupEvaluation: (state) => state.districtRollup.evaluation,
+  selectDistrictRollupMeasurement: (state) => state.districtRollup.measurement,
 
   // one of [`evaluation`, `measurement`]
   doFetchDistrictRollup: (type) => ({ dispatch, store, apiGet }) => {

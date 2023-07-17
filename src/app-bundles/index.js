@@ -55,6 +55,7 @@ import projectsBundle from './projects-bundle';
 import qualityControl from './quality-control';
 import rainfallBundle from './rainfall-bundle';
 import routesBundle from './routes-bundle';
+import submittalsBundle from './submittals-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
@@ -152,6 +153,7 @@ export default composeBundles(
   qualityControl,
   rainfallBundle,
   routesBundle,
+  submittalsBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle,
   uploadBundle,
