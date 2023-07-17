@@ -21,6 +21,7 @@ import collectionGroupBundle from './collection-group-bundle';
 import collectionGroupDetailBundle from './collection-group-detail-bundle';
 import dataLoggerBundle from './data-logger-bundle';
 import dataLoggerEquivalencyBundle from './data-logger-equivalency-bundle';
+import districtRollupBundle from './district-rollup-bundle';
 import domainsBundle from './domains-bundle';
 import exploreChartSyncBundle from './explore-chart-sync-bundle';
 import exploreDataBundle from './explore-data-bundle';
@@ -117,6 +118,7 @@ export default composeBundles(
   collectionGroupDetailBundle,
   dataLoggerBundle,
   dataLoggerEquivalencyBundle,
+  districtRollupBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,

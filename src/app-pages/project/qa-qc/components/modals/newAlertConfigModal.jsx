@@ -99,7 +99,6 @@ const defaultFormState = {
   schedule_interval: {},
   warning_interval: { 'weeks': 1 },
   remind_interval: { 'days': 3 },
-  n_missed_before_alert: 1,
   alert_email_subscriptions: [],
   additional_emails: '',
 };
@@ -266,23 +265,6 @@ const NewAlertConfigModal = connect(
                 isMinDays
               />
             </div>
-          </div>
-          <div className='form-group'>
-            <label>
-              Number of Missed Intervals to Trigger Alert: 
-            </label>
-            <input
-              type='text'
-              className='form-control'
-              style={{ width: '75px' }}
-              value={formState.n_missed_before_alert?.val}
-              onChange={e => {
-                const regex = /^[0-9\b]+$/;
-                if (e.target.value === '' || regex.test(e.target.value)) {
-                  dispatch({ type: 'update', key: 'n_missed_before_alert', data: e.target.value });
-                }
-              }}
-            />
           </div>
           <div className='form-group'>
             <label>Email Subscriptions: </label>

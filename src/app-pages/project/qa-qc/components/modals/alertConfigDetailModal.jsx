@@ -32,7 +32,6 @@ const AlertConfigDetailModal = connect(
       alert_type,
       start_date,
       schedule_interval,
-      n_missed_before_alert,
       remind_interval,
       warning_interval,
       last_checked,
@@ -87,10 +86,6 @@ const AlertConfigDetailModal = connect(
               <div className='row col-12'>
                 <b>Schedule Interval:&nbsp;</b>
                 <span>{formatDuration(schedule_interval)}</span>
-              </div>
-              <div className='row col-12'>
-                <b>Number of Missed Intervals Before Alert:&nbsp;</b>
-                <span>{n_missed_before_alert}</span>
               </div>
               <div className='row col-12'>
                 <b>Reminder Interval:&nbsp;</b>
