@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { Add, Remove } from '@mui/icons-material';
 
 import AlertConfigList from './components/alertConfigList';
 import Button from '../../../app-components/button';
@@ -16,6 +17,8 @@ const QaQc = connect(
     doFetchQualityControlEvaluations,
     doFetchMissingSubmittalsByProjectId,
   }) => {
+    const [cardIsOpen, setCardIsOpen] = useState(false);
+
     useEffect(() => {
       doFetchQualityControlEvaluations();
       doFetchMissingSubmittalsByProjectId();
@@ -40,10 +43,28 @@ const QaQc = connect(
             <EvaluationList />
           </CardBody>
         </Card>
-        <Card className='mt-3 mb-4'>
+        <Card className='mt-3'>
           <CardHeader text='Alert Manager' />
           <CardBody>
             <AlertConfigList />
+          </CardBody>
+        </Card>
+        <Card className='mt-3 mb-4'>
+          <CardHeader className='p-3'>
+            <Button
+              size='small'
+              className='text-primary p-0 mr-2'
+              variant='link'
+              title={`${cardIsOpen ? 'Close' : 'Open'} Submittal History`}
+              handleClick={() => setCardIsOpen(prev => !prev)}
+              icon={cardIsOpen ? <Remove fontSize='medium' /> : <Add fontSize='medium' />}
+            />
+            <strong className='ml-1'>Submittal History</strong>
+          </CardHeader>
+          <CardBody>
+            {cardIsOpen ? (
+              <span>Hello!</span>
+            ) : <i>Expand to see historical data...</i>}
           </CardBody>
         </Card>
       </div>

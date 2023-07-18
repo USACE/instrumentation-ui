@@ -20,19 +20,20 @@ const defaultTrace = (name, color) => ({
 const generateDataTraces = (data = []) => {
   if (!data.length) return [];
 
-  return data.reduce((accum, current) => {
+  return data.reduce((accum, current, index) => {
     const {
       expected_total_submittals,
       green_submittals,
       month,
       red_submittals,
       yellow_submittals,
+      // project_id, @TODO - use to filter by own project
     } = current;
 
     const monthDT = DateTime.fromISO(month);
 
-    const displayString = () => {
-      if (monthDT.month === 1) {
+    const displayString = (index) => {
+      if (index === 0 || monthDT.month === 1) {
         return `${monthDT.monthLong} ${monthDT.year}`;
       }
 
@@ -43,7 +44,7 @@ const generateDataTraces = (data = []) => {
       ...accum,
       green: {
         ...accum.green,
-        x: [...accum.green.x, displayString()],
+        x: [...accum.green.x, displayString(index)],
         y: [...accum.green.y, green_submittals / expected_total_submittals],
         hovertemplate: [
           ...accum.green.hovertemplate,
@@ -52,7 +53,7 @@ const generateDataTraces = (data = []) => {
       },
       yellow: {
         ...accum.yellow,
-        x: [...accum.yellow.x, displayString()],
+        x: [...accum.yellow.x, displayString(index)],
         y: [...accum.yellow.y, yellow_submittals / expected_total_submittals],
         hovertemplate: [
           ...accum.yellow.hovertemplate,
@@ -61,7 +62,7 @@ const generateDataTraces = (data = []) => {
       },
       red: {
         ...accum.red,
-        x: [...accum.red.x, displayString()],
+        x: [...accum.red.x, displayString(index)],
         y: [...accum.red.y, (red_submittals / expected_total_submittals)],
         hovertemplate: [
           ...accum.red.hovertemplate,

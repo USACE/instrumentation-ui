@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { toast } from 'react-toastify';
 import { useDeepCompareEffect } from 'react-use';
+import { Add, ContentCopy, Refresh, Remove } from '@mui/icons-material';
 
 import * as extractorFns from '../dataLoggerFieldMappers';
 import AddMappingRowsModal from '../modals/addMappingRowsModal';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import HelperTooltip from '../../../../app-components/helper-tooltip';
-import { Add, ContentCopy, Refresh, Remove } from '@mui/icons-material';
 
 const IncomingRawDataTable = connect(
   'doModalOpen',
@@ -36,7 +36,7 @@ const IncomingRawDataTable = connect(
           <Button
             className='text-primary p-0 mr-2'
             variant='link'
-            icon={isOpen ? <Remove /> : <Add /> }
+            icon={isOpen ? <Remove fontSize='medium' /> : <Add fontSize='medium' /> }
             handleClick={() => setIsOpen(!isOpen)}
             title={isOpen ? 'Collapse Section' : 'Expand Section'}
           />

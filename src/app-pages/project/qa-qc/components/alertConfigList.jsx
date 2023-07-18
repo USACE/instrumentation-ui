@@ -22,7 +22,7 @@ const sortStatus = (rowA, rowB) => {
   return colorEnum[alert_statusA] - colorEnum[alert_statusB];
 };
 
-const determineStatus = (submittals, alertConfigId) => {
+const determineStatus = (submittals = [], alertConfigId) => {
   const filteredSubmittals = submittals.filter(el => el.alert_config_id === alertConfigId);
 
   return filteredSubmittals.length ? 'red' : 'green';
