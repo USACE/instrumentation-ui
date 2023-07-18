@@ -101,7 +101,7 @@ export default connect(
       ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title, label: p.title }))
       : {};
 
-    const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR;
+    const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR === 'true';
 
     return (
       <div className='container-fluid'>

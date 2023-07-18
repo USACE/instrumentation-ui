@@ -38,7 +38,7 @@ const NavBar = connect(
     const [brand, setBrand] = useState(null);
     const [theme, setTheme] = useState('primary');
 
-    const showDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER;
+    const showDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER === 'true';
 
     const navClass = classArray([
       'navbar',

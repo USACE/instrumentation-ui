@@ -3,11 +3,11 @@ import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
 import { Circle } from '@mui/icons-material';
 
-import AlertConfigDetailModal from './modals/alertConfigDetailModal';
-import Button from '../../../../app-components/button/button';
-import Table from '../../../../app-components/table';
-import RoleFilter from '../../../../app-components/role-filter';
-import NewAlertConfigModal from './modals/newAlertConfigModal';
+import AlertConfigDetailModal from '../modals/alertConfigDetailModal';
+import Button from '../../../../../app-components/button/button';
+import Table from '../../../../../app-components/table';
+import RoleFilter from '../../../../../app-components/role-filter';
+import NewAlertConfigModal from '../modals/newAlertConfigModal';
 
 const sortStatus = (rowA, rowB) => {
   const { alert_status: alert_statusA } = rowA?.original || {};
@@ -23,9 +23,11 @@ const sortStatus = (rowA, rowB) => {
 };
 
 const determineStatus = (submittals = [], alertConfigId) => {
-  const filteredSubmittals = submittals.filter(el => el.alert_config_id === alertConfigId);
+  if (!submittals) return 'gray';
+  
+  const filteredSubmittals = submittals?.filter(el => el.alert_config_id === alertConfigId);
 
-  return filteredSubmittals.length ? 'red' : 'green';
+  return filteredSubmittals?.length ? 'red' : 'green';
 };
 
 const AlertConfigList = connect(

@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
 
-import Table from '../../../../app-components/table';
-import Button from '../../../../app-components/button/button';
-import NewEvaluationModal from './modals/newEvaluationModal';
-import RoleFilter from '../../../../app-components/role-filter';
+import Table from '../../../../../app-components/table';
+import Button from '../../../../../app-components/button/button';
+import NewEvaluationModal from '../modals/newEvaluationModal';
+import RoleFilter from '../../../../../app-components/role-filter';
 
 const EvaluationList = connect(
   'doModalOpen',

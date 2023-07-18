@@ -137,7 +137,7 @@ const NewEvaluationModal = connect(
                     })
                   }}
                 />
-              ) : <div><i>No Alerts Configured for this Project</i></div>}
+              ) : <div><i>No Missing Submittals for this Project</i></div>}
             </div>
           </div>
         </ModalBody>

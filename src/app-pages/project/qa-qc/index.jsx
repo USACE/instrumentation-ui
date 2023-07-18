@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Add, Remove } from '@mui/icons-material';
 
-import AlertConfigList from './components/alertConfigList';
+import AlertConfigList from './components/tables/alertConfigList';
 import Button from '../../../app-components/button';
 import Card, { CardBody, CardHeader } from '../../../app-components/card';
 import DistrictRollupModal from './components/modals/districtRollupModal';
-import EvaluationList from './components/evaluationList';
+import EvaluationList from './components/tables/evaluationList';
+import SubmittalsTable from './components/tables/submittalsTable';
 
 const QaQc = connect(
   'doModalOpen',
@@ -63,7 +64,7 @@ const QaQc = connect(
           </CardHeader>
           <CardBody>
             {cardIsOpen ? (
-              <span>Hello!</span>
+              <SubmittalsTable />
             ) : <i>Expand to see historical data...</i>}
           </CardBody>
         </Card>
