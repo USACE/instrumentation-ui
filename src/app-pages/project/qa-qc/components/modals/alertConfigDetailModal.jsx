@@ -5,9 +5,8 @@ import { Circle, EditOutlined } from '@mui/icons-material';
 
 import Button from '../../../../../app-components/button/button';
 import Card, { CardBody, CardHeader } from '../../../../../app-components/card';
-import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
-import { titlize } from '../../../../../common/helpers/utils';
 import NewAlertConfigModal from './newAlertConfigModal';
+import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
 
 const formatDuration = isoDuration => {
   if (!isoDuration) return null;
@@ -15,14 +14,24 @@ const formatDuration = isoDuration => {
   return Duration.fromISO(isoDuration).toHuman();
 };
 
+const determineStatus = (submittals = [], alertConfigId) => {
+  if (!submittals) return 'gray';
+  
+  const filteredSubmittals = submittals?.filter(el => el.alert_config_id === alertConfigId);
+
+  return filteredSubmittals?.length ? 'red' : 'green';
+};
+
 const AlertConfigDetailModal = connect(
   'doModalClose',
   'doModalOpen',
   'doDeleteProjectAlertConfig',
+  'selectSubmittalsMissing',
   ({
     doModalClose,
     doModalOpen,
     doDeleteProjectAlertConfig,
+    submittalsMissing,
     config,
   }) => {
     const {
@@ -35,7 +44,6 @@ const AlertConfigDetailModal = connect(
       remind_interval,
       warning_interval,
       last_checked,
-      alert_status,
       last_reminded,
       instruments,
       alert_email_subscriptions,
@@ -44,6 +52,9 @@ const AlertConfigDetailModal = connect(
       updater_username,
       update_date,
     } = config;
+
+    const status = determineStatus(submittalsMissing, id);
+    const statusString = status === 'red' ? 'Missing' : status === 'green' ? 'On Time' : 'N/A';
 
     return (
       <ModalContent>
@@ -139,8 +150,8 @@ const AlertConfigDetailModal = connect(
                 <span>
                   <Circle
                     sx={{ fontSize: '14px', marginBottom: '2px' }}
-                    style={{ color: `${alert_status}` }}
-                  /> - {titlize(alert_status)}
+                    style={{ color: `${status}` }}
+                  /> - {statusString}
                 </span>
               </div>
               <div className='row col-12'>
