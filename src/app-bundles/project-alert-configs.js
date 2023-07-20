@@ -69,6 +69,7 @@ export default {
   getReducer: () => {
     const initialState = {
       alertConfigs: [],
+      _lastFetched: null,
     };
     
     return (state = initialState, { type, payload }) => {
@@ -77,6 +78,7 @@ export default {
           return {
             ...state,
             alertConfigs: payload,
+            _lastFetched: new Date(),
           };
         default:
           return state;
@@ -86,6 +88,7 @@ export default {
 
   selectProjectAlertConfigsRaw: (state) => state.projectAlertConfigs,
   selectProjectAlertConfigs: (state) => state.projectAlertConfigs.alertConfigs,
+  selectProjectAlertConfigsLastFetched: (state) => state.projectAlertConfigs._lastFetched,
 
   doFetchProjectAlertConfigs: () => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'PROJECT_ALERT_CONFIGS_FETCH_START' });

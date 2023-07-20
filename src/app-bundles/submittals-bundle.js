@@ -69,4 +69,36 @@ export default {
       dispatch({ type: 'HISTORICAL_SUBMITTALS_FETCH_FINISHED' });
     });
   },
+
+  doFetchAlertConfigSubmittals: (alertConfigId) => ({ apiGet }) => {
+    const url = `/alert_configs/${alertConfigId}/submittals`;
+
+    apiGet(url, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('error: ', err);
+      } else {
+        // console.log('test body: ', body);
+      }
+    });
+  },
+
+  doVerifyAllMissingSubmittals: (alertConfigId) => ({ dispatch, store, apiPut }) => {
+    dispatch({ type: 'PUT_VERIFY_ALL_MISSING_SUBMITTALS_START' });
+
+    const url = `/alert_configs/${alertConfigId}/submittals/verify_missing`;
+
+    apiPut(url, {}, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('error: ', err);
+      } else {
+        store.doFetchMissingSubmittalsByProjectId();
+        store.doFetchProjectAlertConfigs();
+        store.doFetchAlertConfigSubmittals(alertConfigId);
+      }
+
+      dispatch({ type: 'PUT_VERIFY_ALL_MISSING_SUBMITTALS_FINISHED' });
+    });
+  },
 };

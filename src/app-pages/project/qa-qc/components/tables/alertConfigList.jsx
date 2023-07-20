@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
-import { Circle } from '@mui/icons-material';
+import { Circle, Refresh } from '@mui/icons-material';
 
 import AlertConfigDetailModal from '../modals/alertConfigDetailModal';
 import Button from '../../../../../app-components/button/button';
 import Table from '../../../../../app-components/table';
 import RoleFilter from '../../../../../app-components/role-filter';
 import NewAlertConfigModal from '../modals/newAlertConfigModal';
+import { determineStatus } from '../helper';
 
 const sortStatus = (rowA, rowB) => {
   const { alert_status: alert_statusA } = rowA?.original || {};
@@ -22,24 +23,18 @@ const sortStatus = (rowA, rowB) => {
   return colorEnum[alert_statusA] - colorEnum[alert_statusB];
 };
 
-const determineStatus = (submittals = [], alertConfigId) => {
-  if (!submittals) return 'gray';
-  
-  const filteredSubmittals = submittals?.filter(el => el.alert_config_id === alertConfigId);
-
-  return filteredSubmittals?.length ? 'red' : 'green';
-};
-
 const AlertConfigList = connect(
   'doModalOpen',
   'doFetchProjectAlertConfigs',
   'selectProjectAlertConfigs',
+  'selectProjectAlertConfigsLastFetched',
   'selectProjectsByRoute',
   'selectSubmittalsMissing',
   ({
     doModalOpen,
     doFetchProjectAlertConfigs,
     projectAlertConfigs,
+    projectAlertConfigsLastFetched,
     projectsByRoute: project,
     submittalsMissing,
   }) => {
@@ -54,11 +49,23 @@ const AlertConfigList = connect(
             isOutline
             variant='success'
             size='small'
-            className='mb-3'
+            className='mb-3 mr-2'
             text='Create New Alert Config'
             handleClick={() => doModalOpen(NewAlertConfigModal, null, 'lg')}
           />
         </RoleFilter>
+        <Button
+          isOutline
+          variant='info'
+          size='small'
+          icon={<Refresh fontSize='inherit' />}
+          title='Refresh Alerts'
+          className='mb-3 mr-2'
+          handleClick={() => doFetchProjectAlertConfigs()}
+        />
+        {projectAlertConfigsLastFetched ? (
+          <i className='text-small'>Last Refreshed: {DateTime.fromJSDate(projectAlertConfigsLastFetched).toFormat('MMM dd, yyyy HH:mm:ss')}</i>
+        ) : null}
         <Table
           data={projectAlertConfigs}
           columns={[

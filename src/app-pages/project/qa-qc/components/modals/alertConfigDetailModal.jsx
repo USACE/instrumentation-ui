@@ -7,6 +7,7 @@ import Button from '../../../../../app-components/button/button';
 import Card, { CardBody, CardHeader } from '../../../../../app-components/card';
 import NewAlertConfigModal from './newAlertConfigModal';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
+import { determineStatus } from '../helper';
 
 const formatDuration = isoDuration => {
   if (!isoDuration) return null;
@@ -14,23 +15,17 @@ const formatDuration = isoDuration => {
   return Duration.fromISO(isoDuration).toHuman();
 };
 
-const determineStatus = (submittals = [], alertConfigId) => {
-  if (!submittals) return 'gray';
-  
-  const filteredSubmittals = submittals?.filter(el => el.alert_config_id === alertConfigId);
-
-  return filteredSubmittals?.length ? 'red' : 'green';
-};
-
 const AlertConfigDetailModal = connect(
   'doModalClose',
   'doModalOpen',
   'doDeleteProjectAlertConfig',
+  'doVerifyAllMissingSubmittals',
   'selectSubmittalsMissing',
   ({
     doModalClose,
     doModalOpen,
     doDeleteProjectAlertConfig,
+    doVerifyAllMissingSubmittals,
     submittalsMissing,
     config,
   }) => {
@@ -162,6 +157,16 @@ const AlertConfigDetailModal = connect(
                 <b>Last Reminded:&nbsp;</b>
                 <span>{last_reminded ? DateTime.fromISO(last_reminded).toFormat('LLL dd, yyyy hh:mm:ss') : <i>No reminders sent</i>}</span>
               </div>
+              {status === 'red' ? (
+                <Button
+                  isOutline
+                  size='small'
+                  variant='info'
+                  className='mt-2'
+                  text='Verify All Missing Submittals'
+                  handleClick={() => doVerifyAllMissingSubmittals(id)}
+                />
+              ) : null}
             </CardBody>
           </Card>
 
