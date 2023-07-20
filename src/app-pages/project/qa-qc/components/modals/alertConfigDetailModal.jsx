@@ -42,6 +42,7 @@ const AlertConfigDetailModal = connect(
       last_reminded,
       instruments,
       alert_email_subscriptions,
+      mute_consecutive_alerts,
       creator_username,
       create_date,
       updater_username,
@@ -100,6 +101,10 @@ const AlertConfigDetailModal = connect(
               <div className='row col-12'>
                 <b>Warning Interval:&nbsp;</b>
                 <span>{formatDuration(warning_interval) || <i>None</i>}</span>
+              </div>
+              <div className='row col-12'>
+                <b>Muting Consecutive Alerts?:&nbsp;</b>
+                <span>{mute_consecutive_alerts ? 'Yes' : 'No'}</span>
               </div>
               <div className='row col-12'>
                 <b>Instruments:&nbsp;</b>
