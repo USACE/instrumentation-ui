@@ -32,7 +32,7 @@ export default connect(
 
     useWindowListener('keydown', toggleLandscape);
 
-    const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER;
+    const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER = 'true';
     const cls = classArray([
       'explorer-container',
       hasDevBanner && 'with-banner',

@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 
 import { classArray } from '../common/helpers/utils';
 
-const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER;
+const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER === 'true';
 const blacklist = ['/', '/help'];
 
 const PageContent = connect(

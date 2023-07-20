@@ -99,9 +99,9 @@ const defaultFormState = {
   schedule_interval: {},
   warning_interval: { 'weeks': 1 },
   remind_interval: { 'days': 3 },
-  n_missed_before_alert: 1,
   alert_email_subscriptions: [],
   additional_emails: '',
+  mute_consecutive_alerts: true,
 };
 
 const NewAlertConfigModal = connect(
@@ -133,6 +133,7 @@ const NewAlertConfigModal = connect(
       'remind_interval',
       'additional_emails',
       formState.alert_type?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
+      'mute_consecutive_alerts',
     ].filter(e => e);
 
     useEffect(() => {
@@ -232,7 +233,7 @@ const NewAlertConfigModal = connect(
                     <br /><br />
                     <b>Schedule Interval:&nbsp;</b>The frequency at which the alerts' conditions need to be fulfilled by. An alert<br />
                     &emsp;will be sent once on this interval timeframe. <i>Note that consecutive intervals with failed conditions will</i><br />
-                    &emsp;<i>only send reminder messages.</i>
+                    &emsp;<i>only send reminder messages if the 'Mute Consecutive Alerts' option is selected below.</i>
                     <br/>
                     <b>Warning Interval:&nbsp;</b>The timeframe prior to the alerts' next scheduled check. A message will<br />
                     &emsp;be sent at this timeframe once per scheduled interval.
@@ -267,34 +268,49 @@ const NewAlertConfigModal = connect(
               />
             </div>
           </div>
-          <div className='form-group'>
-            <label>
-              Number of Missed Intervals to Trigger Alert: 
-            </label>
-            <input
-              type='text'
-              className='form-control'
-              style={{ width: '75px' }}
-              value={formState.n_missed_before_alert?.val}
-              onChange={e => {
-                const regex = /^[0-9\b]+$/;
-                if (e.target.value === '' || regex.test(e.target.value)) {
-                  dispatch({ type: 'update', key: 'n_missed_before_alert', data: e.target.value });
-                }
-              }}
-            />
+          <div className='row mt-3'>
+            <div className='col-8'>
+              <div className='form-group'>
+                <label>Email Subscriptions: </label>
+                <Select
+                  isClearable
+                  isMulti
+                  options={filterItems}
+                  defaultValue={isEdit ? formState.alert_email_subscriptions?.val : undefined}
+                  onChange={values => dispatch({ type: 'update', key: 'alert_email_subscriptions', data: values })}
+                  onInputChange={input => doTypeaheadQueryUpdated(input)}
+                />
+              </div>
+            </div>
+            <div className='col-4'>
+              <label className='checkbox label is-small'>
+                <input
+                  style={{ marginRight: '.5em', marginTop: '2.6em' }}
+                  type='checkbox'
+                  checked={formState.mute_consecutive_alerts?.val}
+                  onChange={e => dispatch({ type: 'update', key: 'mute_consecutive_alerts', data: e.target.checked })}
+                />{' '}
+                Mute Consecutive Alerts
+              </label>
+                <HelperTooltip
+                  id='mute-alerts-help'
+                  className='pl-2 d-inline'
+                  content={
+                    <span>
+                      <b>With this option selected</b>, when an alert is triggered for a submittal, the subscribers will not be alerted,<br />
+                      but instead will receive reminders at the prescribed interval with all affected submittals. A new alert<br/>
+                      will not be sent until ALL submittals are completed or validated as missing.
+                      <br /><br />
+                      <b>With this option deselected</b>, a new alert will be sent for each missed submittal. even if previous submittals are<br />
+                      also missing and have not been verified. Reminders with aggregates of all missing submittals will also be sent<br />
+                      at the prescribed interval.
+                    </span>
+                  }
+                />
+            </div>
           </div>
           <div className='form-group'>
-            <label>Email Subscriptions: </label>
-            <Select
-              isClearable
-              isMulti
-              options={filterItems}
-              defaultValue={isEdit ? formState.alert_email_subscriptions?.val : undefined}
-              onChange={values => dispatch({ type: 'update', key: 'alert_email_subscriptions', data: values })}
-              onInputChange={input => doTypeaheadQueryUpdated(input)}
-            />
-            <label className='mt-2 font-italic'>Non-MIDAS Users (Optional):</label>
+            <label className='font-italic'>Non-MIDAS Users (Optional):</label>
             <HelperTooltip
               id='auto-range-help'
               place='right'

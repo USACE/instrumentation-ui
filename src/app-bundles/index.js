@@ -21,6 +21,7 @@ import collectionGroupBundle from './collection-group-bundle';
 import collectionGroupDetailBundle from './collection-group-detail-bundle';
 import dataLoggerBundle from './data-logger-bundle';
 import dataLoggerEquivalencyBundle from './data-logger-equivalency-bundle';
+import districtRollupBundle from './district-rollup-bundle';
 import domainsBundle from './domains-bundle';
 import exploreChartSyncBundle from './explore-chart-sync-bundle';
 import exploreDataBundle from './explore-data-bundle';
@@ -54,6 +55,7 @@ import projectsBundle from './projects-bundle';
 import qualityControl from './quality-control';
 import rainfallBundle from './rainfall-bundle';
 import routesBundle from './routes-bundle';
+import submittalsBundle from './submittals-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
@@ -117,6 +119,7 @@ export default composeBundles(
   collectionGroupDetailBundle,
   dataLoggerBundle,
   dataLoggerEquivalencyBundle,
+  districtRollupBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,
@@ -150,6 +153,7 @@ export default composeBundles(
   qualityControl,
   rainfallBundle,
   routesBundle,
+  submittalsBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle,
   uploadBundle,

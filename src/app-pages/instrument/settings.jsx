@@ -16,10 +16,10 @@ export default connect(
     timeseriesMeasurementsItemsObject: measurements,
     instrumentsByRoute: instrument,
   }) => {
-    // const alertsReady = import.meta.env.VITE_ALERT_EDITOR;
+    // const alertsReady = import.meta.env.VITE_ALERT_EDITOR === 'true';
     const alertsReady = false;
-    const forumlaReady = import.meta.env.VITE_FORMULA_EDITOR;
-    const chartReady = import.meta.env.VITE_INSTRUMENT_CHART;
+    const forumlaReady = import.meta.env.VITE_FORMULA_EDITOR === 'true';
+    const chartReady = import.meta.env.VITE_INSTRUMENT_CHART === 'true';
 
     const tabs = [
       alertsReady && {

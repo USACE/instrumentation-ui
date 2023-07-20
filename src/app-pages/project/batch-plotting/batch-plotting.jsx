@@ -15,7 +15,7 @@ const BatchPlotting = connect(
   'selectMapsObject',
   'selectHashQuery',
   ({ doMapsInitialize, doMapsShutdown, mapsObject, hashQuery }) => {
-    const crossSectionReady = import.meta.env.VITE_CROSS_SECTION;
+    const crossSectionReady = import.meta.env.VITE_CROSS_SECTION === 'true';
     const userConfigId = hashQuery ? hashQuery['c'] : '';
 
     return (

@@ -5,9 +5,9 @@ import { Circle, EditOutlined } from '@mui/icons-material';
 
 import Button from '../../../../../app-components/button/button';
 import Card, { CardBody, CardHeader } from '../../../../../app-components/card';
-import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
-import { titlize } from '../../../../../common/helpers/utils';
 import NewAlertConfigModal from './newAlertConfigModal';
+import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
+import { determineStatus } from '../helper';
 
 const formatDuration = isoDuration => {
   if (!isoDuration) return null;
@@ -19,10 +19,14 @@ const AlertConfigDetailModal = connect(
   'doModalClose',
   'doModalOpen',
   'doDeleteProjectAlertConfig',
+  'doVerifyAllMissingSubmittals',
+  'selectSubmittalsMissing',
   ({
     doModalClose,
     doModalOpen,
     doDeleteProjectAlertConfig,
+    doVerifyAllMissingSubmittals,
+    submittalsMissing,
     config,
   }) => {
     const {
@@ -32,19 +36,21 @@ const AlertConfigDetailModal = connect(
       alert_type,
       start_date,
       schedule_interval,
-      n_missed_before_alert,
       remind_interval,
       warning_interval,
       last_checked,
-      alert_status,
       last_reminded,
       instruments,
       alert_email_subscriptions,
+      mute_consecutive_alerts,
       creator_username,
       create_date,
       updater_username,
       update_date,
     } = config;
+
+    const status = determineStatus(submittalsMissing, id);
+    const statusString = status === 'red' ? 'Missing' : status === 'green' ? 'On Time' : 'N/A';
 
     return (
       <ModalContent>
@@ -89,16 +95,16 @@ const AlertConfigDetailModal = connect(
                 <span>{formatDuration(schedule_interval)}</span>
               </div>
               <div className='row col-12'>
-                <b>Number of Missed Intervals Before Alert:&nbsp;</b>
-                <span>{n_missed_before_alert}</span>
-              </div>
-              <div className='row col-12'>
                 <b>Reminder Interval:&nbsp;</b>
                 <span>{formatDuration(remind_interval) || <i>None</i>}</span>
               </div>
               <div className='row col-12'>
                 <b>Warning Interval:&nbsp;</b>
                 <span>{formatDuration(warning_interval) || <i>None</i>}</span>
+              </div>
+              <div className='row col-12'>
+                <b>Muting Consecutive Alerts?:&nbsp;</b>
+                <span>{mute_consecutive_alerts ? 'Yes' : 'No'}</span>
               </div>
               <div className='row col-12'>
                 <b>Instruments:&nbsp;</b>
@@ -144,8 +150,8 @@ const AlertConfigDetailModal = connect(
                 <span>
                   <Circle
                     sx={{ fontSize: '14px', marginBottom: '2px' }}
-                    style={{ color: `${alert_status}` }}
-                  /> - {titlize(alert_status)}
+                    style={{ color: `${status}` }}
+                  /> - {statusString}
                 </span>
               </div>
               <div className='row col-12'>
@@ -156,6 +162,16 @@ const AlertConfigDetailModal = connect(
                 <b>Last Reminded:&nbsp;</b>
                 <span>{last_reminded ? DateTime.fromISO(last_reminded).toFormat('LLL dd, yyyy hh:mm:ss') : <i>No reminders sent</i>}</span>
               </div>
+              {status === 'red' ? (
+                <Button
+                  isOutline
+                  size='small'
+                  variant='info'
+                  className='mt-2'
+                  text='Verify All Missing Submittals'
+                  handleClick={() => doVerifyAllMissingSubmittals(id)}
+                />
+              ) : null}
             </CardBody>
           </Card>
 
