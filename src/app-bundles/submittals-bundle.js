@@ -95,7 +95,7 @@ export default {
       } else {
         store.doFetchMissingSubmittalsByProjectId();
         store.doFetchProjectAlertConfigs();
-        store.doFetchAlertConfigSubmittals(alertConfigId);
+        // store.doFetchAlertConfigSubmittals(alertConfigId);
       }
 
       dispatch({ type: 'PUT_VERIFY_ALL_MISSING_SUBMITTALS_FINISHED' });
