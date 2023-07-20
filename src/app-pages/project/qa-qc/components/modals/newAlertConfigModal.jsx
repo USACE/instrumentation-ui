@@ -133,6 +133,7 @@ const NewAlertConfigModal = connect(
       'remind_interval',
       'additional_emails',
       formState.alert_type?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
+      'mute_consecutive_alerts',
     ].filter(e => e);
 
     useEffect(() => {
@@ -295,11 +296,6 @@ const NewAlertConfigModal = connect(
                   id='mute-alerts-help'
                   className='pl-2 d-inline'
                   content={
-                    /*
-With this option selected, when an alert is triggered for a submittal, the subscribers will not be alerted, but instead will receive reminders at the prescribed interval with all affected submittals. A new alert will not be sent until ALL submittals are completed or validated as missing.
-With this option deselected, a new alert will be sent for each missed submittal. even if previous submittals are also missing and have not been verified. Reminders with aggregates of all missing submittals will also be sent at the prescribed interval.
-For example, a valid use case would be an alert config with a short schedule interval (a day or less), where new submittals are created frequently and consecutively missed submittals would result in many alert emails. Whereas with longer intervals (greater than a day), it is more ideal to be alerted for each expected submittal, even an unverified missing submittal exists within the alert config.
-                    */
                     <span>
                       <b>With this option selected</b>, when an alert is triggered for a submittal, the subscribers will not be alerted,<br />
                       but instead will receive reminders at the prescribed interval with all affected submittals. A new alert<br/>
