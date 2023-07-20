@@ -35,7 +35,7 @@ const multiFilterFn = (row, columnId, filterValues) => {
 const Table = ({
   data,
   columns,
-  usePagination = false,
+  // usePagination = false,
   className,
 }) => {
   const [columnFilters, setColumnFilters] = useState([]);

@@ -15,8 +15,6 @@ const SubmittalsTable = connect(
       doFetchHistoricalSubmittalsByProjectId();
     }, [doFetchHistoricalSubmittalsByProjectId]);
 
-    console.log('test submittalsHistory:', submittalsHistory);
-
     return (
       <Table
         usePagination
