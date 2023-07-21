@@ -68,15 +68,14 @@
 .report-row {
   border-bottom: 1px solid #c8cacb;
   display: flex;
-  padding: 5px 0;
+  padding: 8px 0;
   text-align: center;
 
   >:nth-child(1) {
-    font-size: 24px;
     color: gray;
   }
 
   a {
-    padding: 6px;
+    padding-left: 6px;
   }
 }

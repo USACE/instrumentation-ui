@@ -64,22 +64,13 @@ const projectionBundle = {
     });
   },
 
-  doProjTransformFromLonLat: (coordinate, destination) => ({
-    dispatch,
-    store,
-  }) => fromLonLat(coordinate, destination),
+  doProjTransformFromLonLat: (coordinate, destination) => () => fromLonLat(coordinate, destination),
 
-  doProjTransformToLonLat: (coordinate, source) => ({ dispatch, store }) => toLonLat(coordinate, source),
+  doProjTransformToLonLat: (coordinate, source) => () => toLonLat(coordinate, source),
 
-  doProjTransform: (coordinate, source, destination) => ({
-    dispatch,
-    store,
-  }) => transform(coordinate, source, destination),
+  doProjTransform: (coordinate, source, destination) => () => transform(coordinate, source, destination),
 
-  doProjTransformExtent: (extent, source, destination) => ({
-    dispatch,
-    store,
-  }) => transformExtent(extent, source, destination),
+  doProjTransformExtent: (extent, source, destination) => () => transformExtent(extent, source, destination),
 
   selectProjOptions: (state) => state.proj.options,
 

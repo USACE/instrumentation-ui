@@ -21,6 +21,7 @@ import collectionGroupBundle from './collection-group-bundle';
 import collectionGroupDetailBundle from './collection-group-detail-bundle';
 import dataLoggerBundle from './data-logger-bundle';
 import dataLoggerEquivalencyBundle from './data-logger-equivalency-bundle';
+import districtRollupBundle from './district-rollup-bundle';
 import domainsBundle from './domains-bundle';
 import exploreChartSyncBundle from './explore-chart-sync-bundle';
 import exploreDataBundle from './explore-data-bundle';
@@ -54,20 +55,21 @@ import projectsBundle from './projects-bundle';
 import qualityControl from './quality-control';
 import rainfallBundle from './rainfall-bundle';
 import routesBundle from './routes-bundle';
+import submittalsBundle from './submittals-bundle';
 import timeseriesBundle from './time-series-bundle';
 import timeseriesMeasurementBundle from './time-series-measurements-bundle';
 import uploadBundle from './upload-bundle';
 import usersBundle from './users-bundle';
 
 // Mock Token User
-const mockTokenPublic =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119._N-sAWgMhYsWhwIf44_SGSMGSgnnM8tntlswsBqjYDo';
+// const mockTokenPublic =
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IlVzZXIuVGVzdCIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119._N-sAWgMhYsWhwIf44_SGSMGSgnnM8tntlswsBqjYDo';
 const mockTokenApplicationAdmin =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmFtZSI6IlVzZXIuQXBwbGljYXRpb25BZG1pbiIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.aKaDNBnuhQyXI6zvzn-dAg8SxJSP3mQEx5FTSmJbYog';
-const mockTokenProjectAdmin =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwibmFtZSI6IlVzZXIuUHJvamVjdEFkbWluIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjIwMDAwMDAwMDAsInJvbGVzIjpbXX0.P2Cb6s3Kq0hHsfXEczFcUvpQuR8TTV88U4RDvcPabMM';
-const mockTokenProjectMember =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwibmFtZSI6IlVzZXIuUHJvamVjdE1lbWJlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.ujBvw9bCksuSbXGJreIpdXZcVIHtb8GhgviBTvrO9AQ';
+// const mockTokenProjectAdmin =
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwibmFtZSI6IlVzZXIuUHJvamVjdEFkbWluIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjIwMDAwMDAwMDAsInJvbGVzIjpbXX0.P2Cb6s3Kq0hHsfXEczFcUvpQuR8TTV88U4RDvcPabMM';
+// const mockTokenProjectMember =
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwibmFtZSI6IlVzZXIuUHJvamVjdE1lbWJlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoyMDAwMDAwMDAwLCJyb2xlcyI6W119.ujBvw9bCksuSbXGJreIpdXZcVIHtb8GhgviBTvrO9AQ';
 
 const jwtPaths = [
   '/members',
@@ -78,14 +80,14 @@ export default composeBundles(
   createAuthBundle({
     appId: '07f1223f-f208-4b71-aa43-5d5f27cd8ed9',
     redirectOnLogout: '/',
-    mock: process.env.NODE_ENV === 'development' ? true : false,
-    token: process.env.NODE_ENV === 'development' ? mockTokenApplicationAdmin : null,
+    mock: import.meta.env.DEV ? true : false,
+    token: import.meta.env.DEV ? mockTokenApplicationAdmin : null,
   }),
   createJwtApiBundle({
     root:
-      process.env.NODE_ENV === 'development'
+      import.meta.env.DEV
         ? 'http://localhost:8080'
-        : process.env.REACT_APP_API_URL,
+        : import.meta.env.VITE_API_URL,
     tokenSelector: 'selectAuthTokenRaw',
     unless: {
       // GET requests do not include token unless path starts with /my_ or includes any path in the jwtPaths array.
@@ -117,6 +119,7 @@ export default composeBundles(
   collectionGroupDetailBundle,
   dataLoggerBundle,
   dataLoggerEquivalencyBundle,
+  districtRollupBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,
@@ -150,6 +153,7 @@ export default composeBundles(
   qualityControl,
   rainfallBundle,
   routesBundle,
+  submittalsBundle,
   timeseriesBundle,
   timeseriesMeasurementBundle,
   uploadBundle,

@@ -37,7 +37,7 @@ export default createRestBundle({
     selectHashQuery: createSelector('selectHash', hash => {
       if (!hash) return null;
 
-      const [_h, query] = hash.split('?');
+      const [, query] = hash.split('?');
       if (!query) return null;
 
       const queryArray = query.split('&');

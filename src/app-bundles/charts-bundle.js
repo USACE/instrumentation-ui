@@ -17,7 +17,7 @@ const chartsBundle = {
     };
   },
 
-  doChartsCreateNew: () => ({ dispatch, store }) => {
+  doChartsCreateNew: () => ({ dispatch }) => {
     const id = ID++;
     dispatch({
       type: 'CHARTS_CREATE_NEW',
@@ -64,7 +64,7 @@ const chartsBundle = {
     });
   },
 
-  doChartsSave: (id, figure) => ({ dispatch, store }) => {
+  doChartsSave: (id, figure) => ({ dispatch }) => {
     dispatch({
       type: 'CHARTS_SAVE',
       payload: {

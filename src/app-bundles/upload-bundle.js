@@ -222,6 +222,7 @@ const uploadBundle = {
 
     apiPost(`${postUrl}?dry_run=true`, filteredData, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.error(err.message);
         store.doNotificationFire({
           message: err
@@ -233,9 +234,10 @@ const uploadBundle = {
       } else {
         const data = body;
         if (data.is_valid) {
-          apiPost(postUrl, filteredData, (err, body) => {
+          apiPost(postUrl, filteredData, (err, _body) => {
             if (err) {
               // @TODO add better error handling here
+              // eslint-disable-next-line no-console
               console.error(err.message);
               store.doNotificationFire({
                 message: 'An unexpected error occured. Please try again later.',

@@ -43,6 +43,7 @@ export default {
 
     apiGet(uri, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         dispatch({
@@ -53,11 +54,12 @@ export default {
     });
   },
 
-  doFetchDataLoggerPreview: ({ dataLoggerId }) => ({ dispatch, store, apiGet }) => {
+  doFetchDataLoggerPreview: ({ dataLoggerId }) => ({ dispatch, apiGet }) => {
     const uri = `/datalogger/${dataLoggerId}/preview`;
 
     apiGet(uri, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         dispatch({
@@ -68,7 +70,7 @@ export default {
     });
   },
 
-  doCreateNewDataLogger: (data) => ({ dispatch, store, apiPost }) => {
+  doCreateNewDataLogger: (data) => ({ store, apiPost }) => {
     const projectId = store.selectProjectsIdByRoute()?.projectId;
     const uri = '/datalogger';
     const body = {
@@ -78,6 +80,7 @@ export default {
 
     apiPost(uri, body, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         store.doFetchDataLoggersByProjectId();
@@ -86,7 +89,7 @@ export default {
     });
   },
 
-  doUpdateDataLogger: (data) => ({ dispatch, store, apiPut }) => {
+  doUpdateDataLogger: (data) => ({ store, apiPut }) => {
     const { dataLoggerId, name } = data;
 
     const uri = `/datalogger/${dataLoggerId}`;
@@ -95,8 +98,9 @@ export default {
       name,
     };
 
-    apiPut(uri, body, (err, body) => {
+    apiPut(uri, body, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         store.doFetchDataLoggersByProjectId();
@@ -104,11 +108,12 @@ export default {
     });
   },
 
-  doCycleDataLoggerKey: ({ dataLoggerId }) => ({ dispatch, store, apiPut }) => {
+  doCycleDataLoggerKey: ({ dataLoggerId }) => ({ dispatch, apiPut }) => {
     const uri = `/datalogger/${dataLoggerId}/key`;
 
     apiPut(uri, {}, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('test err:', err);
       } else {
         dispatch({
@@ -123,11 +128,12 @@ export default {
     dispatch({ type: 'UPDATE_DATA_LOGGER_API_KEY', payload: '' });
   },
 
-  doDeleteDataLogger: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
+  doDeleteDataLogger: ({ dataLoggerId }) => ({ store, apiDelete }) => {
     const uri = `/datalogger/${dataLoggerId}`;
 
-    apiDelete(uri, (err, body) => {
+    apiDelete(uri, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         store.doFetchDataLoggersByProjectId();

@@ -1,6 +1,3 @@
-import { toast } from 'react-toastify';
-import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
-
 export default {
   name: 'dataLoggerEquivalency',
   getReducer: () => {
@@ -24,11 +21,12 @@ export default {
   selectDataLoggerEquivalencyRaw: state => state.dataLoggerEquivalency,
   selectDataLoggerEquivalencyTable: state => state.dataLoggerEquivalency.table,
 
-  doFetchDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, store, apiGet }) => {
+  doFetchDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, apiGet }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
 
     apiGet(uri, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         dispatch({
@@ -39,7 +37,7 @@ export default {
     });
   },
 
-  doCreateDataLoggerEquivalency: ({ dataLoggerId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ dispatch, store, apiPost }) => {
+  doCreateDataLoggerEquivalency: ({ dataLoggerId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
 
     if (isDeleteChecked) {
@@ -57,8 +55,9 @@ export default {
       })),
     };
 
-    apiPost(uri, payload, (err, body) => {
+    apiPost(uri, payload, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         store.doFetchDataLoggerEquivalency({ dataLoggerId });
@@ -66,7 +65,7 @@ export default {
     });
   },
 
-  doUpdateDataLoggerEquivalency: (data) => ({ dispatch, store, apiPut }) => {
+  doUpdateDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
     const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
     // const toastId = toast.loading('Updating Field Mapping...');
@@ -84,8 +83,9 @@ export default {
       ],
     };
 
-    apiPut(uri, payload, (err, body) => {
+    apiPut(uri, payload, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('test err: ', JSON.stringify(err));
         // tUpdateError(toastId, 'Failed');
       } else {
@@ -95,15 +95,16 @@ export default {
     });
   },
 
-  doDeleteDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
-  },
+  // doDeleteDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
+  //   const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  // },
 
-  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ dispatch, store, apiDelete }) => {
+  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ store, apiDelete }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;
 
-    apiDelete(uri, (err, body) => {
+    apiDelete(uri, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
         if (refreshData) {

@@ -33,6 +33,7 @@ export default {
 
     apiGet(url, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('error: ', err);
       } else {
         dispatch({
@@ -69,6 +70,7 @@ export default {
     apiPost(url, formData, (err, _body) => {
       dispatch({ type: 'EVALUATIONS_CREATE_FINISHED' });
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('error: ', err);
         tUpdateError(toastId, 'Failed to submit evaluation. Try again later.');
       } else {

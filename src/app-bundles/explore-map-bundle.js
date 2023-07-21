@@ -34,8 +34,9 @@ const exploreMapBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         if (!ignoreActions.includes(type))
+          // eslint-disable-next-line no-console
           console.log(type, payload);
       };
       switch (type) {
@@ -48,7 +49,7 @@ const exploreMapBundle = {
             _groupsLoaded: true,
           });
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
+          if (Object.prototype.hasOwnProperty.call(payload, initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: true,
             });
@@ -56,7 +57,7 @@ const exploreMapBundle = {
             return state;
           }
         case 'MAPS_SHUTDOWN':
-          if (payload.hasOwnProperty(initialData._mapKey)) {
+          if (Object.prototype.hasOwnProperty.call(payload, initialData._mapKey)) {
             return Object.assign({}, state, {
               _mapLoaded: false,
               _instrumentsLoaded: false,
@@ -76,7 +77,7 @@ const exploreMapBundle = {
     };
   },
 
-  doExploreMapInitialize: () => ({ dispatch, store }) => {
+  doExploreMapInitialize: () => ({ dispatch }) => {
     dispatch({
       type: 'EXPLOREMAP_INITIALIZE_START',
       payload: {

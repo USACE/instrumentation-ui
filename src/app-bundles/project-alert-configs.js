@@ -13,6 +13,7 @@ const cleanFormState = formState => (
       };
     } else if (current === 'alert_email_subscriptions') {
       const users = formState[current].val.map(el => {
+        // eslint-disable-next-line no-unused-vars
         const { text, label, value, ...rest } = el;
         return rest;
       });
@@ -68,6 +69,7 @@ export default {
   getReducer: () => {
     const initialState = {
       alertConfigs: [],
+      _lastFetched: null,
     };
     
     return (state = initialState, { type, payload }) => {
@@ -76,6 +78,7 @@ export default {
           return {
             ...state,
             alertConfigs: payload,
+            _lastFetched: new Date(),
           };
         default:
           return state;
@@ -85,6 +88,7 @@ export default {
 
   selectProjectAlertConfigsRaw: (state) => state.projectAlertConfigs,
   selectProjectAlertConfigs: (state) => state.projectAlertConfigs.alertConfigs,
+  selectProjectAlertConfigsLastFetched: (state) => state.projectAlertConfigs._lastFetched,
 
   doFetchProjectAlertConfigs: () => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'PROJECT_ALERT_CONFIGS_FETCH_START' });
@@ -94,6 +98,7 @@ export default {
 
     apiGet(url, (err, body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('error: ', err);
       } else {
         dispatch({
@@ -124,6 +129,7 @@ export default {
       apiPost(url, formData, (err, _body) => {
         dispatch({ type: 'PROJECT_ALERT_CONFIGS_CREATE_FINISHED' });
         if (err) {
+          // eslint-disable-next-line no-console
           console.log('error: ', err);
           tUpdateError(toastId, 'Failed to create alert configuration. Try again later.');
         } else {
@@ -153,6 +159,7 @@ export default {
       apiPut(url, formData, (err, _body) => {
         dispatch({ type: 'PROJECT_ALERT_CONFIGS_UPDATE_FINISHED' });
         if (err) {
+          // eslint-disable-next-line no-console
           console.log('error: ', err);
           tUpdateError(toastId, 'Failed to update alert configuration. Try again later.');
         } else {
@@ -174,6 +181,7 @@ export default {
 
     apiDelete(url, (err, _body) => {
       if (err) {
+        // eslint-disable-next-line no-console
         console.log('todo', err);
         tUpdateError(toastId, 'Failed to delete alert configuration. Try again later.');
       } else {

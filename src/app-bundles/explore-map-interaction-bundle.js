@@ -22,7 +22,7 @@ const exploreMapInteractionBundle = {
         case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
           return Object.assign({}, state, payload);
         case 'MAPS_INITIALIZED':
-          if (payload.hasOwnProperty('exploreMap')) {
+          if (Object.prototype.hasOwnProperty.call(payload, 'exploreMap')) {
             return Object.assign({}, state, {
               _shouldInitialize: true,
             });
@@ -81,7 +81,7 @@ const exploreMapInteractionBundle = {
     });
   },
 
-  doExploreMapInteractionsRemoveAll: () => ({ dispatch, store }) => {
+  doExploreMapInteractionsRemoveAll: () => ({ store }) => {
     const mapKey = store.selectExploreMapKey();
     const map = store.selectMapsObject()[mapKey];
     const interactions = [...map.getInteractions().getArray()];
@@ -92,7 +92,7 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  doExploreMapInteractionsReset: () => ({ dispatch, store }) => {
+  doExploreMapInteractionsReset: () => ({ store }) => {
     const mapKey = store.selectExploreMapKey();
     const map = store.selectMapsObject()[mapKey];
     const defaultInteractions = defaults();
@@ -106,7 +106,7 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  doExploreMapInteractionsSelectMode: () => ({ dispatch, store }) => {
+  doExploreMapInteractionsSelectMode: () => ({ store }) => {
     const dragBox = store.selectExploreMapInteractionsDragBox();
     const select = store.selectExploreMapInteractionsSelect();
     const mapKey = store.selectExploreMapKey();
@@ -118,7 +118,7 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  doExploreMapInteractionsSelectByArea: (e) => ({ store }) => {
+  doExploreMapInteractionsSelectByArea: (_e) => ({ store }) => {
     /**
      * Based on openlayers example from https://openlayers.org/en/latest/examples/box-selection.html
      */
