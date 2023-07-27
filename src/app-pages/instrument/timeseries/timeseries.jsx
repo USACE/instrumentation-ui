@@ -16,9 +16,10 @@ import './timeseries.css';
 const doesSetHaveData = (dataSet, key, activeTimeseries) => {
   const data = dataSet[activeTimeseries];
 
-  return !!(data && data[key]);
+  return !!(data && data[key] && data[key].length);
 };
 
+// @TODO - check this for runtime
 const getInclinometerItems = inclinometers => {
   const items = [];
 

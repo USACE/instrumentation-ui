@@ -71,7 +71,9 @@ const Table = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...usePagination && ({
+      getPaginationRowModel: getPaginationRowModel(),
+    }),
   });
 
   const currentIndex = table.getState().pagination.pageIndex;

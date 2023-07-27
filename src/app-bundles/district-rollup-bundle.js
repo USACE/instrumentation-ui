@@ -24,11 +24,18 @@ export default {
   selectDistrictRollupMeasurement: (state) => state.districtRollup.measurement,
 
   // one of [`evaluation`, `measurement`]
-  doFetchDistrictRollup: (type) => ({ dispatch, store, apiGet }) => {
+  doFetchDistrictRollup: (type, fromDate = '', toDate = '') => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'ROLLUP_FETCH_START' });
     const { projectId } = store.selectProjectsIdByRoute();
 
-    const url = `/projects/${projectId}/district_rollup/${type}_submittals`;
+    let query = '';
+    if (fromDate && toDate) {
+      const formattedFrom = fromDate.toISOString();
+      const formattedTo = toDate.toISOString();
+      query = `?from_timestamp_month=${formattedFrom}&to_timestamp_month=${formattedTo}`;
+    }
+
+    const url = `/projects/${projectId}/district_rollup/${type}_submittals${query}`;
 
     apiGet(url, (err, body) => {
       if (err) {
