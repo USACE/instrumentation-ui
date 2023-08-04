@@ -69,8 +69,8 @@
   "scripts": {
     "start": "vite",
     "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
-    "build:test": "env-cmd -f .env.test vite build",
-    "build:prod": "env-cmd -f .env.production vite build",
+    "build:test": "env-cmd -f .env.test vite build --mode test",
+    "build:prod": "env-cmd -f .env.production vite build --mode production",
     "serve-local-build": "npx serve -s build",
     "preview": "vite preview",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,html,scss,css}\"",
