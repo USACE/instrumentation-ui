@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
-import { Circle } from '@mui/icons-material';
+import { Circle, Check } from '@mui/icons-material';
 
 import Searchbar from '../../../../home/search-bar';
 import Table from '../../../../../app-components/table';
+import Button from '../../../../../app-components/button';
 
 const filterItems = (filter, items) => {
   const filtered = items.filter(item => (
@@ -20,9 +21,11 @@ const filterItems = (filter, items) => {
 const SubmittalsTable = connect(
   'doFetchHistoricalSubmittalsByProjectId',
   'selectSubmittalsHistory',
+  'doVerifySingleSubmittals',
   ({
     doFetchHistoricalSubmittalsByProjectId,
     submittalsHistory,
+    doVerifySingleSubmittals,
   }) => {
     const [filter, setFilter] = useState('');
     const [filteredSubmittals, setFilteredSubmittals] = useState(submittalsHistory);
@@ -73,10 +76,19 @@ const SubmittalsTable = connect(
             ),
           }, {
             key: 'mark_missing',
-            header: 'Mark As Missing',
+            header: <span className='d-flex justify-content-center'>Mark as Missing</span>,
             render: data => (
-              <span>
+              <span className='d-flex justify-content-center'>
                 {/* TODO: add button to mark single submittal as missing */}
+                {data?.submittal_status_name === 'red' && !data?.marked_as_missing ? (
+                  <Button
+                    isOutline
+                    size='small'
+                    variant='info'
+                    icon={<Check fontSize='14' />}
+                    handleClick={() => doVerifySingleSubmittals(data?.id)}
+                  />
+                ) : null}
               </span>
             )
           }]}

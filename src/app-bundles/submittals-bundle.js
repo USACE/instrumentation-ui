@@ -95,10 +95,27 @@ export default {
       } else {
         store.doFetchMissingSubmittalsByProjectId();
         store.doFetchProjectAlertConfigs();
-        // store.doFetchAlertConfigSubmittals(alertConfigId);
       }
 
       dispatch({ type: 'PUT_VERIFY_ALL_MISSING_SUBMITTALS_FINISHED' });
+    });
+  },
+
+  doVerifySingleSubmittals: (submittalId) => ({ dispatch, store, apiPut }) => {
+    dispatch({ type: 'PUT_VERIFY_SINGLE_SUBMITTAL_START' });
+
+    const url = `/submittals/${submittalId}/verify_missing`;
+
+    apiPut(url, {}, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('error: ', err);
+      } else {
+        store.doFetchHistoricalSubmittalsByProjectId();
+        store.doFetchProjectAlertConfigs();
+      }
+
+      dispatch({ type: 'PUT_VERIFY_SINGLE_SUBMITTAL_FISISHED' });
     });
   },
 };
