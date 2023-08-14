@@ -1,6 +1,8 @@
 import * as Plotly from 'plotly.js/lib/core';
 import * as Bar from 'plotly.js/lib/bar';
 import * as Pie from 'plotly.js/lib/pie';
+import * as Surface from 'plotly.js/lib/surface';
+import * as Scatter3D from 'plotly.js/lib/scatter3d';
 
 Plotly.register([
   /*
@@ -10,6 +12,8 @@ Plotly.register([
   */
   Bar,
   Pie,
+  Surface,
+  Scatter3D,
 ]);
 
 export default Plotly;

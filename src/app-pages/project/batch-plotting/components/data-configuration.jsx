@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Delete, Edit } from '@mui/icons-material';
 
-import Button from '../../../app-components/button';
+import Button from '../../../../app-components/button';
 import ConfigurationPanel from './configuration-panel';
-import DeleteButton from '../../../app-components/delete-confirm';
-import Select from '../../../app-components/select';
-import usePrevious from '../../../customHooks/usePrevious';
+import DeleteButton from '../../../../app-components/delete-confirm';
+import Select from '../../../../app-components/select';
+import usePrevious from '../../../../customHooks/usePrevious';
 
-import './batch-plotting.scss';
+import '../batch-plotting.scss';
 
 const DataConfiguration = connect(
   'selectBatchPlotConfigurationsItems',

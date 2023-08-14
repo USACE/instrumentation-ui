@@ -13,10 +13,10 @@ import { connect } from 'redux-bundler-react';
 //   Font,
 // } from '@react-pdf/renderer';
 
-import Button from '../../../app-components/button';
-import Plotly from '../../../app-components/chart/minify-plotly';
-import latoBoldSource from '../../../css/google-fonts/fonts/Lato-Bold.ttf';
-import latoSource from '../../../css/google-fonts/fonts/Lato-Regular.ttf';
+import Button from '../../../../app-components/button';
+import Plotly from '../../../../app-components/chart/minify-plotly';
+import latoBoldSource from '../../../../css/google-fonts/fonts/Lato-Bold.ttf';
+import latoSource from '../../../../css/google-fonts/fonts/Lato-Regular.ttf';
 
 // Font.register({ family: 'Lato', src: latoSource });
 // Font.register({ family: 'Lato-Bold', src: latoBoldSource });

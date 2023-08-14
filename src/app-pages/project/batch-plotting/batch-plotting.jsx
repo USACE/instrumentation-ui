@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 import { Engineering } from '@mui/icons-material';
 
-import BatchPlotChart from './batch-plot-chart';
+import BatchPlotChart from './tab-content/batch-plot-chart';
 import Card from '../../../app-components/card';
-import DataConfiguration from './data-configuration';
+import DataConfiguration from './components/data-configuration';
+import DepthChart from './tab-content/depth-chart';
 import Map from '../../../app-components/classMap';
+import TabContainer from '../../../app-components/tab/tabContainer';
 
 import './batch-plotting.scss';
 
@@ -54,9 +56,18 @@ const BatchPlotting = connect(
               </div>
             )}
           </div>
-          <Card className='w-100 my-4'>
-            <Card.Header text='Plot' />
-            <BatchPlotChart />
+          <Card className='w-100 my-4 p-3'>
+            <TabContainer
+              tabs={[
+                {
+                  title: 'Batch Plot Chart',
+                  content: <BatchPlotChart />,
+                }, {
+                  title: 'Depth Based Plot',
+                  content: <DepthChart />
+                },
+              ]}
+            />
           </Card>
         </section>
       </>

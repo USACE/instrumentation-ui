@@ -3,9 +3,11 @@ import DatePicker from 'react-datepicker';
 import { DateTime } from 'luxon';
 import { subDays, startOfDay } from 'date-fns';
 import { CSVLink } from 'react-csv';
+import { Slider } from '@mui/material';
+import { toast } from 'react-toastify';
 
-import Button from '../../../app-components/button';
-import HelperTooltip from '../../../app-components/helper-tooltip';
+import Button from '../../../../app-components/button';
+import HelperTooltip from '../../../../app-components/helper-tooltip';
 import PrintButton from './print-button';
 
 const dateAgo = days => subDays(new Date(), days);
@@ -19,15 +21,45 @@ const customDateFormat = (fromTime, endTime) => {
   return `${fromDate} - ${endDate}`;
 };
 
+// @TODO - this function is atrocious. fix it.
+const generatePlottedCSV = async (chartData = [], setCsvData) => {
+  const res = await (
+    chartData
+      .map(({ name, x, y }) => x.map((time, index) => ({ Time:time, [name + ' Value']: y[index] })))
+      .reduce((acc, curr) => [...acc, ...curr], [])
+      .reduce((acc, {Time, ...rest}) => {
+        const lookup = acc.reduce((lookup, { Time }, index) => {
+          lookup[Time] = index;
+          return lookup;
+        }, {});
+
+        if (lookup[Time]) {
+          acc[lookup[Time]] = { ...acc[lookup[Time]], ...rest };
+          return acc;
+        } else {
+          return [...acc, {Time, ...rest}];
+        }
+      }, [])
+      // Remove characters from ISO 8601 strings for common spreadsheet software to recognize dates
+      .sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime())
+      .map(({ Time, ...rest }) => ({ Time: Time.replace('T', ' ').replace('Z', ''), ...rest }))
+  );
+
+  setCsvData(res);
+};
+
 const BatchPlotChartSettings = ({
   chartSettings,
   setChartSettings,
   dateRange = [],
   setDateRange,
+  threshold = 3000,
+  setThreshold,
   savePlotSettings,
   chartData,
 }) => {
   const [fromTime, endTime] = dateRange;
+  const [csvData, setCsvData] = useState([]);
   const [activeButton, setActiveButton] = useState('1 year');
   const { auto_range, show_comments, show_masked, show_nonvalidated } = chartSettings;
 
@@ -44,8 +76,6 @@ const BatchPlotChartSettings = ({
   const handleDateChangeRaw = (e) => {
     e.preventDefault();
   };
-
-  const isChartDataDownloadable = () => chartData && chartData.every(({x, y}) => x && y && x.length == y.length);
 
   return (
     <div className='m-2'>
@@ -115,6 +145,37 @@ const BatchPlotChartSettings = ({
               dateFormat='MMMM d, yyyy'
             />
           )}
+          <div className='mt-3' style={{ zIndex: 400 }}>
+            <span>
+              Display Point Threshold:
+              <HelperTooltip
+                id='threshold-help'
+                className='pl-2 d-inline'
+                content={(
+                  <span>
+                    The Display Point Threshold value determines the number of data points to downsample the plot to.<br />
+                    The higher this value is, the more accurate the data will be to actual and similarly, the lower the <br />
+                    this value is, the less accurate it will be to actual. To turn off downsampling and use all data points, <br />
+                    set the Display Point Threshold to <b>0</b>. The number of data points will considerably change the<br/>
+                    loading time of the plot, the lower the value the faster it will load. 
+                    <br /><br />
+                    <i><b>It is recommended</b> to only use a high value, or 0, if your date range is small or need extremely<br />
+                    accurate data representation.</i>
+                  </span>
+                )}
+              />
+            </span>
+            <Slider
+              aria-label='threshold slider'
+              valueLabelDisplay='auto'
+              marks={[{ value: 1000 }, { value: 2000 }, { value: 3000 }, { value: 4000 }, { value: 5000 }, { value: 6000 }, { value: 7000 }, { value: 8000 }, { value: 9000 }]}
+              min={0}
+              max={10000}
+              step={100}
+              value={threshold}
+              onChange={(_e, newVal) => setThreshold(newVal)}
+            />
+          </div>
         </div>
         <div className='col-md-6 col-xs-12'>
           <label className='checkbox mt-1'>
@@ -132,7 +193,8 @@ const BatchPlotChartSettings = ({
             place='right'
             content={
               <span>
-                Selecting this option will allow the plot to <br/>attempt a 'best-fit' view for the data selected.
+                Selecting this option will allow the plot to <br/>
+                attempt a 'best-fit' view for the data selected.
               </span>
             }
           />
@@ -147,6 +209,7 @@ const BatchPlotChartSettings = ({
                 show_masked: !isDisplayAllActive(),
                 show_nonvalidated: !isDisplayAllActive(),
                 show_comments: !isDisplayAllActive(),
+                threshold,
               })}
               onChange={() => {}}
             />
@@ -205,34 +268,38 @@ const BatchPlotChartSettings = ({
         })}
       />
       <CSVLink
-        data={isChartDataDownloadable ? chartData
-          .map(({ name, x, y }) => x.map((time, index) => ({ Time:time, [name + ' Value']: y[index] })))
-          .reduce((acc, curr) => [...acc, ...curr], [])
-          .reduce((acc, {Time, ...rest}) => {
-            const lookup = acc.reduce((lookup, { Time }, index) => {
-              lookup[Time] = index;
-              return lookup;
-            }, {});
-
-            if (lookup[Time]) {
-              acc[lookup[Time]] = { ...acc[lookup[Time]], ...rest };
-              return acc;
-            } else {
-              return [...acc, {Time, ...rest}];
-            }
-          }, [])
-          // Remove characters from ISO 8601 strings for common spreadsheet software to recognize dates
-          .sort((a, b) => new Date(a.Time).getTime() - new Date(b.Time).getTime())
-          .map(({ Time, ...rest }) => ({ Time: Time.replace('T', ' ').replace('Z', ''), ...rest }))
-          : {} }
+        asyncOnClick
         filename={chartSettings.name + '.csv'}
+        data={csvData}
+        onClick={(_e, done) => {
+          toast.promise(
+            Promise.resolve(generatePlottedCSV(chartData, setCsvData)),
+            {
+              pending: {
+                render: () => 'Generating CSV file. Please wait...',
+              },
+              success: {
+                render: () => {
+                  done();
+                  return 'Your file is ready!';
+                }
+              },
+              error: {
+                render: ({ data }) => {
+                  done(false);
+                  return `Failed to generate file... \n${data?.message}`;
+                }
+              },
+            }
+          )
+        }}
       >
         <Button
           isOutline
           size='small'
-          variant='success'
+          variant='info'
           text='Download Plotted Data to .csv'
-          isDisabled={!isChartDataDownloadable}
+          className='ml-2'
         />
       </CSVLink>
     </div>
