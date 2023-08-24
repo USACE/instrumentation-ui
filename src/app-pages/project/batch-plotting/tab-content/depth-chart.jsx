@@ -110,7 +110,7 @@ const build2dTrace = (dataArray, key, unit) => dataArray.map(data => (
     hovertemplate: `
       <b>${data.time}</b><br>
       Depth: %{y}<br>
-      Measurement: %{x}<br>
+      Displacement: %{x}<br>
       <extra></extra>
     `,
   }
