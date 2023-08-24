@@ -10,7 +10,6 @@ export default createRestBundle({
   // TODO: default before and after time periods should be implemented on
   // the backend.
   getTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?before=2025-01-01T00:00:00.00Z&after=1900-01-01T00:00:00.00Z',
-  
   putTemplate: '',
   postTemplate: '/timeseries/:timeseriesId/inclinometer_measurements',
   deleteTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?time={:item.date}',
@@ -32,5 +31,40 @@ export default createRestBundle({
     const pathnameWhitelist = ['/instruments/', '/groups/', '/collection-groups/'];
 
     return whitelist.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
+  },
+  addons: {
+    doFetchInclinometerMeasurementsByTimeseriesId: (timeseriesId) => ({ dispatch, apiGet }) => {
+      const uri = `/timeseries/${timeseriesId}/inclinometer_measurements?before=2025-01-01T00:00:00.00Z&after=1900-01-01T00:00:00.00Z`;
+
+      apiGet(uri, (err, body) => {
+        if (err) {
+          // eslint-disable-next-line no-console
+          console.log('error: ', err);
+        } else {
+          dispatch({
+            type: 'SET_CURRENT_INCLINOMETER_MEASUREMENTS',
+            payload: {
+              timeseriesId,
+              measurements: body,
+            },
+          });
+        }
+      });
+    },
+
+    selectCurrentInclinometerMeasurements: state => state.inclinometerMeasurements.currentMeasurements,
+  },
+  reduceFurther: (state, { type, payload }) => {
+    if (type === 'SET_CURRENT_INCLINOMETER_MEASUREMENTS') {
+      return {
+        ...state,
+        'currentMeasurements': {
+          ...state['currentMeasurements'],
+          [payload.timeseriesId]: payload.measurements,
+        },
+      };
+    } else {
+      return state;
+    }
   },
 });

@@ -76,10 +76,9 @@ const SubmittalsTable = connect(
             ),
           }, {
             key: 'mark_missing',
-            header: <span className='d-flex justify-content-center'>Mark as Missing</span>,
+            header: <span className='d-flex justify-content-center'>Verify Missing</span>,
             render: data => (
               <span className='d-flex justify-content-center'>
-                {/* TODO: add button to mark single submittal as missing */}
                 {data?.submittal_status_name === 'red' && !data?.marked_as_missing ? (
                   <Button
                     isOutline

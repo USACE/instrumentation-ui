@@ -285,7 +285,8 @@ const chartEditorBundle = {
       const chartData = [];
 
       Object.keys(dataByInstrumentId).forEach((id) => {
-        const { timeseries } = dataByInstrumentId[id];
+        const { timeseries, constants } = dataByInstrumentId[id];
+
         if (!timeseries || !timeseries.length) return undefined;
 
         timeseries.sort((a, b) => {
@@ -295,12 +296,14 @@ const chartEditorBundle = {
         });
 
         timeseries.forEach((series) => {
-          const { items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
+          const { id, items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
           if (!items || !items.length) return undefined;
+
+          // if (constants.includes(id)) console.log('test Im a constant!', id);
 
           const x = [];
           const y = [];
-          let plotData = [];
+          const plotData = [];
 
           if (isInclinometer) {
             const negateDepth = val => val < 0 ? val : -val;
@@ -339,18 +342,18 @@ const chartEditorBundle = {
               y.push(item.value);
             });
 
-            plotData = [{
+            plotData.push({
               type: 'scattergl',
               name: `${instrumentName} - ${name}`,
               x: x,
               y: y,
               ...style,
-            }];
+            });
           }
 
           const domainName = getDomainName(domains, parameter_id);
 
-          if (!chartData.find(y => y.name === parameter_id)) {
+          if (!chartData.find(x => x.name === parameter_id)) {
             chartData.push({
               id: series.id,
               name: parameter_id,
@@ -358,10 +361,7 @@ const chartEditorBundle = {
               unit: unit_id,
               data: plotData,
             });
-          } else if (
-            chartData.find(x => x.name === parameter_id).unit !== unit_id &&
-            chartData.findIndex(y => y.name === parameter_id) !== -1
-          ) {
+          } else if (chartData.find(x => x.name === parameter_id).unit !== unit_id && chartData.findIndex(y => y.name === parameter_id) !== -1) {
             chartData.push({
               id: series.id,
               name: parameter_id,
@@ -370,15 +370,25 @@ const chartEditorBundle = {
               data: plotData,
             });
           } else {
-            const found = chartData.find(x => x.name === parameter_id);
-            found.id = series.id;
-            found.data.concat(plotData);
+            const foundIndex = chartData.findIndex(x => x.name === parameter_id);
+            const item = chartData[foundIndex];
+
+            chartData.splice(foundIndex, 1);
+
+            chartData.push({
+              id: series.id,
+              name: parameter_id,
+              domainName,
+              unit: unit_id,
+              data: [...item.data, ...plotData],
+            });
           }
         });
       });
       if (showRainfall) {
         chartData.push(...rainfallData);
       }
+
       return chartData;
     }
   ),

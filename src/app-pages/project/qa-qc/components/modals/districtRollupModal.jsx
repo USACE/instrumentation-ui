@@ -28,7 +28,7 @@ const generateDataTraces = (data = []) => {
       month,
       red_submittals,
       yellow_submittals,
-      project_id,
+      // project_id,
     } = current;
 
     const monthDT = DateTime.fromISO(month, { setZone: 'UTC' });
