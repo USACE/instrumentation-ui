@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { Add, DeleteOutline } from '@mui/icons-material';
-
+import { Add, DeleteOutline, KeyboardArrowUp, KeyboardDoubleArrowUp, KeyboardArrowDown, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import Button from '../../app-components/button';
 import RoleFilter from '../../app-components/role-filter';
 
 const TimeseriesListEntry = ({
+  handleLocalTimeseriesOrderChange,
   handleItemSaveValue,
   handleItemDelete,
   item,
@@ -16,21 +16,12 @@ const TimeseriesListEntry = ({
     // Flex Wrapper
     <div className='d-flex flex-row list-group-item border-0 bg-light my-1'>
       {/* Column 1 */}
-      <div className='d-flex flex-row' style={{ minWidth: '420px' }}>
+      <div className='d-flex flex-row' style={{ minWidth: '350px' }}>
         <div className='d-flex flex-column my-2'>
           <div className='h5 mb-1'>
             <a href={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
               {item.instrument}
             </a>
-            <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
-              <Button
-                variant='link'
-                className='text-secondary h-100'
-                handleClick={() => handleItemDelete(item)}
-                icon={<DeleteOutline color='error' fontSize='small' sx={{ marginBottom: '4px' }} />}
-                title='Remove from group'
-              />
-            </RoleFilter>
           </div>
           <div className='h6'>
             {item.name}
@@ -52,6 +43,51 @@ const TimeseriesListEntry = ({
           <div className='text-secondary font-weight-light font-italic'>
             {item.latest_time ? formatDistanceToNow(parseISO(item.latest_time)) + ' ago' : 'No Data Found'}
           </div>
+        </div>
+        {/* column 2 buttons */}
+        <div className='d-flex flex-row justify-content-between align-items-center'>
+          <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
+            <Button
+              size='small'
+              variant='link'
+              className='text-secondary h-50'
+              handleClick={() => handleItemDelete(item)}
+              icon={<DeleteOutline color='error' fontSize='small' sx={{ marginBottom: '4px' }} />}
+              title='Remove from group'
+            />
+            <Button
+              size='small'
+              variant='link'
+              className='text-secondary h-50'
+              handleClick={() => handleLocalTimeseriesOrderChange(item, '++')}
+              icon={<KeyboardDoubleArrowUp fontSize='inherit' />}
+              title='Increase order to first'
+            />
+            <Button
+              size='small'
+              variant='link'
+              className='text-secondary h-50'
+              handleClick={() => handleLocalTimeseriesOrderChange(item, '+')}
+              icon={<KeyboardArrowUp fontSize='inherit' />}
+              title='Increase order by 1'
+            />
+            <Button
+              size='small'
+              variant='link'
+              className='text-secondary h-50'
+              handleClick={() => handleLocalTimeseriesOrderChange(item, '-')}
+              icon={<KeyboardArrowDown fontSize='inherit' />}
+              title='Decrease order by 1'
+            />
+            <Button
+              size='small'
+              variant='link'
+              className='text-secondary h-50'
+              handleClick={() => handleLocalTimeseriesOrderChange(item, '--')}
+              icon={<KeyboardDoubleArrowDown fontSize='inherit' />}
+              title='Decrease order to last'
+            />
+          </RoleFilter>
         </div>
         {/* Column 3 */}
         <div className='d-flex flex-row'>
@@ -82,19 +118,22 @@ const TimeseriesListEntry = ({
 };
 
 const CollectionGroupTimeseriesList = ({
-  items,
   handleItemDelete,
   handleItemSaveValue,
+  localTimeseriesOrder,
+  handleLocalTimeseriesOrderChange,
 }) => (
   <div className='w-100 list-group'>
-    {items.map((item, idx) => (
-      <TimeseriesListEntry
-        key={idx}
-        item={item}
-        handleItemDelete={handleItemDelete}
-        handleItemSaveValue={handleItemSaveValue}
-      />
-    ))}
+    {localTimeseriesOrder
+      .map((item) => (
+        <TimeseriesListEntry
+          key={item?.id}
+          item={item}
+          handleItemDelete={handleItemDelete}
+          handleItemSaveValue={handleItemSaveValue}
+          handleLocalTimeseriesOrderChange={handleLocalTimeseriesOrderChange}
+        />
+      ))}
   </div>
 );
 

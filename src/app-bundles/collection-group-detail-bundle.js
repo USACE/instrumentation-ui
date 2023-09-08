@@ -8,7 +8,7 @@ export default createRestBundle({
   sortBy: 'name',
   routeParam: 'collectionGroupSlug',
   getTemplate: '/projects/:projectId/collection_groups/:collectionGroupId',
-  putTemplate: '/:',
+  putTemplate: '/collection_groups/:collectionGroupId/timeseries',
   postTemplate: '/projects/:projectId/collection_groups',
   deleteTemplate: '/projects/:projectId/collection_groups/{:item.id}',
   fetchActions: [],
@@ -24,5 +24,25 @@ export default createRestBundle({
     'selectProjectsIdByRoute',
     'selectCollectionGroupIdByRoute',
   ],
-  addons: {},
+  addons: {
+    doCollectionGroupDetailsTimeseriesUpdate: ({ id, timeseries }) => ({ dispatch, apiPut }) => {
+      dispatch({
+        type: 'COLLECTIONGROUPDETAILS_UPDATE_TIMESERIES_START',
+        payload: {},
+      });
+      const url = `/collection_groups/${id}/timeseries`;
+
+      const formData = {
+        id,
+        timeseries,
+      };
+
+      apiPut(url, formData, () => {
+        dispatch({
+          type: 'COLLECTIONGROUPDETAILS_UPDATE_TIMESERIES_FINISH',
+          payload: {},
+        });
+      });
+    },
+  },
 });

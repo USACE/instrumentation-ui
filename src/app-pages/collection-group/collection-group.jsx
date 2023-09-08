@@ -14,6 +14,7 @@ import TimestampModeSwitcher from './collectiongroup-timestamp-mode-switcher';
 
 export default connect(
   'doCollectionGroupRemoveTimeseries',
+  'doCollectionGroupDetailsTimeseriesUpdate',
   'doModalOpen',
   'doNotificationFire',
   'doTimeseriesMeasurementsSave',
@@ -22,6 +23,7 @@ export default connect(
   'selectProjectsByRoute',
   ({
     doCollectionGroupRemoveTimeseries,
+    doCollectionGroupDetailsTimeseriesUpdate,
     doModalOpen,
     doNotificationFire,
     doTimeseriesMeasurementsSave,
@@ -32,6 +34,7 @@ export default connect(
     const [isShown, setIsShown] = useState(true);
     const [timestampMode, setTimestampMode] = useState('now'); // One of ['now', 'choose']
     const [date, setDate] = useState(new Date());
+    const [localTimeseriesOrder, setLocalTimeseriesOrder] = useState([]);
 
     useEffect(() => {
       if (timestampMode === 'now') {
@@ -39,6 +42,15 @@ export default connect(
         setDate(d);
       }
     }, [timestampMode, appTime]);
+
+    useEffect(
+      () => {
+        setLocalTimeseriesOrder(detail?.timeseries.sort((a, b) =>
+          (a.list_order === null) - (b.list_order === null) || a.list_order - b.list_order
+        ));
+      },
+      [detail]
+    );
 
     const handleTimeseriesSaveValue = (
       { id, instrument, name, unit },
@@ -75,6 +87,72 @@ export default connect(
       }
     };
 
+    const updateLocalTimeseriesOrder = (newLocalTimeseriesOrder) => {
+      setLocalTimeseriesOrder(
+        newLocalTimeseriesOrder.map((item, index) => {
+          item.list_order = index;
+          return item;
+        })
+      );
+    };
+
+    const handleLocalTimeseriesOrderChange = (
+      item,
+      type
+    ) => {
+      switch (type) {
+        case '++': {
+          updateLocalTimeseriesOrder([item, ...localTimeseriesOrder.filter(x => x != item)]);
+          break;
+        }
+        case '+': {
+          const idx = localTimeseriesOrder.indexOf(item);
+
+          if (idx === 0) {
+            const newLocalTimeseriesOrder = [...localTimeseriesOrder.filter(x => x != item), item];
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          } else {
+            const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
+            [newLocalTimeseriesOrder[idx], newLocalTimeseriesOrder[idx-1]] = [newLocalTimeseriesOrder[idx-1], newLocalTimeseriesOrder[idx]];
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          }
+          break;
+        }
+        case '-': {
+          const idx = localTimeseriesOrder.indexOf(item);
+
+          if (idx === (localTimeseriesOrder.length - 1)) {
+            const newLocalTimeseriesOrder = [item, ...localTimeseriesOrder.filter(x => x != item)];
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          } else {
+            const newLocalTimeseriesOrder = localTimeseriesOrder.slice();
+            [newLocalTimeseriesOrder[idx], newLocalTimeseriesOrder[idx+1]] = [newLocalTimeseriesOrder[idx+1], newLocalTimeseriesOrder[idx]];
+            updateLocalTimeseriesOrder(newLocalTimeseriesOrder);
+          }
+          break;
+        }
+        case '--':
+          updateLocalTimeseriesOrder([...localTimeseriesOrder.filter(x => x != item), item]);
+          break;
+        default:
+      }
+    };
+
+    const handleTimeseriesOrderSave = () => {
+      const success = {
+        type: 'success',
+        title: `Save Successful`,
+        message: `Timeseries order updated`,
+      };
+
+      doCollectionGroupDetailsTimeseriesUpdate({
+        id: detail.id,
+        timeseries: localTimeseriesOrder
+      });
+
+      doNotificationFire(success);
+    };
+
     return (
       <div style={{ marginBottom: '200px' }}>
         {detail && (
@@ -95,6 +173,7 @@ export default connect(
                   }}
                   text='Edit'
                 />
+                
               </RoleFilter>
             </div>
             {/* CONFIGURATION DETAILS */}
@@ -121,12 +200,21 @@ export default connect(
                         <Button
                           variant='link'
                           size='small'
-                          handleClick={(e) => {
+                          handleClick={e => {
                             doModalOpen(collectionGroupTimeseriesPicker);
                             e.stopPropagation();
                           }}
                           text='Add'
                           icon={<Add sx={{ marginBottom: '2px', fontSize: '18px' }} />}
+                        />
+                        <Button
+                          variant='success'
+                          size='small'
+                          handleClick={e => {
+                            handleTimeseriesOrderSave();
+                            e.stopPropagation();
+                          }}
+                          text='Save Order'
                         />
                       </RoleFilter>
                     </div>
@@ -138,7 +226,7 @@ export default connect(
                     />
                   </Card.Header>
 
-                  {isShown ? (
+                  {isShown && localTimeseriesOrder ? (
                     <Card.Body>
                       <div style={{ maxHeight: '600px', overflow: 'auto' }}>
                         <TimeseriesList
@@ -152,6 +240,8 @@ export default connect(
                             });
                           }}
                           handleItemSaveValue={handleTimeseriesSaveValue}
+                          handleLocalTimeseriesOrderChange={handleLocalTimeseriesOrderChange}
+                          localTimeseriesOrder={localTimeseriesOrder}
                         />
                       </div>
                     </Card.Body>
