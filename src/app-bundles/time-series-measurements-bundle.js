@@ -41,6 +41,7 @@ export default createRestBundle({
     doTimeseriesMeasurementsFetchById: ({
       timeseriesId,
       dateRange,
+      threshold = 0,
     }) => ({ dispatch, store, apiGet }) => {
       dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START', payload: {} });
       const [after, before] = dateRange;
@@ -48,7 +49,7 @@ export default createRestBundle({
       const isoAfter = after ? after.toISOString() : afterDate;
       const isoBefore = before ? before.toISOString() : beforeDate;
 
-      const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}`;
+      const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}&threshold=${threshold}`;
       const flags = store['selectTimeseriesMeasurementsFlags']();
       const itemsById = store['selectTimeseriesMeasurementsItemsObject']();
       let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();
