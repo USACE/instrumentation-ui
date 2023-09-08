@@ -200,7 +200,7 @@ export default connect(
                         <Button
                           variant='link'
                           size='small'
-                          handleClick={(e) => {
+                          handleClick={e => {
                             doModalOpen(collectionGroupTimeseriesPicker);
                             e.stopPropagation();
                           }}
@@ -210,8 +210,9 @@ export default connect(
                         <Button
                           variant='success'
                           size='small'
-                          handleClick={() => {
+                          handleClick={e => {
                             handleTimeseriesOrderSave();
+                            e.stopPropagation();
                           }}
                           text='Save Order'
                         />
