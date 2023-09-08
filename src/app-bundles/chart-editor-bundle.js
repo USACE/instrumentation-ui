@@ -285,7 +285,7 @@ const chartEditorBundle = {
       const chartData = [];
 
       Object.keys(dataByInstrumentId).forEach((id) => {
-        const { timeseries, constants } = dataByInstrumentId[id];
+        const { timeseries } = dataByInstrumentId[id];
 
         if (!timeseries || !timeseries.length) return undefined;
 
@@ -296,10 +296,8 @@ const chartEditorBundle = {
         });
 
         timeseries.forEach((series) => {
-          const { id, items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
+          const { items, style, instrument: instrumentName, name, parameter_id, unit_id, isInclinometer } = series;
           if (!items || !items.length) return undefined;
-
-          // if (constants.includes(id)) console.log('test Im a constant!', id);
 
           const x = [];
           const y = [];
