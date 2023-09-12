@@ -31,7 +31,7 @@ const DataConfiguration = connect(
     const configurations = batchPlotConfigurationsItems.map(config => ({
       text: config.name,
       value: config.id,
-    }));
+    })).sort((a, b) => a.text.localeCompare(b.text));
 
     const handleEditClick = () => {
       const currentItem = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];

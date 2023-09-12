@@ -17,6 +17,9 @@ const DataLoggerModal = connect(
       sn: '',
       name: '',
       model_id: '',
+      numberOfSegments: 0,
+      segmentLength: '',
+      bottomElevation: '',
     },
   }) => {
     const {
@@ -24,12 +27,19 @@ const DataLoggerModal = connect(
       sn: initSn,
       name: initName,
       model_id: initModelId,
+      numberOfSegments: initNumberOfSegments,
+      segmentLength: initSegmentLength,
+      bottomElevation: initBottomElevation,
     } = dataLogger;
     const title = `${isEdit ? 'Edit' : 'Add New'} Data Logger`;
     
     const [sn, setSN] = useState(initSn);
     const [name, setName] = useState(initName);
     const [modelId, setModelId] = useState(initModelId);
+    const [isSaaIpi, setIsSaaIpi] = useState(false);
+    const [numberOfSegments, setNumberOfSegments] = useState(initNumberOfSegments);
+    const [segmentLength, setSegmentLength] = useState(initSegmentLength);
+    const [bottomElevation, setBottomElevation] = useState(initBottomElevation);
 
     const saveDataLoggerDetails = () => {
       if (isEdit) {
@@ -38,6 +48,13 @@ const DataLoggerModal = connect(
       } else {
         doCreateNewDataLogger({ sn, name, model_id: modelId });
       }
+    };
+
+    const isSaveDisabled = () => {
+      if (!sn || !name || !modelId) return true;
+
+      if (!isSaaIpi) return false;
+      else return true;
     };
 
     return (
@@ -74,6 +91,52 @@ const DataLoggerModal = connect(
                   domain='datalogger_model'
                 />
               </div>
+              {modelId ? (
+                <>
+                  <div className='form-group'>
+                    <input
+                      type='checkbox'
+                      checked={isSaaIpi}
+                      onChange={() => setIsSaaIpi(prev => !prev)}
+                    />
+                    &nbsp;- Data Logger is Used for Inclinometer Data (SAA or IPI)
+                  </div>
+                  {isSaaIpi ? (
+                    <>
+                      <div className='form-group'>
+                        <label>Number of Segments</label>
+                        <input
+                          type='number'
+                          value={numberOfSegments}
+                          onChange={e => setNumberOfSegments(e.target.value)}
+                          className='form-control text-primary'
+                        />
+                      </div>
+                      <div className='form-group'>
+                        <label>Segment Length</label>
+                        <input
+                          type='text'
+                          value={segmentLength}
+                          onChange={e => setSegmentLength(e.target.value)}
+                          className='form-control text-primary'
+                          placeholder='Segment Length'
+                        />
+                      </div>
+                      <div className='form-group'>
+                        <label>Bottom Elevation</label>
+                        <input
+                          type='text'
+                          value={bottomElevation}
+                          onChange={e => setBottomElevation(e.target.value)}
+                          className='form-control text-primary'
+                          placeholder='Bottom Elevation'
+                        />
+                      </div>
+                      Any other fields...
+                    </>
+                  ) : null}
+                </>
+              ) : null}
             </>
           ) : (
             <small>
@@ -84,6 +147,7 @@ const DataLoggerModal = connect(
         <Modal.ModalFooter
           showCancelButton
           onSave={saveDataLoggerDetails}
+          saveIsDisabled={isSaveDisabled()}
         />
       </Modal.ModalContent>
     );

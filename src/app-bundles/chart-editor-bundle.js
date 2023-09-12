@@ -350,12 +350,14 @@ const chartEditorBundle = {
           }
 
           const domainName = getDomainName(domains, parameter_id);
+          const unitName = domains['unit'].find(el => el.id === unit_id)?.value;
 
           if (!chartData.find(x => x.name === parameter_id)) {
             chartData.push({
               id: series.id,
               name: parameter_id,
               domainName,
+              unitName,
               unit: unit_id,
               data: plotData,
             });
@@ -364,6 +366,7 @@ const chartEditorBundle = {
               id: series.id,
               name: parameter_id,
               domainName,
+              unitName,
               unit: unit_id,
               data: plotData,
             });
@@ -377,6 +380,7 @@ const chartEditorBundle = {
               id: series.id,
               name: parameter_id,
               domainName,
+              unitName,
               unit: unit_id,
               data: [...item.data, ...plotData],
             });
