@@ -48,8 +48,10 @@ export default connect(
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
     const len = timeseries.length;
+
     let firstTimeseries = null;
     if (len && len > 0) firstTimeseries = timeseries[0];
+
     useEffect(() => {
       if (!len || !firstTimeseries) {
         doInstrumentTimeseriesSetActiveId(null);
