@@ -26,9 +26,9 @@ export default {
 
   doFetchInstrumentSensorsById: () => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'INSTRUMENT_SENSORS_BY_ID_FETCH_START' });
-    const { id } = store.selectInstrumentsIdByRoute();
+    const { instrumentId } = store.selectInstrumentsIdByRoute();
 
-    const url = `/instruments/${id}/sensors`;
+    const url = `/instruments/saa/${instrumentId}/segments`;
 
     apiGet(url, (err, body) => {
       if (err) {
@@ -42,6 +42,20 @@ export default {
       }
 
       dispatch({ type: 'INSTRUMENT_SENSORS_BY_ID_FETCH_FINISHED' });
+    });
+  },
+
+  doUpdateInstrumentSensor: (instrumentId, segmentId, formData) => ({ dispatch, store, apiPut }) => {
+    dispatch({ type: 'INSTRUMENT_SENSOR_UPDATE_START' });
+    const url = `/instruments/saa/${instrumentId}/segments/${segmentId}`;
+
+    apiPut(url, formData, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('todo', err);
+      } else {
+        store.doFetchInstrumentSensorsById();
+      }
     });
   },
 };

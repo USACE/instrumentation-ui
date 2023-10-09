@@ -4,19 +4,19 @@ import { useDeepCompareEffect } from 'react-use';
 import { classArray } from '../../../common/helpers/utils';
 
 const SensorList = ({
-  activeSensor,
-  setActiveSensor,
+  activeSensorId,
+  setActiveSensorId,
   instrumentSensors,
 }) => {
   const itemClass = (sensorId) => classArray([
     'list-group-item',
     'pointer',
-    sensorId === activeSensor && 'active',
+    sensorId === activeSensorId && 'active',
   ]);
 
   useDeepCompareEffect(() => {
     if (instrumentSensors.length) {
-      setActiveSensor(instrumentSensors[0]);
+      setActiveSensorId(instrumentSensors[0]?.id);
     }
   }, [instrumentSensors]);
 
@@ -27,6 +27,7 @@ const SensorList = ({
           <li
             key={sensor.id}
             className={itemClass(sensor.id)}
+            onClick={() => setActiveSensorId(sensor.id)} // @TODO: Also fetch segment details by id for use in detail screen
           >
             {sensor.name}
           </li>

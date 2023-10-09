@@ -3,10 +3,10 @@ import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
 import { Add, Remove } from '@mui/icons-material';
 import { subDays } from 'date-fns';
+import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
-import { useDeepCompareEffect } from 'react-use';
 
 const extractTimeseries = equivalency => {
   const ret = [];

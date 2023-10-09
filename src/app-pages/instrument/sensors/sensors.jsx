@@ -11,7 +11,7 @@ const Sensors = connect(
     doFetchInstrumentSensorsById,
     instrumentSensors,
   }) => {
-    const [activeSensor, setActiveSensor] = useState(null);
+    const [activeSensorId, setActiveSensorId] = useState(null);
 
     useEffect(() => {
       doFetchInstrumentSensorsById();
@@ -20,22 +20,22 @@ const Sensors = connect(
     return (
       <div>
         <p>
-          Each sensor's is depth is determined by the number of segments on the SAA, taking slope angle into account. Each sensor should have four (4)
-          timeseries mapped to them to be used in depth plotting. These timeseries should contain X, Y, Z and Temperature measurements.
+          Each sensor's depth is determined by the number of segments on the SAA, taking slope angle into account. Each sensor should have four (4)
+          timeseries mapped to them to be used in depth-based plotting. These timeseries should contain X, Y, Z and Temperature measurements.
         </p>
         <div className='row'>
           {instrumentSensors.length ? (
             <>
               <div className='col-3'>
                 <SensorList
-                  activeSensor={activeSensor}
-                  setActiveSensor={setActiveSensor}
+                  activeSensorId={activeSensorId}
+                  setActiveSensorId={setActiveSensorId}
                   instrumentSensors={instrumentSensors}
                 />
               </div>
               <div className='col-9'>
                 <SensorDetails
-                  activeSensor={activeSensor}
+                  activeSensor={activeSensorId}
                 />
               </div>
             </>
