@@ -21,8 +21,7 @@ export default connect(
     const alertsReady = false;
     const forumlaReady = import.meta.env.VITE_FORMULA_EDITOR === 'true';
     const chartReady = import.meta.env.VITE_INSTRUMENT_CHART === 'true';
-
-    const isShapeArray = true;
+    const isShapeArray = instrument?.type === 'SAA';
 
     const tabs = [
       alertsReady && {
