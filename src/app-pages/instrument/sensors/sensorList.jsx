@@ -29,7 +29,7 @@ const SensorList = ({
             className={itemClass(sensor.id)}
             onClick={() => setActiveSensorId(sensor.id)} // @TODO: Also fetch segment details by id for use in detail screen
           >
-            {sensor.name}
+            {sensor.id}
           </li>
         ))}
       </>

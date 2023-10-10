@@ -17,6 +17,8 @@ const Sensors = connect(
       doFetchInstrumentSensorsById();
     }, [doFetchInstrumentSensorsById]);
 
+    const activeSensor = instrumentSensors.find(s => s.id === activeSensorId)
+
     return (
       <div>
         <p>
@@ -35,7 +37,7 @@ const Sensors = connect(
               </div>
               <div className='col-9'>
                 <SensorDetails
-                  activeSensor={activeSensorId}
+                  activeSensor={activeSensor}
                 />
               </div>
             </>
