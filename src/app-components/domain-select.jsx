@@ -1,33 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
-import Select from 'react-select';
+import { Autocomplete, TextField } from '@mui/material';
 
 export default connect(
   'selectDomainsItemsByGroup',
-  ({ value, onChange, domain, domainsItemsByGroup }) => {
+  ({
+    domainsItemsByGroup,
+    value,
+    onChange,
+    domain,
+  }) => {
+    const [selectValue, setSelectValue] = useState();
     const options = domainsItemsByGroup[domain]?.map(item => (
       { value: item.id, label: item.value }
-    ));
+    )) || [];
 
-    const initValue = domainsItemsByGroup[domain]?.find(el => el.id === value);
+    useEffect(() => {
+      if (selectValue && domainsItemsByGroup[domain]?.find(el => el.value === selectValue)) {
+        onChange(selectValue.value);
+      }
+    }, [selectValue])
 
     return (
       <>
         {!options || !options.length ? (
           <i className='d-block pl-3'>No Options...</i>
         ) : (
-          <Select
-            isSearchable
-            defaultValue={initValue ? { value: initValue.id, label: initValue.value } : undefined}
-            onChange={val => onChange(val.value)}
-            placeholder='Select one...'
+          <Autocomplete
+            size='small'
+            defaultValue={options.find(el => el.value === value)}
+            isOptionEqualToValue={(opt, val) => opt.value === val.value}
+            onChange={e => setSelectValue(e.target.innerText)}
+            renderInput={(params) => <TextField {...params} placeholder='Select one...' onChange={e => setSelectValue(e.target.value)} />}
             options={options}
-            styles={{
-              menuList: base => ({
-                ...base,
-                maxHeight: '200px',
-              })
-            }}
+            fullWidth
           />
         )}
       </>

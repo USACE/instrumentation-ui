@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-bundler-react';
+import { Autocomplete, TextField } from '@mui/material';
 
 import DomainSelect from '../../../app-components/domain-select';
 import { ModalFooter, ModalHeader } from '../../../app-components/modal';
@@ -10,12 +11,16 @@ export default connect(
   'doInstrumentsSave',
   'doInstrumentTimeseriesDelete',
   'selectInstrumentsByRoute',
+  'selectInstrumentTimeseriesByProjectId',
+  'selectProjectsIdByRoute',
   ({
     doModalClose,
     doInstrumentTimeseriesSave,
     doInstrumentsSave,
     doInstrumentTimeseriesDelete,
     instrumentsByRoute: instrument,
+    instrumentTimeseriesByProjectId,
+    projectsIdByRoute,
     item,
     isEdit = false,
   }) => {
@@ -23,6 +28,8 @@ export default connect(
     const [instrument_id] = useState(instrument.id);
     const [parameter_id, setParameterId] = useState((item && item.parameter_id) || '');
     const [unit_id, setUnitId] = useState((item && item.unit_id) || '');
+    const { projectId } = projectsIdByRoute;
+    const projectTimeseries = instrumentTimeseriesByProjectId[projectId]?.map(el => ({ label: el.name, value: el.name })) || [];
 
     const title = isEdit ? 'Edit Timeseries' : 'New Timeseries';
 
@@ -61,12 +68,17 @@ export default connect(
           <section className='modal-body'>
             <div className='form-group'>
               <label>Name</label>
-              <input
-                value={name}
-                onChange={e => setName(e.target.value)}
-                className='form-control'
-                type='text'
-                placeholder='Text input'
+              <Autocomplete
+                freeSolo
+                size='small'
+                id='timeseries-name-ac'
+                options={projectTimeseries}
+                defaultValue={projectTimeseries.find(el => el.value === name)}
+                renderInput={(params) => (
+                  <TextField {...params} placeholder='Timeseries Name... ' onChange={e => setName(e.target.value)} />
+                )}
+                onChange={e => setName(e.target.innerText)}
+                 // @TODO: check value from this.
               />
             </div>
             <div className='form-group'>

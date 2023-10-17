@@ -22,13 +22,9 @@ const SensorDetails = connect(
   }) => {
     // @TODO: grab current segment values to use as default.
     const [options, dispatch] = useReducer(reduceState, activeSensor);
-
     const tsOpts = generateOptions(timeseries);
 
-    const getOption = tsId => {
-       return tsOpts.find(opt => opt.value === activeSensor[tsId])
-    };
-
+    const getOption = tsId => tsOpts.find(opt => opt.value === activeSensor[tsId]);
     const handleSave = () => doUpdateInstrumentSensor(options);
 
     return (
@@ -39,7 +35,7 @@ const SensorDetails = connect(
           <>
             <div className='row'>
               <div className='col-3'>
-                <label>X Timeseries:</label>
+                <label>X Timeseries</label>
                 <Select
                   value={getOption('x_timeseries_id')}
                   className='d-inline-block w-100'
@@ -79,7 +75,8 @@ const SensorDetails = connect(
               isOutline
               size='small'
               variant='success'
-              text='Save Segment Config'
+              text='Save Sensor Config'
+              className='mt-2'
               handleClick={handleSave}
             />
           </>

@@ -28,7 +28,7 @@ export default connect(
           <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
             <button
               className='float-right btn btn-sm btn-outline-info'
-              onClick={() => {
+              onClick={(e) => {
                 doModalOpen(TimeseriesForm, { item: item, isEdit: true });
               }}
             >
