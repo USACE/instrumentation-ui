@@ -1,9 +1,10 @@
 import React, { useReducer } from 'react';
 import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
+import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../../app-components/button';
-import { reduceState } from '../../../common/helpers/form-helpers';
+import { extractState, initState, reduceState } from '../../../common/helpers/form-helpers';
 
 const generateOptions = timeseries => (
   timeseries.map(ts => ({
@@ -20,12 +21,18 @@ const SensorDetails = connect(
     instrumentTimeseriesItemsByRoute: timeseries,
     activeSensor,
   }) => {
-    // @TODO: grab current segment values to use as default.
-    const [options, dispatch] = useReducer(reduceState, activeSensor);
+    const { instrument_id, ...rest } = activeSensor || {};
+    const [options, dispatch] = useReducer(reduceState, initState(rest));
     const tsOpts = generateOptions(timeseries);
 
-    const getOption = tsId => tsOpts.find(opt => opt.value === activeSensor[tsId]);
-    const handleSave = () => doUpdateInstrumentSensor(options);
+    const getOption = key => tsOpts.find(opt => opt.value === options[key]?.val);
+    const handleSave = () => doUpdateInstrumentSensor(instrument_id, [extractState(options)]);
+
+    useDeepCompareEffect(() => {
+      // eslint-disable-next-line no-unused-vars
+      const { instrument_id, ...rest } = activeSensor;
+      dispatch({ type: 'init', data: initState(rest) })
+    }, [activeSensor]);
 
     return (
       <>
@@ -39,7 +46,7 @@ const SensorDetails = connect(
                 <Select
                   value={getOption('x_timeseries_id')}
                   className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'x_timeseries_id', data: item })}
+                  onChange={item => dispatch({ type: 'update', key: 'x_timeseries_id', data: item.value })}
                   options={tsOpts}
                 />
               </div>
@@ -48,7 +55,7 @@ const SensorDetails = connect(
                 <Select
                   value={getOption('y_timeseries_id')}
                   className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'y_timeseries_id', data: item })}
+                  onChange={item => dispatch({ type: 'update', key: 'y_timeseries_id', data: item.value})}
                   options={tsOpts}
                 />
               </div>
@@ -57,7 +64,7 @@ const SensorDetails = connect(
                 <Select
                   value={getOption('z_timeseries_id')}
                   className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'z_timeseries_id', data: item })}
+                  onChange={item => dispatch({ type: 'update', key: 'z_timeseries_id', data: item.value })}
                   options={tsOpts}
                 />
               </div>
@@ -66,7 +73,7 @@ const SensorDetails = connect(
                 <Select
                   value={getOption('temp_timeseries_id')}
                   className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'temp_timeseries_id', data: item })}
+                  onChange={item => dispatch({ type: 'update', key: 'temp_timeseries_id', data: item.value })}
                   options={tsOpts}
                 />
               </div>

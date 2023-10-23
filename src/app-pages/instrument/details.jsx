@@ -5,6 +5,7 @@ import { Edit, Refresh, SettingsOutlined } from '@mui/icons-material';
 import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
+import DepthBasedPlots from './depth-based-plots';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../../common/forms/instrument-form';
@@ -47,6 +48,7 @@ export default connect(
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
+    const isShapeArray = instrument?.type === 'SAA';
     const len = timeseries.length;
 
     let firstTimeseries = null;
@@ -148,6 +150,11 @@ export default connect(
         <section className='container-fluid mt-4'>
           <Settings />
         </section>
+        {isShapeArray && (
+          <section className='container-fluid my-4'>
+            <DepthBasedPlots />
+          </section>
+        )}
         <section className='container-fluid my-4'>
           <Notes />
         </section>

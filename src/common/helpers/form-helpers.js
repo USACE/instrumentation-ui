@@ -38,6 +38,9 @@ export const reduceState = (state, action) => {
         isDirty: true,
       }
     };
+    case 'init': return {
+      ...data,
+    };
     default: {
       throw new Error();
     }

@@ -3,6 +3,7 @@ export default {
   getReducer: () => {
     const initialState = {
       sensors: [],
+      measurements: [],
       _lastFetched: null,
     };
     
@@ -14,6 +15,11 @@ export default {
             sensors: payload,
             _lastFetched: new Date(),
           };
+        case 'SENSOR_MEASUREMENTS_UPDATED':
+          return {
+            ...state,
+            measurements: payload,
+          };
         default:
           return state;
       }
@@ -22,6 +28,7 @@ export default {
 
   selectInstrumentSensorsRaw: (state) => state.instrumentSensors,
   selectInstrumentSensors: (state) => state.instrumentSensors.sensors,
+  selectInstrumentSensorsMeasurements: (state) => state.instrumentSensors.measurements,
   selectInstrumentSensorsLastFetched: (state) => state.instrumentSensors._lastFetched,
 
   doFetchInstrumentSensorsById: () => ({ dispatch, store, apiGet }) => {
@@ -45,9 +52,9 @@ export default {
     });
   },
 
-  doUpdateInstrumentSensor: (instrumentId, segmentId, formData) => ({ dispatch, store, apiPut }) => {
+  doUpdateInstrumentSensor: (instrumentId, formData) => ({ dispatch, store, apiPut }) => {
     dispatch({ type: 'INSTRUMENT_SENSOR_UPDATE_START' });
-    const url = `/instruments/saa/${instrumentId}/segments/${segmentId}`;
+    const url = `/instruments/saa/${instrumentId}/segments`;
 
     apiPut(url, formData, (err, _body) => {
       if (err) {
@@ -57,5 +64,26 @@ export default {
         store.doFetchInstrumentSensorsById();
       }
     });
+  },
+
+  doFetchInstrumentSensorMeasurements: (before, after) => ({ dispatch, store, apiGet }) => {
+    dispatch({ type: 'SENSOR_MEASUREMENTS_FETCH_START' });
+    const { instrumentId } = store.selectInstrumentsIdByRoute();
+    const url = `/instruments/saa/${instrumentId}/measurements?before=${before}&after=${after}`;
+
+    apiGet(url, (err, body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('todo', err);
+      } else {
+        dispatch({
+          type: 'SENSOR_MEASUREMENTS_UPDATED',
+          payload: body,
+        });
+      }
+    });
+
+    dispatch({ type: 'SENSOR_MEASUREMENTS_FETCH_FINISHED' });
+
   },
 };

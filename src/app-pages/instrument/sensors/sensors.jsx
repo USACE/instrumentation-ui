@@ -1,31 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 
-import SensorList from './sensorList';
+import AutomapSensorModal from './automapSensorModal';
+import Button from '../../../app-components/button';
 import SensorDetails from './sensorDetails';
+import SensorList from './sensorList';
 
 const Sensors = connect(
+  'doModalOpen',
   'doFetchInstrumentSensorsById',
   'selectInstrumentSensors',
   ({
+    doModalOpen,
     doFetchInstrumentSensorsById,
     instrumentSensors,
   }) => {
     const [activeSensorId, setActiveSensorId] = useState(null);
 
+    const activeSensor = instrumentSensors.find(s => s.id === activeSensorId);
+
     useEffect(() => {
       doFetchInstrumentSensorsById();
     }, [doFetchInstrumentSensorsById]);
 
-    const activeSensor = instrumentSensors.find(s => s.id === activeSensorId)
-
     return (
       <div>
-        <p>
-          Each sensor's depth is determined by the number of segments on the SAA, taking slope angle into account. Each sensor should have four (4)
-          timeseries mapped to them to be used in depth-based plotting. These timeseries should contain X, Y, Z and Temperature measurements.
+        <p className='p-0 m-0'>
+          Each sensor should have four (4) timeseries mapped to them to be used in depth-based plotting. These timeseries should contain 
+          X, Y, Z and Temperature measurements. Initial values can be autofilled if the format of the timeseries' names is consistent with 
+          the following example: <i>string_name(n1,n2,n3)</i> for X, Y, Z or <i>string_name(n1,n2)</i> for Temperature.
         </p>
-        <div className='row'>
+        <div className='row mt-2'>
+          <div className='col-12'>
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='Automap Missing Sensor Timeseries'
+              handleClick={() => doModalOpen(AutomapSensorModal, {}, 'lg')}
+            />
+          </div>
+        </div>
+        <div className='row mt-2'>
           {instrumentSensors.length ? (
             <>
               <div className='col-3'>
@@ -36,9 +52,7 @@ const Sensors = connect(
                 />
               </div>
               <div className='col-9'>
-                <SensorDetails
-                  activeSensor={activeSensor}
-                />
+                {!!activeSensor && <SensorDetails activeSensor={activeSensor} />}
               </div>
             </>
           ) : <i className='col-12'>No Sensors for this instrument.</i>}

@@ -7,20 +7,12 @@ import { Delete, Edit, Key, UploadOutlined } from '@mui/icons-material';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import CycleApiKeyModal from './modals/cycleApiKeyModal';
-import DataLoggerDepthPlots from './tables/dataLoggerDepthPlots';
 import DataLoggerDetails from './dataLoggerDetails';
 import DataLoggerMappingTable from './tables/dataLoggerMappingTable';
 import DataLoggerModal from './modals/dataLoggerModal';
 import DeleteDataLoggerModal from './modals/deleteDataLoggerModal';
 import IncomingRawDataTable from './tables/incomingRawDataTable';
 import Toa5Modal from './modals/toa5Modal';
-
-const isInclinometerType = dataLoggerInfo => {
-  const { model } = dataLoggerInfo;
-  const inclinometerModelTypes = ['SAA', 'IPI', 'CR6'];
-
-  return inclinometerModelTypes.includes(model);
-};
 
 const generateDataLoggerOptions = (dataLoggers = []) => (
   dataLoggers.map(logger => ({
@@ -143,7 +135,6 @@ const DataLoggers = connect(
         {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
-            {isInclinometerType(dataLoggerInfo) && <DataLoggerDepthPlots dataLogger={dataLoggerInfo} />}
             <IncomingRawDataTable dataLogger={dataLoggerInfo} />
             <DataLoggerMappingTable dataLogger={dataLoggerInfo} />
           </>
