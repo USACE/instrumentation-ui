@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { connect } from 'redux-bundler-react';
 import { Add, Remove } from '@mui/icons-material';
-import { subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Chart from '../../app-components/chart/chart';
 import { DateTime } from 'luxon';
-import { addDays } from 'date-fns';
 
 const colors = {
   x: '#800000',
@@ -43,7 +42,7 @@ const build2dTrace = (dataArray, key) => {
   const { time, measurements } = dataArray[dataArray.length - 1];
 
   const keyMeasurements = measurements.map(m => m[key]);
-  const zMeasurements = measurements.map((_m, i) => i + 10); // @TODO - Change to elevation?
+  const zMeasurements = measurements.map((_m, i) => i * 10); // @TODO - Change to elevation?
 
   return [
     {

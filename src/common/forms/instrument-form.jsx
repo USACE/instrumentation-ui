@@ -27,6 +27,7 @@ export default connect(
   'selectProjDisplayProjection',
   'selectProjOptions',
   'selectProjectsByRoute',
+  'selectDomainsItemsByGroup',
   ({
     doModalClose,
     doInstrumentsSave,
@@ -45,18 +46,20 @@ export default connect(
     projDisplayProjection,
     projOptions,
     projectsByRoute: project,
+    domainsItemsByGroup,
     item = {},
     isEdit = true,
   }) => {
     const [name, setName] = useState(item?.name || '');
-    const [type_id, setTypeId] = useState(item.type_id || '');
-    const [station, setStation] = useState(item.station || '');
-    const [offset, setOffset] = useState(item.offset || '');
+    const [type_id, setTypeId] = useState(item?.type_id || '');
+    const [station, setStation] = useState(item?.station || '');
+    const [offset, setOffset] = useState(item?.offset || '');
     // @TODO - utilize this for setting offset
     // const [offsetDescriptor, setOffsetDescriptor] = useState(item?.offsetDescriptor || '');
     const [project_id] = useState(item?.project_id || project.id);
     const [status_id, setStatusId] = useState(item?.status_id || '');
     const [status_time, setStatusTime] = useState(new Date());
+    const [opts, setOpts] = useState(item?.opts || {});
 
     const projected =
       instrumentDrawLon && instrumentDrawLat
@@ -104,6 +107,8 @@ export default connect(
     // look to see if status should be updated
     const statusHasChanged = status_id !== item.status_id;
 
+    const findDomainItem = (group, name) => domainsItemsByGroup[group]?.find(item => item.value === name);
+
     const handleSave = (e) => {
       e.preventDefault();
       if (x && y) {
@@ -129,6 +134,7 @@ export default connect(
             type_id,
             status_id,
             status_time,
+            opts,
             station:
               station === null || station === ''
                 ? null
@@ -210,14 +216,48 @@ export default connect(
             </div>
             <div className='form-group'>
               <label>Type</label>
-              <DomainSelect value={type_id} onChange={(val) => setTypeId(val)} domain='instrument_type' />
+              <DomainSelect defaultValue={item?.type_id} onChange={(val) => setTypeId(val?.id)} domain='instrument_type' />
             </div>
+            {findDomainItem('instrument_type', 'SAA')?.id === type_id && (
+              <div className='pl-4'>
+                <div className='form-group'>
+                  <label>Bottom Elevation</label>
+                  <input
+                    value={opts.bottom_elevation}
+                    onChange={(e) => setOpts(prev => ({ ...prev, bottom_elevation: e.target.value }))}
+                    className='form-control'
+                    type='number'
+                    placeholder='Bottom Elevation'
+                  />
+                </div>
+                <div className='form-group'>
+                  <label>Number of Segments</label>
+                  <input
+                    value={opts.num_segments}
+                    onChange={(e) => setOpts(prev => ({ ...prev, num_segments: e.target.value }))}
+                    className='form-control'
+                    type='number'
+                    placeholder='Number of Segments'
+                  />
+                </div>
+                {/* <div className='form-group'>
+                  <label>Segment Length</label>
+                  <input
+                    value={opts.segment_length}
+                    onChange={(e) => setOpts(prev => ({ ...prev, segment_length: e.target.value }))}
+                    className='form-control'
+                    type='number'
+                    placeholder='Segment Length'
+                  />
+                </div> */}
+              </div>
+            )}
             <div className='form-group'>
               <label>Status</label>
-              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain='status' />
+              <DomainSelect defaultValue={item?.status_id} onChange={(val) => setStatusId(val?.id)} domain='status' />
             </div>
             {statusHasChanged ? (
-              <div className='form-group'>
+              <div className='form-group ml-4'>
                 <label>Status current as of</label>
                 <div className='control'>
                   <DatePicker
@@ -255,7 +295,7 @@ export default connect(
 
             <div className='form-group'>
               <label>Offset Descriptor</label>
-              <DomainSelect value={status_id} onChange={(val) => setStatusId(val)} domain='offset_descriptor' />
+              <DomainSelect defaultValue={item?.status_id} onChange={(val) => setStatusId(val?.id)} domain='offset_descriptor' />
             </div>
 
             <div className='form-group'>

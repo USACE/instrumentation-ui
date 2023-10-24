@@ -86,8 +86,8 @@ const DataLoggerModal = connect(
               <div className='form-group'>
                 <label>Model</label>
                 <DomainSelect
-                  value={modelId}
-                  onChange={val => setModelId(val)}
+                  defaultValue={modelId}
+                  onChange={val => setModelId(val?.id)}
                   domain='datalogger_model'
                 />
               </div>
@@ -101,7 +101,8 @@ const DataLoggerModal = connect(
                     />
                     &nbsp;- Data Logger is Used for Inclinometer Data (SAA or IPI)
                   </div>
-                  {isSaaIpi ? (
+                  {/* @TODO: setup modal to create timeseries from uploaded TOA5 */}
+                  {/* {isSaaIpi ? (
                     <>
                       <div className='form-group'>
                         <label>Number of Segments</label>
@@ -134,7 +135,7 @@ const DataLoggerModal = connect(
                       </div>
                       Any other fields...
                     </>
-                  ) : null}
+                  ) : null} */}
                 </>
               ) : null}
             </>

@@ -84,16 +84,16 @@ export default connect(
             <div className='form-group'>
               <label>Parameter</label>
               <DomainSelect
-                value={parameter_id}
-                onChange={val => setParameterId(val)}
+                defaultValue={parameter_id}
+                onChange={val => setParameterId(val?.id)}
                 domain='parameter'
               />
             </div>
             <div className='form-group'>
               <label>Unit</label>
               <DomainSelect
-                value={unit_id}
-                onChange={val => setUnitId(val)}
+                defaultValue={unit_id}
+                onChange={val => setUnitId(val?.id)}
                 domain='unit'
               />
             </div>

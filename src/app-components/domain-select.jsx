@@ -6,7 +6,7 @@ export default connect(
   'selectDomainsItemsByGroup',
   ({
     domainsItemsByGroup,
-    value,
+    defaultValue,
     onChange,
     domain,
   }) => {
@@ -16,10 +16,9 @@ export default connect(
     )) || [];
 
     useEffect(() => {
-      if (selectValue && domainsItemsByGroup[domain]?.find(el => el.value === selectValue)) {
-        onChange(selectValue.value);
-      }
-    }, [selectValue])
+      const item = domainsItemsByGroup[domain]?.find(el => el.value === selectValue);
+      onChange(item);
+    }, [selectValue]);
 
     return (
       <>
@@ -28,10 +27,10 @@ export default connect(
         ) : (
           <Autocomplete
             size='small'
-            defaultValue={options.find(el => el.value === value)}
+            defaultValue={options.find(el => el.value === defaultValue)}
             isOptionEqualToValue={(opt, val) => opt.value === val.value}
             onChange={e => setSelectValue(e.target.innerText)}
-            renderInput={(params) => <TextField {...params} placeholder='Select one...' onChange={e => setSelectValue(e.target.value)} />}
+            renderInput={(params) => <TextField {...params} placeholder='Select one...' />}
             options={options}
             fullWidth
           />

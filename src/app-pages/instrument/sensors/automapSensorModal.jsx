@@ -39,10 +39,10 @@ const AutomapSensorModal = connect(
       <Modal.ModalContent>
         <Modal.ModalHeader title='Automap Missing Sensor Timeseries' />
         <Modal.ModalBody>
-          This form will attempt to assign timeseries within this instrument to a sensor's X, Y, Z, and Temperature attributes. This will only attempt
+          This process will attempt to assign timeseries within this instrument to a sensor's X, Y, Z, and Temperature attributes. This will only attempt
           to fill missing attributes and will not overwrite any previously saved attributes.
 
-          <br/><br /><i>Note: If the timeseries format is not correct, it will not be available for automatic mapping.</i>
+          <br/><br /><i>Note: If the timeseries naming format is not correct, it will not be available for automatic mapping.</i>
           <hr />
           {emptyAttrSensors.length ? (
             <>
