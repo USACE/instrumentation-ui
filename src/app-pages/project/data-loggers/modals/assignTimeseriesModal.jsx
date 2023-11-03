@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, TextField, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Autocomplete, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import { connect } from 'redux-bundler-react';
 
 import * as Modal from '../../../../app-components/modal';
@@ -14,11 +14,13 @@ const buildInstrumentOptions = (instruments) => {
 };
 
 const AssignTimeseriesModal = connect(
-  'selectInstrumentsItems',
+  'doSaveFieldNamesToTimeseries',
   'selectInstrumentTimeseriesByInstrumentId',
+  'selectInstrumentsItems',
   ({
-    instrumentsItems,
+    doSaveFieldNamesToTimeseries,
     instrumentTimeseriesByInstrumentId: timeseries,
+    instrumentsItems,
     equivalencyTable,
   }) => {
     const [selectedInstrument, setSelectedInstrument] = useState(null);
@@ -26,7 +28,9 @@ const AssignTimeseriesModal = connect(
     const [updatingObject, setUpdatingObject] = useState({ newTs: [], existingTs: [] });
     const { dataLoggerId, rows } = equivalencyTable;
 
-    const saveTimeseriesToInstrument = () => {}; // @TODO: save timeseries and update any existing mappings in field table
+    const saveTimeseriesToInstrument = () => {
+      doSaveFieldNamesToTimeseries(updatingObject, selectedInstrument);
+    };
 
     useEffect(() => {
       if (selectedInstrument) {
@@ -36,7 +40,10 @@ const AssignTimeseriesModal = connect(
         rows.forEach(row => {
           if (overwriteExisting || !row.timeseries_id) {
             const found = timeseries[selectedInstrument]?.find(el => el.name === row.field_name);
-            if (found) existingTs.push(found);
+            if (found) existingTs.push({
+              field: row,
+              timeseries: found,
+            });
             else newTs.push(row);
           }
         });
@@ -50,7 +57,7 @@ const AssignTimeseriesModal = connect(
         <Modal.ModalHeader title='Assign Timeseries to Instrument' />
         <Modal.ModalBody>
           Select an instrument to save timeseries to. This tool will attempt to find matching timeseries within the instrument
-          and assign the fields accordingly. If no timeseries exists with a matching name, one will be created automatically upon
+          and assign the fields accordingly. If no timeseries exists with a matching name, one will be created and assigned automatically upon
           saving for each field name.
           <hr />
           <FormControlLabel
@@ -64,7 +71,6 @@ const AssignTimeseriesModal = connect(
               />
             )}
           />
-          
           <Autocomplete
             size='small'
             className='mt-1'
@@ -85,7 +91,7 @@ const AssignTimeseriesModal = connect(
           showCancelButton
           cancelText='Close'
           saveIsDisabled={!selectedInstrument}
-          handleSave={() => saveTimeseriesToInstrument()}
+          onSave={() => saveTimeseriesToInstrument()}
         />
       </Modal.ModalContent>
     );

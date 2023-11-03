@@ -27,6 +27,30 @@ export default createRestBundle({
     }
   },
   addons: {
+    doSaveFieldNamesToTimeseries: (newObject, instrumentId) => ({ dispatch, apiPost }) => {
+      dispatch({ type: 'ASSING_FIELD_NAMES_TO_TIMESERIES_START' });
+      const { newTs, existingTs } = newObject;
+
+      const uri = '/timeseries';
+      const formData = { items: [] };
+
+      newTs.forEach(item => formData.items.push({
+        instrument_id: instrumentId,
+        name: item?.field_name,
+      }));
+
+      apiPost(uri, formData, (err, body) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('test body:' , body);
+          // Update field names with new TS Ids.
+        }
+      });
+
+      dispatch({ type: 'ASSING_FIELD_NAMES_TO_TIMESERIES_FINISHED' });
+    },
+
     doInstrumentTimeseriesSetActiveId: (id) => ({ dispatch }) => {
       dispatch({
         type: 'INSTRUMENTTIMESERIES_SET_ACTIVE_ID',
