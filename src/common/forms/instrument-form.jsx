@@ -224,7 +224,7 @@ export default connect(
                   <label>Bottom Elevation</label>
                   <input
                     value={opts.bottom_elevation}
-                    onChange={(e) => setOpts(prev => ({ ...prev, bottom_elevation: e.target.value }))}
+                    onChange={(e) => setOpts(prev => ({ ...prev, bottom_elevation: Number(e.target.value) }))}
                     className='form-control'
                     type='number'
                     placeholder='Bottom Elevation'
@@ -234,7 +234,7 @@ export default connect(
                   <label>Number of Segments</label>
                   <input
                     value={opts.num_segments}
-                    onChange={(e) => setOpts(prev => ({ ...prev, num_segments: e.target.value }))}
+                    onChange={(e) => setOpts(prev => ({ ...prev, num_segments: Number(e.target.value) }))}
                     className='form-control'
                     type='number'
                     placeholder='Number of Segments'
@@ -257,7 +257,7 @@ export default connect(
               <DomainSelect defaultValue={item?.status_id} onChange={(val) => setStatusId(val?.id)} domain='status' />
             </div>
             {statusHasChanged ? (
-              <div className='form-group ml-4'>
+              <div className='form-group'>
                 <label>Status current as of</label>
                 <div className='control'>
                   <DatePicker

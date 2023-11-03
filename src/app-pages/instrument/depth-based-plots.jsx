@@ -9,6 +9,7 @@ import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Chart from '../../app-components/chart/chart';
 import { DateTime } from 'luxon';
+import SetInitialTimeModal from './setInitialTimeModal';
 
 const colors = {
   x: '#800000',
@@ -64,11 +65,13 @@ const build2dTrace = (dataArray, key) => {
 };
 
 const DepthBasedPlots = connect(
+  'doModalOpen',
   'doFetchInstrumentSensorsById',
   'doFetchInstrumentSensorMeasurements',
   'selectInstrumentSensors',
   'selectInstrumentSensorsMeasurements',
   ({
+    doModalOpen,
     doFetchInstrumentSensorsById,
     doFetchInstrumentSensorMeasurements,
     instrumentSensors,
@@ -86,8 +89,6 @@ const DepthBasedPlots = connect(
         doFetchInstrumentSensorMeasurements(dateRange[1].toISOString(), dateRange[0].toISOString());
       }
     }, [isOpen, dateRange]);
-
-    console.log('test build2dTrace x: ', build2dTrace(instrumentSensorsMeasurements, 'x'));
 
     return (
       <Card>
@@ -126,6 +127,16 @@ const DepthBasedPlots = connect(
                         maxDate={Date.now()}
                         selected={dateRange[1]}
                         onChange={(date) => setDateRange([subDays(date, 7), date])}
+                      />
+                    </div>
+                    <div className='col-8'>
+                      <Button
+                        isOutline
+                        className='float-right'
+                        variant='info'
+                        size='small'
+                        text='Set Initial Time'
+                        handleClick={() => doModalOpen(SetInitialTimeModal, {}, 'lg')}
                       />
                     </div>
                   </div>
