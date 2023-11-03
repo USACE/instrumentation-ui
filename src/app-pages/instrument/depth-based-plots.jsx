@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
-import { connect } from 'redux-bundler-react';
 import { Add, Remove } from '@mui/icons-material';
 import { addDays, subDays } from 'date-fns';
+import { connect } from 'redux-bundler-react';
+import { DateTime } from 'luxon';
+import { Stack, Switch } from '@mui/material';
 import { useDeepCompareEffect } from 'react-use';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import Chart from '../../app-components/chart/chart';
-import { DateTime } from 'luxon';
 import SetInitialTimeModal from './setInitialTimeModal';
 
 const colors = {
@@ -24,7 +25,7 @@ const config = {
   scrollZoom: true,
 };
 
-const layoutTall = (key) => ({
+const layoutTall = (key, isIncrement) => ({
   showlegend: false,
   autosize: true,
   height: 800,
@@ -33,7 +34,7 @@ const layoutTall = (key) => ({
     title: `Elevation (ft)`,
   }, 
   xaxis: {
-    title: key ? `${key}-Displacement` : 'Temperature',
+    title: key ? `${key}-${isIncrement ? 'Increment' : 'Cumulative Displacement'}` : 'Temperature',
   },
 });
 
@@ -43,7 +44,7 @@ const build2dTrace = (dataArray, key) => {
   const { time, measurements } = dataArray[dataArray.length - 1];
 
   const keyMeasurements = measurements.map(m => m[key]);
-  const zMeasurements = measurements.map((_m, i) => i * 10); // @TODO - Change to elevation?
+  const zMeasurements = measurements.map((m) => m.elevation);
 
   return [
     {
@@ -77,12 +78,13 @@ const DepthBasedPlots = connect(
     instrumentSensors,
     instrumentSensorsMeasurements,
   }) => {
+    const [isOpen, setIsOpen] = useState(true);
+    const [isIncrement, setIsIncrement] = useState(true);
+    const [dateRange, setDateRange] = useState([subDays(new Date(), 7), new Date()]);
+
     useEffect(() => {
       doFetchInstrumentSensorsById();
     }, [doFetchInstrumentSensorsById]);
-
-    const [isOpen, setIsOpen] = useState(true);
-    const [dateRange, setDateRange] = useState([subDays(new Date(), 7), new Date()]);
 
     useDeepCompareEffect(() => {
       if (isOpen) {
@@ -129,7 +131,14 @@ const DepthBasedPlots = connect(
                         onChange={(date) => setDateRange([subDays(date, 7), date])}
                       />
                     </div>
-                    <div className='col-8'>
+                    <div className='col-2 pt-3 mt-1'>
+                      <Stack direction='row' spacing={1} alignItems='center'>
+                        Cumulative
+                        <Switch defaultChecked onChange={_e => setIsIncrement(prev => !prev)} />
+                        Increment
+                      </Stack>
+                    </div>
+                    <div className='col-6 float-right'>
                       <Button
                         isOutline
                         className='float-right'
@@ -143,15 +152,15 @@ const DepthBasedPlots = connect(
                   <div className='row mt-3'>
                     <div className='col-4'>
                       <Chart
-                        data={build2dTrace(instrumentSensorsMeasurements, 'x')}
-                        layout={layoutTall('X')}
+                        data={build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'x_increment' : 'x_cum_dev')}
+                        layout={layoutTall('X', isIncrement)}
                         config={config}
                       />
                     </div>
                     <div className='col-4'>
                       <Chart
-                        data={build2dTrace(instrumentSensorsMeasurements, 'y')}
-                        layout={layoutTall('Y')}
+                        data={build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'y_increment' : 'y_cum_dev')}
+                        layout={layoutTall('Y', isIncrement)}
                         config={config}
                       />
                     </div>
