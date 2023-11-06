@@ -2,7 +2,17 @@ import { toast } from 'react-toastify';
 
 export const tLoading = (message, opts = {}) => toast.loading(message, { closeOnClick: true, ...opts });
 
-export const tUpdateSuccess = (id, message) => {
+export const tUpdateManual = (id, message, opts) => {
+  toast.update(id, {
+    render: message,
+    autoClose: 2500,
+    closeOnClick: true,
+    draggable: true,
+    ...opts,
+  });
+}
+
+export const tUpdateSuccess = (id, message, opts) => {
   toast.update(id, {
     render: message,
     type: 'success',
@@ -10,10 +20,11 @@ export const tUpdateSuccess = (id, message) => {
     autoClose: 2500,
     closeOnClick: true,
     draggable: true,
+    ...opts,
   });
 };
 
-export const tUpdateError = (id, message) => {
+export const tUpdateError = (id, message, opts) => {
   toast.update(id, {
     render: message,
     type: 'error',
@@ -21,10 +32,11 @@ export const tUpdateError = (id, message) => {
     autoClose: 7500,
     closeOnClick: true,
     draggable: true,
+    ...opts,
   });
 };
 
-export const tUpdateWarning = (id, message) => {
+export const tUpdateWarning = (id, message, opts) => {
   toast.update(id, {
     render: message,
     type: 'warning',
@@ -32,5 +44,6 @@ export const tUpdateWarning = (id, message) => {
     autoClose: 4000,
     closeOnClick: true,
     draggable: true,
+    ...opts,
   });
 };
