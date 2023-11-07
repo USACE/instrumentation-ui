@@ -25,16 +25,56 @@ const config = {
   scrollZoom: true,
 };
 
-const layoutTall = (key, isIncrement) => ({
-  showlegend: false,
+const multiPlotLayout = (isIncrement, initialMeasurement) => ({
+  showlegend: true,
   autosize: true,
-  height: 800,
+  height: 1000,
+  xaxis: {
+    title: `X-${isIncrement ? 'Increment' : 'Cumulative Displacement'}`,
+    domain: [0, 0.3],
+    anchor: 'y1',
+  },
   yaxis: {
     autorange: 'reversed',
-    title: `Elevation (ft)`,
-  }, 
-  xaxis: {
-    title: key ? `${key}-${isIncrement ? 'Increment' : 'Cumulative Displacement'}` : 'Temperature',
+    title: 'Elevation (ft)',
+    domain: [0.3, 1],
+    anchor: 'x1',
+  },
+  xaxis2: {
+    title: `Y-${isIncrement ? 'Increment' : 'Cumulative Displacement'}`,
+    domain: [0.35, 0.65],
+    anchor: 'y2',
+  },
+  yaxis2: {
+    domain: [0.3, 1],
+    anchor: 'x2',
+  },
+  xaxis3: {
+    title: 'Temperature',
+    domain: [0.7, 1],
+    anchor: 'y3',
+  },
+  yaxis3: {
+    domain: [0.3, 1],
+    anchor: 'x3',
+  },
+  xaxis4: {
+    type: 'date',
+    domain: [0, 1],
+    anchor: 'y4',
+    title: 'Time',
+  },
+  yaxis4: {
+    domain: [0, 0.2],
+    anchor: 'x4',
+    title: `${initialMeasurement.elevation} ∆ mm`,
+  },
+  yaxis5: {
+    domain: [0, 0.2],
+    anchor: 'x4',
+    overlaying: 'y4',
+    title: '°C',
+    side: 'right',
   },
 });
 
@@ -44,25 +84,74 @@ const build2dTrace = (dataArray, key) => {
   const { time, measurements } = dataArray[dataArray.length - 1];
 
   const keyMeasurements = measurements.map(m => m[key]);
-  const zMeasurements = measurements.map((m) => m.elevation);
+  const elevation = measurements.map((m) => m.elevation);
 
-  return [
-    {
-      x: keyMeasurements,
-      y: zMeasurements,
-      mode: 'markers+lines',
-      marker: { size: 5, color: colors[key] },
-      line: { width: 1 },
-      type: 'scatter',
-      name: `${key}-Displacement`,
-      hovertemplate: `
-        <b>${DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_SHORT)}</b><br>
-        Depth: %{y}<br>
-        Displacement: %{x}<br>
-        <extra></extra>
-      `,
-    }
-  ];
+  return {
+    x: keyMeasurements,
+    y: elevation,
+    mode: 'markers+lines',
+    marker: { size: 5, color: colors[key] },
+    line: { width: 1 },
+    type: 'scatter',
+    name: key,
+    hovertemplate: `
+      <b>${DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_SHORT)}</b><br>
+      Depth: %{y}<br>
+      Displacement: %{x}<br>
+      <extra></extra>
+    `,
+    ...['y_increment', 'y_cum_dev'].includes(key) && {
+      xaxis: 'x2',
+      yaxis: 'y2',
+    },
+    ...key === 'temp' && {
+      xaxis: 'x3',
+      yaxis: 'y3',
+    },
+  };
+};
+
+const buildLongTraces = (dataArray, initialMeasurement) => {
+  if (!dataArray.length) return {};
+
+  const { elevation: initElevation } = initialMeasurement;
+  const elevationY = [];
+  const temperatureY = [];
+  const timeX = [];
+
+  dataArray.forEach((el, index) => {
+    if (!index) return;
+    const { time, measurements } = el;
+    timeX.push(time);
+
+    const lastMeasurement = measurements[measurements.length - 1];
+    const { elevation, temp } = lastMeasurement;
+
+    elevationY.push(elevation - initElevation);
+    temperatureY.push(temp);
+  });
+
+  return [{
+    x: timeX,
+    y: elevationY,
+    mode: 'markers+lines',
+    marker: { size: 5 },
+    line: { width: 1 },
+    type: 'scatter',
+    name: '∆ Top Elevation',
+    xaxis: 'x4',
+    yaxis: 'y4',
+  }, {
+    x: timeX,
+    y: temperatureY,
+    mode: 'markers+lines',
+    marker: { size: 5 },
+    line: { width: 1 },
+    type: 'scatter',
+    name: 'Top Temperature',
+    xaxis: 'x4',
+    yaxis: 'y5',
+  }];
 };
 
 const DepthBasedPlots = connect(
@@ -81,6 +170,8 @@ const DepthBasedPlots = connect(
     const [isOpen, setIsOpen] = useState(true);
     const [isIncrement, setIsIncrement] = useState(true);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 7), new Date()]);
+
+    const initialMeasurement = instrumentSensorsMeasurements.length ? instrumentSensorsMeasurements[0]?.measurements?.findLast(e => e) : {};
 
     useEffect(() => {
       doFetchInstrumentSensorsById();
@@ -149,26 +240,17 @@ const DepthBasedPlots = connect(
                       />
                     </div>
                   </div>
-                  <div className='row mt-3'>
-                    <div className='col-4'>
+                  <div className='row'>
+                    <div className='col-12'>
                       <Chart
-                        data={build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'x_increment' : 'x_cum_dev')}
-                        layout={layoutTall('X', isIncrement)}
                         config={config}
-                      />
-                    </div>
-                    <div className='col-4'>
-                      <Chart
-                        data={build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'y_increment' : 'y_cum_dev')}
-                        layout={layoutTall('Y', isIncrement)}
-                        config={config}
-                      />
-                    </div>
-                    <div className='col-4'>
-                      <Chart
-                        data={build2dTrace(instrumentSensorsMeasurements, 'temp')}
-                        layout={layoutTall()}
-                        config={config}
+                        layout={multiPlotLayout(isIncrement, initialMeasurement)}
+                        data={[
+                          build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'x_increment' : 'x_cum_dev'),
+                          build2dTrace(instrumentSensorsMeasurements, isIncrement ? 'y_increment' : 'y_cum_dev'),
+                          build2dTrace(instrumentSensorsMeasurements, 'temp'),
+                          ...buildLongTraces(instrumentSensorsMeasurements, initialMeasurement),
+                        ]}
                       />
                     </div>
                   </div>
