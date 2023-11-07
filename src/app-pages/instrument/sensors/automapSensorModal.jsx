@@ -4,6 +4,7 @@ import * as Modal from '../../../app-components/modal';
 import { connect } from 'redux-bundler-react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
+const ignoredKeys = ['length'];
 const tempRegex = /[\w\s_-]+(\((\d+),(\d+)\))/g;
 const XYZRegex = /[\w\s_-]+(\(\d+,(\d+),(\d+)\))/g;
 
@@ -41,7 +42,7 @@ const AutomapSensorModal = connect(
       let ret = false;
 
       keys.forEach(key => {
-        if (!el[key]) ret = true;
+        if (!ignoredKeys.includes(key) && !el[key]) ret = true;
       });
 
       return ret;
@@ -80,6 +81,8 @@ const AutomapSensorModal = connect(
 
       doUpdateInstrumentSensor(formData);
     };
+
+    console.log('test emptyAttrSensors', emptyAttrSensors);
   
     return (
       <Modal.ModalContent>
@@ -104,7 +107,9 @@ const AutomapSensorModal = connect(
           {emptyAttrSensors.length || overwriteExisting ? (
             <>
               <span>The following sensors will be updated:</span><br />
-              {(overwriteExisting ? instrumentSensors : emptyAttrSensors).map((sensor, i) => <span key={sensor.id}>{sensor.id}{i !== emptyAttrSensors.length - 1 ? ', ' : ''}</span>)}
+              {(overwriteExisting ? instrumentSensors : emptyAttrSensors).map((sensor, i) =>
+                <span key={sensor.id}>{sensor.id}{i !== (overwriteExisting ? instrumentSensors : emptyAttrSensors).length - 1 ? ', ' : ''}</span>
+              )}
             </>          
           ) : (
             <b>
