@@ -1,7 +1,5 @@
-import { toast } from 'react-toastify';
-
 import createRestBundle from './create-rest-bundle';
-import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
+import { tLoading, tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
 
 const afterDate = '1900-01-01T00:00:00.00Z';
 const beforeDate = '2025-12-31T00:00:00.00Z';
@@ -83,7 +81,7 @@ export default createRestBundle({
 
       const url = `/projects/${projectId}/timeseries_measurements`;
 
-      const toastId = toast.loading('Uploading measurements...');
+      const toastId = tLoading('Uploading measurements...');
 
       apiPost(url, measurements, (err, _body) => {
         if (err) {

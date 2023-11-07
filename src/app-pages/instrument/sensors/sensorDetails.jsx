@@ -41,8 +41,10 @@ const SensorDetails = connect(
         ) : (
           <>
             <div className='row'>
-              <div className='col-3'>
-                <label>X Timeseries</label>
+              <div className='col-3 pt-1 text-right'>
+                <label>X Timeseries:</label>
+              </div>
+              <div className='col-9'>
                 <Select
                   value={getOption('x_timeseries_id')}
                   className='d-inline-block w-100'
@@ -50,8 +52,12 @@ const SensorDetails = connect(
                   options={tsOpts}
                 />
               </div>
-              <div className='col-3'>
-                <label>Y Timeseries</label>
+            </div>
+            <div className='row mt-2'>
+              <div className='col-3 pt-1 text-right'>
+                <label>Y Timeseries:</label>
+              </div>
+              <div className='col-9'>
                 <Select
                   value={getOption('y_timeseries_id')}
                   className='d-inline-block w-100'
@@ -59,8 +65,12 @@ const SensorDetails = connect(
                   options={tsOpts}
                 />
               </div>
-              <div className='col-3'>
-                <label>Z Timeseries</label>
+            </div>
+            <div className='row mt-2'>
+              <div className='col-3 pt-1 text-right'>
+                <label>Z Timeseries:</label>
+              </div>
+              <div className='col-9'>
                 <Select
                   value={getOption('z_timeseries_id')}
                   className='d-inline-block w-100'
@@ -68,8 +78,12 @@ const SensorDetails = connect(
                   options={tsOpts}
                 />
               </div>
-              <div className='col-3'>
-                <label>Temperature Timeseries</label>
+            </div>
+            <div className='row mt-2'>
+              <div className='col-3 pt-1 text-right'>
+                <label>Temperature Timeseries:</label>
+              </div>
+              <div className='col-9'>
                 <Select
                   value={getOption('temp_timeseries_id')}
                   className='d-inline-block w-100'
@@ -83,7 +97,7 @@ const SensorDetails = connect(
               size='small'
               variant='success'
               text='Save Sensor Config'
-              className='mt-2'
+              className='mt-3 float-right'
               handleClick={handleSave}
             />
           </>

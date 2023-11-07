@@ -52,8 +52,10 @@ export default {
     });
   },
 
-  doUpdateInstrumentSensor: (instrumentId, formData) => ({ dispatch, store, apiPut }) => {
+  doUpdateInstrumentSensor: (formData) => ({ dispatch, store, apiPut }) => {
     dispatch({ type: 'INSTRUMENT_SENSOR_UPDATE_START' });
+
+    const { instrumentId } = store.selectInstrumentsIdByRoute();
     const url = `/instruments/saa/${instrumentId}/segments`;
 
     apiPut(url, formData, (err, _body) => {

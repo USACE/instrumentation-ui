@@ -1,26 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import * as Modal from '../../../app-components/modal';
 import { connect } from 'redux-bundler-react';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
-const tempRegex = /([\w\s_-])+(\(\d+,\d+\))/g;
-const XYZRegex = /([\w\s_-])+(\(\d+,\d+,\d+\))/g;
+const tempRegex = /[\w\s_-]+(\((\d+),(\d+)\))/g;
+const XYZRegex = /[\w\s_-]+(\(\d+,(\d+),(\d+)\))/g;
 
 const AutomapSensorModal = connect(
+  'doUpdateInstrumentSensor',
   'selectInstrumentSensors',
   'selectInstrumentTimeseriesItems',
   ({
+    doUpdateInstrumentSensor,
     instrumentSensors,
     instrumentTimeseriesItems: timeseries,
   }) => {
+    const [overwriteExisting, setOverwriteExisting] = useState(false);
     const xyzTimeseries = [];
     const tempTimeseries = []; 
 
     timeseries.forEach(ts => {
       const { name } = ts;
 
-      if (name.match(XYZRegex)) xyzTimeseries.push(ts);
-      else if (name.match(tempRegex)) tempTimeseries.push(ts);
+      const xyzMatches = [...name.matchAll(XYZRegex)];
+      const tempMatches = [...name.matchAll(tempRegex)];
+
+      try {
+        if (xyzMatches?.length) xyzTimeseries.push({ sensorId: xyzMatches[0][2], typeId: xyzMatches[0][3], timeseries: ts });
+        else if (tempMatches?.length) tempTimeseries.push({ sensorId: tempMatches[0][3], timeseries: ts });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Failed assigning matches.', e);
+      }
     });
 
     const emptyAttrSensors = instrumentSensors.filter(el => {
@@ -34,32 +46,71 @@ const AutomapSensorModal = connect(
 
       return ret;
     });
+
+    const assignTimeseriesToSensors = () => {
+      const formData = [];
+
+      instrumentSensors.forEach(sensor => {
+        const { id } = sensor;
+        const current = { ...sensor };
+
+        const filteredXYZ = xyzTimeseries.filter(el => String(el.sensorId) === String(id));
+        filteredXYZ.forEach(el => {
+          switch (el.typeId) {
+            case '1': current.x_timeseries_id = el?.timeseries?.id;
+              break;
+            case '2': current.y_timeseries_id = el?.timeseries?.id;
+              break;
+            case '3': current.z_timeseries_id = el?.timeseries?.id;
+              break;
+          }
+        });
+
+        const temp = tempTimeseries.find(el => String(el.sensorId) === String(id));
+        current.temp_timeseries_id = temp?.timeseries?.id;
+
+        formData.push(current);
+      });
+
+      doUpdateInstrumentSensor(formData);
+    };
   
     return (
       <Modal.ModalContent>
         <Modal.ModalHeader title='Automap Missing Sensor Timeseries' />
         <Modal.ModalBody>
-          This process will attempt to assign timeseries within this instrument to a sensor's X, Y, Z, and Temperature attributes. This will only attempt
-          to fill missing attributes and will not overwrite any previously saved attributes.
+          This process will attempt to assign timeseries within this instrument to all sensor's X, Y, Z, and Temperature attributes. Select
+          the checkbox below to include assignment to attributes that already have a timeseries saved, overwriting them.
 
           <br/><br /><i>Note: If the timeseries naming format is not correct, it will not be available for automatic mapping.</i>
           <hr />
-          {emptyAttrSensors.length ? (
+          <FormControlLabel
+            label='Overwrite Existing Mappings'
+            control={(
+              <Checkbox
+                size='small'
+                defaultChecked={false}
+                onChange={() => setOverwriteExisting(prev => !prev)}
+                label='Overwrite Existing Mappings'
+              />
+            )}
+          /><br />
+          {emptyAttrSensors.length || overwriteExisting ? (
             <>
-              <span>The following sensors have empty attributes:</span><br />
-              {emptyAttrSensors.map((sensor, i) => <span key={sensor.id}>{sensor.id}{i !== emptyAttrSensors.length - 1 ? ', ' : ''}</span>)}
+              <span>The following sensors will be updated:</span><br />
+              {(overwriteExisting ? instrumentSensors : emptyAttrSensors).map((sensor, i) => <span key={sensor.id}>{sensor.id}{i !== emptyAttrSensors.length - 1 ? ', ' : ''}</span>)}
             </>          
           ) : (
             <b>
-              All sensor attributes are filled. If you need to make changes to the current assignments, either assign them manually in the
-              previous screen or create a new instrument to utilize the automatic mapping functionality.
+              No sensor attributes to update.
             </b>
           )}
         </Modal.ModalBody>
         <Modal.ModalFooter
           showCancelButton
-          showSaveButton={!!emptyAttrSensors.length}
+          showSaveButton={!!emptyAttrSensors.length || overwriteExisting}
           saveText='Update Sensors'
+          onSave={() => assignTimeseriesToSensors()}
         />
       </Modal.ModalContent>
     );

@@ -36,7 +36,7 @@ const Sensors = connect(
               isOutline
               size='small'
               variant='info'
-              text='Automap Missing Sensor Timeseries'
+              text='Auto-assign Sensor Timeseries'
               handleClick={() => doModalOpen(AutomapSensorModal, {}, 'lg')}
             />
           </div>
