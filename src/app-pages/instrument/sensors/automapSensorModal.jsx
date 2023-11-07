@@ -57,11 +57,17 @@ const AutomapSensorModal = connect(
         const filteredXYZ = xyzTimeseries.filter(el => String(el.sensorId) === String(id));
         filteredXYZ.forEach(el => {
           switch (el.typeId) {
-            case '1': current.x_timeseries_id = el?.timeseries?.id;
+            case '1':
+              if (!current.x_timeseries_id || overwriteExisting)
+                current.x_timeseries_id = el?.timeseries?.id;
               break;
-            case '2': current.y_timeseries_id = el?.timeseries?.id;
+            case '2':
+              if (!current.y_timeseries_id || overwriteExisting)
+                current.y_timeseries_id = el?.timeseries?.id;
               break;
-            case '3': current.z_timeseries_id = el?.timeseries?.id;
+            case '3':
+              if (!current.z_timeseries_id || overwriteExisting)
+                current.z_timeseries_id = el?.timeseries?.id;
               break;
           }
         });
