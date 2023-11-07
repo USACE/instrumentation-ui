@@ -81,8 +81,6 @@ const AutomapSensorModal = connect(
 
       doUpdateInstrumentSensor(formData);
     };
-
-    console.log('test emptyAttrSensors', emptyAttrSensors);
   
     return (
       <Modal.ModalContent>
