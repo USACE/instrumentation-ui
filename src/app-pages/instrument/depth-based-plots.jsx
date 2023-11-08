@@ -35,7 +35,6 @@ const multiPlotLayout = (isIncrement, initialMeasurement) => ({
     anchor: 'y1',
   },
   yaxis: {
-    autorange: 'reversed',
     title: 'Elevation (ft)',
     domain: [0.3, 1],
     anchor: 'x1',
@@ -112,7 +111,7 @@ const build2dTrace = (dataArray, key) => {
 };
 
 const buildLongTraces = (dataArray, initialMeasurement) => {
-  if (!dataArray.length) return {};
+  if (!dataArray.length) return [];
 
   const { elevation: initElevation } = initialMeasurement;
   const elevationY = [];

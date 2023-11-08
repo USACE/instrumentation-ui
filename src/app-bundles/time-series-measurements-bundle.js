@@ -81,7 +81,7 @@ export default createRestBundle({
 
       const url = `/projects/${projectId}/timeseries_measurements`;
 
-      const toastId = tLoading('Uploading measurements...');
+      const toastId = tLoading('Uploading measurements. This may take a while for large data files...');
 
       apiPost(url, measurements, (err, _body) => {
         if (err) {
