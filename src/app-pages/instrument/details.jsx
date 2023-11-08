@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Edit, Refresh, SettingsOutlined } from '@mui/icons-material';
 
 import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
+import DepthBasedPlots from './depth-based-plots';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../../common/forms/instrument-form';
@@ -14,6 +15,7 @@ import NoAlerts from './alert/no-alerts';
 import Notes from './notes';
 import RoleFilter from '../../app-components/role-filter';
 import Settings from './settings';
+import SetInitialTimeModal from './setInitialTimeModal';
 
 const sortAlertsByDate = alerts => alerts.sort((a, b) => {
   if (a.create_date > b.create_date) return -1;
@@ -25,6 +27,7 @@ export default connect(
   'doModalOpen',
   'doAlertsFetch',
   'doInstrumentTimeseriesSetActiveId',
+  'doNotificationFire',
   'doMapsInitialize',
   'doMapsShutdown',
   'selectMapsObject',
@@ -36,6 +39,7 @@ export default connect(
     doModalOpen,
     doAlertsFetch,
     doInstrumentTimeseriesSetActiveId,
+    doNotificationFire,
     doMapsInitialize,
     doMapsShutdown,
     mapsObject,
@@ -46,10 +50,36 @@ export default connect(
   }) => {
     if (!project || !instrument || !timeseriesByInstrumentId) return null;
 
+    const [notifcationFired, setNotificationFired] = useState(false);
+
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
+    const isShapeArray = instrument?.type === 'SAA';
     const len = timeseries.length;
+
     let firstTimeseries = null;
     if (len && len > 0) firstTimeseries = timeseries[0];
+
+    if (isShapeArray && !notifcationFired && !instrument?.opts?.initial_time) {
+      setNotificationFired(true);
+      doNotificationFire({
+        title: 'Missing Initial Time',
+        message: (
+          <span>
+            No <b>Initial Time</b> set in instrument properties. Depth based plotting will be unusable until set.<br />
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='Set Initial Time'
+              handleClick={() => doModalOpen(SetInitialTimeModal, {}, 'lg')}
+            />
+          </span>
+        ),
+        type: 'warning',
+        autoClose: false,
+      });
+    }
+
     useEffect(() => {
       if (!len || !firstTimeseries) {
         doInstrumentTimeseriesSetActiveId(null);
@@ -146,6 +176,11 @@ export default connect(
         <section className='container-fluid mt-4'>
           <Settings />
         </section>
+        {isShapeArray && (
+          <section className='container-fluid my-4'>
+            <DepthBasedPlots />
+          </section>
+        )}
         <section className='container-fluid my-4'>
           <Notes />
         </section>

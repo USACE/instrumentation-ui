@@ -13,6 +13,7 @@ import RoleFilter from '../../../app-components/role-filter';
 import usePrevious from '../../../customHooks/usePrevious';
 
 import '../../../css/grids.scss';
+import '../instrument.css';
 
 const Constants = connect(
   'doModalOpen',
@@ -149,7 +150,7 @@ const Constants = connect(
                 icon={<Add fontSize='inherit' sx={{ marginBottom: '2px' }} />}
               />
             </RoleFilter>
-            <ul className='list-group'>
+            <ul className='list-group limit-item-list'>
               {constants.map((id, i) => (
                 <ConstantListItem
                   key={i}

@@ -18,7 +18,7 @@ const defaultTrace = (name, color) => ({
   marker: { color },
 });
 
-const generateDataTraces = (data = []) => {
+const generateDataTraces = (data = [], currentProjectId) => {
   if (!data.length) return [];
 
   return data.reduce((accum, current, index) => {
@@ -28,8 +28,10 @@ const generateDataTraces = (data = []) => {
       month,
       red_submittals,
       yellow_submittals,
-      // project_id,
+      project_id,
     } = current;
+
+    if (currentProjectId && currentProjectId !== project_id) return { ...accum };
 
     const monthDT = DateTime.fromISO(month, { setZone: 'UTC' });
 
@@ -81,18 +83,21 @@ const generateDataTraces = (data = []) => {
 const DistrictRollupModal = connect(
   'doFetchDistrictRollup',
   'selectDistrictRollupRaw',
+  'selectProjectsIdByRoute',
   ({
     doFetchDistrictRollup,
-    districtRollupRaw
+    districtRollupRaw,
+    projectsIdByRoute,
   }) => {
     const { evaluation, measurement } = districtRollupRaw;
+    const { projectId } = projectsIdByRoute;
 
     const [showCurrentProjectOnly, setShowCurrentProjectOnly] = useState(false);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [fromTime, endTime] = dateRange;
 
-    const evaluationTraces = generateDataTraces(evaluation);
-    const measurementTraces = generateDataTraces(measurement);
+    const evaluationTraces = generateDataTraces(evaluation, showCurrentProjectOnly ? projectId : false);
+    const measurementTraces = generateDataTraces(measurement, showCurrentProjectOnly? projectId : false);
 
     useEffect(() => {
       doFetchDistrictRollup('evaluation');

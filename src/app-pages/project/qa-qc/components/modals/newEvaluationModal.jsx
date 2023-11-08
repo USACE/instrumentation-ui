@@ -39,7 +39,7 @@ const defaultFormState = {
   instruments: [],
   start_date: '',
   end_date: '',
-  alert_config_id: '',
+  alert_config_id: null,
   submittal_id: '',
 };
 

@@ -40,6 +40,7 @@ import instrumentGroupInstrumentsBundle from './instrument-group-instruments-bun
 import instrumentGroupMapBundle from './instrument-group-map-bundle';
 import instrumentMapBundle from './instrument-map-bundle';
 import instrumentNotesBundle from './instrument-notes-bundle';
+import instrumentSensorsBundle from './instrument-sensors-bundle';
 import instrumentStatusBundle from './instrument-status-bundle';
 import mapsBundle from './maps-bundle';
 import modalBundle from './modal-bundle';
@@ -138,6 +139,7 @@ export default composeBundles(
   instrumentGroupInstrumentsBundle,
   instrumentMapBundle,
   instrumentNotesBundle,
+  instrumentSensorsBundle,
   instrumentStatusBundle,
   mapsBundle,
   modalBundle,
