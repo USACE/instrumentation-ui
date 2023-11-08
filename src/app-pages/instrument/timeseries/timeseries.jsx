@@ -11,7 +11,7 @@ import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
-import './timeseries.css';
+import '../instrument.css';
 
 const doesSetHaveData = (dataSet, key, activeTimeseries) => {
   const data = dataSet[activeTimeseries];

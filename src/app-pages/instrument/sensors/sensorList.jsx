@@ -3,6 +3,8 @@ import { useDeepCompareEffect } from 'react-use';
 
 import { classArray } from '../../../common/helpers/utils';
 
+import '../instrument.css';
+
 const SensorList = ({
   activeSensorId,
   setActiveSensorId,
@@ -22,7 +24,7 @@ const SensorList = ({
 
   return (
     instrumentSensors.length ? (
-      <>
+      <ul className='list-group limit-item-list'>
         {instrumentSensors.map(sensor => (
           <li
             key={sensor.id}
@@ -32,7 +34,7 @@ const SensorList = ({
             {sensor.id}
           </li>
         ))}
-      </>
+      </ul>
     ) : 'No Sensors'
   );
 };
