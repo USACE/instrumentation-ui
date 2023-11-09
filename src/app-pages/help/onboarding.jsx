@@ -5,6 +5,10 @@ import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import TabContainer from '../../app-components/tab';
 
+const apiURL = import.meta.env.DEV
+  ? 'http://localhost:8080'
+  : import.meta.env.VITE_API_URL;
+
 const csvSampleProjects = [
   ['Project Name'],
   ['My Sample Project Name 1'],
@@ -117,7 +121,6 @@ const DownloadCSVButton = ({ csvContent, filename }) => {
 export default connect(
   'selectDomainsItemsByGroup',
   ({ domainsItemsByGroup }) => {
-    // NotesXYZ are additional information to be included with each tab
     const NotesInstruments = () => (
       <div>
         <p className='text-info'>Optional Fields:</p>
@@ -158,6 +161,12 @@ export default connect(
     );
     const NotesTimeseriesMeasurements = () => <></>;
     const NotesInclinometerMeasurements = () => <></>;
+    const NotesAPI = () => (
+      <div>
+        <p className='text-primary'>Click the link below to view the Swagger Documentation for the API:</p>
+        <a href={`${apiURL}/swagger/index.html`} target='_blank' rel='noreferrer'>{apiURL}/swagger/index.html</a>
+      </div>
+    );
 
     const CSV = ({ arr }) => (
       <pre>
@@ -171,14 +180,18 @@ export default connect(
 
     const buildContent = (title, csvData, notes) => (
       <div>
-        <div className='float-right'>
-          <DownloadCSVButton
-            csvContent={csvData}
-            filename={`${title}.csv`}
-          />
-        </div>
-        <CSV arr={csvData} />
-        <section className='section has-background-'>
+        {csvData && (
+          <>
+            <div className='float-right'>
+              <DownloadCSVButton
+                csvContent={csvData}
+                filename={`${title}.csv`}
+              />
+            </div>
+            <CSV arr={csvData} />
+          </>
+        )}
+        <section className='section has-background'>
           {notes}
         </section>
       </div>
@@ -204,6 +217,10 @@ export default connect(
       {
         title: 'Inclinometer Measurements',
         content: buildContent('Inclinometer Measurements', csvSampleInclinometerMeasurements, <NotesInclinometerMeasurements />),
+      },
+      {
+        title: 'API',
+        content: buildContent('API', null, <NotesAPI />),
       },
     ];
 
