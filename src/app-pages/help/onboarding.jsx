@@ -5,10 +5,6 @@ import Button from '../../app-components/button';
 import Card from '../../app-components/card';
 import TabContainer from '../../app-components/tab';
 
-const apiURL = import.meta.env.DEV
-  ? 'http://localhost:8080'
-  : import.meta.env.VITE_API_URL;
-
 const csvSampleProjects = [
   ['Project Name'],
   ['My Sample Project Name 1'],
@@ -161,12 +157,6 @@ export default connect(
     );
     const NotesTimeseriesMeasurements = () => <></>;
     const NotesInclinometerMeasurements = () => <></>;
-    const NotesAPI = () => (
-      <div>
-        <p className='text-primary'>Click the link below to view the Swagger Documentation for the API:</p>
-        <a href={`${apiURL}/swagger/index.html`} target='_blank' rel='noreferrer'>{apiURL}/swagger/index.html</a>
-      </div>
-    );
 
     const CSV = ({ arr }) => (
       <pre>
@@ -218,10 +208,6 @@ export default connect(
         title: 'Inclinometer Measurements',
         content: buildContent('Inclinometer Measurements', csvSampleInclinometerMeasurements, <NotesInclinometerMeasurements />),
       },
-      {
-        title: 'API',
-        content: buildContent('API', null, <NotesAPI />),
-      },
     ];
 
     return (
@@ -231,7 +217,7 @@ export default connect(
             <strong className='pr-3'>Q:</strong>I want to try the site with my
             own projects. How should I organize my dataset for upload?
           </p>
-          <p className='text-muted'>
+          <p className='text-dark'>
             Glad you asked! The site supports .csv uploads of Instruments, Timeseries, Timeseries
             measurements and Inclinometer measurements at this time. Uploaders for Projects are coming soon. To get organized,
             start with <span className='has-text-weight-bold'>projects</span>{' '}
