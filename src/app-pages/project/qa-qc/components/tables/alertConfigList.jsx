@@ -44,7 +44,7 @@ const AlertConfigList = connect(
 
     return (
       <div>
-        <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.ADMIN}`]}>
+        <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.ADMIN`]}>
           <Button
             isOutline
             variant='success'
