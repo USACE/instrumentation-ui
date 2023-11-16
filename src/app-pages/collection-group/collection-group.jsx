@@ -5,25 +5,25 @@ import { Add, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
-import collectionGroupForm from '../../common/forms/collection-group-form';
-import collectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
+import CollectionGroupForm from '../../common/forms/collection-group-form';
+import CollectionGroupTimeseriesPicker from './collectiongroup-timeseries-picker';
 import LoginMessage from '../../app-components/login-message';
 import RoleFilter from '../../app-components/role-filter';
 import TimeseriesList from './collectiongroup-timeseries-list';
 import TimestampModeSwitcher from './collectiongroup-timestamp-mode-switcher';
 
 export default connect(
-  'doCollectionGroupRemoveTimeseries',
   'doModalOpen',
   'doNotificationFire',
+  'doCollectionGroupRemoveTimeseries',
   'doTimeseriesMeasurementsSave',
   'selectAppTime',
   'selectCollectionGroupDetailByRoute',
   'selectProjectsByRoute',
   ({
-    doCollectionGroupRemoveTimeseries,
     doModalOpen,
     doNotificationFire,
+    doCollectionGroupRemoveTimeseries,
     doTimeseriesMeasurementsSave,
     appTime,
     collectionGroupDetailByRoute: detail,
@@ -90,7 +90,7 @@ export default connect(
                   size='small'
                   className='text-left'
                   handleClick={(e) => {
-                    doModalOpen(collectionGroupForm, { item: detail });
+                    doModalOpen(CollectionGroupForm, { item: detail });
                     e.stopPropagation();
                   }}
                   text='Edit'
@@ -122,7 +122,7 @@ export default connect(
                           variant='link'
                           size='small'
                           handleClick={(e) => {
-                            doModalOpen(collectionGroupTimeseriesPicker);
+                            doModalOpen(CollectionGroupTimeseriesPicker);
                             e.stopPropagation();
                           }}
                           text='Add'
@@ -142,8 +142,9 @@ export default connect(
                     <Card.Body>
                       <div style={{ maxHeight: '600px', overflow: 'auto' }}>
                         <TimeseriesList
-                          items={detail.timeseries}
                           date={date}
+                          items={detail.timeseries}
+                          handleItemSaveValue={handleTimeseriesSaveValue}
                           handleItemDelete={(item) => {
                             doCollectionGroupRemoveTimeseries({
                               projectId: detail.project_id,
@@ -151,7 +152,6 @@ export default connect(
                               timeseriesId: item.id,
                             });
                           }}
-                          handleItemSaveValue={handleTimeseriesSaveValue}
                         />
                       </div>
                     </Card.Body>
