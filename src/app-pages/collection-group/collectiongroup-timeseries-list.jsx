@@ -92,8 +92,6 @@ const CollectionGroupTimeseriesList = ({
   items,
   handleItemDelete,
   handleItemSaveValue,
-  profileRolesObject,
-  profileIsAdmin,
 }) => (
   <div className='w-100 list-group'>
     {items.map((item, idx) => (
@@ -102,8 +100,6 @@ const CollectionGroupTimeseriesList = ({
         item={item}
         handleItemDelete={handleItemDelete}
         handleItemSaveValue={handleItemSaveValue}
-        profileRolesObject={profileRolesObject}
-        profileIsAdmin={profileIsAdmin}
       />
     ))}
   </div>
