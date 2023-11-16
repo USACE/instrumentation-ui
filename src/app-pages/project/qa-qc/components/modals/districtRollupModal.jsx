@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import { subDays } from 'date-fns';
 import { DateTime } from 'luxon';
 
+import Button from '../../../../../app-components/button';
 import Chart from '../../../../../app-components/chart/chart';
 import TabContainer from '../../../../../app-components/tab/tabContainer';
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
@@ -17,7 +18,7 @@ const defaultTrace = (name, color) => ({
   marker: { color },
 });
 
-const generateDataTraces = (data = []) => {
+const generateDataTraces = (data = [], currentProjectId) => {
   if (!data.length) return [];
 
   return data.reduce((accum, current, index) => {
@@ -27,10 +28,12 @@ const generateDataTraces = (data = []) => {
       month,
       red_submittals,
       yellow_submittals,
-      // project_id, @TODO - use to filter by own project
+      project_id,
     } = current;
 
-    const monthDT = DateTime.fromISO(month);
+    if (currentProjectId && currentProjectId !== project_id) return { ...accum };
+
+    const monthDT = DateTime.fromISO(month, { setZone: 'UTC' });
 
     const displayString = (index) => {
       if (index === 0 || monthDT.month === 1) {
@@ -80,22 +83,31 @@ const generateDataTraces = (data = []) => {
 const DistrictRollupModal = connect(
   'doFetchDistrictRollup',
   'selectDistrictRollupRaw',
+  'selectProjectsIdByRoute',
   ({
     doFetchDistrictRollup,
-    districtRollupRaw
+    districtRollupRaw,
+    projectsIdByRoute,
   }) => {
     const { evaluation, measurement } = districtRollupRaw;
+    const { projectId } = projectsIdByRoute;
 
+    const [showCurrentProjectOnly, setShowCurrentProjectOnly] = useState(false);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
     const [fromTime, endTime] = dateRange;
 
-    const evaluationTraces = generateDataTraces(evaluation);
-    const measurementTraces = generateDataTraces(measurement);
+    const evaluationTraces = generateDataTraces(evaluation, showCurrentProjectOnly ? projectId : false);
+    const measurementTraces = generateDataTraces(measurement, showCurrentProjectOnly? projectId : false);
 
     useEffect(() => {
       doFetchDistrictRollup('evaluation');
       doFetchDistrictRollup('measurement');
     }, [doFetchDistrictRollup]);
+
+    const handleSettingsChange = () => {
+      doFetchDistrictRollup('evaluation', fromTime, endTime);
+      doFetchDistrictRollup('measurement', fromTime, endTime);
+    };
 
     const evaluationChartData = [evaluationTraces.red, evaluationTraces.yellow, evaluationTraces.green];
     const measurementChartData = [measurementTraces.red, measurementTraces.yellow, measurementTraces.green];
@@ -176,6 +188,27 @@ const DistrictRollupModal = connect(
                   showMonthDropdown
                   showYearDropdown
                   dateFormat='MMMM d, yyyy'
+                />
+              </div>
+              <div className='col-6'>
+                <label>Show Only Current Project Data?</label>
+                <input
+                  type='checkbox'
+                  className='d-block'
+                  checked={showCurrentProjectOnly}
+                  onChange={() => setShowCurrentProjectOnly(prev => !prev)}
+                />
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-12'>
+                <Button
+                  isOutline
+                  size='small'
+                  variant='info'
+                  className='mt-2 float-right'
+                  text='Apply Setting Changes'
+                  handleClick={() => handleSettingsChange()}
                 />
               </div>
             </div>

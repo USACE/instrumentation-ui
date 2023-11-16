@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 import { Delete, Edit } from '@mui/icons-material';
 
+import AssignTimeseriesModal from '../modals/assignTimeseriesModal';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import DeleteDataLoggerMappingRowModal from '../modals/deleteDataLoggerMappingRowModal';
@@ -51,7 +52,23 @@ const DataLoggerMappingTable = connect(
     
     return (
       <Card className='mt-3'>
-        <Card.Header text='Field Mapping Table' />
+        <Card.Header>
+          <div className='row'>
+            <div className='col-6 pt-1'>
+              <strong>Field Mapping Table</strong>
+            </div>
+            <div className='col-6 float-right'>
+              <Button
+                isOutline
+                className='float-right'
+                variant='info'
+                size='small'
+                text='Auto-assign Timeseries'
+                handleClick={() => doModalOpen(AssignTimeseriesModal, { equivalencyTable })}
+              />
+            </div>
+          </div>
+        </Card.Header>
         <Card.Body>
           <Table
             data={rows}

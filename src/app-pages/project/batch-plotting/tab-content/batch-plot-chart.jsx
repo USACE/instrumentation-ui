@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'redux-bundler-react';
 import { subDays } from 'date-fns';
 
-import Chart from '../../../app-components/chart/chart';
-import ChartErrors from './batch-plot-errors';
-import ChartSettings from './batch-plot-chart-settings';
-import { generateNewChartData } from './helper';
+import Chart from '../../../../app-components/chart/chart';
+import ChartErrors from '../components/batch-plot-errors';
+import ChartSettings from '../components/batch-plot-chart-settings';
+import { generateNewChartData } from '../helper';
 
 const BatchPlotChart = connect(
   'doPrintSetData',
@@ -30,6 +30,7 @@ const BatchPlotChart = connect(
     const [measurements, setMeasurements] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 365), new Date()]);
+    const [threshold, setThreshold] = useState(3000);
     const [withPrecipitation, setWithPrecipitation] = useState(false);
     const [chartSettings, setChartSettings] = useState({ auto_range: false });
 
@@ -61,6 +62,11 @@ const BatchPlotChart = connect(
       height: 600,
     };
 
+    const savePlotSettings = (params) => {
+      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange, threshold }));
+      doBatchPlotConfigurationsSave(...params);
+    };
+
     /** Load specific timeseries ids into state when new configurations are loaded */
     useEffect(() => {
       const config = batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId];
@@ -75,8 +81,8 @@ const BatchPlotChart = connect(
 
     /** Fetch the timeseries measurements in regards to date range */
     useEffect(() => {
-      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange }));
-    }, [timeseriesIds, dateRange, doInstrumentTimeseriesSetActiveId]);
+      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange, threshold })); // @TODO - allow slider fo threshold
+    }, [timeseriesIds, doInstrumentTimeseriesSetActiveId]);
 
     /** Extract specific measurements from the store that relate to our set timeseries */
     useEffect(() => {
@@ -88,14 +94,11 @@ const BatchPlotChart = connect(
     }, [timeseriesIds, timeseriesMeasurementsItems, setMeasurements]);
 
     /** When we get new measurements, update chart data */
-    useEffect(
-      () => {
-        const newData = generateNewChartData(measurements, instrumentTimeseriesItemsByRoute, chartSettings);
+    useEffect(() => {
+      const newData = generateNewChartData(measurements, instrumentTimeseriesItemsByRoute, chartSettings);
 
-        setChartData(newData);
-      },
-      [measurements, instrumentTimeseriesItemsByRoute, withPrecipitation, chartSettings]
-    );
+      setChartData(newData);
+    }, [measurements, instrumentTimeseriesItemsByRoute, withPrecipitation, chartSettings]);
 
     /** When chart data changes, see if there is precip data to adjust plot */
     useEffect(() => {
@@ -132,11 +135,13 @@ const BatchPlotChart = connect(
           <>
             <hr />
             <ChartSettings
+              threshold={threshold}
+              setThreshold={setThreshold}
               dateRange={dateRange}
               setDateRange={setDateRange}
               chartSettings={chartSettings}
               setChartSettings={setChartSettings}
-              savePlotSettings={doBatchPlotConfigurationsSave}
+              savePlotSettings={savePlotSettings}
               chartData={chartData}
             />
           </>

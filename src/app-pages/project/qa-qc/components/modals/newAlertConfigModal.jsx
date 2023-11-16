@@ -180,8 +180,8 @@ const NewAlertConfigModal = connect(
             <div className='form-group pr-2 col-6'>
               <label>Alert Type: </label>
               <DomainSelect
-                value={formState.alert_type_id?.val}
-                onChange={val => dispatch({ type: 'update', key: 'alert_type_id', data: val })}
+                defaultValue={formState?.alert_type_id?.val}
+                onChange={val => dispatch({ type: 'update', key: 'alert_type_id', data: val?.id })}
                 domain='alert_type'
               />
             </div>

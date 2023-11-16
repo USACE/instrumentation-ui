@@ -1,3 +1,5 @@
+import { tUpdateError, tUpdateSuccess } from "../common/helpers/toast-helpers";
+
 export default {
   name: 'dataLoggerEquivalency',
   getReducer: () => {
@@ -65,7 +67,7 @@ export default {
     });
   },
 
-  doUpdateDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
+  doUpdateSingleDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
     const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
     // const toastId = toast.loading('Updating Field Mapping...');
@@ -95,9 +97,26 @@ export default {
     });
   },
 
-  // doDeleteDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, store, apiDelete }) => {
-  //   const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
-  // },
+  // For use in auto-assigning only.
+  doUpdateMultipleDataLoggerEquivalency: (dataLoggerId, rows, toastId) => ({ store, apiPut }) => {
+    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+
+    const payload = {
+      datalogger_id: dataLoggerId,
+      rows,
+    };
+
+    apiPut(uri, payload, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('test err: ', JSON.stringify(err));
+        tUpdateError(toastId, 'Failed to assign timeseries to field names. Please try again later.');
+      } else {
+        tUpdateSuccess(toastId, 'Successfully assigned timeseries to field names!');
+        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+      }
+    });
+  },
 
   doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ store, apiDelete }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;

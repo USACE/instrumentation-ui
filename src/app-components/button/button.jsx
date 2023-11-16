@@ -42,6 +42,7 @@ const Button = ({
   ]);
 
   const buttonProps = {
+    style: { zIndex: 'auto' },
     className: classes,
     role: 'button',
     type,
@@ -60,7 +61,6 @@ const Button = ({
     </>
   );
 
-  // @ts-ignore
   return React.createElement(elem, buttonProps, <Child />);
 };
 

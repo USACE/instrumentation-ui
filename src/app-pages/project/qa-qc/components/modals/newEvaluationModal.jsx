@@ -2,10 +2,10 @@ import React, { useReducer } from 'react';
 import { connect } from 'redux-bundler-react';
 import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
+import { DateTime } from 'luxon';
 
 import { ModalContent, ModalBody, ModalFooter, ModalHeader } from '../../../../../app-components/modal';
 import { isSaveDisabled, reduceState, initState } from '../../../../../common/helpers/form-helpers';
-import { DateTime } from 'luxon';
 
 const buildInstrumentOptions = (instruments = []) => (
   instruments.map(instrument => {
@@ -39,7 +39,7 @@ const defaultFormState = {
   instruments: [],
   start_date: '',
   end_date: '',
-  alert_config_id: '',
+  alert_config_id: null,
   submittal_id: '',
 };
 

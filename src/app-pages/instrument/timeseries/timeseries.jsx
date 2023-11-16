@@ -11,14 +11,15 @@ import TimeseriesForm from './timeseries-form';
 import TimeseriesListItem from './timeseries-list-item';
 
 import '../../../css/grids.scss';
-import './timeseries.css';
+import '../instrument.css';
 
 const doesSetHaveData = (dataSet, key, activeTimeseries) => {
   const data = dataSet[activeTimeseries];
 
-  return !!(data && data[key]);
+  return !!(data && data[key] && data[key].length);
 };
 
+// @TODO - check this for runtime
 const getInclinometerItems = inclinometers => {
   const items = [];
 

@@ -8,6 +8,7 @@ import Constants from './constants/constants';
 import FormulaEditor from './formula/formula';
 import TabContainer from '../../app-components/tab';
 import Timeseries from './timeseries/timeseries';
+import Sensors from './sensors/sensors';
 
 export default connect(
   'selectTimeseriesMeasurementsItemsObject',
@@ -20,6 +21,7 @@ export default connect(
     const alertsReady = false;
     const forumlaReady = import.meta.env.VITE_FORMULA_EDITOR === 'true';
     const chartReady = import.meta.env.VITE_INSTRUMENT_CHART === 'true';
+    const isShapeArray = instrument?.type === 'SAA';
 
     const tabs = [
       alertsReady && {
@@ -31,6 +33,9 @@ export default connect(
       }, {
         title: 'Timeseries',
         content: <Timeseries data={measurements[instrument.id]} />,
+      }, isShapeArray && {
+        title: 'Sensors',
+        content: <Sensors />,
       }, forumlaReady && {
         title: 'Formula Editor',
         content: <FormulaEditor />,

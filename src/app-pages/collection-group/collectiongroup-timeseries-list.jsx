@@ -19,17 +19,22 @@ const TimeseriesListEntry = ({
       <div className='d-flex flex-row' style={{ minWidth: '420px' }}>
         <div className='d-flex flex-column my-2'>
           <div className='h5 mb-1'>
-            <a href={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
-              {item.instrument}
-            </a>
-            <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
-              <Button
-                variant='link'
-                className='text-secondary h-100'
-                handleClick={() => handleItemDelete(item)}
-                icon={<DeleteOutline color='error' fontSize='small' sx={{ marginBottom: '4px' }} />}
-                title='Remove from group'
-              />
+            <RoleFilter
+              allowRoles={[`${item.project_slug.toUpperCase()}.*`]}
+              alt={() => <span>{item.instrument}</span>}
+            >
+              <>
+                <a href={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
+                  {item.instrument}
+                </a>
+                <Button
+                  variant='link'
+                  className='text-secondary h-100'
+                  handleClick={() => handleItemDelete(item)}
+                  icon={<DeleteOutline color='error' fontSize='small' sx={{ marginBottom: '4px' }} />}
+                  title='Remove from group'
+                />
+              </>
             </RoleFilter>
           </div>
           <div className='h6'>
@@ -54,28 +59,30 @@ const TimeseriesListEntry = ({
           </div>
         </div>
         {/* Column 3 */}
-        <div className='d-flex flex-row'>
-          <div className='input-group'>
-            <input
-              type='number'
-              value={value}
-              className='form-control'
-              placeholder='Enter value...'
-              onChange={(e) => setValue(e.target.value)}
-            />
-            <div className='input-group-append'>
-              <Button
-                variant='secondary'
-                handleClick={() => {
-                  handleItemSaveValue(item, value);
-                  setValue('');
-                }}
-                text='Add'
-                icon={<Add fontSize='inherit' sx={{ marginBottom: '3px' }} />}
+        <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
+          <div className='d-flex flex-row'>
+            <div className='input-group'>
+              <input
+                type='number'
+                value={value}
+                className='form-control'
+                placeholder='Enter value...'
+                onChange={(e) => setValue(e.target.value)}
               />
+                <div className='input-group-append'>
+                  <Button
+                    variant='secondary'
+                    handleClick={() => {
+                      handleItemSaveValue(item, value);
+                      setValue('');
+                    }}
+                    text='Add'
+                    icon={<Add fontSize='inherit' sx={{ marginBottom: '3px' }} />}
+                  />
+                </div>
             </div>
           </div>
-        </div>
+        </RoleFilter>
       </div>
     </div>
   );

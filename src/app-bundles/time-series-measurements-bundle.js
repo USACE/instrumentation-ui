@@ -1,7 +1,5 @@
-import { toast } from 'react-toastify';
-
 import createRestBundle from './create-rest-bundle';
-import { tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
+import { tLoading, tUpdateError, tUpdateSuccess } from '../common/helpers/toast-helpers';
 
 const afterDate = '1900-01-01T00:00:00.00Z';
 const beforeDate = '2025-12-31T00:00:00.00Z';
@@ -41,6 +39,7 @@ export default createRestBundle({
     doTimeseriesMeasurementsFetchById: ({
       timeseriesId,
       dateRange,
+      threshold = 0,
     }) => ({ dispatch, store, apiGet }) => {
       dispatch({ type: 'TIMESERIES_FETCH_BY_ID_START', payload: {} });
       const [after, before] = dateRange;
@@ -48,7 +47,7 @@ export default createRestBundle({
       const isoAfter = after ? after.toISOString() : afterDate;
       const isoBefore = before ? before.toISOString() : beforeDate;
 
-      const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}`;
+      const url = `/timeseries/${timeseriesId}/measurements?after=${isoAfter}&before=${isoBefore}&threshold=${threshold}`;
       const flags = store['selectTimeseriesMeasurementsFlags']();
       const itemsById = store['selectTimeseriesMeasurementsItemsObject']();
       let fetchCount = store['selectTimeseriesMeasurementsFetchCount']();
@@ -82,7 +81,7 @@ export default createRestBundle({
 
       const url = `/projects/${projectId}/timeseries_measurements`;
 
-      const toastId = toast.loading('Uploading measurements...');
+      const toastId = tLoading('Uploading measurements. This may take a while for large data files...');
 
       apiPost(url, measurements, (err, _body) => {
         if (err) {
