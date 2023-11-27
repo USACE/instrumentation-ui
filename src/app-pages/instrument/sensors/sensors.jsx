@@ -33,13 +33,15 @@ const Sensors = connect(
         </p>
         <div className='row mt-2'>
           <div className='col-12'>
-            <Button
-              isOutline
-              size='small'
-              variant='info'
-              text='Auto-assign Sensor Timeseries'
-              handleClick={() => doModalOpen(AutomapSensorModal, { type }, 'lg')}
-            />
+            {type !== 'ipi' && (
+              <Button
+                isOutline
+                size='small'
+                variant='info'
+                text='Auto-assign Sensor Timeseries'
+                handleClick={() => doModalOpen(AutomapSensorModal, { type }, 'lg')}
+              />
+            )}
           </div>
         </div>
         <div className='row mt-2'>

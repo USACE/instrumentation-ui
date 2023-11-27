@@ -42,58 +42,105 @@ const SensorDetails = connect(
           <i>Select a Sensor to assign or view mapped timeseries.</i>
         ) : (
           <>
-            <div className='row'>
-              <div className='col-3 pt-1 text-right'>
-                <label>X Timeseries:</label>
-              </div>
-              <div className='col-9'>
-                <Select
-                  value={getOption('x_timeseries_id')}
-                  className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'x_timeseries_id', data: item.value })}
-                  options={tsOpts}
-                />
-              </div>
-            </div>
-            <div className='row mt-2'>
-              <div className='col-3 pt-1 text-right'>
-                <label>Y Timeseries:</label>
-              </div>
-              <div className='col-9'>
-                <Select
-                  value={getOption('y_timeseries_id')}
-                  className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'y_timeseries_id', data: item.value})}
-                  options={tsOpts}
-                />
-              </div>
-            </div>
-            <div className='row mt-2'>
-              <div className='col-3 pt-1 text-right'>
-                <label>Z Timeseries:</label>
-              </div>
-              <div className='col-9'>
-                <Select
-                  value={getOption('z_timeseries_id')}
-                  className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'z_timeseries_id', data: item.value })}
-                  options={tsOpts}
-                />
-              </div>
-            </div>
-            <div className='row mt-2'>
-              <div className='col-3 pt-1 text-right'>
-                <label>Temperature Timeseries:</label>
-              </div>
-              <div className='col-9'>
-                <Select
-                  value={getOption('temp_timeseries_id')}
-                  className='d-inline-block w-100'
-                  onChange={item => dispatch({ type: 'update', key: 'temp_timeseries_id', data: item.value })}
-                  options={tsOpts}
-                />
-              </div>
-            </div>
+            {type === 'saa' && (
+              <>          
+                <div className='row'>
+                  <div className='col-3 pt-1 text-right'>
+                    <label>X Timeseries:</label>
+                  </div>
+                  <div className='col-9'>
+                    <Select
+                      value={getOption('x_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'x_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-3 pt-1 text-right'>
+                    <label>Y Timeseries:</label>
+                  </div>
+                  <div className='col-9'>
+                    <Select
+                      value={getOption('y_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'y_timeseries_id', data: item.value})}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-3 pt-1 text-right'>
+                    <label>Z Timeseries:</label>
+                  </div>
+                  <div className='col-9'>
+                    <Select
+                      value={getOption('z_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'z_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-3 pt-1 text-right'>
+                    <label>Temperature Timeseries:</label>
+                  </div>
+                  <div className='col-9'>
+                    <Select
+                      value={getOption('temp_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'temp_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+            {type === 'ipi' && (
+              <>
+                <div className='row'>
+                  <div className='col-4 pt-1 text-right'>
+                    <label>Cumulative Displacement Timeseries:</label>
+                  </div>
+                  <div className='col-8'>
+                    <Select
+                      value={getOption('cum_dev_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'cum_dev_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-4 pt-1 text-right'>
+                    <label>Length Timeseries:</label>
+                  </div>
+                  <div className='col-8'>
+                    <Select
+                      value={getOption('length_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'length_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-4 pt-1 text-right'>
+                    <label>Tilt Timeseries:</label>
+                  </div>
+                  <div className='col-8'>
+                    <Select
+                      value={getOption('tilt_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'tilt_timeseries_id', data: item.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <Button
               isOutline
               size='small'

@@ -9,6 +9,7 @@ import SaaDepthBasedPlots from './saa-depth-based-plots';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../../common/forms/instrument-form';
+import IpiDepthBasedPlots from './ipi-depth-based-plots';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import NoAlerts from './alert/no-alerts';
@@ -180,6 +181,11 @@ export default connect(
         {isShapeArray && (
           <section className='container-fluid my-4'>
             <SaaDepthBasedPlots />
+          </section>
+        )}
+        {isIPI && (
+          <section className='container-fluid my-4'>
+            <IpiDepthBasedPlots />
           </section>
         )}
         <section className='container-fluid my-4'>

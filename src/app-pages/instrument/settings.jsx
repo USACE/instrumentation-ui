@@ -22,6 +22,7 @@ export default connect(
     const forumlaReady = import.meta.env.VITE_FORMULA_EDITOR === 'true';
     const chartReady = import.meta.env.VITE_INSTRUMENT_CHART === 'true';
     const isShapeArray = instrument?.type === 'SAA';
+    const isIPI = instrument?.type === 'IPI';
 
     const tabs = [
       alertsReady && {
@@ -33,9 +34,9 @@ export default connect(
       }, {
         title: 'Timeseries',
         content: <Timeseries data={measurements[instrument.id]} />,
-      }, isShapeArray && {
+      }, (isShapeArray || isIPI) && {
         title: 'Sensors',
-        content: <Sensors />,
+        content: <Sensors type={isShapeArray ? 'saa' : 'ipi'} />,
       }, forumlaReady && {
         title: 'Formula Editor',
         content: <FormulaEditor />,
