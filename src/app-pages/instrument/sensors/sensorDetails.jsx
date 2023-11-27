@@ -20,6 +20,7 @@ const SensorDetails = connect(
     doUpdateInstrumentSensor,
     instrumentTimeseriesItemsByRoute: timeseries,
     activeSensor,
+    type,
   }) => {
       // eslint-disable-next-line no-unused-vars
     const { instrument_id, ...rest } = activeSensor || {};
@@ -27,7 +28,7 @@ const SensorDetails = connect(
     const tsOpts = generateOptions(timeseries);
 
     const getOption = key => tsOpts.find(opt => opt.value === options[key]?.val);
-    const handleSave = () => doUpdateInstrumentSensor([extractState(options)]);
+    const handleSave = () => doUpdateInstrumentSensor(type, [extractState(options)]);
 
     useDeepCompareEffect(() => {
       // eslint-disable-next-line no-unused-vars

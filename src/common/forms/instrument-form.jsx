@@ -218,7 +218,10 @@ export default connect(
               <label>Type</label>
               <DomainSelect defaultValue={item?.type_id} onChange={(val) => setTypeId(val?.id)} domain='instrument_type' />
             </div>
-            {findDomainItem('instrument_type', 'SAA')?.id === type_id && (
+            {(
+              findDomainItem('instrument_type', 'SAA')?.id === type_id ||
+              findDomainItem('instrument_type', 'IPI')?.id === type_id
+            ) && (
               <div className='pl-4'>
                 <div className='form-group'>
                   <label>Bottom Elevation</label>

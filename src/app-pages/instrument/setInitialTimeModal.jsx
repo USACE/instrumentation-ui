@@ -22,6 +22,7 @@ const SetInitialTimeModal = connect(
     doFetchInstrumentSensorMeasurements,
     instrumentsByRoute: instrument,
     instrumentSensorsMeasurements: measurements,
+    type,
   }) => {
     const [dateRange, setDateRange] = useState([subDays(new Date(), 7), new Date()]);
     const [selectedMeasurement, setSelectedMeasurement] = useState(null);
@@ -40,7 +41,7 @@ const SetInitialTimeModal = connect(
     };
 
     useDeepCompareEffect(() => {
-      doFetchInstrumentSensorMeasurements(dateRange[1].toISOString(), dateRange[0].toISOString());
+      doFetchInstrumentSensorMeasurements(type, dateRange[1].toISOString(), dateRange[0].toISOString());
     }, [dateRange, doFetchInstrumentSensorMeasurements]);
 
     return (

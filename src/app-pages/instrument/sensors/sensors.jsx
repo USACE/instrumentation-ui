@@ -14,13 +14,14 @@ const Sensors = connect(
     doModalOpen,
     doFetchInstrumentSensorsById,
     instrumentSensors,
+    type,
   }) => {
     const [activeSensorId, setActiveSensorId] = useState(null);
 
     const activeSensor = instrumentSensors.find(s => s.id === activeSensorId);
 
     useEffect(() => {
-      doFetchInstrumentSensorsById();
+      doFetchInstrumentSensorsById(type);
     }, [doFetchInstrumentSensorsById]);
 
     return (
@@ -37,7 +38,7 @@ const Sensors = connect(
               size='small'
               variant='info'
               text='Auto-assign Sensor Timeseries'
-              handleClick={() => doModalOpen(AutomapSensorModal, {}, 'lg')}
+              handleClick={() => doModalOpen(AutomapSensorModal, { type }, 'lg')}
             />
           </div>
         </div>
@@ -52,7 +53,7 @@ const Sensors = connect(
                 />
               </div>
               <div className='col-9'>
-                {!!activeSensor && <SensorDetails activeSensor={activeSensor} />}
+                {!!activeSensor && <SensorDetails activeSensor={activeSensor} type={type} />}
               </div>
             </>
           ) : <i className='col-12'>No Sensors for this instrument.</i>}
