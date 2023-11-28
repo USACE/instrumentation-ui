@@ -7,9 +7,10 @@ import { defineConfig, loadEnv } from 'vite';
 // https://vitejs.dev/config/
 export default ({ mode }) => {
   process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+  const basePath = process.env.VITE_URL_BASE_PATH
 
   return defineConfig({
-    base: process.env.VITE_URL_BASE_PATH,
+    base: basePath === '' ? '/' : basePath,
     plugins: [
       react(),
       svgrPlugin(),

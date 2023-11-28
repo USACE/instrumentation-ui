@@ -6,6 +6,7 @@ import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import Dropdown from '../../../../app-components/dropdown';
+import Link from '../../../../app-components/link';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
 import { InstrumentGroupForm } from '../../../instrument-group';
@@ -69,9 +70,9 @@ const InstrumentGroupCard = connect(
               header: 'Name',
               isSortable: true,
               render: (data) => (
-                <a href={`/${project.slug}/groups/${data.slug}`}>
+                <Link to={`/${project.slug}/groups/${data.slug}`}>
                   {data.name}
-                </a>
+                </Link>
               ),
             }, {
               key: 'instrument_count',

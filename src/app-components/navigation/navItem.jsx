@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
+import Link from '../link';
 import { classArray } from '../../common/helpers/utils';
 
 const NavItem = connect(
-  'selectPathname',
-  ({ pathname, href, handler, children, hidden }) => {
+  'selectRelativePathname',
+  ({ relativePathname: pathname, href, handler, children, hidden }) => {
     const cls = classArray([
       'pointer',
       'nav-item',
@@ -23,9 +24,9 @@ const NavItem = connect(
         </li>
       ) : (
         <li className={cls}>
-          <a className='nav-link' href={href}>
+          <Link className='nav-link' to={href}>
             {children}
-          </a>
+          </Link>
         </li>
       ) : null;
   }

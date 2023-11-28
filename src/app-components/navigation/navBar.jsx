@@ -5,6 +5,7 @@ import { ChevronRight, Timeline } from '@mui/icons-material';
 import DevBanner from './devBanner';
 import NavItem from './navItem';
 import ProfileMenu from './profileMenu';
+import Link from '../link';
 import { classArray } from '../../common/helpers/utils';
 
 import './navigation.scss';
@@ -27,12 +28,12 @@ const NavBar = connect(
   'doAuthLogin',
   'selectAuthIsLoggedIn',
   'selectProjectsByRoute',
-  'selectPathname',
+  'selectRelativePathname',
   ({
     doAuthLogin,
     authIsLoggedIn,
     projectsByRoute: project,
-    pathname,
+    relativePathname: pathname,
   }) => {
     const [hideBrand, setHideBrand] = useState(false);
     const [brand, setBrand] = useState(null);
@@ -65,17 +66,17 @@ const NavBar = connect(
           {hideBrand ? null : (
             <span className='navbar-brand'>
               <strong>
-                <a href='/' className='text-white'>
+                <Link to='/' className='text-white'>
                   <Timeline className='pr-1 pb-1' />
                   {brand || 'MIDAS'}
-                </a>
+                </Link>
               </strong>
               {project && project.name && (
                 <>
                   <ChevronRight fontSize='inherit' sx={{ paddingBottom: '3px' }} />
-                  <a href={`/${project.slug}#dashboard`} className='text-white'>
+                  <Link to={`/${project.slug}#dashboard`} className='text-white'>
                     {project.name}
-                  </a>
+                  </Link>
                 </>
               )}
             </span>
@@ -92,7 +93,7 @@ const NavBar = connect(
           <div className='collapse navbar-collapse'>
             <ul className='navbar-nav mr-auto' />
             <ul className='navbar-nav'>
-              {window.location.pathname === '/help' ? (
+              {pathname === '/help' ? (
                 <NavItem href='/'>Home</NavItem>
               ) : (
                 <NavItem href='/help'>Help</NavItem>

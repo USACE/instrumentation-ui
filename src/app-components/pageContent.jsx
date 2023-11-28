@@ -7,9 +7,9 @@ const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER === 'true';
 const blacklist = ['/', '/help'];
 
 const PageContent = connect(
-  'selectPathname',
+  'selectRelativePathname',
   ({
-    pathname,
+    relativePathname: pathname,
     children,
   }) => {
     const pageClasses = classArray([

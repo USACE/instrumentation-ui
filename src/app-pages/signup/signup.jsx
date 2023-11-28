@@ -3,29 +3,30 @@ import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
 import ProfileForm from '../../app-components/profile-form';
+import Link from '../../app-components/link';
 
 export default connect(
   'doProfileSave',
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectAuthIsLoggedIn',
   'selectProfileActive',
   ({
     doProfileSave,
-    doUpdateUrl,
+    doUpdateRelativeUrl,
     authIsLoggedIn: isLoggedIn,
     profileActive: profile,
   }) => {
     // If user already has a profile or is not logged in,
     // i.e. navigated directly to "/signup", redirect them back to home.
     if (profile || !isLoggedIn) {
-      doUpdateUrl(['/']);
+      doUpdateRelativeUrl('/');
     }
 
     const form = useRef();
     const handleSave = () => {
       if (form.current) {
         form.current.save();
-        doUpdateUrl(['/']);
+        doUpdateRelativeUrl('/');
       }
     };
 
@@ -58,11 +59,11 @@ export default connect(
                 <ProfileForm ref={form} onSave={doProfileSave} />
                 <div className='clearfix'>
                   <div className='float-right'>
-                    <a href='/logout'>
+                    <Link to='/logout'>
                       <button className='btn btn-sm btn-secondary mr-2'>
                         Logout
                       </button>
-                    </a>
+                    </Link>
                     <button
                       onClick={handleSave}
                       className='btn btn-sm btn-success'

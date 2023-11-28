@@ -10,6 +10,7 @@ import {
 } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
+import Link from '../../app-components/link';
 import ProjectCard from './project-card';
 import Table from '../../app-components/table';
 import { filters } from './homeFilters';
@@ -76,9 +77,9 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
 };
 
 export default connect(
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectProjectsItemsWithLinks',
-  ({ doUpdateUrl, projectsItemsWithLinks: projects }) => {
+  ({ doUpdateRelativeUrl, projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
     const [isTableMode, setIsTableMode] = useState(true);
@@ -94,7 +95,7 @@ export default connect(
 
       const project = projects.find(p => p.title === value);
       
-      doUpdateUrl(project.href);
+      doUpdateRelativeUrl(project.href);
     };
 
     const filterList = projects
@@ -162,9 +163,9 @@ export default connect(
                           isSortable: true,
                           render: (data) => (
                             <>
-                              <a href={data?.href}>
+                              <Link to={data?.href}>
                                 {data?.title}
-                              </a>
+                              </Link>
                               <span className='text-muted'>&nbsp;- {data?.subtitle}</span>
                             </>
                           ),

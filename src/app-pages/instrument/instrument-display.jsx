@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 import TimelineList from './timeline-list';
+import Link from '../../app-components/link';
 
 const stationDisplay = station => {
   if (!station) return 'N/A';
@@ -109,9 +110,9 @@ export default connect(
               const group = groups[groupId];
               if (!group) return null;
               return (
-                <a key={i} href={`/${project.slug}/groups/${group.slug}`}>
+                <Link key={i} to={`/${project.slug}/groups/${group.slug}`}>
                   {group.name}
-                </a>
+                </Link>
               );
             })}
           </div>

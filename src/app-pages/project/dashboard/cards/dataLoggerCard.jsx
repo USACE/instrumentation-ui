@@ -4,6 +4,7 @@ import { connect } from 'redux-bundler-react';
 import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
+import Link from '../../../../app-components/link';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
 
@@ -16,7 +17,7 @@ const errorCountSort = (rowA, rowB) => {
   return errorsA?.length - errorsB?.length;
 };
 
-const NoDataLoggersDisplay = ({ doUpdateUrl, project }) => (
+const NoDataLoggersDisplay = ({ doUpdateRelativeUrl, project }) => (
   <div className='m-3'>
     No Data Loggers in this project.
     <br />
@@ -30,18 +31,18 @@ const NoDataLoggersDisplay = ({ doUpdateUrl, project }) => (
         variant='info'
         text='Navigate to Data Loggers'
         className='mt-2 d-block'
-        handleClick={() => doUpdateUrl(`/${project.slug}#data-loggers`)}
+        handleClick={() => doUpdateRelativeUrl(`/${project.slug}#data-loggers`)}
       />
     </RoleFilter>
   </div>
 );
 
 const DataLoggerCard = connect(
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectProjectsByRoute',
   'selectProjectDataLoggers',
   ({
-    doUpdateUrl,
+    doUpdateRelativeUrl,
     projectsByRoute: project,
     projectDataLoggers,
   }) => (
@@ -64,7 +65,7 @@ const DataLoggerCard = connect(
               header: 'Name',
               isSortable: true,
               render: (data) => (
-                <a href={`/${project.slug}#data-loggers?id=${data.id}`}>{data.name}</a>
+                <Link to={`/${project.slug}#data-loggers?id=${data.id}`}>{data.name}</Link>
               ),
             }, {
               key: 'errorCount',
@@ -83,7 +84,7 @@ const DataLoggerCard = connect(
               ),
             }]}
           />
-        ) : <NoDataLoggersDisplay doUpdateUrl={doUpdateUrl} project={project} />}
+        ) : <NoDataLoggersDisplay doUpdateRelativeUrl={doUpdateRelativeUrl} project={project} />}
       </Card.Body>
     </Card>
   )

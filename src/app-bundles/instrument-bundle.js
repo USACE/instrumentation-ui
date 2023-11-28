@@ -31,7 +31,7 @@ export default createRestBundle({
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
-    const url = store.selectUrlObject();
+    const pathname = store.selectRelativePathname();
     const whiteList = [
       'dashboard',
       'uploader',
@@ -49,7 +49,7 @@ export default createRestBundle({
 
     return (
       whiteList.includes(hash) ||
-      pathnameWhitelist.some((elem) => url.pathname.includes(elem))
+      pathnameWhitelist.some((elem) => pathname.includes(elem))
     );
   },
   addons: {

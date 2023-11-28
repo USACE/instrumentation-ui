@@ -3,6 +3,7 @@ import { connect } from 'redux-bundler-react';
 import { SsidChart } from '@mui/icons-material';
 
 import Card from '../../../../app-components/card';
+import Link from '../../../../app-components/link';
 
 import '../../project.scss';
 
@@ -12,7 +13,7 @@ const createReportRow = (project, plot) => {
   return (
     <div className='report-row' key={id}>
       <SsidChart fontSize='inherit' />
-      <a href={`/${project.slug}#batch-plotting?c=${id}`}>{name}</a>
+      <Link to={`/${project.slug}#batch-plotting?c=${id}`}>{name}</Link>
     </div>
   );
 };
@@ -35,7 +36,7 @@ const BatchPlotCard = connect(
           </div>
         ) : (
           <p>
-            Create <a href={`/${project.slug}#batch-plotting`}>new batch plot configurations</a> to view recent configurations here.
+            Create <Link to={`/${project.slug}#batch-plotting`}>new batch plot configurations</Link> to view recent configurations here.
           </p>
         )}
       </Card.Body>

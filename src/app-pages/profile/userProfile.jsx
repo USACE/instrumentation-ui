@@ -26,7 +26,7 @@ const buildAlertContent = (alerts = []) => {
     <>
       {alerts.map((alert, i) => {
         const { project_name, instrument_name, name, body, read, create_date } = alert;
-        const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
+        const url = `${import.meta.env.VITE_URL_BASE_PATH ?? ''}/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
         const timeAgo = formatDistance(new Date(create_date), Date.now());
 
         return (

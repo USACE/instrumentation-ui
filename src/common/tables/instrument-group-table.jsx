@@ -4,6 +4,7 @@ import { Edit } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
 import Pagination, { handlePageChange } from '../../app-components/pagination';
+import Link from '../../app-components/link';
 import RoleFilter from '../../app-components/role-filter';
 import { InstrumentGroupForm } from '../../app-pages/instrument-group';
 
@@ -34,9 +35,9 @@ const Table = connect(
                 return (
                   <tr key={group.id}>
                     <td style={{ width: '15%' }}>
-                      <a href={`/${project.slug}/groups/${group.slug}`}>
+                      <Link to={`/${project.slug}/groups/${group.slug}`}>
                         {group.name}
-                      </a>
+                      </Link>
                     </td>
                     <td>{group.description}</td>
                     <td style={{ width: '200px' }}>

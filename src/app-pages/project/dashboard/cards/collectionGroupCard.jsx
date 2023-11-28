@@ -6,6 +6,7 @@ import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
 import Dropdown from '../../../../app-components/dropdown';
+import Link from '../../../../app-components/link';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
 import { CollectionGroupForm } from '../../../collection-group';
@@ -66,9 +67,9 @@ const CollectionGroupCard = connect(
               key: 'name',
               header: 'Name',
               render: (data) => (
-                <a href={`/${project.slug}/collection-groups/${data.slug}`}>
+                <Link to={`/${project.slug}/collection-groups/${data.slug}`}>
                   {data.name}
-                </a>
+                </Link>
               ),
             }, {
               key: 'tools',

@@ -9,6 +9,7 @@ import InstrumentForm from '../../common/forms/instrument-form';
 import InstrumentGroupForm from './instrument-group-form';
 import InstrumentPicker from './instrument-picker';
 import InstrumentRemove from './instrument-remove';
+import Link from '../../app-components/link';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import RoleFilter from '../../app-components/role-filter';
@@ -170,9 +171,9 @@ export default connect(
                     header: 'Name',
                     isSortable: true,
                     render: (data) => (
-                      <a href={`/${project.slug}/instruments/${data?.slug}`}>
+                      <Link to={`/${project.slug}/instruments/${data?.slug}`}>
                         {data?.name}
-                      </a>
+                      </Link>
                     ),
                   }, {
                     key: 'type',

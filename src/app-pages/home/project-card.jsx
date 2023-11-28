@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Card from '../../app-components/card';
+import Link from '../../app-components/link';
 
 const ProjectCard = ({ project }) => {
   const { img, title, subtitle, href } = project;
@@ -15,7 +16,7 @@ const ProjectCard = ({ project }) => {
 
   return (
     <>
-      <a href={href} tabIndex={0}>
+      <Link to={href} tabIndex={0}>
         <Card className='mb-5' style={{ width: '300px' }}>
           <button className='favorite' onClick={toggleFavorite} disabled>
             <span
@@ -37,7 +38,7 @@ const ProjectCard = ({ project }) => {
             <h6 className='card-subtitle text-muted'>{subtitle}</h6>
           </Card.Body>
         </Card>
-      </a>
+      </Link>
     </>
   );
 };

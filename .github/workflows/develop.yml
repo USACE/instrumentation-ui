@@ -18,7 +18,7 @@ jobs:
       VITE_CROSS_SECTION: true
       VITE_DEVELOPMENT_BANNER: true
       VITE_API_URL: https://develop-midas-api.rsgis.dev
-      VITE_URL_BASE_PATH: /
+      VITE_URL_BASE_PATH: ''
     runs-on: ubuntu-latest
     strategy:
       matrix:

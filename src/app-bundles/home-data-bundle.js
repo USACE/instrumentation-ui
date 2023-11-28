@@ -11,11 +11,7 @@ export default createRestBundle({
   getTemplate: '/home',
   fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: [],
-  prefetch: store => {
-    const url = store.selectUrlObject();
-
-    return url.pathname === '/';
-  },
+  prefetch: store => store.selectRelativePathname() === '/',
   addons: {
     selectHomeData: createSelector('selectHomeItems', (items) => {
       const data = items && items.length ? items[0] : null;
