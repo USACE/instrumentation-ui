@@ -19,20 +19,20 @@ const buildProjectContent = (projects = []) => {
   );
 };
 
-const buildAlertContent = (alerts = []) => {
+const buildAlertContent = (alerts = [], onClick = () => {}) => {
   if (!alerts.length) return <p>No alerts!</p>;
 
   return (
     <>
       {alerts.map((alert, i) => {
         const { project_name, instrument_name, name, body, read, create_date } = alert;
-        const url = `${import.meta.env.VITE_URL_BASE_PATH ?? ''}/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
+        const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
         const timeAgo = formatDistance(new Date(create_date), Date.now());
 
         return (
           <div
             key={i}
-            onClick={() => window.location.assign(url)}
+            onClick={() => onClick(url)}
             className={`alert-container${read ? '' : ' unread'} pointer`}
             title={`Go To ${instrument_name}`}
           >
@@ -53,15 +53,16 @@ const buildAlertContent = (alerts = []) => {
 const UserProfile = connect(
   'selectProfileAlerts',
   'selectAuthTokenPayload',
-  ({ profileAlerts: alerts, authTokenPayload: user }) => {
+  'doUpdateRelativeUrl',
+  ({ profileAlerts: alerts, authTokenPayload: user, doUpdateRelativeUrl }) => {
     const tabs = [
       {
         title: 'Projects',
-        content: buildProjectContent(),
+        content: buildProjectContent([], doUpdateRelativeUrl),
       },
       {
         title: 'Alerts',
-        content: buildAlertContent(alerts),
+        content: buildAlertContent(alerts, doUpdateRelativeUrl),
       }
     ];
 

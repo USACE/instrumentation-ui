@@ -4,7 +4,7 @@ const base = import.meta.env.VITE_URL_BASE_PATH ?? '';
 
 const Link = ({ to, className, onClick, tabIndex, key, children }) => {
   return <a
-    href={`${base}${to}`}
+    href={to}
     className={className}
     onClick={onClick}
     tabIndex={tabIndex}
