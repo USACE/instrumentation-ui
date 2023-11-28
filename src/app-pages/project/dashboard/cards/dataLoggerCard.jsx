@@ -4,7 +4,6 @@ import { connect } from 'redux-bundler-react';
 import Badge from '../../../../app-components/badge';
 import Button from '../../../../app-components/button';
 import Card from '../../../../app-components/card';
-import Link from '../../../../app-components/link';
 import RoleFilter from '../../../../app-components/role-filter';
 import Table from '../../../../app-components/table';
 
@@ -65,7 +64,7 @@ const DataLoggerCard = connect(
               header: 'Name',
               isSortable: true,
               render: (data) => (
-                <Link to={`/${project.slug}#data-loggers?id=${data.id}`}>{data.name}</Link>
+                <a href={`/${project.slug}#data-loggers?id=${data.id}`}>{data.name}</a>
               ),
             }, {
               key: 'errorCount',

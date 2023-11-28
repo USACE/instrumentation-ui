@@ -3,7 +3,6 @@ import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
 import ProfileForm from '../../app-components/profile-form';
-import Link from '../../app-components/link';
 
 export default connect(
   'doProfileSave',
@@ -59,11 +58,11 @@ export default connect(
                 <ProfileForm ref={form} onSave={doProfileSave} />
                 <div className='clearfix'>
                   <div className='float-right'>
-                    <Link to='/logout'>
+                    <a href='/logout'>
                       <button className='btn btn-sm btn-secondary mr-2'>
                         Logout
                       </button>
-                    </Link>
+                    </a>
                     <button
                       onClick={handleSave}
                       className='btn btn-sm btn-success'

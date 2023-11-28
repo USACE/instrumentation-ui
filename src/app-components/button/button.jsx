@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { classArray } from '../../common/helpers/utils';
-import Link from '../link';
 
 /**
  * @typedef {Object} ButtonProps
@@ -32,7 +31,7 @@ const Button = ({
   className = '',
   ...customProps
 }) => {
-  const elem = href ? Link : 'button';
+  const elem = href ? 'a' : 'button';
   const classes = classArray([
     'btn',
     size && size === 'small' ? 'btn-sm' : size === 'large' ? 'btn-lg' : '',
@@ -50,7 +49,7 @@ const Button = ({
     title: title || text,
     disabled: isDisabled,
     'aria-disabled': isDisabled,
-    ...href ? { to: isDisabled ? null : href } : { onClick: handleClick },
+    ...href ? { href: isDisabled ? null : href } : { onClick: handleClick },
     ...customProps,
   };
 

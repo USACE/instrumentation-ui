@@ -5,7 +5,6 @@ import { Circle, Edit } from '@mui/icons-material';
 import Button from '../../../app-components/button';
 import Card from '../../../app-components/card';
 import InstrumentForm from '../../../common/forms/instrument-form';
-import Link from '../../../app-components/link';
 import LoginMessage from '../../../app-components/login-message';
 import RoleFilter from '../../../app-components/role-filter';
 import SearchBar from '../../home/search-bar';
@@ -94,9 +93,9 @@ export default connect(
                   header: 'Name',
                   isSortable: true,
                   render: (data) => (
-                    <Link to={`/${project.slug}/instruments/${data?.slug}`}>
+                    <a href={`/${project.slug}/instruments/${data?.slug}`}>
                       {data?.name}
-                    </Link>
+                    </a>
                   ),
                 }, {
                   key: 'type',

@@ -3,7 +3,6 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Add, DeleteOutline } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
-import Link from '../../app-components/link';
 import RoleFilter from '../../app-components/role-filter';
 
 const TimeseriesListEntry = ({
@@ -25,9 +24,9 @@ const TimeseriesListEntry = ({
               alt={() => <span>{item.instrument}</span>}
             >
               <>
-                <Link to={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
+                <a href={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
                   {item.instrument}
-                </Link>
+                </a>
                 <Button
                   variant='link'
                   className='text-secondary h-100'

@@ -10,7 +10,6 @@ import {
 } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
-import Link from '../../app-components/link';
 import ProjectCard from './project-card';
 import Table from '../../app-components/table';
 import { filters } from './homeFilters';
@@ -163,9 +162,9 @@ export default connect(
                           isSortable: true,
                           render: (data) => (
                             <>
-                              <Link to={data?.href}>
+                              <a href={data?.href}>
                                 {data?.title}
-                              </Link>
+                              </a>
                               <span className='text-muted'>&nbsp;- {data?.subtitle}</span>
                             </>
                           ),

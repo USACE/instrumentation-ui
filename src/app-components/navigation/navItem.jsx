@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 
-import Link from '../link';
 import { classArray } from '../../common/helpers/utils';
 
 const NavItem = connect(
@@ -24,9 +23,9 @@ const NavItem = connect(
         </li>
       ) : (
         <li className={cls}>
-          <Link className='nav-link' to={href}>
+          <a className='nav-link' href={href}>
             {children}
-          </Link>
+          </a>
         </li>
       ) : null;
   }

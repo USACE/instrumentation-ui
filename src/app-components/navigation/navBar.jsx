@@ -5,7 +5,6 @@ import { ChevronRight, Timeline } from '@mui/icons-material';
 import DevBanner from './devBanner';
 import NavItem from './navItem';
 import ProfileMenu from './profileMenu';
-import Link from '../link';
 import { classArray } from '../../common/helpers/utils';
 
 import './navigation.scss';
@@ -66,17 +65,17 @@ const NavBar = connect(
           {hideBrand ? null : (
             <span className='navbar-brand'>
               <strong>
-                <Link to='/' className='text-white'>
+                <a href='/' className='text-white'>
                   <Timeline className='pr-1 pb-1' />
                   {brand || 'MIDAS'}
-                </Link>
+                </a>
               </strong>
               {project && project.name && (
                 <>
                   <ChevronRight fontSize='inherit' sx={{ paddingBottom: '3px' }} />
-                  <Link to={`/${project.slug}#dashboard`} className='text-white'>
+                  <a href={`/${project.slug}#dashboard`} className='text-white'>
                     {project.name}
-                  </Link>
+                  </a>
                 </>
               )}
             </span>

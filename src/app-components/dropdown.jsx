@@ -1,6 +1,5 @@
 import React, { createContext, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import Link from './link';
 import useOutsideEventHandle from '../customHooks/useOutsideEventHandle';
 import useWindowListener from '../customHooks/useWindowListener';
 import { classArray } from '../common/helpers/utils';
@@ -17,7 +16,7 @@ const Item = ({
   <DropdownContext.Consumer>
     {({ closeDropdown }) => (
       href
-        ? <Link className={`dropdown-item text-primary ${className}`} to={href} onClick={() => closeDropdown()}>{children}</Link>
+        ? <a className={`dropdown-item text-primary ${className}`} href={href} onClick={() => closeDropdown()}>{children}</a>
         : (
           <button 
             className={`dropdown-item text-primary ${className}`}

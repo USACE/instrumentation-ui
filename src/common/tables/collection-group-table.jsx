@@ -4,7 +4,6 @@ import { Edit } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
 import CollectionGroupForm from '../../common/forms/collection-group-form';
-import Link from '../../app-components/link';
 import Pagination, { handlePageChange } from '../../app-components/pagination';
 import RoleFilter from '../../app-components/role-filter';
 
@@ -34,9 +33,9 @@ const Table = connect(
                 return (
                   <tr key={g.id}>
                     <td className='w-75'>
-                      <Link to={`/${project.slug}/collection-groups/${g.slug}`}>
+                      <a href={`/${project.slug}/collection-groups/${g.slug}`}>
                         {g.name}
-                      </Link>
+                      </a>
                     </td>
                     <td style={{ width: '200px' }}>
                       <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
