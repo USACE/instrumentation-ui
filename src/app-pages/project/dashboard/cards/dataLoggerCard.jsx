@@ -16,7 +16,7 @@ const errorCountSort = (rowA, rowB) => {
   return errorsA?.length - errorsB?.length;
 };
 
-const NoDataLoggersDisplay = ({ doUpdateUrl, project }) => (
+const NoDataLoggersDisplay = ({ doUpdateRelativeUrl, project }) => (
   <div className='m-3'>
     No Data Loggers in this project.
     <br />
@@ -30,18 +30,18 @@ const NoDataLoggersDisplay = ({ doUpdateUrl, project }) => (
         variant='info'
         text='Navigate to Data Loggers'
         className='mt-2 d-block'
-        handleClick={() => doUpdateUrl(`/${project.slug}#data-loggers`)}
+        handleClick={() => doUpdateRelativeUrl(`/${project.slug}#data-loggers`)}
       />
     </RoleFilter>
   </div>
 );
 
 const DataLoggerCard = connect(
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectProjectsByRoute',
   'selectProjectDataLoggers',
   ({
-    doUpdateUrl,
+    doUpdateRelativeUrl,
     projectsByRoute: project,
     projectDataLoggers,
   }) => (
@@ -83,7 +83,7 @@ const DataLoggerCard = connect(
               ),
             }]}
           />
-        ) : <NoDataLoggersDisplay doUpdateUrl={doUpdateUrl} project={project} />}
+        ) : <NoDataLoggersDisplay doUpdateRelativeUrl={doUpdateRelativeUrl} project={project} />}
       </Card.Body>
     </Card>
   )

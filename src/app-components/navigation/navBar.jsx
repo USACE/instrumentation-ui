@@ -27,12 +27,12 @@ const NavBar = connect(
   'doAuthLogin',
   'selectAuthIsLoggedIn',
   'selectProjectsByRoute',
-  'selectPathname',
+  'selectRelativePathname',
   ({
     doAuthLogin,
     authIsLoggedIn,
     projectsByRoute: project,
-    pathname,
+    relativePathname: pathname,
   }) => {
     const [hideBrand, setHideBrand] = useState(false);
     const [brand, setBrand] = useState(null);
@@ -92,7 +92,7 @@ const NavBar = connect(
           <div className='collapse navbar-collapse'>
             <ul className='navbar-nav mr-auto' />
             <ul className='navbar-nav'>
-              {window.location.pathname === '/help' ? (
+              {pathname === '/help' ? (
                 <NavItem href='/'>Home</NavItem>
               ) : (
                 <NavItem href='/help'>Help</NavItem>

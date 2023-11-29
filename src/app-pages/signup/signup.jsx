@@ -6,26 +6,26 @@ import ProfileForm from '../../app-components/profile-form';
 
 export default connect(
   'doProfileSave',
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectAuthIsLoggedIn',
   'selectProfileActive',
   ({
     doProfileSave,
-    doUpdateUrl,
+    doUpdateRelativeUrl,
     authIsLoggedIn: isLoggedIn,
     profileActive: profile,
   }) => {
     // If user already has a profile or is not logged in,
     // i.e. navigated directly to "/signup", redirect them back to home.
     if (profile || !isLoggedIn) {
-      doUpdateUrl(['/']);
+      doUpdateRelativeUrl('/');
     }
 
     const form = useRef();
     const handleSave = () => {
       if (form.current) {
         form.current.save();
-        doUpdateUrl(['/']);
+        doUpdateRelativeUrl('/');
       }
     };
 

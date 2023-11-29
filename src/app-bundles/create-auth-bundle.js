@@ -89,7 +89,7 @@ const createAuthBundle = (opts) => {
         });
         store.doRemoveProfile();
         const redirect = store.selectAuthRedirectOnLogout();
-        if (redirect) store.doUpdateUrl(redirect);
+        if (redirect) store.doUpdateRelativeUrl(redirect);
       }
     },
 

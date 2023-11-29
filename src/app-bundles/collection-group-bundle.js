@@ -20,11 +20,11 @@ export default createRestBundle({
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
-    const url = store.selectUrlObject();
+    const pathname = store.selectRelativePathname();
     const whiteList = ['dashboard'];
 
     return (
-      whiteList.includes(hash) || url.pathname.includes('/collection-groups/')
+      whiteList.includes(hash) || pathname.includes('/collection-groups/')
     );
   },
   addons: {

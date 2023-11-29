@@ -4,8 +4,8 @@ import { connect } from 'redux-bundler-react';
 import { classArray } from '../../common/helpers/utils';
 
 const NavItem = connect(
-  'selectPathname',
-  ({ pathname, href, handler, children, hidden }) => {
+  'selectRelativePathname',
+  ({ relativePathname: pathname, href, handler, children, hidden }) => {
     const cls = classArray([
       'pointer',
       'nav-item',

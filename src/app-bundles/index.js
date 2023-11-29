@@ -7,6 +7,7 @@ import {
 import createAuthBundle from './create-auth-bundle';
 // Required change from @corpsmap/create-jwt-api-bundle;
 import createJwtApiBundle from './create-jwt-api-bundle';
+import createUrlBasePathBundle from './create-url-base-path-bundle';
 import cache from '../common/helpers/cache';
 
 import alertReadBundle from './alert-read-bundle';
@@ -108,6 +109,7 @@ export default composeBundles(
     cacheFn: cache.set,
   }),
   createUrlBundle(),
+  createUrlBasePathBundle({ base: import.meta.env.VITE_URL_BASE_PATH ?? '' }),
   alertReadBundle,
   alertSubscribeBundle,
   alertUnreadBundle,

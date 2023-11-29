@@ -76,9 +76,9 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
 };
 
 export default connect(
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
   'selectProjectsItemsWithLinks',
-  ({ doUpdateUrl, projectsItemsWithLinks: projects }) => {
+  ({ doUpdateRelativeUrl, projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
     const [isTableMode, setIsTableMode] = useState(true);
@@ -94,7 +94,7 @@ export default connect(
 
       const project = projects.find(p => p.title === value);
       
-      doUpdateUrl(project.href);
+      doUpdateRelativeUrl(project.href);
     };
 
     const filterList = projects

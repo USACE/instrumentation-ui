@@ -17,7 +17,7 @@ cache.getAll().then((initialData) => {
 
   root.render(
     <Provider store={store}>
-      <div onClick={getNavHelper(store.doUpdateUrl)}>
+      <div onClick={getNavHelper(store.doUpdateRelativeUrl)}>
         <App />
       </div>
     </Provider>

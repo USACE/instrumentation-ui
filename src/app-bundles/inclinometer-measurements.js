@@ -25,12 +25,12 @@ export default createRestBundle({
   mergeItems: true,
   prefetch: (store) => {
     const hash = store.selectHash();
-    const url = store.selectUrlObject();
+    const pathname = store.selectRelativePathname();
 
     const whitelist = [];
     const pathnameWhitelist = ['/instruments/', '/groups/', '/collection-groups/'];
 
-    return whitelist.includes(hash) || pathnameWhitelist.some(elem => url.pathname.includes(elem));
+    return whitelist.includes(hash) || pathnameWhitelist.some(elem => pathname.includes(elem));
   },
   addons: {
     doFetchInclinometerMeasurementsByTimeseriesId: (timeseriesId) => ({ dispatch, apiGet }) => {
