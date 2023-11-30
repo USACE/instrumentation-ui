@@ -117,7 +117,6 @@ const DownloadCSVButton = ({ csvContent, filename }) => {
 export default connect(
   'selectDomainsItemsByGroup',
   ({ domainsItemsByGroup }) => {
-    // NotesXYZ are additional information to be included with each tab
     const NotesInstruments = () => (
       <div>
         <p className='text-info'>Optional Fields:</p>
@@ -171,14 +170,18 @@ export default connect(
 
     const buildContent = (title, csvData, notes) => (
       <div>
-        <div className='float-right'>
-          <DownloadCSVButton
-            csvContent={csvData}
-            filename={`${title}.csv`}
-          />
-        </div>
-        <CSV arr={csvData} />
-        <section className='section has-background-'>
+        {csvData && (
+          <>
+            <div className='float-right'>
+              <DownloadCSVButton
+                csvContent={csvData}
+                filename={`${title}.csv`}
+              />
+            </div>
+            <CSV arr={csvData} />
+          </>
+        )}
+        <section className='section has-background'>
           {notes}
         </section>
       </div>
@@ -214,7 +217,7 @@ export default connect(
             <strong className='pr-3'>Q:</strong>I want to try the site with my
             own projects. How should I organize my dataset for upload?
           </p>
-          <p className='text-muted'>
+          <p className='text-dark'>
             Glad you asked! The site supports .csv uploads of Instruments, Timeseries, Timeseries
             measurements and Inclinometer measurements at this time. Uploaders for Projects are coming soon. To get organized,
             start with <span className='has-text-weight-bold'>projects</span>{' '}

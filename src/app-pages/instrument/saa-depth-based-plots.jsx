@@ -153,7 +153,7 @@ const buildLongTraces = (dataArray, initialMeasurement) => {
   }];
 };
 
-const DepthBasedPlots = connect(
+const SaaDepthBasedPlots = connect(
   'doModalOpen',
   'doFetchInstrumentSensorsById',
   'doFetchInstrumentSensorMeasurements',
@@ -173,12 +173,12 @@ const DepthBasedPlots = connect(
     const initialMeasurement = instrumentSensorsMeasurements.length ? instrumentSensorsMeasurements[0]?.measurements?.findLast(e => e) : {};
 
     useEffect(() => {
-      doFetchInstrumentSensorsById();
+      doFetchInstrumentSensorsById('saa');
     }, [doFetchInstrumentSensorsById]);
 
     useDeepCompareEffect(() => {
       if (isOpen) {
-        doFetchInstrumentSensorMeasurements(dateRange[1].toISOString(), dateRange[0].toISOString());
+        doFetchInstrumentSensorMeasurements('saa', dateRange[1].toISOString(), dateRange[0].toISOString());
       }
     }, [isOpen, dateRange]);
 
@@ -225,7 +225,7 @@ const DepthBasedPlots = connect(
                       <Stack direction='row' spacing={1} alignItems='center'>
                         Cumulative
                         <Switch defaultChecked onChange={_e => setIsIncrement(prev => !prev)} />
-                        Increment
+                        Incremental
                       </Stack>
                     </div>
                     <div className='col-6 float-right'>
@@ -235,7 +235,7 @@ const DepthBasedPlots = connect(
                         variant='info'
                         size='small'
                         text='Set Initial Time'
-                        handleClick={() => doModalOpen(SetInitialTimeModal, {}, 'lg')}
+                        handleClick={() => doModalOpen(SetInitialTimeModal, { type: 'saa' }, 'lg')}
                       />
                     </div>
                   </div>
@@ -263,4 +263,4 @@ const DepthBasedPlots = connect(
   },
 );
 
-export default DepthBasedPlots;
+export default SaaDepthBasedPlots;

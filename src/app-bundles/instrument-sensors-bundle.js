@@ -31,11 +31,11 @@ export default {
   selectInstrumentSensorsMeasurements: (state) => state.instrumentSensors.measurements,
   selectInstrumentSensorsLastFetched: (state) => state.instrumentSensors._lastFetched,
 
-  doFetchInstrumentSensorsById: () => ({ dispatch, store, apiGet }) => {
+  doFetchInstrumentSensorsById: (type) => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'INSTRUMENT_SENSORS_BY_ID_FETCH_START' });
     const { instrumentId } = store.selectInstrumentsIdByRoute();
 
-    const url = `/instruments/saa/${instrumentId}/segments`;
+    const url = `/instruments/${type}/${instrumentId}/segments`;
 
     apiGet(url, (err, body) => {
       if (err) {
@@ -52,11 +52,11 @@ export default {
     });
   },
 
-  doUpdateInstrumentSensor: (formData) => ({ dispatch, store, apiPut }) => {
+  doUpdateInstrumentSensor: (type, formData) => ({ dispatch, store, apiPut }) => {
     dispatch({ type: 'INSTRUMENT_SENSOR_UPDATE_START' });
 
     const { instrumentId } = store.selectInstrumentsIdByRoute();
-    const url = `/instruments/saa/${instrumentId}/segments`;
+    const url = `/instruments/${type}/${instrumentId}/segments`;
 
     apiPut(url, formData, (err, _body) => {
       if (err) {
@@ -68,10 +68,10 @@ export default {
     });
   },
 
-  doFetchInstrumentSensorMeasurements: (before, after) => ({ dispatch, store, apiGet }) => {
+  doFetchInstrumentSensorMeasurements: (type, before, after) => ({ dispatch, store, apiGet }) => {
     dispatch({ type: 'SENSOR_MEASUREMENTS_FETCH_START' });
     const { instrumentId } = store.selectInstrumentsIdByRoute();
-    const url = `/instruments/saa/${instrumentId}/measurements?before=${before}&after=${after}`;
+    const url = `/instruments/${type}/${instrumentId}/measurements?before=${before}&after=${after}`;
 
     apiGet(url, (err, body) => {
       if (err) {
@@ -86,6 +86,5 @@ export default {
     });
 
     dispatch({ type: 'SENSOR_MEASUREMENTS_FETCH_FINISHED' });
-
   },
 };

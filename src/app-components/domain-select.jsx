@@ -29,7 +29,7 @@ export default connect(
             size='small'
             defaultValue={options.find(el => el.value === defaultValue)}
             isOptionEqualToValue={(opt, val) => opt.value === val.value}
-            onChange={e => setSelectValue(e.target.innerText)}
+            onChange={(_e, value) => setSelectValue(value?.label)}
             renderInput={(params) => <TextField {...params} placeholder='Select one...' />}
             options={options}
             fullWidth

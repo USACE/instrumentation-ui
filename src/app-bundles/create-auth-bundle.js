@@ -61,7 +61,7 @@ const createAuthBundle = (opts) => {
         try {
           xhr(url, (err, response, body) => {
             if (err) {
-              throw new Error('Login Response not ok');
+              throw new Error(`Login Response not ok. ${err}`);
             } else {
               const token = typeof body === 'string' ? body : JSON.parse(body);
               dispatch({
