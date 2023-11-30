@@ -13,7 +13,7 @@ import Chart from '../../app-components/chart/chart';
 import SetInitialTimeModal from './setInitialTimeModal';
 
 const colors = {
-  init: '#000',
+  init: '#000000',
 };
 
 const config = {
@@ -85,7 +85,7 @@ const build2dTrace = (data, isInit, showTemperature, showIncremental) => {
   const common = {
     y,
     mode: 'markers+lines',
-    marker: { size: 5, color: isInit ? colors[isInit] : undefined },
+    marker: { size: 5, color: isInit ? colors['init'] : undefined },
     line: { width: 1 },
     type: 'scatter',
   };
