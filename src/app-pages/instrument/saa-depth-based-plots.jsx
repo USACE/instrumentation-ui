@@ -225,7 +225,7 @@ const SaaDepthBasedPlots = connect(
                       <Stack direction='row' spacing={1} alignItems='center'>
                         Cumulative
                         <Switch defaultChecked onChange={_e => setIsIncrement(prev => !prev)} />
-                        Increment
+                        Incremental
                       </Stack>
                     </div>
                     <div className='col-6 float-right'>

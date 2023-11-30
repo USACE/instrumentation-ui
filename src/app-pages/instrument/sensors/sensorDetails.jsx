@@ -102,13 +102,14 @@ const SensorDetails = connect(
               <>
                 <div className='row'>
                   <div className='col-4 pt-1 text-right'>
-                    <label>Cumulative Displacement Timeseries:</label>
+                    <label>Incremental Displacement Timeseries:</label>
                   </div>
                   <div className='col-8'>
                     <Select
+                      isClearable
                       value={getOption('cum_dev_timeseries_id')}
                       className='d-inline-block w-100'
-                      onChange={item => dispatch({ type: 'update', key: 'cum_dev_timeseries_id', data: item.value })}
+                      onChange={item => dispatch({ type: 'update', key: 'cum_dev_timeseries_id', data: item?.value })}
                       options={tsOpts}
                     />
                   </div>
@@ -119,9 +120,10 @@ const SensorDetails = connect(
                   </div>
                   <div className='col-8'>
                     <Select
+                      isClearable
                       value={getOption('length_timeseries_id')}
                       className='d-inline-block w-100'
-                      onChange={item => dispatch({ type: 'update', key: 'length_timeseries_id', data: item.value })}
+                      onChange={item => dispatch({ type: 'update', key: 'length_timeseries_id', data: item?.value })}
                       options={tsOpts}
                     />
                   </div>
@@ -132,9 +134,24 @@ const SensorDetails = connect(
                   </div>
                   <div className='col-8'>
                     <Select
+                      isClearable
                       value={getOption('tilt_timeseries_id')}
                       className='d-inline-block w-100'
-                      onChange={item => dispatch({ type: 'update', key: 'tilt_timeseries_id', data: item.value })}
+                      onChange={item => dispatch({ type: 'update', key: 'tilt_timeseries_id', data: item?.value })}
+                      options={tsOpts}
+                    />
+                  </div>
+                </div>
+                <div className='row mt-2'>
+                  <div className='col-4 pt-1 text-right'>
+                    <label>Temperature Timeseries:</label>
+                  </div>
+                  <div className='col-8'>
+                    <Select
+                      isClearable
+                      value={getOption('temp_timeseries_id')}
+                      className='d-inline-block w-100'
+                      onChange={item => dispatch({ type: 'update', key: 'temp_timeseries_id', data: item?.value })}
                       options={tsOpts}
                     />
                   </div>

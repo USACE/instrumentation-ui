@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { Add, Remove } from '@mui/icons-material';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel, Slider, Stack, Switch } from '@mui/material';
 import { addDays, subDays } from 'date-fns';
 import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
@@ -13,8 +13,7 @@ import Chart from '../../app-components/chart/chart';
 import SetInitialTimeModal from './setInitialTimeModal';
 
 const colors = {
-  init: '#800000',
-  rest: '#000075',
+  init: '#000',
 };
 
 const config = {
@@ -24,46 +23,96 @@ const config = {
   scrollZoom: true,
 };
 
-const layout = {
+const layout = (showTemperature, showIncremental) => ({
   showlegend: true,
   autosize: true,
   height: 800,
+  rows: 1,
+  columns: showTemperature ? 2 : 1,
   yaxis: {
+    domain: [0, 1],
+    anchor: 'x1',
     autorange: 'reversed',
     title: `Depth in Feet`,
   }, 
   xaxis: {
-    title: `Cumulative Displacement`,
+    domain: [0, showTemperature ? 0.4 : 1],
+    anchor: 'y1',
+    title: `${showIncremental ? 'Incremental' : 'Cumulative'} Displacement`,
   },
-}
+  ...showTemperature && {
+    xaxis2: {
+      title: 'Temperature',
+      domain: [0.6, 1],
+      anchor: 'y2',
+    },
+    yaxis2: {
+      domain: [0, 1],
+      anchor: 'x2',
+      autorange: 'reversed',
+    }
+  },
+});
 
-const build2dTrace = (dataArray, isInit = false) => {
-  if (!dataArray.length) return {};
+const formatData = (measurements, indexes, showInitial, showTemperature, showIncremental) => {
+  if (!measurements.length) return {};
 
-  const { time, measurements } = dataArray[dataArray.length - 1];
+  const timeIncrements = measurements.sort((a, b) => DateTime.fromISO(a.time).toMillis() - DateTime.fromISO(b.time).toMillis())
+  const relevantData = timeIncrements.slice(indexes[0], indexes[1] + 1);
 
-  const x = [], y = [];
+  const dataArray = [
+    ...(showInitial ? build2dTrace(timeIncrements[0], true, showTemperature, showIncremental).flat() : []),
+    ...relevantData.map(m => build2dTrace(m, false, showTemperature, showIncremental)).flat(),
+  ].filter(e => e);
+
+  return { dataArray, timeIncrements, relevantData };
+};
+
+const build2dTrace = (data, isInit, showTemperature, showIncremental) => {
+  if (!Object.keys(data).length) return {};
+
+  const { time, measurements } = data;
+
+  const x = [], xTemp = [], y = [];
 
   measurements?.forEach(element => {
-    x.push(element?.cum_dev || 0);
+    x.push(showIncremental ? (element?.inc_dev || 0) : (element?.cum_dev || 0));
+    xTemp.push(element?.temp);
     y.push(element?.elevation || 0);
   });
 
-  return ({
-    x,
+  const localDateString = DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_SHORT);
+  const common = {
     y,
     mode: 'markers+lines',
-    marker: { size: 5, color: colors[isInit ? 'init' : 'rest'] },
+    marker: { size: 5, color: isInit ? colors[isInit] : undefined },
     line: { width: 1 },
     type: 'scatter',
-    name: isInit ? 'Initial Displacement' : `Displacement at ${DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_SHORT)}`,
+  };
+
+  return [{
+    ...common,
+    x,
+    name: isInit ? `Initial Displacement (${localDateString})`  : `Displacement at ${localDateString}`,
     hovertemplate: `
-      <b>${DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_SHORT)}</b><br>
+      <b>${localDateString}</b><br>
       Elevation: %{y}<br>
-      Displacement: %{x}<br>
+      ${showIncremental ? 'Incremental' : 'Cumulative'} Displacement: %{x}<br>
       <extra></extra>
     `,
-  });
+  }, showTemperature ? {
+    ...common,
+    xTemp,
+    xaxis: 'x2',
+    yaxis: 'y2',
+    name: isInit ? `Initial Temperature (${localDateString})`  : `Temperature at ${localDateString}`,
+    hovertemplate: `
+      <b>${localDateString}</b><br>
+      Elevation: %{y}<br>
+      Temperature: %{x}<br>
+      <extra></extra>
+    `,
+  } : {}];
 };
 
 const IpiDepthBasedPlots = connect(
@@ -80,10 +129,13 @@ const IpiDepthBasedPlots = connect(
     instrumentSensorsMeasurements,
   }) => {
     const [isOpen, setIsOpen] = useState(true);
+    const [showTemperature, setShowTemperature] = useState(true);
     const [showInitial, setShowInitial] = useState(false);
+    const [showIncremental, setShowIncremental] = useState(false);
+    const [sliderVal, setSliderVal] = useState([0, 0]);
     const [dateRange, setDateRange] = useState([subDays(new Date(), 7), new Date()]);
 
-    const initialMeasurements = instrumentSensorsMeasurements.length ? instrumentSensorsMeasurements[0] : [];
+    const { dataArray = [], timeIncrements = [] } = formatData(instrumentSensorsMeasurements, sliderVal, showInitial, showTemperature, showIncremental);
 
     useEffect(() => {
       doFetchInstrumentSensorsById('ipi');
@@ -140,7 +192,20 @@ const IpiDepthBasedPlots = connect(
                         label='Show Initial Displacement'
                       />
                     </div>
-                    <div className='col-6 float-right'>
+                    <div className='col-2 pt-3'>
+                      <FormControlLabel
+                        control={<Checkbox size='small' defaultChecked onChange={() => setShowTemperature(prev => !prev)} />}
+                        label='Show Temperature'
+                      />
+                    </div>
+                    <div className='col-2 pt-3'>
+                      <Stack direction='row' spacing={1} alignItems='center'>
+                          Cumulative
+                          <Switch onChange={_e => setShowIncremental(prev => !prev)} />
+                          Incremental
+                        </Stack>
+                    </div>
+                    <div className='col-2 float-right'>
                       <Button
                         isOutline
                         className='float-right'
@@ -155,11 +220,22 @@ const IpiDepthBasedPlots = connect(
                     <div className='col-12'>
                       <Chart
                         config={config}
-                        layout={layout}
-                        data={[
-                          showInitial && build2dTrace([initialMeasurements], true),
-                          build2dTrace(instrumentSensorsMeasurements),
-                        ].filter(e => e)}
+                        layout={layout(showTemperature, showIncremental)}
+                        data={dataArray}
+                      />
+                    </div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-10 offset-1'>
+                      <Slider
+                        aria-label='depth plot time slider'
+                        valueLabelDisplay='auto'
+                        min={1}
+                        max={timeIncrements.length - 1}
+                        step={1}
+                        value={sliderVal}
+                        valueLabelFormat={(val) => <span>{DateTime.fromISO(instrumentSensorsMeasurements[val]?.time).toFormat('MMM dd, yyyy hh:mm:ss')}</span>}
+                        onChange={(_e, newVal) => setSliderVal(newVal)}
                       />
                     </div>
                   </div>

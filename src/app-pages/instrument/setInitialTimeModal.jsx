@@ -79,7 +79,7 @@ const SetInitialTimeModal = connect(
               {!!measurements && (
                 <Autocomplete
                   size='small'
-                  onChange={e => setSelectedMeasurement(e.target.innerText)}
+                  onChange={(_e, value) => setSelectedMeasurement(value?.label)}
                   options={selectOptions}
                   isOptionEqualToValue={(opt, val) => opt.label === val.label}
                   renderInput={(params) => <TextField placeholder='Select a measurement...' {...params} />}

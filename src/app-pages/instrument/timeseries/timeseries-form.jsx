@@ -77,8 +77,7 @@ export default connect(
                 renderInput={(params) => (
                   <TextField {...params} placeholder='Timeseries Name... ' onChange={e => setName(e.target.value)} />
                 )}
-                onChange={e => setName(e.target.innerText)}
-                 // @TODO: check value from this.
+                onChange={(e, value) => setName(value?.label)}
               />
             </div>
             <div className='form-group'>
