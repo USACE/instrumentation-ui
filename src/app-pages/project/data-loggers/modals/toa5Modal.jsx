@@ -92,6 +92,7 @@ const Toa5Modal = connect(
     doPostTimeseriesMeasurements,
     dataLoggerEquivalencyTable: equivalencyTable,
     dataLoggerInfo,
+    tableId,
   }) => {
     const { id } = dataLoggerInfo;
 
@@ -177,7 +178,7 @@ const Toa5Modal = connect(
                             text='Add Missing Fields'
                             title='Add Missing Fields to Field Mapping Table'
                             handleClick={() => {
-                              doCreateDataLoggerEquivalency({ dataLoggerId: id, newRows: equivalency.errors.notFound });
+                              doCreateDataLoggerEquivalency({ dataLoggerId: id, tableId, newRows: equivalency.errors.notFound });
                               doModalClose();
                             }}
                           />

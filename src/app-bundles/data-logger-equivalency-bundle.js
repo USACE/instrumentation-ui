@@ -23,8 +23,8 @@ export default {
   selectDataLoggerEquivalencyRaw: state => state.dataLoggerEquivalency,
   selectDataLoggerEquivalencyTable: state => state.dataLoggerEquivalency.table,
 
-  doFetchDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, apiGet }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  doFetchDataLoggerEquivalency: ({ dataLoggerId, tableId }) => ({ dispatch, apiGet }) => {
+    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
 
     apiGet(uri, (err, body) => {
       if (err) {
@@ -39,8 +39,8 @@ export default {
     });
   },
 
-  doCreateDataLoggerEquivalency: ({ dataLoggerId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  doCreateDataLoggerEquivalency: ({ dataLoggerId, tableId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
+    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
 
     if (isDeleteChecked) {
       unusedRows.forEach(el => {
@@ -68,8 +68,8 @@ export default {
   },
 
   doUpdateSingleDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
-    const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+    const { dataLoggerId, tableId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
+    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
     // const toastId = toast.loading('Updating Field Mapping...');
 
     const payload = {
@@ -118,8 +118,8 @@ export default {
     });
   },
 
-  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;
+  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, tableId, id, refreshData = true }) => ({ store, apiDelete }) => {
+    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table/row?id=${id}`;
 
     apiDelete(uri, (err, _body) => {
       if (err) {
