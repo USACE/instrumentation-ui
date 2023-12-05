@@ -24,7 +24,7 @@ export default {
   selectDataLoggerEquivalencyTable: state => state.dataLoggerEquivalency.table,
 
   doFetchDataLoggerEquivalency: ({ dataLoggerId, tableId }) => ({ dispatch, apiGet }) => {
-    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     apiGet(uri, (err, body) => {
       if (err) {
@@ -40,7 +40,7 @@ export default {
   },
 
   doCreateDataLoggerEquivalency: ({ dataLoggerId, tableId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
-    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     if (isDeleteChecked) {
       unusedRows.forEach(el => {
@@ -69,7 +69,7 @@ export default {
 
   doUpdateSingleDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
     const { dataLoggerId, tableId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
-    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
     // const toastId = toast.loading('Updating Field Mapping...');
 
     const payload = {
@@ -119,7 +119,7 @@ export default {
   },
 
   doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, tableId, id, refreshData = true }) => ({ store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/equivalency_table/row?id=${id}`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table/row?id=${id}`;
 
     apiDelete(uri, (err, _body) => {
       if (err) {

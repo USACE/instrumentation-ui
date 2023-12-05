@@ -55,7 +55,7 @@ export default {
   },
 
   doFetchDataLoggerPreview: ({ dataLoggerId, tableId }) => ({ dispatch, apiGet }) => {
-    const uri = `/datalogger/${dataLoggerId}/table/${tableId}/preview`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/preview`;
 
     apiGet(uri, (err, body) => {
       if (err) {

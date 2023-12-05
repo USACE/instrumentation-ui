@@ -24,7 +24,7 @@ const generateDataLoggerOptions = (dataLoggers = []) => (
 
 const generateEquivalencyOptions = (tables = []) => (
   tables.map(t => ({
-    label: t?.name || <i>unnamed table</i>,
+    label: t?.table_name || <i>unnamed table</i>,
     value: t?.id,
   }))
 );
@@ -148,7 +148,7 @@ const DataLoggers = connect(
         {selectedDataLogger ? (
           <>
             <DataLoggerDetails dataLogger={dataLoggerInfo} />
-            <Card className='mt-2'>
+            <Card className='mt-3'>
               <Card.Body>
                 <Select
                   className='d-inline-block w-50'
@@ -160,7 +160,7 @@ const DataLoggers = connect(
                 <HelperTooltip
                   id='unnamed-table-helper'
                   content={<span>
-                    A table with no name, labelled "unnamed table" in the select box, will be automatically named <br/>
+                    A table with no name, labeled "unnamed table" in the select box, will be automatically named <br/>
                     upon the next data upload through the telemetry API.
                   </span>}
                 />
