@@ -35,7 +35,7 @@ const AssignTimeseriesModal = connect(
         const newTs = [];
         const existingTs = [];
 
-        rows.forEach(row => {
+        rows?.forEach(row => {
           if (overwriteExisting || !row.timeseries_id) {
             const found = timeseries[selectedInstrument]?.find(el => el.name === row.field_name);
             if (found) existingTs.push({
