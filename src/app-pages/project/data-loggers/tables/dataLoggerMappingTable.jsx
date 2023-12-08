@@ -65,7 +65,7 @@ const DataLoggerMappingTable = connect(
                 variant='info'
                 size='small'
                 text='Auto-assign Timeseries'
-                handleClick={() => doModalOpen(AssignTimeseriesModal, { equivalencyTable })}
+                handleClick={() => doModalOpen(AssignTimeseriesModal, { equivalencyTable, tableId })}
               />
             </div>
           </div>

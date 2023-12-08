@@ -22,13 +22,14 @@ const AssignTimeseriesModal = connect(
     instrumentTimeseriesByInstrumentId: timeseries,
     instrumentsItems,
     equivalencyTable,
+    tableId,
   }) => {
     const [selectedInstrument, setSelectedInstrument] = useState(null);
     const [overwriteExisting, setOverwriteExisting] = useState(false);
     const [updatingObject, setUpdatingObject] = useState({ newTs: [], existingTs: [] });
     const { datalogger_id, rows } = equivalencyTable;
 
-    const saveTimeseriesToInstrument = () => doSaveFieldNamesToTimeseries(updatingObject, selectedInstrument, datalogger_id);
+    const saveTimeseriesToInstrument = () => doSaveFieldNamesToTimeseries(updatingObject, selectedInstrument, datalogger_id, tableId);
 
     useEffect(() => {
       if (selectedInstrument) {

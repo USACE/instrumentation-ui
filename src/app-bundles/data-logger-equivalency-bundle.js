@@ -39,6 +39,28 @@ export default {
     });
   },
 
+  doCreateEquivalencyByTableName: ({ dataLoggerId, tableName, newRows }) => ({ store, apiPost }) => {
+    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+
+    const payload = {
+      datalogger_id: dataLoggerId,
+      table_name: tableName,
+      rows: newRows.map(row => ({
+        field_name: row,
+        display_name: row,
+      })),
+    };
+
+    apiPost(uri, payload, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('todo', err);
+      } else {
+        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+      }
+    });
+  },
+
   doCreateDataLoggerEquivalency: ({ dataLoggerId, tableId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
     const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
@@ -74,6 +96,7 @@ export default {
 
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
       rows: [
         {
           id,
@@ -98,11 +121,12 @@ export default {
   },
 
   // For use in auto-assigning only.
-  doUpdateMultipleDataLoggerEquivalency: (dataLoggerId, rows, toastId) => ({ store, apiPut }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  doUpdateMultipleDataLoggerEquivalency: (dataLoggerId, tableId, rows, toastId) => ({ store, apiPut }) => {
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
       rows,
     };
 
@@ -113,7 +137,7 @@ export default {
         tUpdateError(toastId, 'Failed to assign timeseries to field names. Please try again later.');
       } else {
         tUpdateSuccess(toastId, 'Successfully assigned timeseries to field names!');
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
       }
     });
   },

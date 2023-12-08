@@ -7,7 +7,7 @@ import TabContainer from '../../app-components/tab';
 
 import './userProfile.css';
 
-const urlify = str => str.toLowerCase().split(' ').join('-');
+const urlify = str => str?.toLowerCase().split(' ').join('-');
 
 const buildProjectContent = (projects = []) => {
   if (!projects.length) return <p>No Projects!</p>;
@@ -24,27 +24,32 @@ const buildAlertContent = (alerts = [], onClick = () => {}) => {
 
   return (
     <>
-      {alerts.map((alert, i) => {
-        const { project_name, instrument_name, name, body, read, create_date } = alert;
-        const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
-        const timeAgo = formatDistance(new Date(create_date), Date.now());
+      {alerts.map(alert => {
+        const { project_name, instruments, name, body, read, create_date } = alert;
 
-        return (
-          <div
-            key={i}
-            onClick={() => onClick(url)}
-            className={`alert-container${read ? '' : ' unread'} pointer`}
-            title={`Go To ${instrument_name}`}
-          >
-            <span className={`list-group-item flex-column align-items-start${read && ' list-group-item-action'}`}>
-              <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-3'>{name} - {instrument_name}</h5>
-                <small>{timeAgo}</small>
-              </div>
-              <p className='mb-1'>{body}</p>
-            </span>
-          </div>
-        );
+        return instruments.map(instrument => {
+          const { instrument_name, instrument_id } = instrument;
+
+          const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
+          const timeAgo = formatDistance(new Date(create_date), Date.now());
+
+          return (
+            <div
+              key={instrument_id}
+              onClick={() => onClick(url)}
+              className={`alert-container${read ? '' : ' unread'} pointer`}
+              title={`Go To ${instrument_name}`}
+            >
+              <span className={`list-group-item flex-column align-items-start${read && ' list-group-item-action'}`}>
+                <div className='d-flex w-100 justify-content-between'>
+                  <h5 className='mb-3'>{name} - {instrument_name}</h5>
+                  <small>{timeAgo}</small>
+                </div>
+                <p className='mb-1'>{body}</p>
+              </span>
+            </div>
+          );
+        });
       })}
     </>
   );
