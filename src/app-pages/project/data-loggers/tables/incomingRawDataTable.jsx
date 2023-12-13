@@ -29,7 +29,7 @@ const IncomingRawDataTable = connect(
 
     useDeepCompareEffect(() => {
       doFetchDataLoggerPreview({ dataLoggerId: id, tableId });
-    }, [dataLogger, doFetchDataLoggerPreview]);
+    }, [dataLogger, doFetchDataLoggerPreview, tableId]);
     
     return (
       <Card className='mt-3'>

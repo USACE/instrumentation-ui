@@ -44,7 +44,7 @@ export default {
 
     const payload = {
       datalogger_id: dataLoggerId,
-      table_name: tableName,
+      datalogger_table_name: tableName,
       rows: newRows.map(row => ({
         field_name: row,
         display_name: row,
@@ -56,7 +56,7 @@ export default {
         // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggersByProjectId();
       }
     });
   },
