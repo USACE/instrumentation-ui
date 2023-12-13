@@ -8,8 +8,16 @@ const dateDisplay = date => {
   return isoDate.toLocaleString(DateTime.DATETIME_MED);
 };
 
+const checkTableLength = (tables = []) => {
+  if (!Array.isArray(tables) || !tables?.length) return 0;
+
+  const validTableArray = tables.map(t => Object.keys(t).length).filter(el => el);
+
+  return validTableArray.length;
+};
+
 const DataLoggerDetails = ({ dataLogger }) => {
-  const { name, sn, model, creator_username, create_date, updater_username, update_date, errors } = dataLogger;
+  const { name, sn, model, creator_username, create_date, updater_username, update_date, errors, tables } = dataLogger;
   
   return (
     <Card className='mt-3'>
@@ -26,6 +34,10 @@ const DataLoggerDetails = ({ dataLogger }) => {
           <div className='col-3'>
             <b>Model: </b>
             {model}
+          </div>
+          <div className='col-3'>
+            <b># of Tables: </b>
+            {checkTableLength(tables)}
           </div>
         </div>
         <div className='row mt-2'>

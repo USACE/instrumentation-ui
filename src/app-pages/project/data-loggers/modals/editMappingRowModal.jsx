@@ -52,6 +52,7 @@ const EditMappingRowModal = connect(
     instrumentTimeseriesItemsObject: timeseries,
     rowData,
     dataLoggerId,
+    tableId,
   }) => {
     const {
       id,
@@ -127,7 +128,7 @@ const EditMappingRowModal = connect(
         <Modal.ModalFooter
           showCancelButton
           saveIsDisabled={isSaveDisabled()}
-          onSave={() => doUpdateSingleDataLoggerEquivalency({ dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId })}
+          onSave={() => doUpdateSingleDataLoggerEquivalency({ dataLoggerId, tableId, id, fieldName, displayName, instrumentId, timeseriesId })}
         />
       </Modal.ModalContent>
     );

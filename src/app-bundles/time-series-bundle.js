@@ -30,7 +30,7 @@ export default createRestBundle({
     }
   },
   addons: {
-    doSaveFieldNamesToTimeseries: (newObject, instrumentId, dataLoggerId) => ({ dispatch, store, apiPost }) => {
+    doSaveFieldNamesToTimeseries: (newObject, instrumentId, dataLoggerId, tableId) => ({ dispatch, store, apiPost }) => {
       dispatch({ type: 'ASSIGN_FIELD_NAMES_TO_TIMESERIES_START' });
       const toastId = tLoading('Creating new timeseries...');
       const { projectId } = store.selectProjectsIdByRoute();
@@ -71,7 +71,7 @@ export default createRestBundle({
             };
           }));
 
-          store.doUpdateMultipleDataLoggerEquivalency(dataLoggerId, rows, toastId);
+          store.doUpdateMultipleDataLoggerEquivalency(dataLoggerId, tableId, rows, toastId);
         }
       });
 

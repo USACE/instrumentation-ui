@@ -19,6 +19,7 @@ const IncomingRawDataTable = connect(
     doFetchDataLoggerPreview,
     dataLoggerPreview,
     dataLogger,
+    tableId,
   }) => {
     const { id, model } = dataLogger;
     const { preview = {} } = dataLoggerPreview;
@@ -27,8 +28,8 @@ const IncomingRawDataTable = connect(
     const dataString = JSON.stringify(preview, null, 4);
 
     useDeepCompareEffect(() => {
-      doFetchDataLoggerPreview({ dataLoggerId: id });
-    }, [dataLogger, doFetchDataLoggerPreview]);
+      doFetchDataLoggerPreview({ dataLoggerId: id, tableId });
+    }, [dataLogger, doFetchDataLoggerPreview, tableId]);
     
     return (
       <Card className='mt-3'>
@@ -54,7 +55,7 @@ const IncomingRawDataTable = connect(
                     icon={<Refresh fontSize='inherit' />}
                     title='Refresh Raw Data'
                     className='mr-2'
-                    handleClick={() => doFetchDataLoggerPreview({ dataLoggerId: id })}
+                    handleClick={() => doFetchDataLoggerPreview({ dataLoggerId: id, tableId })}
                   />
                   <Button
                     isOutline

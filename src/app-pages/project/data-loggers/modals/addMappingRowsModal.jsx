@@ -12,6 +12,7 @@ const AddMappingRowsModal = connect(
     dataLoggerEquivalencyTable: equivalencyTable,
     fieldNames = [],
     dataLoggerId,
+    tableId,
   }) => {
     const { rows = [] } = equivalencyTable;
     const newFieldNames = fieldNames.map(field => field.fieldName);
@@ -92,7 +93,7 @@ const AddMappingRowsModal = connect(
           showCancelButton
           saveText='Update Table'
           showSaveButton={!noChanges}
-          onSave={() => doCreateDataLoggerEquivalency({ dataLoggerId, newRows, unusedRows, isDeleteChecked })}
+          onSave={() => doCreateDataLoggerEquivalency({ dataLoggerId, tableId, newRows, unusedRows, isDeleteChecked })}
         />
       </Modal.ModalContent>
     );

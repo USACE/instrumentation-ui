@@ -46,6 +46,7 @@ const DataLoggerMappingTable = connect(
     instrumentTimeseriesItemsObject: timeseries,
     dataLoggerEquivalencyTable: equivalencyTable,
     dataLogger,
+    tableId,
   }) => {
     const { rows = [] } = equivalencyTable;
     const { id } = dataLogger;
@@ -64,7 +65,7 @@ const DataLoggerMappingTable = connect(
                 variant='info'
                 size='small'
                 text='Auto-assign Timeseries'
-                handleClick={() => doModalOpen(AssignTimeseriesModal, { equivalencyTable })}
+                handleClick={() => doModalOpen(AssignTimeseriesModal, { equivalencyTable, tableId })}
               />
             </div>
           </div>
@@ -83,7 +84,7 @@ const DataLoggerMappingTable = connect(
                     className='mr-2'
                     icon={<Edit fontSize='inherit' />}
                     title='Edit Field Mapping'
-                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data, dataLoggerId: id })}
+                    handleClick={() => doModalOpen(EditMappingRowModal, { rowData: data, dataLoggerId: id, tableId })}
                   />
                   <Button
                     isOutline
@@ -91,7 +92,7 @@ const DataLoggerMappingTable = connect(
                     variant='danger'
                     icon={<Delete fontSize='inherit' />}
                     title='Remove Field Mapping'
-                    handleClick={() => doModalOpen(DeleteDataLoggerMappingRowModal, { dataLoggerId: id, id: data?.id })}
+                    handleClick={() => doModalOpen(DeleteDataLoggerMappingRowModal, { dataLoggerId: id, id: data?.id, tableId })}
                   />
                 </>
               ),
