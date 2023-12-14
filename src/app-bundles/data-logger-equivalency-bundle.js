@@ -61,7 +61,7 @@ export default {
     });
   },
 
-  doCreateDataLoggerEquivalency: ({ dataLoggerId, tableId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
+  doAutoMapDataLoggerEquivalency: ({ dataLoggerId, tableId, tableName, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPut }) => {
     const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     if (isDeleteChecked) {
@@ -73,18 +73,22 @@ export default {
     
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
+      datalogger_table_name: tableName,
       rows: newRows.map(row => ({
         field_name: row,
         display_name: row,
       })),
     };
 
-    apiPost(uri, payload, (err, _body) => {
+    console.log('test payload: ', payload)
+
+    apiPut(uri, payload, (err, _body) => {
       if (err) {
         // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
       }
     });
   },
@@ -114,7 +118,7 @@ export default {
         console.log('test err: ', JSON.stringify(err));
         // tUpdateError(toastId, 'Failed');
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
         // tUpdateSuccess(toastId, 'Successfully updated Field Mapping!');
       }
     });
@@ -143,7 +147,7 @@ export default {
   },
 
   doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, tableId, id, refreshData = true }) => ({ store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table/row?id=${id}`;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table/row/${id}`;
 
     apiDelete(uri, (err, _body) => {
       if (err) {
@@ -151,7 +155,7 @@ export default {
         console.log('todo', err);
       } else {
         if (refreshData) {
-          store.doFetchDataLoggerEquivalency({ dataLoggerId });
+          store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
         }
       }
     });

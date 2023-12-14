@@ -5,14 +5,15 @@ import * as Modal from '../../../../app-components/modal';
 import HelperTooltip from '../../../../app-components/helper-tooltip';
 
 const AddMappingRowsModal = connect(
-  'doCreateDataLoggerEquivalency',
+  'doAutoMapDataLoggerEquivalency',
   'selectDataLoggerEquivalencyTable',
   ({
-    doCreateDataLoggerEquivalency,
+    doAutoMapDataLoggerEquivalency,
     dataLoggerEquivalencyTable: equivalencyTable,
     fieldNames = [],
     dataLoggerId,
     tableId,
+    tableName,
   }) => {
     const { rows = [] } = equivalencyTable;
     const newFieldNames = fieldNames.map(field => field.fieldName);
@@ -93,7 +94,7 @@ const AddMappingRowsModal = connect(
           showCancelButton
           saveText='Update Table'
           showSaveButton={!noChanges}
-          onSave={() => doCreateDataLoggerEquivalency({ dataLoggerId, tableId, newRows, unusedRows, isDeleteChecked })}
+          onSave={() => doAutoMapDataLoggerEquivalency({ dataLoggerId, tableId, tableName, newRows, unusedRows, isDeleteChecked })}
         />
       </Modal.ModalContent>
     );
