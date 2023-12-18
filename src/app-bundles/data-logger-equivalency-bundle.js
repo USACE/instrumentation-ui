@@ -81,8 +81,6 @@ export default {
       })),
     };
 
-    console.log('test payload: ', payload)
-
     apiPut(uri, payload, (err, _body) => {
       if (err) {
         // eslint-disable-next-line no-console
