@@ -21,7 +21,7 @@ const IncomingRawDataTable = connect(
     dataLogger,
     tableId,
   }) => {
-    const { id, model } = dataLogger;
+    const { id, model, tables } = dataLogger;
     const { preview = {} } = dataLoggerPreview;
 
     const [isOpen, setIsOpen] = useState(false);
@@ -68,7 +68,7 @@ const IncomingRawDataTable = connect(
                       // eslint-disable-next-line import/namespace
                       const myExtractor = extractorFns[`${model}_fieldNameExtractor`];
                       const fieldNames = myExtractor(preview);
-                      doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id });
+                      doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id, tableId, tableName: tables.find(el => el.id === tableId)?.table_name });
                     }}
                   />
                   <Button
