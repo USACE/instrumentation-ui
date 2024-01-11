@@ -28,6 +28,7 @@ export default createRestBundle({
       'selectProjectsItems',
       (projects) =>
         projects.map((p) => ({
+          id: p.id,
           img: p.image,
           title: p.name,
           subtitle: 'Instrumentation Browser',
@@ -35,6 +36,8 @@ export default createRestBundle({
           content: '',
           instrumentCount: p.instrument_count,
           instrumentGroupCount: p.instrument_group_count,
+          federalId: p.federal_id,
+          _raw: { ...p },
         }))
     ),
   },

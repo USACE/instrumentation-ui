@@ -1,18 +1,43 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import Select from 'react-select';
 import {
   Filter,
   KeyboardArrowUp,
   KeyboardArrowDown,
-  StarOutline,
   Toc,
 } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
 import ProjectCard from './project-card';
-import Table from '../../app-components/table';
 import { filters } from './homeFilters';
+import { createColumnHelper } from '@tanstack/react-table';
+import { IconButton } from '@mui/material';
+import Table from '../../app-components/table/table';
+
+const groupProjects = projects => {
+  const grouped = projects.reduce((accum, current) => {
+    const { federalId } = current;
+
+    const index = accum.findIndex(el => el.federalId === federalId);
+
+    if (index >= 0) {
+      accum[index] = {
+        ...accum[index],
+        projects: [...accum[index].projects, current],
+      }
+    } else {
+      accum.push({
+        federalId,
+        projects: [current],
+      })
+    }
+
+    return accum;
+  }, []);
+
+  return grouped;
+};
 
 const FilterItemList = ({ items, filter, setFilter, active }) => (
   <ul className='list-group'>
@@ -80,14 +105,54 @@ export default connect(
   'selectProjectsItemsWithLinks',
   ({ doUpdateRelativeUrl, projectsItemsWithLinks: projects }) => {
     const [filter, setFilter] = useState('All');
-    const [filteredProjects, setFilteredProjects] = useState(projects);
+    const [groupedProjects, setGroupedProjects] = useState(groupProjects(projects));
     const [isTableMode, setIsTableMode] = useState(true);
     const [inputString, setInputString] = useState('');
+    const columnHelper = createColumnHelper();
 
-    const onInputChange = input => {
-      const filtered = projects.filter(p => (p.title).toLowerCase().includes(input.toLowerCase()));
-      setFilteredProjects(filtered);
-    };
+    const columns = useMemo(
+      () => [
+        columnHelper.accessor('federalId', {
+          header: 'Federal Id',
+          id: 'federalId',
+          enableColumnFilter: false,
+          cell: (info) => (
+            <>
+              {info.row.getCanExpand() && (
+                <IconButton onClick={info.row.getToggleExpandedHandler()}>
+                  {info.row.getIsExpanded() ? (
+                    <KeyboardArrowUp />
+                  ) : (
+                    <KeyboardArrowDown />
+                  )}
+                </IconButton>
+              )}
+              {info.getValue() ?? 'No Associated Federal Id'}{info.row.subRows.length ? ` (${info.row.subRows.length})` : '' }
+            </>
+          ),
+        }),
+        columnHelper.accessor('title', {
+          header: 'Project Name',
+          id: 'title',
+          enableColumnFilter: false,
+          cell: (info) => (
+            <a href={info?.row?.original?.href}>{info.getValue()}</a>
+          ),
+        }),
+        columnHelper.accessor('instrumentCount', {
+          header: 'Instrument Count',
+          id: 'instrumentCount',
+          enableColumnFilter: false,
+          enableSorting: false,
+        }),
+        columnHelper.accessor('instrumentGroupCount', {
+          header: 'Instrument Group Count',
+          id: 'instrumentGroupCount',
+          enableColumnFilter: false,
+          enableSorting: false,
+        }),
+      ],
+    []);
 
     const onChange = selected => {
       const { value } = selected;
@@ -98,10 +163,14 @@ export default connect(
     };
 
     const filterList = projects
-      ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title, label: p.title }))
+      ? projects.filter(p => p.href).map(p => ({ value: p.title, label: p.title }))
       : {};
 
     const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR === 'true';
+
+    useEffect(() => {
+      setGroupedProjects(groupProjects(projects));
+    }, [projects, setGroupedProjects, groupProjects])
 
     return (
       <div className='container-fluid'>
@@ -116,7 +185,7 @@ export default connect(
             </div>
           )}
           <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
-            { projects.length ? (
+            {projects.length ? (
               <>
                 <div className='mb-2 d-flex justify-content-between'>
                   <span className='btn-group mr-3'>
@@ -144,7 +213,6 @@ export default connect(
                     onInputChange={(value, action) => {
                       if (action.action === 'input-change') {
                         setInputString(value);
-                        onInputChange(value);
                       }
                     }}
                     onChange={onChange}
@@ -154,48 +222,25 @@ export default connect(
                 <>
                   {isTableMode ? (
                     <Table
-                      data={filteredProjects.length ? filteredProjects : projects}
-                      columns={[
-                        {
-                          key: 'title',
-                          header: 'Project Name',
-                          isSortable: true,
-                          render: (data) => (
-                            <>
-                              <a href={data?.href}>
-                                {data?.title}
-                              </a>
-                              <span className='text-muted'>&nbsp;- {data?.subtitle}</span>
-                            </>
-                          ),
-                        }, {
-                          key: 'instrumentCount',
-                          header: 'Instrument Count',
-                          isSortable: true,
-                        }, {
-                          key: 'instrumentGroupCount',
-                          header: 'Instrument Group Count',
-                          isSortable: true,
-                        }, {
-                          key: 'tools',
-                          header: 'Tools',
-                          render: (_data) => (
-                            <Button
-                              size='small'
-                              icon={<StarOutline fontSize='small' />}
-                              variant='dark'
-                              isOutline
-                              isDisabled
-                            />
-                          )
-                        }
-                      ]}
+                      useExpanding
+                      data={groupedProjects}
+                      customColumns={columns}
+                      customTableFunctions={{
+                        getSubRows: (originalRow) => 
+                          originalRow?.projects?.map(project => ({
+                            federalId: '',
+                            title: project.title,
+                            instrumentCount: project.instrumentCount,
+                            instrumentGroupCount: project.instrumentGroupCount,
+                            href: project.href,
+                          }))
+                      }}
                     />
                   ) : (
                     <div className='d-flex flex-wrap justify-content-around'>
-                      {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
+                      {/* {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
                         project.instrumentCount ? <ProjectCard key={i} project={project} /> : null
-                      ))}
+                      ))} */}
                     </div>
                   )}
                 </>
