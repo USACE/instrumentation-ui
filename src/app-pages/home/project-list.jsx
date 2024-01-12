@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { connect } from 'redux-bundler-react';
 import Select from 'react-select';
+import { connect } from 'redux-bundler-react';
+import { IconButton } from '@mui/material';
 import {
   Filter,
   KeyboardArrowUp,
@@ -12,14 +13,25 @@ import Button from '../../app-components/button';
 import ProjectCard from './project-card';
 import { filters } from './homeFilters';
 import { createColumnHelper } from '@tanstack/react-table';
-import { IconButton } from '@mui/material';
 import Table from '../../app-components/table/table';
 
-const groupProjects = projects => {
-  const grouped = projects.reduce((accum, current) => {
-    const { federalId } = current;
+const mapDistrictName = (officeId, length, districts = []) => {
+  if (!districts?.length || !length) return '';
 
-    const index = accum.findIndex(el => el.federalId === federalId);
+  const found = districts.find(el => el.office_id === officeId);
+
+  const str = (found && found?.name) ? found.name : 'No Associated District';
+
+  return `${str}${length ? ` (${length})` : '' }`;
+};
+
+const groupProjects = (projects = []) => {
+  if (!projects?.length) return [];
+
+  const grouped = projects.reduce((accum, current) => {
+    const { officeId } = current;
+
+    const index = accum.findIndex(el => el.officeId === officeId);
 
     if (index >= 0) {
       accum[index] = {
@@ -28,7 +40,7 @@ const groupProjects = projects => {
       }
     } else {
       accum.push({
-        federalId,
+        officeId,
         projects: [current],
       })
     }
@@ -102,8 +114,15 @@ const FilterItem = ({ item, filter, setFilter, active }) => {
 
 export default connect(
   'doUpdateRelativeUrl',
+  'doFetchDistricts',
+  'selectDistricts',
   'selectProjectsItemsWithLinks',
-  ({ doUpdateRelativeUrl, projectsItemsWithLinks: projects }) => {
+  ({
+    doUpdateRelativeUrl,
+    doFetchDistricts,
+    districts,
+    projectsItemsWithLinks: projects,
+  }) => {
     const [filter, setFilter] = useState('All');
     const [groupedProjects, setGroupedProjects] = useState(groupProjects(projects));
     const [isTableMode, setIsTableMode] = useState(true);
@@ -112,9 +131,9 @@ export default connect(
 
     const columns = useMemo(
       () => [
-        columnHelper.accessor('federalId', {
-          header: 'Federal Id',
-          id: 'federalId',
+        columnHelper.accessor('officeId', {
+          header: 'District',
+          id: 'officeId',
           enableColumnFilter: false,
           cell: (info) => (
             <>
@@ -127,7 +146,7 @@ export default connect(
                   )}
                 </IconButton>
               )}
-              {info.getValue() ?? 'No Associated Federal Id'}{info.row.subRows.length ? ` (${info.row.subRows.length})` : '' }
+              {mapDistrictName(info.getValue(), info.row.subRows.length, districts)}
             </>
           ),
         }),
@@ -152,7 +171,7 @@ export default connect(
           enableSorting: false,
         }),
       ],
-    []);
+    [districts]);
 
     const onChange = selected => {
       const { value } = selected;
@@ -169,8 +188,12 @@ export default connect(
     const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR === 'true';
 
     useEffect(() => {
-      setGroupedProjects(groupProjects(projects));
-    }, [projects, setGroupedProjects, groupProjects])
+      setGroupedProjects(groupProjects(projects, districts));
+    }, [projects, districts, setGroupedProjects, groupProjects]);
+
+    useEffect(() => {
+      doFetchDistricts();
+    }, [doFetchDistricts]);
 
     return (
       <div className='container-fluid'>

@@ -36,7 +36,7 @@ export default createRestBundle({
           content: '',
           instrumentCount: p.instrument_count,
           instrumentGroupCount: p.instrument_group_count,
-          federalId: p.federal_id,
+          officeId: p.office_id,
           _raw: { ...p },
         }))
     ),
