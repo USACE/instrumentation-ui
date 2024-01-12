@@ -57,7 +57,7 @@ const ProjectDetails = ({ project }) => {
         />
       </div>
     </div>
-  )
+  );
 };
 
 export default ProjectDetails;
