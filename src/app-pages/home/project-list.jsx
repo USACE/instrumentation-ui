@@ -15,6 +15,20 @@ import { filters } from './homeFilters';
 import { createColumnHelper } from '@tanstack/react-table';
 import Table from '../../app-components/table/table';
 
+const sortByDistrictName = (rowA, rowB, districts) => {
+  const { original: origA } = rowA;
+  const { original: origB } = rowB;
+  const { officeId: officeIdA } = origA;
+  const { officeId: officeIdB } = origB;
+
+  const foundA = districts.find(el => el.office_id === officeIdA)?.name;
+  const foundB = districts.find(el => el.office_id === officeIdB)?.name;
+
+  if (!foundA) return -1;
+  else if (!foundB) return 1;
+  else return foundB.localeCompare(foundA);
+};
+
 const mapDistrictName = (officeId, length, districts = []) => {
   if (!districts?.length || !length) return '';
 
@@ -135,6 +149,7 @@ export default connect(
           header: 'District',
           id: 'officeId',
           enableColumnFilter: false,
+          sortingFn: (a, b) => sortByDistrictName(a, b, districts),
           cell: (info) => (
             <>
               {info.row.getCanExpand() && (
