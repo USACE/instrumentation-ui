@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Autocomplete, Button, TextField } from '@mui/material';
 import { connect } from 'redux-bundler-react';
 
 import Card from '../../app-components/card';
 import ProjectDetails from './projectDetails';
+import AddEditProjectModal from './addEditProjectModal';
 
 const buildProjectOptions = projects => 
   projects.map(p => ({
@@ -12,11 +13,11 @@ const buildProjectOptions = projects =>
   }));
 
 const AdminPage = connect(
+  'doModalOpen',
   'selectProjectsItemsWithLinks',
-  'selectUsersRaw',
   ({
+    doModalOpen,
     projectsItemsWithLinks: projects,
-    usersRaw,
   }) => {
     const [selectedProject, setSelectedProject] = useState('');
 
@@ -41,6 +42,7 @@ const AdminPage = connect(
                 <Button
                   variant='outlined'
                   color='success'
+                  onClick={() => doModalOpen(AddEditProjectModal, {}, 'lg')}
                 >
                   New Project
                 </Button>

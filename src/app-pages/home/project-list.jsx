@@ -8,11 +8,10 @@ import {
   KeyboardArrowDown,
   Toc,
 } from '@mui/icons-material';
+import { createColumnHelper } from '@tanstack/react-table';
 
 import Button from '../../app-components/button';
 import ProjectCard from './project-card';
-import { filters } from './homeFilters';
-import { createColumnHelper } from '@tanstack/react-table';
 import Table from '../../app-components/table/table';
 
 const sortByDistrictName = (rowA, rowB, districts) => {
@@ -137,7 +136,6 @@ export default connect(
     districts,
     projectsItemsWithLinks: projects,
   }) => {
-    const [filter, setFilter] = useState('All');
     const [groupedProjects, setGroupedProjects] = useState(groupProjects(projects));
     const [isTableMode, setIsTableMode] = useState(true);
     const [inputString, setInputString] = useState('');
@@ -200,8 +198,6 @@ export default connect(
       ? projects.filter(p => p.href).map(p => ({ value: p.title, label: p.title }))
       : {};
 
-    const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR === 'true';
-
     useEffect(() => {
       setGroupedProjects(groupProjects(projects, districts));
     }, [projects, districts, setGroupedProjects, groupProjects]);
@@ -213,16 +209,7 @@ export default connect(
     return (
       <div className='container-fluid'>
         <div className='row'>
-          {isProdReady && (
-            <div className='col-md-3'>
-              <FilterItemList
-                items={filters}
-                filter={filter}
-                setFilter={setFilter}
-              />
-            </div>
-          )}
-          <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
+          <div className='mx-3 w-100'>
             {projects.length ? (
               <>
                 <div className='mb-2 d-flex justify-content-between'>
