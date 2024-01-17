@@ -1,18 +1,21 @@
 import React from 'react';
+import { connect } from 'redux-bundler-react';
 import { Button } from '@mui/material';
 import { DateTime } from 'luxon';
 
 import DeleteConfirm from '../../app-components/delete-confirm';
-import { connect } from 'redux-bundler-react';
 import AddEditProjectModal from './addEditProjectModal';
 
 const ProjectDetails = connect(
   'doModalOpen',
   'doProjectsDelete',
+  'selectDistricts',
   ({
     doModalOpen,
     doProjectsDelete,
+    districts,
     project,
+    setSelectedProject,
   }) => {
     const { _raw, title, img, href, instrumentCount } = project;
     const {
@@ -23,6 +26,8 @@ const ProjectDetails = connect(
       federal_id,
       office_id,
     } = _raw;
+
+    const currentDistrict = districts.find(el => el.office_id === office_id);
 
     return (
       <div className='row'>
@@ -39,14 +44,14 @@ const ProjectDetails = connect(
           </Button>
         </div>
         <div className='col-9 border-left'>
-          <h5>Project Details</h5>
+          <h5>(Not a Project) Details</h5>
           <span className='d-block'><b>Name: </b><a href={href}>{title}</a></span>
           <span className='d-block'><b>Federal ID: </b>{federal_id ?? <i>None</i>}</span>
-          <span className='d-block'><b>Office ID: </b>{office_id ?? <i>None</i>}</span>
+          <span className='d-block'><b>Office ID: </b>{office_id ? `${currentDistrict.name} / ${office_id}` : <i>None</i>}</span>
           <span className='d-block'><b># of Assigned Instruments: </b>{instrumentCount}</span>
           <hr />
           <span className='d-block'><b>Created On: </b>{DateTime.fromISO(create_date).toLocaleString(DateTime.DATETIME_SHORT)}</span>
-          <span className='d-block'><b>Created By: </b>{creator}</span>
+          <span className='d-block'><b>Created By: </b>{creator} (API To Return Name)</span>
           <span className='d-block'><b>Updated On: </b>{update_date ? DateTime.fromISO(update_date).toLocaleString(DateTime.DATETIME_SHORT) : <i>Not Updated</i>}</span>
           <span className='d-block'><b>Updated By: </b>{updater ?? <i>Not Updated</i>}</span>
           <hr />
@@ -54,16 +59,19 @@ const ProjectDetails = connect(
             color='info'
             variant='outlined'
             className='mr-2'
-            onClick={() => doModalOpen(AddEditProjectModal, { isEdit: true, project: _raw }, 'lg')}
+            onClick={() => doModalOpen(AddEditProjectModal, { isEdit: true, project: _raw, currentDistrict }, 'md')}
           >
-            Edit Project
+            Edit (Not a Project)
           </Button>
           <DeleteConfirm
             className='float-right'
-            deleteText='DELETE PROJECT'
+            deleteText='DELETE (NOT A PROJECT)'
             cancelText='CANCEL'
             confirmText='CONFIRM'
-            handleDelete={() => doProjectsDelete(_raw)}
+            handleDelete={() => {
+              setSelectedProject('');
+              doProjectsDelete(_raw);
+            }}
           />
         </div>
       </div>

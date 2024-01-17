@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import * as Modal from '../../app-components/modal';
 import { connect } from 'redux-bundler-react';
-import { TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 const defaultProject = {
   name: '',
@@ -10,15 +10,19 @@ const defaultProject = {
   office_id: '',
 };
 
-const validateProjectName = (name, currentProjects = []) => {
-  const ret = { isError: false, errorString: '' };
+const buildDistrictOptions = districts =>
+  districts.map(d => ({
+    label: d.name,
+    id: d.id,
+  }));
 
-  console.log('test currentProjects:', currentProjects);
+const validateProjectName = (name, currentProjects = [], isEdit, initName) => {
+  const ret = { isError: false, errorString: '' };
 
   if (!name) {
     ret.isError = true;
     ret.errorString = 'Project Name is required.';
-  } else if (currentProjects.find(el => el.name === name)) {
+  } else if ((isEdit && initName !== name) && currentProjects.find(el => el.name === name)) {
     ret.isError = true;
     ret.errorString = 'Project Name already exists! Please use a new name.';
   }
@@ -30,33 +34,33 @@ const AddEditProjectModal = connect(
   'doModalClose',
   'doProjectsSave',
   'selectProjectsItems',
+  'selectDistricts',
   ({
     doModalClose,
     doProjectsSave,
     projectsItems: allProjects,
+    districts,
     isEdit = false,
     project = defaultProject,
+    currentDistrict = undefined,
   }) => {
-    const title = isEdit ? 'Edit Project' : 'Create New Project';
+    const title = isEdit ? 'Edit (TBD "Project")' : 'Create New (TBD "Project")';
     const [formData, setFormData] = useState(project);
-    const { name, federal_id, office_id } = formData;
+    const { name: initName } = project;
+    const { name, federal_id } = formData;
 
     const handleSave = () => {
-      const payload = isEdit ? formData : ({
-        projects: [
-          formData,
-        ],
-      });
+      const payload = isEdit ? formData : [formData];
       
       doProjectsSave(payload, doModalClose, true);
     };
 
-    const { isError, errorString } = validateProjectName(name, allProjects);
+    const { isError, errorString } = validateProjectName(name, allProjects, isEdit, initName);
 
     return (
-      <Modal.ModalContent>
+      <Modal.ModalContent style={{ overflow: 'visible' }}>
         <Modal.ModalHeader title={title} />
-        <Modal.ModalBody>
+        <Modal.ModalBody style={{ overflow: 'visible' }}>
           <TextField
             fullWidth
             required
@@ -64,7 +68,7 @@ const AddEditProjectModal = connect(
             helperText={errorString}
             id='project-name-input'
             variant='outlined'
-            label='Project Name'
+            label='(Not a Project) Name'
             value={name}
             onChange={(e) => setFormData(prev =>  ({ ...prev, name: e.target.value }))}
           />
@@ -77,15 +81,18 @@ const AddEditProjectModal = connect(
             value={federal_id}
             onChange={(e) => setFormData(prev => ({ ... prev, federal_id: e.target.value }))}
           />
-          <TextField
-            fullWidth
-            id='office-id-input'
-            className='mt-3'
-            variant='outlined'
-            label='Office ID'
-            value={office_id}
-            onChange={(e) => setFormData(prev => ({ ... prev, office_id: e.target.value }))}
-          />
+          {!!districts?.length && (
+            <Autocomplete
+              disablePortal
+              id='district-search'
+              className='mt-3'
+              options={buildDistrictOptions(districts)}
+              defaultValue={currentDistrict ? { label: currentDistrict.name, id: currentDistrict.id } : undefined}
+              renderInput={params => <TextField {...params} label='Select District/Office' />}
+              isOptionEqualToValue={(opt, val) => opt.id === val.id}
+              onChange={(_e, val) => setFormData(prev => ({ ...prev, office_id: (val ? val.id : '') }))}
+            />
+          )}
         </Modal.ModalBody>
         <Modal.ModalFooter
           onSave={() => handleSave()}

@@ -164,7 +164,7 @@ export default connect(
           ),
         }),
         columnHelper.accessor('title', {
-          header: 'Project Name',
+          header: '(Not a Project) Name',
           id: 'title',
           enableColumnFilter: false,
           cell: (info) => (
@@ -263,9 +263,9 @@ export default connect(
                     />
                   ) : (
                     <div className='d-flex flex-wrap justify-content-around'>
-                      {/* {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
-                        project.instrumentCount ? <ProjectCard key={i} project={project} /> : null
-                      ))} */}
+                      {projects.map(project => (
+                        <ProjectCard key={project.id} project={project} />
+                      ))}
                     </div>
                   )}
                 </>
