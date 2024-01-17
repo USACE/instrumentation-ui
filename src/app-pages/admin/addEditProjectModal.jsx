@@ -50,7 +50,13 @@ const AddEditProjectModal = connect(
     const { name, federal_id } = formData;
 
     const handleSave = () => {
-      const payload = isEdit ? formData : [formData];
+      const { office_id, federal_id } = formData;
+      const finalizedFormData = {
+        ...formData,
+        office_id: office_id ? office_id : null,
+        federal_id: federal_id ? federal_id : null,
+      }
+      const payload = isEdit ? finalizedFormData : [finalizedFormData];
       
       doProjectsSave(payload, doModalClose, true);
     };
