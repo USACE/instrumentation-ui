@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Button, TextField } from '@mui/material';
 import { connect } from 'redux-bundler-react';
 
+import AddEditProjectModal from './addEditProjectModal';
 import Card from '../../app-components/card';
 import ProjectDetails from './projectDetails';
-import AddEditProjectModal from './addEditProjectModal';
 import RoleFilter from '../../app-components/role-filter';
 
 const buildProjectOptions = projects => 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-
-import * as Modal from '../../app-components/modal';
 import { connect } from 'redux-bundler-react';
 import { Autocomplete, TextField } from '@mui/material';
+
+import * as Modal from '../../app-components/modal';
 
 const defaultProject = {
   name: '',
@@ -13,7 +13,7 @@ const defaultProject = {
 const buildDistrictOptions = districts =>
   districts.map(d => ({
     label: d.name,
-    id: d.id,
+    id: d.office_id,
   }));
 
 const validateProjectName = (name, currentProjects = [], isEdit, initName) => {
@@ -55,7 +55,7 @@ const AddEditProjectModal = connect(
         ...formData,
         office_id: office_id ? office_id : null,
         federal_id: federal_id ? federal_id : null,
-      }
+      };
       const payload = isEdit ? finalizedFormData : [finalizedFormData];
       
       doProjectsSave(payload, doModalClose, true);

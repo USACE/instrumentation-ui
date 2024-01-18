@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'redux-bundler-react';
 import { Button } from '@mui/material';
+import { connect } from 'redux-bundler-react';
 import { DateTime } from 'luxon';
 
 import DeleteConfirm from '../../app-components/delete-confirm';

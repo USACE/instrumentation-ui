@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
+import { createColumnHelper } from '@tanstack/react-table';
 import { IconButton } from '@mui/material';
 import {
   Filter,
@@ -8,7 +9,6 @@ import {
   KeyboardArrowDown,
   Toc,
 } from '@mui/icons-material';
-import { createColumnHelper } from '@tanstack/react-table';
 
 import Button from '../../app-components/button';
 import ProjectCard from './project-card';
