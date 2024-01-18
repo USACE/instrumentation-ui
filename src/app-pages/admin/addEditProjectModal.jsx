@@ -93,10 +93,10 @@ const AddEditProjectModal = connect(
               id='district-search'
               className='mt-3'
               options={buildDistrictOptions(districts)}
-              defaultValue={currentDistrict ? { label: currentDistrict.name, id: currentDistrict.id } : undefined}
+              defaultValue={currentDistrict ? { label: currentDistrict.name, id: currentDistrict.office_id } : undefined}
               renderInput={params => <TextField {...params} label='Select District/Office' />}
               isOptionEqualToValue={(opt, val) => opt.id === val.id}
-              onChange={(_e, val) => setFormData(prev => ({ ...prev, office_id: (val ? val.id : '') }))}
+              onChange={(_e, val) => setFormData(prev => ({ ...prev, office_id: (val ? val.office_id : '') }))}
             />
           )}
         </Modal.ModalBody>
