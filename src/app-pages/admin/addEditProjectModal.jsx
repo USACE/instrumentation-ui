@@ -7,13 +7,13 @@ import * as Modal from '../../app-components/modal';
 const defaultProject = {
   name: '',
   federal_id: '',
-  office_id: '',
+  district_id: '',
 };
 
 const buildDistrictOptions = districts =>
   districts.map(d => ({
     label: d.name,
-    id: d.office_id,
+    id: d.id,
   }));
 
 const validateProjectName = (name, currentProjects = [], isEdit, initName) => {
@@ -50,10 +50,10 @@ const AddEditProjectModal = connect(
     const { name, federal_id } = formData;
 
     const handleSave = () => {
-      const { office_id, federal_id } = formData;
+      const { district_id, federal_id } = formData;
       const finalizedFormData = {
         ...formData,
-        office_id: office_id ? office_id : null,
+        district_id: district_id ? district_id : null,
         federal_id: federal_id ? federal_id : null,
       };
       const payload = isEdit ? finalizedFormData : [finalizedFormData];
@@ -93,10 +93,10 @@ const AddEditProjectModal = connect(
               id='district-search'
               className='mt-3'
               options={buildDistrictOptions(districts)}
-              defaultValue={currentDistrict ? { label: currentDistrict.name, id: currentDistrict.office_id } : undefined}
+              defaultValue={currentDistrict ? { label: currentDistrict.name, id: currentDistrict.id } : undefined}
               renderInput={params => <TextField {...params} label='Select District/Office' />}
               isOptionEqualToValue={(opt, val) => opt.id === val.id}
-              onChange={(_e, val) => setFormData(prev => ({ ...prev, office_id: (val ? val.office_id : '') }))}
+              onChange={(_e, val) => setFormData(prev => ({ ...prev, district_id: (val ? val.id : '') }))}
             />
           )}
         </Modal.ModalBody>

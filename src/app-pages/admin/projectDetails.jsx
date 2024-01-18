@@ -24,10 +24,10 @@ const ProjectDetails = connect(
       update_date,
       updater,
       federal_id,
-      office_id,
+      district_id,
     } = _raw;
 
-    const currentDistrict = districts.find(el => el.office_id === office_id);
+    const currentDistrict = districts.find(el => el.id === district_id);
 
     return (
       <div className='row'>
@@ -47,7 +47,7 @@ const ProjectDetails = connect(
           <h5>(Not a Project) Details</h5>
           <span className='d-block'><b>Name: </b><a href={href}>{title}</a></span>
           <span className='d-block'><b>Federal ID: </b>{federal_id ?? <i>None</i>}</span>
-          <span className='d-block'><b>Office ID: </b>{office_id ? `${currentDistrict.name} / ${office_id}` : <i>None</i>}</span>
+          <span className='d-block'><b>District ID: </b>{district_id ? `${currentDistrict.name} / ${district_id}` : <i>None</i>}</span>
           <span className='d-block'><b># of Assigned Instruments: </b>{instrumentCount}</span>
           <hr />
           <span className='d-block'><b>Created On: </b>{DateTime.fromISO(create_date).toLocaleString(DateTime.DATETIME_SHORT)}</span>

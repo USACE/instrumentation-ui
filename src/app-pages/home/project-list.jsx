@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Select from 'react-select';
 import { connect } from 'redux-bundler-react';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -17,21 +17,21 @@ import Table from '../../app-components/table/table';
 const sortByDistrictName = (rowA, rowB, districts) => {
   const { original: origA } = rowA;
   const { original: origB } = rowB;
-  const { officeId: officeIdA } = origA;
-  const { officeId: officeIdB } = origB;
+  const { districtId: districtIdA } = origA;
+  const { districtId: districtIdB } = origB;
 
-  const foundA = districts.find(el => el.office_id === officeIdA)?.name;
-  const foundB = districts.find(el => el.office_id === officeIdB)?.name;
+  const foundA = districts.find(el => el.district_id === districtIdA)?.name;
+  const foundB = districts.find(el => el.district_id === districtIdB)?.name;
 
   if (!foundA) return -1;
   else if (!foundB) return 1;
   else return foundB.localeCompare(foundA);
 };
 
-const mapDistrictName = (officeId, length, districts = []) => {
+const mapDistrictName = (districtId, length, districts = []) => {
   if (!districts?.length || !length) return '';
 
-  const found = districts.find(el => el.office_id === officeId);
+  const found = districts.find(el => el.id === districtId);
 
   const str = (found && found?.name) ? found.name : 'No Associated District';
 
@@ -42,9 +42,9 @@ const groupProjects = (projects = []) => {
   if (!projects?.length) return [];
 
   const grouped = projects.reduce((accum, current) => {
-    const { officeId } = current;
+    const { districtId } = current;
 
-    const index = accum.findIndex(el => el.officeId === officeId);
+    const index = accum.findIndex(el => el.districtId === districtId);
 
     if (index >= 0) {
       accum[index] = {
@@ -53,7 +53,7 @@ const groupProjects = (projects = []) => {
       }
     } else {
       accum.push({
-        officeId,
+        districtId,
         projects: [current],
       })
     }
@@ -62,67 +62,6 @@ const groupProjects = (projects = []) => {
   }, []);
 
   return grouped;
-};
-
-const FilterItemList = ({ items, filter, setFilter, active }) => (
-  <ul className='list-group'>
-    {items.map((item, i) => (
-      <FilterItem
-        item={item}
-        key={i}
-        filter={filter}
-        setFilter={setFilter}
-        active={active}
-      />
-    ))}
-  </ul>
-);
-
-const FilterItem = ({ item, filter, setFilter, active }) => {
-  const el = useRef(null);
-  const [expanded, setExpanded] = useState(false);
-  const isActive = active || item.abbr === filter;
-
-  return (
-    <li
-      ref={el}
-      onClick={(e) => {
-        if (e.currentTarget === el.current) {
-          e.stopPropagation();
-          e.preventDefault();
-          setFilter(item.abbr);
-        }
-      }}
-      onDoubleClick={(e) => {
-        if (e.currentTarget === el.current) {
-          e.stopPropagation();
-          e.preventDefault();
-          setExpanded(!expanded);
-        }
-      }}
-      className={`list-group-item list-group-item-action${isActive ? ' active' : ''} pointer`}
-    >
-      <div className='pb-2 noselect overflow-ellipsis'>
-        {item.children && !!item.children.length && (
-          <span onClick={() => setExpanded(!expanded)} className='pr-2'>
-            {expanded ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowUp fontSize='small' />}
-          </span>
-        )}{' '}
-        <span className='pr-2'>{item.abbr}</span>
-        {item.abbr !== item.text && (
-          <small className='text-muted'>{item.text}</small>
-        )}
-      </div>
-      {item.children && expanded && (
-        <FilterItemList
-          items={item.children}
-          filter={filter}
-          setFilter={setFilter}
-          active={isActive}
-        />
-      )}
-    </li>
-  );
 };
 
 export default connect(
@@ -143,9 +82,9 @@ export default connect(
 
     const columns = useMemo(
       () => [
-        columnHelper.accessor('officeId', {
+        columnHelper.accessor('districtId', {
           header: 'District',
-          id: 'officeId',
+          id: 'districtId',
           enableColumnFilter: false,
           sortingFn: (a, b) => sortByDistrictName(a, b, districts),
           cell: (info) => (
