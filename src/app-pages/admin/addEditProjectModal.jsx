@@ -74,7 +74,7 @@ const AddEditProjectModal = connect(
             helperText={errorString}
             id='project-name-input'
             variant='outlined'
-            label='(Not a Project) Name'
+            label='Project Name'
             value={name}
             onChange={(e) => setFormData(prev =>  ({ ...prev, name: e.target.value }))}
           />

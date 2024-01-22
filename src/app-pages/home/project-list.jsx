@@ -103,7 +103,7 @@ export default connect(
           ),
         }),
         columnHelper.accessor('title', {
-          header: '(Not a Project) Name',
+          header: 'Project Name',
           id: 'title',
           enableColumnFilter: false,
           cell: (info) => (

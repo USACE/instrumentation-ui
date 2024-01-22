@@ -44,7 +44,7 @@ const ProjectDetails = connect(
           </Button>
         </div>
         <div className='col-9 border-left'>
-          <h5>(Not a Project) Details</h5>
+          <h5>Project Details</h5>
           <span className='d-block'><b>Name: </b><a href={href}>{title}</a></span>
           <span className='d-block'><b>Federal ID: </b>{federal_id ?? <i>None</i>}</span>
           <span className='d-block'><b>District ID: </b>{district_id ? `${currentDistrict.name} / ${district_id}` : <i>None</i>}</span>
@@ -61,11 +61,11 @@ const ProjectDetails = connect(
             className='mr-2'
             onClick={() => doModalOpen(AddEditProjectModal, { isEdit: true, project: _raw, currentDistrict }, 'md')}
           >
-            Edit (Not a Project)
+            Edit Project
           </Button>
           <DeleteConfirm
             className='float-right'
-            deleteText='DELETE (NOT A PROJECT)'
+            deleteText='DELETE PROJECT'
             cancelText='CANCEL'
             confirmText='CONFIRM'
             handleDelete={() => {

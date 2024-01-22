@@ -36,16 +36,16 @@ const AdminPage = connect(
       )}>
         <div className='container-fluid'>
           <Card>
-            <Card.Header text='(Not a Project) Management' />
+            <Card.Header text='Project Management' />
             <Card.Body>
-              Search and select a (not project) to manage or click the <b>New (Not a Project)</b> button to create a new (not a project).
+              Search and select a project to manage or click the <b>New Project</b> button to create a new project.
               <div className='row mt-3'>
                 <div className='col-10'>
                   <Autocomplete
                     disablePortal
                     id='admin-project-search'
                     options={buildProjectOptions(projects)}
-                    renderInput={params => <TextField {...params} label='Select a (Not Project)...' />}
+                    renderInput={params => <TextField {...params} label='Select a Project...' />}
                     isOptionEqualToValue={(opt, val) => opt.id === val.id}
                     onChange={(_e, val) => setSelectedProject(val ? val.id : '')}
                   />
@@ -56,7 +56,7 @@ const AdminPage = connect(
                     color='success'
                     onClick={() => doModalOpen(AddEditProjectModal, {}, 'md')}
                   >
-                    New (Not a Project)
+                    New Project
                   </Button>
                 </div>
               </div>
