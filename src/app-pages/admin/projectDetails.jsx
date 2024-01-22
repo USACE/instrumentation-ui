@@ -20,9 +20,9 @@ const ProjectDetails = connect(
     const { _raw, title, img, href, instrumentCount } = project;
     const {
       create_date,
-      creator,
+      creator_username,
       update_date,
-      updater,
+      updater_username,
       federal_id,
       district_id,
     } = _raw;
@@ -51,9 +51,9 @@ const ProjectDetails = connect(
           <span className='d-block'><b># of Assigned Instruments: </b>{instrumentCount}</span>
           <hr />
           <span className='d-block'><b>Created On: </b>{DateTime.fromISO(create_date).toLocaleString(DateTime.DATETIME_SHORT)}</span>
-          <span className='d-block'><b>Created By: </b>{creator} (API To Return Name)</span>
+          <span className='d-block'><b>Created By: </b>{creator_username}</span>
           <span className='d-block'><b>Updated On: </b>{update_date ? DateTime.fromISO(update_date).toLocaleString(DateTime.DATETIME_SHORT) : <i>Not Updated</i>}</span>
-          <span className='d-block'><b>Updated By: </b>{updater ?? <i>Not Updated</i>}</span>
+          <span className='d-block'><b>Updated By: </b>{updater_username ?? <i>Not Updated</i>}</span>
           <hr />
           <Button
             color='info'
