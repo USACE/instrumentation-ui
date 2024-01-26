@@ -14,7 +14,21 @@ export default createRestBundle({
   deleteTemplate: '/projects/{:item.id}',
   fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
   forceFetchActions: ['PROJECTS_SAVE_FINISHED', 'PROJECTS_DELETE_FINISHED'],
+  reduceFurther: (state, { type, payload }) => {
+    switch (type) {
+      case 'SET_CURRENT_ADMIN_PROJECTS':
+        return {
+          ...state,
+          currentAdminProjects: payload,
+        };
+      default:
+        return state;
+    }
+  },
   addons: {
+    selectProjectsRaw: state => state.projects,
+    selectProjectsCurrentAdmin: state => state.projects.currentAdminProjects,
+
     selectProjectsIdByRoute: createSelector(
       'selectProjectsByRoute',
       (project) => {
@@ -40,5 +54,30 @@ export default createRestBundle({
           _raw: { ...p },
         }))
     ),
+
+    /**
+     * Returns a list of projects the user is in, defined by their role.
+     * @param {string} role - One of ['admin', 'member']
+     * @returns List of Project
+     */
+    doFetchCurrentAdminProjects: ({ role }) => ({ dispatch, apiGet }) => {
+      dispatch({ type: 'START_FETCH_CURRENT_ADMIN_PROJECTS' });
+
+      const uri = `/projects?role=${role}`;
+
+      apiGet(uri, (err, body) => {
+        if (err) {
+          // eslint-disable-next-line no-console
+          console.log('error: ', err);
+        } else {
+          dispatch({
+            type: 'SET_CURRENT_ADMIN_PROJECTS',
+            payload: body,
+          });
+        }
+  
+        dispatch({ type: 'FETCH_CURRENT_ADMIN_PROJECTS_FINISHED' });
+      });
+    },
   },
 });
