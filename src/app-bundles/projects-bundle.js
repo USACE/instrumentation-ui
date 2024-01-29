@@ -63,7 +63,7 @@ export default createRestBundle({
     doFetchCurrentAdminProjects: ({ role }) => ({ dispatch, apiGet }) => {
       dispatch({ type: 'START_FETCH_CURRENT_ADMIN_PROJECTS' });
 
-      const uri = `/projects?role=${role}`;
+      const uri = `/my_projects?role=${role}`;
 
       apiGet(uri, (err, body) => {
         if (err) {

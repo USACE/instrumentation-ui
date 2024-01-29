@@ -33,6 +33,7 @@ import homeDataBundle from './home-data-bundle';
 import inclinometerMeasurements from './inclinometer-measurements';
 import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 import instrumentAlertsBundle from './instrument-alerts-bundle';
+import instrumentAssignmentBundle from './instrument-assignment-bundle';
 import instrumentBundle from './instrument-bundle';
 import instrumentConstantsBundle from './instrument-constants-bundle';
 import instrumentDrawBundle from './instrument-draw-bundle';
@@ -134,6 +135,7 @@ export default composeBundles(
   inclinometerMeasurements,
   instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
+  instrumentAssignmentBundle,
   instrumentBundle,
   instrumentConstantsBundle,
   instrumentDrawBundle,
