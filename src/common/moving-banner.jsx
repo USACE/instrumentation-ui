@@ -21,7 +21,7 @@ const MovingBanner = connect(
           <div className='col-10'>
             This site will be migrating to <a href='https://midas.sec.usace.army.mil/midas' target='_blank' rel='noreferrer'>https://midas.sec.usace.army.mil/midas</a>
             &nbsp;on <b>{migrationDate.toLocaleString(DateTime.DATETIME_SHORT)}</b>, after which this site will be unavailable. You can continue to use this site as normal until that time.
-            The migration is planned to be resolved and the new site functional by <b>{resolutionDate.toLocaleString(DateTime.DATETIME_SHORT)}</b>.
+            The migration is planned to be resolved and the new site functional by <b>{resolutionDate.toLocaleString(DateTime.DATE_SHORT)}</b>.
             <br />
             <b>Important:</b> Telemetry users will need to follow additional steps. For more information on main site and Telemetry API migration,
             &nbsp;click <Link className='banner-link' onClick={() => { setIsOpen(false); doModalOpen(MovingBannerModal, { migrationDate }, 'lg'); }}>here</Link>.
