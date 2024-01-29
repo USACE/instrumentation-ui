@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'redux-bundler-react';
 
 import Dropdown from '../dropdown';
+import RoleFilter from '../role-filter';
 
 const getInitials = (name = '') => {
   let initials = ['U', 'N'];
@@ -28,6 +29,11 @@ const ProfileMenu = connect(
         </span>
       }
     >
+      {/* ADMIN ONLY, NO Allowed Roles */}
+      <RoleFilter> 
+        <Dropdown.Item href='/admin'>Site Administration</Dropdown.Item>
+        <hr className='m-2' />
+      </RoleFilter>
       <Dropdown.Item href='/profile'>My Profile</Dropdown.Item>
       <Dropdown.Item href='/logout'>
         Logout

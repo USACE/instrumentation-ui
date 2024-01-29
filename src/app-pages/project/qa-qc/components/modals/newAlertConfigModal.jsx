@@ -71,7 +71,7 @@ const cleanEmails = (email_subscriptions = [], hasProfile) => {
 
 const cleanFormat = initConfig => {
   // eslint-disable-next-line no-unused-vars
-  const { last_checked, last_reminded, updater_username, updater, update_date, ...rest } = initConfig;
+  const { last_checked, last_reminded, updater_username, updater_id, update_date, ...rest } = initConfig;
   const { start_date, schedule_interval, warning_interval, remind_interval, instruments, alert_email_subscriptions } = rest;
 
   const cleanStartDate = DateTime.fromISO(start_date).toLocal().toJSDate();

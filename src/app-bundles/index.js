@@ -23,6 +23,7 @@ import collectionGroupDetailBundle from './collection-group-detail-bundle';
 import dataLoggerBundle from './data-logger-bundle';
 import dataLoggerEquivalencyBundle from './data-logger-equivalency-bundle';
 import districtRollupBundle from './district-rollup-bundle';
+import districtsBundle from './districts-bundle';
 import domainsBundle from './domains-bundle';
 import exploreChartSyncBundle from './explore-chart-sync-bundle';
 import exploreDataBundle from './explore-data-bundle';
@@ -32,6 +33,7 @@ import homeDataBundle from './home-data-bundle';
 import inclinometerMeasurements from './inclinometer-measurements';
 import instrumentAlertConfigsBundle from './instrument-alert-configs-bundle';
 import instrumentAlertsBundle from './instrument-alerts-bundle';
+import instrumentAssignmentBundle from './instrument-assignment-bundle';
 import instrumentBundle from './instrument-bundle';
 import instrumentConstantsBundle from './instrument-constants-bundle';
 import instrumentDrawBundle from './instrument-draw-bundle';
@@ -123,6 +125,7 @@ export default composeBundles(
   dataLoggerBundle,
   dataLoggerEquivalencyBundle,
   districtRollupBundle,
+  districtsBundle,
   domainsBundle,
   exploreChartSyncBundle,
   exploreDataBundle,
@@ -132,6 +135,7 @@ export default composeBundles(
   inclinometerMeasurements,
   instrumentAlertConfigsBundle,
   instrumentAlertsBundle,
+  instrumentAssignmentBundle,
   instrumentBundle,
   instrumentConstantsBundle,
   instrumentDrawBundle,

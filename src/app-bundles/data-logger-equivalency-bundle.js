@@ -61,7 +61,7 @@ export default {
     });
   },
 
-  doAutoMapDataLoggerEquivalency: ({ dataLoggerId, tableId, tableName, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPut }) => {
+  doAutoMapDataLoggerEquivalency: ({ dataLoggerId, tableId, tableName, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
     const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     if (isDeleteChecked) {
@@ -70,7 +70,7 @@ export default {
         store.doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id, refreshData: false });
       });
     }
-    
+
     const payload = {
       datalogger_id: dataLoggerId,
       datalogger_table_id: tableId,
@@ -81,7 +81,7 @@ export default {
       })),
     };
 
-    apiPut(uri, payload, (err, _body) => {
+    apiPost(uri, payload, (err, _body) => {
       if (err) {
         // eslint-disable-next-line no-console
         console.log('todo', err);
