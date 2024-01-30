@@ -10,14 +10,13 @@ const BatchPlotErrors = ({
   plotConfig?.timeseries_id?.forEach(el => {
     const found = chartData.find(data => data.timeseriesId === el);
 
-    if (found?.x?.length) return;
+    if (!found || found?.x?.length) return;
 
     const ts = timeseries.find(data => data.id === el);
     const {instrument, name, unit } = ts;
 
     emptyDataSets.push(`${instrument} - ${name} (${unit})`);
   });
-
 
   return (
     emptyDataSets.length ? (
