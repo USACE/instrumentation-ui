@@ -8,6 +8,7 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getExpandedRowModel,
 } from '@tanstack/react-table';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 
@@ -37,10 +38,14 @@ const multiFilterFn = (row, columnId, filterValues) => {
 
 const Table = ({
   data,
-  columns,
+  columns = [],
+  customColumns = null,
+  customTableFunctions = {},
   usePagination = false,
+  useExpanding = false,
   className,
 }) => {
+  const [expanded, setExpanded] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
   const tableClasses = classArray([
     'table',
@@ -48,7 +53,7 @@ const Table = ({
     className,
   ]);
 
-  const tableColumns = columns.map(column => (
+  const tableColumns = customColumns ?? columns.map(column => (
     columnHelper.accessor(column.key, {
       ...column,
       header: () => column.header,
@@ -61,6 +66,7 @@ const Table = ({
   const table = useReactTable({
     state: {
       columnFilters,
+      expanded,
     },
     filterFns: {
       multi: multiFilterFn,
@@ -74,6 +80,11 @@ const Table = ({
     ...usePagination && ({
       getPaginationRowModel: getPaginationRowModel(),
     }),
+    ...useExpanding && ({
+      getExpandedRowModel: getExpandedRowModel(),
+      onExpandedChange: setExpanded,
+    }),
+    ...customTableFunctions,
   });
 
   const currentIndex = table.getState().pagination.pageIndex;
@@ -120,65 +131,65 @@ const Table = ({
         </tbody>
       </table>
       {usePagination ? (
-          <div className='row mt-2 no-gutters border-top pt-3'>
-            <div className='col-12'>
-              <Button
-                isOutline
-                size='small'
-                variant='info'
-                text='First'
-                className='d-inline-block mr-1'
-                handleClick={() => table.setPageIndex(0)}
-                isDisabled={currentIndex === 0}
+        <div className='row mt-2 no-gutters border-top pt-3'>
+          <div className='col-12'>
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='First'
+              className='d-inline-block mr-1'
+              handleClick={() => table.setPageIndex(0)}
+              isDisabled={currentIndex === 0}
+            />
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='Prev'
+              className='d-inline-block mr-1'
+              handleClick={() => table.previousPage()}
+              isDisabled={currentIndex === 0}
+            />
+            <span>
+              Page <b>{table.getState().pagination.pageIndex + 1}</b> of <b>{table.getPageCount()}</b>
+            </span>
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='Next'
+              className='d-inline-block mx-1'
+              handleClick={() => table.nextPage()}
+              isDisabled={currentIndex === (table.getPageCount() - 1)}
+            />
+            <Button
+              isOutline
+              size='small'
+              variant='info'
+              text='Last'
+              className='d-inline-block mr-1'
+              handleClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              isDisabled={currentIndex === (table.getPageCount() - 1)}
+            />
+            <div className='d-inline-block float-right'>
+              <i className='mr-1'>
+                Items per page:
+              </i>
+              <Select
+                className='d-inline-block'
+                defaultValue={{ label: '10', value: 10 }}
+                onChange={option => table.setPageSize(option.value)}
+                options={[
+                  { label: '10', value: 10 },
+                  { label: '20', value: 20 },
+                  { label: '30', value: 30 },
+                ]}
               />
-              <Button
-                isOutline
-                size='small'
-                variant='info'
-                text='Prev'
-                className='d-inline-block mr-1'
-                handleClick={() => table.previousPage()}
-                isDisabled={currentIndex === 0}
-              />
-              <span>
-                Page <b>{table.getState().pagination.pageIndex + 1}</b> of <b>{table.getPageCount()}</b>
-              </span>
-              <Button
-                isOutline
-                size='small'
-                variant='info'
-                text='Next'
-                className='d-inline-block mx-1'
-                handleClick={() => table.nextPage()}
-                isDisabled={currentIndex === (table.getPageCount() - 1)}
-              />
-              <Button
-                isOutline
-                size='small'
-                variant='info'
-                text='Last'
-                className='d-inline-block mr-1'
-                handleClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                isDisabled={currentIndex === (table.getPageCount() - 1)}
-              />
-              <div className='d-inline-block float-right'>
-                <i className='mr-1'>
-                  Items per page:
-                </i>
-                <Select
-                  className='d-inline-block'
-                  defaultValue={{ label: '10', value: 10 }}
-                  onChange={option => table.setPageSize(option.value)}
-                  options={[
-                    { label: '10', value: 10 },
-                    { label: '20', value: 20 },
-                    { label: '30', value: 30 },
-                  ]}
-                />
-              </div>
             </div>
           </div>
-        ) : null}
+        </div>
+      ) : null}
     </>
   );
 };

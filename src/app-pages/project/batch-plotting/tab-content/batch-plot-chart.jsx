@@ -15,7 +15,7 @@ const BatchPlotChart = connect(
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItemsObject',
   'selectTimeseriesMeasurementsItems',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectInstrumentTimeseriesItems',
   ({
     doPrintSetData,
     doInstrumentTimeseriesSetActiveId,
@@ -24,7 +24,7 @@ const BatchPlotChart = connect(
     batchPlotConfigurationsActiveId,
     batchPlotConfigurationsItemsObject,
     timeseriesMeasurementsItems,
-    instrumentTimeseriesItemsByRoute,
+    instrumentTimeseriesItems,
   }) => {
     const [timeseriesIds, setTimeseriesId] = useState([]);
     const [measurements, setMeasurements] = useState([]);
@@ -95,10 +95,10 @@ const BatchPlotChart = connect(
 
     /** When we get new measurements, update chart data */
     useEffect(() => {
-      const newData = generateNewChartData(measurements, instrumentTimeseriesItemsByRoute, chartSettings);
+      const newData = generateNewChartData(measurements, instrumentTimeseriesItems, chartSettings);
 
       setChartData(newData);
-    }, [measurements, instrumentTimeseriesItemsByRoute, withPrecipitation, chartSettings]);
+    }, [measurements, instrumentTimeseriesItems, withPrecipitation, chartSettings]);
 
     /** When chart data changes, see if there is precip data to adjust plot */
     useEffect(() => {
@@ -128,13 +128,14 @@ const BatchPlotChart = connect(
         />
         <ChartErrors
           chartData={chartData}
-          timeseries={instrumentTimeseriesItemsByRoute}
+          timeseries={instrumentTimeseriesItems}
           plotConfig={batchPlotConfigurationsItemsObject[batchPlotConfigurationsActiveId]}
         />
         {chartSettings ? (
           <>
             <hr />
             <ChartSettings
+              chartData={chartData}
               threshold={threshold}
               setThreshold={setThreshold}
               dateRange={dateRange}
@@ -142,7 +143,6 @@ const BatchPlotChart = connect(
               chartSettings={chartSettings}
               setChartSettings={setChartSettings}
               savePlotSettings={savePlotSettings}
-              chartData={chartData}
             />
           </>
         ) : null}

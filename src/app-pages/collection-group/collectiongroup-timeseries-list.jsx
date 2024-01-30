@@ -9,6 +9,7 @@ const TimeseriesListEntry = ({
   handleItemSaveValue,
   handleItemDelete,
   item,
+  project,
 }) => {
   const [value, setValue] = useState('');
 
@@ -20,11 +21,11 @@ const TimeseriesListEntry = ({
         <div className='d-flex flex-column my-2'>
           <div className='h5 mb-1'>
             <RoleFilter
-              allowRoles={[`${item.project_slug.toUpperCase()}.*`]}
+              allowRoles={[`${project.slug.toUpperCase()}.*`]}
               alt={() => <span>{item.instrument}</span>}
             >
               <>
-                <a href={`/${item.project_slug}/instruments/${item.instrument_slug}`}>
+                <a href={`/${project.slug}/instruments/${item.instrument_slug}`}>
                   {item.instrument}
                 </a>
                 <Button
@@ -59,7 +60,7 @@ const TimeseriesListEntry = ({
           </div>
         </div>
         {/* Column 3 */}
-        <RoleFilter allowRoles={[`${item.project_slug.toUpperCase()}.*`]}>
+        <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.*`]}>
           <div className='d-flex flex-row'>
             <div className='input-group'>
               <input
@@ -90,6 +91,7 @@ const TimeseriesListEntry = ({
 
 const CollectionGroupTimeseriesList = ({
   items,
+  project,
   handleItemDelete,
   handleItemSaveValue,
 }) => (
@@ -98,6 +100,7 @@ const CollectionGroupTimeseriesList = ({
       <TimeseriesListEntry
         key={idx}
         item={item}
+        project={project}
         handleItemDelete={handleItemDelete}
         handleItemSaveValue={handleItemSaveValue}
       />

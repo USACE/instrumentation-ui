@@ -143,6 +143,7 @@ export default connect(
                       <div style={{ maxHeight: '600px', overflow: 'auto' }}>
                         <TimeseriesList
                           date={date}
+                          project={project}
                           items={detail.timeseries}
                           handleItemSaveValue={handleTimeseriesSaveValue}
                           handleItemDelete={(item) => {

@@ -12,6 +12,8 @@ const getStyle = (_index) => ({
 export const generateNewChartData = (measurements, timeseries, chartSettings) => {
   const { show_comments, show_masked, show_nonvalidated } = chartSettings || {};
 
+  console.log('test measurements, ts', measurements, timeseries)
+
   if (measurements.length && timeseries.length) {
     const data = measurements.map((elem, index) => {
       if (elem && timeseries.length) {

@@ -49,7 +49,11 @@ export default connect(
     nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
-    if (!project || !instrument || !timeseriesByInstrumentId) return null;
+    if (!project || !instrument || !timeseriesByInstrumentId) return (
+      <span className='pl-2'>
+        The instrument you are trying to access does not exist in this context.
+      </span>
+    );
 
     const [notifcationFired, setNotificationFired] = useState(false);
 

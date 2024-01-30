@@ -151,6 +151,7 @@ const createJwtApiBundle = (opts) => {
           const options = {
             method: 'GET',
           };
+
           if (!shouldSkipToken(options.method, path, unless)) {
             const token = store[tokenSelector]();
             if (!token) return null;

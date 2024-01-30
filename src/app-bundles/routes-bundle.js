@@ -1,5 +1,6 @@
 import { createRouteBundle } from 'redux-bundler';
 
+import AdminPage from '../app-pages/admin';
 import CollectionGroup from '../app-pages/collection-group';
 import InstrumentGroup from '../app-pages/instrument-group';
 import Help from '../app-pages/help/help';
@@ -17,6 +18,7 @@ export default createRouteBundle(
   {
     [`${base}`]: Home,
     [`${base}/`]: Home,
+    [`${base}/admin`]: AdminPage,
     [`${base}/help`]: Help,
     [`${base}/logout`]: Logout,
     [`${base}/signup`]: SignUp,

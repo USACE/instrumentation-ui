@@ -44,7 +44,7 @@ const BatchPlotting = connect(
   'selectHashQuery',
   'selectBatchPlotConfigurationsActiveId',
   'selectBatchPlotConfigurationsItemsObject',
-  'selectInstrumentTimeseriesItemsByRoute',
+  'selectInstrumentTimeseriesItems',
   'selectInstrumentsItems',
   'selectDomainsItemsByGroup',
   ({
@@ -54,7 +54,7 @@ const BatchPlotting = connect(
     hashQuery,
     batchPlotConfigurationsActiveId: batchPlotId,
     batchPlotConfigurationsItemsObject: batchPlotItems,
-    instrumentTimeseriesItemsByRoute: timeseries,
+    instrumentTimeseriesItems: timeseries,
     instrumentsItems: instruments,
     domainsItemsByGroup: domains,
   }) => {

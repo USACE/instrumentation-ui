@@ -71,7 +71,7 @@ const cleanEmails = (email_subscriptions = [], hasProfile) => {
 
 const cleanFormat = initConfig => {
   // eslint-disable-next-line no-unused-vars
-  const { last_checked, last_reminded, updater_username, updater, update_date, ...rest } = initConfig;
+  const { last_checked, last_reminded, updater_username, updater_id, update_date, ...rest } = initConfig;
   const { start_date, schedule_interval, warning_interval, remind_interval, instruments, alert_email_subscriptions } = rest;
 
   const cleanStartDate = DateTime.fromISO(start_date).toLocal().toJSDate();
@@ -132,7 +132,7 @@ const NewAlertConfigModal = connect(
       'warning_interval',
       'remind_interval',
       'additional_emails',
-      formState.alert_type?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
+      formState.alert_type_id?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
       'mute_consecutive_alerts',
     ].filter(e => e);
 
