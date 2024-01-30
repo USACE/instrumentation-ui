@@ -107,9 +107,9 @@ const SensorDetails = connect(
                   <div className='col-8'>
                     <Select
                       isClearable
-                      value={getOption('cum_dev_timeseries_id')}
+                      value={getOption('inc_dev_timeseries_id')}
                       className='d-inline-block w-100'
-                      onChange={item => dispatch({ type: 'update', key: 'cum_dev_timeseries_id', data: item?.value })}
+                      onChange={item => dispatch({ type: 'update', key: 'inc_dev_timeseries_id', data: item?.value })}
                       options={tsOpts}
                     />
                   </div>
