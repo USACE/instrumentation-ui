@@ -27,7 +27,7 @@ const ModalBundle = {
   },
 
   doModalClose: () => ({ store, dispatch }) => {
-    const { callback = () => {} } = store.selectModalProps();
+    const { callback = () => {} } = store.selectModalProps() || {};
 
     callback();
 
