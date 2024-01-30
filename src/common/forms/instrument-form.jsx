@@ -128,7 +128,7 @@ export default connect(
         // );
 
         doInstrumentsSave(
-          Object.assign({}, item, {
+          [Object.assign({}, item, {
             name,
             project_id,
             type_id,
@@ -151,7 +151,7 @@ export default connect(
               type: 'Point',
               coordinates: [lonLat[0], lonLat[1]],
             },
-          }),
+          })],
           doModalClose,
           true
         );

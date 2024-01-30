@@ -122,28 +122,13 @@ export default createRestBundle({
         return clone;
       }
     ),
-    selectInstrumentTimeseriesByProjectId: createSelector(
-      'selectInstrumentTimeseriesItems',
-      (timeseries) => {
-        if (!timeseries || !timeseries.length) return {};
-        const out = {};
-        timeseries.forEach((ts) => {
-          if (!Object.prototype.hasOwnProperty.call(out, ts.project_id)) out[ts.project_id] = [];
-          out[ts.project_id].push(ts);
-        });
-        return out;
-      }
-    ),
+    
     selectInstrumentTimeseriesItemsByRoute: createSelector(
       'selectInstrumentsByRoute',
-      'selectProjectsByRoute',
       'selectInstrumentTimeseriesByInstrumentId',
-      'selectInstrumentTimeseriesByProjectId',
       (
         instrument,
-        project,
         timeseriesByInstrumentId,
-        timeseriesByProjectId
       ) => {
         // If on an instrument-specific page
         if (
@@ -152,13 +137,6 @@ export default createRestBundle({
           Object.prototype.hasOwnProperty.call(timeseriesByInstrumentId, instrument.id)
         ) {
           return timeseriesByInstrumentId[instrument.id];
-        } // If on a project page
-        else if (
-          project &&
-          project.id &&
-          Object.prototype.hasOwnProperty.call(timeseriesByProjectId, project.id)
-        ) {
-          return timeseriesByProjectId[project.id];
         } else {
           return [];
         }
