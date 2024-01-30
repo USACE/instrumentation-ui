@@ -23,10 +23,14 @@ const generateDataLoggerOptions = (dataLoggers = []) => (
 );
 
 const generateEquivalencyOptions = (tables = []) => (
-  tables.map(t => ({
-    label: t?.table_name || <i>unnamed table</i>,
-    value: t?.id,
-  }))
+  tables.map(t => {
+    if (t?.table_name === 'preparse') return null;
+
+    return {
+      label: t?.table_name || <i>unnamed table</i>,
+      value: t?.id,
+    };
+  }).filter(e => e)
 );
 
 const DataLoggers = connect(
