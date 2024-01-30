@@ -26,7 +26,11 @@ const ModalBundle = {
     });
   },
 
-  doModalClose: () => ({ dispatch }) => {
+  doModalClose: () => ({ store, dispatch }) => {
+    const { callback = () => {} } = store.selectModalProps();
+
+    callback();
+
     dispatch({
       type: 'MODAL_UPDATED',
       payload: {
