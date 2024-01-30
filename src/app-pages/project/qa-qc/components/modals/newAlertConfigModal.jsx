@@ -132,7 +132,7 @@ const NewAlertConfigModal = connect(
       'warning_interval',
       'remind_interval',
       'additional_emails',
-      formState.alert_type?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
+      formState.alert_type_id?.val === domainsItemsByGroup['alert_type'].find(el => el.value === 'Evaluation Submittal')?.id && 'instruments',
       'mute_consecutive_alerts',
     ].filter(e => e);
 
