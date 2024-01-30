@@ -57,11 +57,6 @@ const cleanFormState = formState => (
         ...accum,
         [current]: Duration.fromObject(duration).toISO(),
       };
-    } else if (current === 'alert_type') {
-      return {
-        ...accum,
-        'alert_type_id': formState[current].val.id,
-      };
     } else return {
       ...accum,
       [current]: formState[current].val,
