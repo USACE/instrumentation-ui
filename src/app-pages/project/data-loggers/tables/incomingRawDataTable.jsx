@@ -19,16 +19,17 @@ const IncomingRawDataTable = connect(
     doFetchDataLoggerPreview,
     dataLoggerPreview,
     dataLogger,
+    tableId,
   }) => {
-    const { id, model } = dataLogger;
+    const { id, model, tables } = dataLogger;
     const { preview = {} } = dataLoggerPreview;
 
     const [isOpen, setIsOpen] = useState(false);
     const dataString = JSON.stringify(preview, null, 4);
 
     useDeepCompareEffect(() => {
-      doFetchDataLoggerPreview({ dataLoggerId: id });
-    }, [dataLogger, doFetchDataLoggerPreview]);
+      doFetchDataLoggerPreview({ dataLoggerId: id, tableId });
+    }, [dataLogger, doFetchDataLoggerPreview, tableId]);
     
     return (
       <Card className='mt-3'>
@@ -54,7 +55,7 @@ const IncomingRawDataTable = connect(
                     icon={<Refresh fontSize='inherit' />}
                     title='Refresh Raw Data'
                     className='mr-2'
-                    handleClick={() => doFetchDataLoggerPreview({ dataLoggerId: id })}
+                    handleClick={() => doFetchDataLoggerPreview({ dataLoggerId: id, tableId })}
                   />
                   <Button
                     isOutline
@@ -67,7 +68,7 @@ const IncomingRawDataTable = connect(
                       // eslint-disable-next-line import/namespace
                       const myExtractor = extractorFns[`${model}_fieldNameExtractor`];
                       const fieldNames = myExtractor(preview);
-                      doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id });
+                      doModalOpen(AddMappingRowsModal, { fieldNames, dataLoggerId: id, tableId, tableName: tables.find(el => el.id === tableId)?.table_name });
                     }}
                   />
                   <Button

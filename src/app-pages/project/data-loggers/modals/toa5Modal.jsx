@@ -83,12 +83,12 @@ const uploadToaMeasurements = (data, equivalency, doPostTimeseriesMeasurements) 
 
 const Toa5Modal = connect(
   'doModalClose',
-  'doCreateDataLoggerEquivalency',
+  'doCreateEquivalencyByTableName',
   'doPostTimeseriesMeasurements',
   'selectDataLoggerEquivalencyTable',
   ({
     doModalClose,
-    doCreateDataLoggerEquivalency,
+    doCreateEquivalencyByTableName,
     doPostTimeseriesMeasurements,
     dataLoggerEquivalencyTable: equivalencyTable,
     dataLoggerInfo,
@@ -152,7 +152,7 @@ const Toa5Modal = connect(
                 <span className='d-block mt-2'><b>File Format: </b>{data[0][0]}</span>
                 <span className='d-block mt-1'><b>Data Logger Model: </b>{data[0][2]}</span>
                 <span className='d-block mt-1'><b>Data Logger Serial Number: </b>{data[0][3]}</span>
-                {/* <span className='d-block mt-1'><b>Mapping Table: </b>{data[0][7]}</span> */}
+                <span className='d-block mt-1'><b>Table Name: </b>{data[0][7] || <i>None</i>}</span>
                 <hr />
                 {(!!equivalency?.errors?.notFound?.length || !!equivalency?.errors?.noTimeseries?.length) ? (
                   <>
@@ -177,7 +177,7 @@ const Toa5Modal = connect(
                             text='Add Missing Fields'
                             title='Add Missing Fields to Field Mapping Table'
                             handleClick={() => {
-                              doCreateDataLoggerEquivalency({ dataLoggerId: id, newRows: equivalency.errors.notFound });
+                              doCreateEquivalencyByTableName({ dataLoggerId: id, tableName: data[0][7], newRows: equivalency.errors.notFound });
                               doModalClose();
                             }}
                           />

@@ -16,6 +16,7 @@ const AutomapSensorModal = connect(
     doUpdateInstrumentSensor,
     instrumentSensors,
     instrumentTimeseriesItems: timeseries,
+    type,
   }) => {
     const [overwriteExisting, setOverwriteExisting] = useState(false);
     const xyzTimeseries = [];
@@ -79,7 +80,7 @@ const AutomapSensorModal = connect(
         formData.push(current);
       });
 
-      doUpdateInstrumentSensor(formData);
+      doUpdateInstrumentSensor(type, formData);
     };
   
     return (

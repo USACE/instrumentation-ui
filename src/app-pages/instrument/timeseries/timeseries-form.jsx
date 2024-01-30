@@ -11,7 +11,7 @@ export default connect(
   'doInstrumentsSave',
   'doInstrumentTimeseriesDelete',
   'selectInstrumentsByRoute',
-  'selectInstrumentTimeseriesByProjectId',
+  'selectInstrumentTimeseriesItems',
   'selectProjectsIdByRoute',
   ({
     doModalClose,
@@ -19,8 +19,7 @@ export default connect(
     doInstrumentsSave,
     doInstrumentTimeseriesDelete,
     instrumentsByRoute: instrument,
-    instrumentTimeseriesByProjectId,
-    projectsIdByRoute,
+    instrumentTimeseriesItems,
     item,
     isEdit = false,
   }) => {
@@ -28,8 +27,7 @@ export default connect(
     const [instrument_id] = useState(instrument.id);
     const [parameter_id, setParameterId] = useState((item && item.parameter_id) || '');
     const [unit_id, setUnitId] = useState((item && item.unit_id) || '');
-    const { projectId } = projectsIdByRoute;
-    const projectTimeseries = instrumentTimeseriesByProjectId[projectId]?.map(el => ({ label: el.name, value: el.name })) || [];
+    const projectTimeseries = instrumentTimeseriesItems?.map(el => ({ label: el.name, value: el.name })) || [];
 
     const title = isEdit ? 'Edit Timeseries' : 'New Timeseries';
 
@@ -77,8 +75,7 @@ export default connect(
                 renderInput={(params) => (
                   <TextField {...params} placeholder='Timeseries Name... ' onChange={e => setName(e.target.value)} />
                 )}
-                onChange={e => setName(e.target.innerText)}
-                 // @TODO: check value from this.
+                onChange={(e, value) => setName(value?.label)}
               />
             </div>
             <div className='form-group'>

@@ -1,122 +1,155 @@
-import React, { useState, useRef } from 'react';
-import { connect } from 'redux-bundler-react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Select from 'react-select';
+import { connect } from 'redux-bundler-react';
+import { createColumnHelper } from '@tanstack/react-table';
+import { IconButton } from '@mui/material';
 import {
   Filter,
   KeyboardArrowUp,
   KeyboardArrowDown,
-  StarOutline,
   Toc,
 } from '@mui/icons-material';
 
 import Button from '../../app-components/button';
 import ProjectCard from './project-card';
-import Table from '../../app-components/table';
-import { filters } from './homeFilters';
+import Table from '../../app-components/table/table';
 
-const FilterItemList = ({ items, filter, setFilter, active }) => (
-  <ul className='list-group'>
-    {items.map((item, i) => (
-      <FilterItem
-        item={item}
-        key={i}
-        filter={filter}
-        setFilter={setFilter}
-        active={active}
-      />
-    ))}
-  </ul>
-);
+const sortByDistrictName = (rowA, rowB, districts) => {
+  const { original: origA } = rowA;
+  const { original: origB } = rowB;
+  const { districtId: districtIdA } = origA;
+  const { districtId: districtIdB } = origB;
 
-const FilterItem = ({ item, filter, setFilter, active }) => {
-  const el = useRef(null);
-  const [expanded, setExpanded] = useState(false);
-  const isActive = active || item.abbr === filter;
+  const foundA = districts.find(el => el.district_id === districtIdA)?.name;
+  const foundB = districts.find(el => el.district_id === districtIdB)?.name;
 
-  return (
-    <li
-      ref={el}
-      onClick={(e) => {
-        if (e.currentTarget === el.current) {
-          e.stopPropagation();
-          e.preventDefault();
-          setFilter(item.abbr);
-        }
-      }}
-      onDoubleClick={(e) => {
-        if (e.currentTarget === el.current) {
-          e.stopPropagation();
-          e.preventDefault();
-          setExpanded(!expanded);
-        }
-      }}
-      className={`list-group-item list-group-item-action${isActive ? ' active' : ''} pointer`}
-    >
-      <div className='pb-2 noselect overflow-ellipsis'>
-        {item.children && !!item.children.length && (
-          <span onClick={() => setExpanded(!expanded)} className='pr-2'>
-            {expanded ? <KeyboardArrowDown fontSize='small' /> : <KeyboardArrowUp fontSize='small' />}
-          </span>
-        )}{' '}
-        <span className='pr-2'>{item.abbr}</span>
-        {item.abbr !== item.text && (
-          <small className='text-muted'>{item.text}</small>
-        )}
-      </div>
-      {item.children && expanded && (
-        <FilterItemList
-          items={item.children}
-          filter={filter}
-          setFilter={setFilter}
-          active={isActive}
-        />
-      )}
-    </li>
-  );
+  if (!foundA) return -1;
+  else if (!foundB) return 1;
+  else return foundB.localeCompare(foundA);
+};
+
+const mapDistrictName = (districtId, length, districts = []) => {
+  if (!districts?.length || !length) return '';
+
+  const found = districts.find(el => el.id === districtId);
+
+  const str = (found && found?.name) ? found.name : 'No Associated District';
+
+  return `${str}${length ? ` (${length})` : '' }`;
+};
+
+const groupProjects = (projects = []) => {
+  if (!projects?.length) return [];
+
+  const grouped = projects.reduce((accum, current) => {
+    const { districtId } = current;
+
+    const index = accum.findIndex(el => el.districtId === districtId);
+
+    if (index >= 0) {
+      accum[index] = {
+        ...accum[index],
+        projects: [...accum[index].projects, current],
+      }
+    } else {
+      accum.push({
+        districtId,
+        projects: [current],
+      })
+    }
+
+    return accum;
+  }, []);
+
+  return grouped;
 };
 
 export default connect(
-  'doUpdateUrl',
+  'doUpdateRelativeUrl',
+  'doFetchDistricts',
+  'selectDistricts',
   'selectProjectsItemsWithLinks',
-  ({ doUpdateUrl, projectsItemsWithLinks: projects }) => {
-    const [filter, setFilter] = useState('All');
-    const [filteredProjects, setFilteredProjects] = useState(projects);
+  ({
+    doUpdateRelativeUrl,
+    doFetchDistricts,
+    districts,
+    projectsItemsWithLinks: projects,
+  }) => {
+    const [groupedProjects, setGroupedProjects] = useState(groupProjects(projects));
     const [isTableMode, setIsTableMode] = useState(true);
     const [inputString, setInputString] = useState('');
+    const columnHelper = createColumnHelper();
 
-    const onInputChange = input => {
-      const filtered = projects.filter(p => (p.title).toLowerCase().includes(input.toLowerCase()));
-      setFilteredProjects(filtered);
-    };
+    const columns = useMemo(
+      () => [
+        columnHelper.accessor('districtId', {
+          header: 'District',
+          id: 'districtId',
+          enableColumnFilter: false,
+          sortingFn: (a, b) => sortByDistrictName(a, b, districts),
+          cell: (info) => (
+            <>
+              {info.row.getCanExpand() && (
+                <IconButton onClick={info.row.getToggleExpandedHandler()}>
+                  {info.row.getIsExpanded() ? (
+                    <KeyboardArrowUp />
+                  ) : (
+                    <KeyboardArrowDown />
+                  )}
+                </IconButton>
+              )}
+              {mapDistrictName(info.getValue(), info.row.subRows.length, districts)}
+            </>
+          ),
+        }),
+        columnHelper.accessor('title', {
+          header: 'Project Name',
+          id: 'title',
+          enableColumnFilter: false,
+          cell: (info) => (
+            <a href={info?.row?.original?.href}>{info.getValue()}</a>
+          ),
+        }),
+        columnHelper.accessor('instrumentCount', {
+          header: 'Instrument Count',
+          id: 'instrumentCount',
+          enableColumnFilter: false,
+          enableSorting: false,
+        }),
+        columnHelper.accessor('instrumentGroupCount', {
+          header: 'Instrument Group Count',
+          id: 'instrumentGroupCount',
+          enableColumnFilter: false,
+          enableSorting: false,
+        }),
+      ],
+    [districts]);
 
     const onChange = selected => {
       const { value } = selected;
 
       const project = projects.find(p => p.title === value);
       
-      doUpdateUrl(project.href);
+      doUpdateRelativeUrl(project.href);
     };
 
     const filterList = projects
-      ? projects.filter(p => p.instrumentCount).map(p => ({ value: p.title, label: p.title }))
+      ? projects.filter(p => p.href).map(p => ({ value: p.title, label: p.title }))
       : {};
 
-    const isProdReady = import.meta.env.VITE_DISTRICT_SELECTOR === 'true';
+    useEffect(() => {
+      setGroupedProjects(groupProjects(projects, districts));
+    }, [projects, districts, setGroupedProjects, groupProjects]);
+
+    useEffect(() => {
+      doFetchDistricts();
+    }, [doFetchDistricts]);
 
     return (
       <div className='container-fluid'>
         <div className='row'>
-          {isProdReady && (
-            <div className='col-md-3'>
-              <FilterItemList
-                items={filters}
-                filter={filter}
-                setFilter={setFilter}
-              />
-            </div>
-          )}
-          <div className={`${isProdReady ? 'col-md-9' : 'mx-3 w-100'}`}>
-            { projects.length ? (
+          <div className='mx-3 w-100'>
+            {projects.length ? (
               <>
                 <div className='mb-2 d-flex justify-content-between'>
                   <span className='btn-group mr-3'>
@@ -144,7 +177,6 @@ export default connect(
                     onInputChange={(value, action) => {
                       if (action.action === 'input-change') {
                         setInputString(value);
-                        onInputChange(value);
                       }
                     }}
                     onChange={onChange}
@@ -154,47 +186,24 @@ export default connect(
                 <>
                   {isTableMode ? (
                     <Table
-                      data={filteredProjects.length ? filteredProjects : projects}
-                      columns={[
-                        {
-                          key: 'title',
-                          header: 'Project Name',
-                          isSortable: true,
-                          render: (data) => (
-                            <>
-                              <a href={data?.href}>
-                                {data?.title}
-                              </a>
-                              <span className='text-muted'>&nbsp;- {data?.subtitle}</span>
-                            </>
-                          ),
-                        }, {
-                          key: 'instrumentCount',
-                          header: 'Instrument Count',
-                          isSortable: true,
-                        }, {
-                          key: 'instrumentGroupCount',
-                          header: 'Instrument Group Count',
-                          isSortable: true,
-                        }, {
-                          key: 'tools',
-                          header: 'Tools',
-                          render: (_data) => (
-                            <Button
-                              size='small'
-                              icon={<StarOutline fontSize='small' />}
-                              variant='dark'
-                              isOutline
-                              isDisabled
-                            />
-                          )
-                        }
-                      ]}
+                      useExpanding
+                      data={groupedProjects}
+                      customColumns={columns}
+                      customTableFunctions={{
+                        getSubRows: (originalRow) => 
+                          originalRow?.projects?.map(project => ({
+                            federalId: '',
+                            title: project.title,
+                            instrumentCount: project.instrumentCount,
+                            instrumentGroupCount: project.instrumentGroupCount,
+                            href: project.href,
+                          }))
+                      }}
                     />
                   ) : (
                     <div className='d-flex flex-wrap justify-content-around'>
-                      {(filteredProjects.length ? filteredProjects : projects).map((project, i) => (
-                        project.instrumentCount ? <ProjectCard key={i} project={project} /> : null
+                      {projects.map(project => (
+                        <ProjectCard key={project.id} project={project} />
                       ))}
                     </div>
                   )}

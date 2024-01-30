@@ -133,7 +133,7 @@ export default connect(
                 note={note}
                 save={save}
                 del={del}
-                editable={edipi === note.creator}
+                editable={edipi === note.creator_id}
               />
             )) : <span className='m-3'>No Notes Added</span>}
             <li className='list-group-item'>

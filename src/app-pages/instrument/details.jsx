@@ -5,10 +5,11 @@ import { Edit, Refresh, SettingsOutlined } from '@mui/icons-material';
 import AlertEntry from './alert/alert-entry';
 import Button from '../../app-components/button';
 import Card from '../../app-components/card';
-import DepthBasedPlots from './depth-based-plots';
+import SaaDepthBasedPlots from './saa-depth-based-plots';
 import Dropdown from '../../app-components/dropdown';
 import InstrumentDisplay from './instrument-display';
 import InstrumentForm from '../../common/forms/instrument-form';
+import IpiDepthBasedPlots from './ipi-depth-based-plots';
 import LoginMessage from '../../app-components/login-message';
 import Map from '../../app-components/classMap';
 import NoAlerts from './alert/no-alerts';
@@ -48,18 +49,23 @@ export default connect(
     nonComputedTimeseriesByInstrumentId: timeseriesByInstrumentId,
     alertsByRouteByInstrumentId: alerts,
   }) => {
-    if (!project || !instrument || !timeseriesByInstrumentId) return null;
+    if (!project || !instrument || !timeseriesByInstrumentId) return (
+      <span className='pl-2'>
+        The instrument you are trying to access does not exist in this context.
+      </span>
+    );
 
     const [notifcationFired, setNotificationFired] = useState(false);
 
     const timeseries = timeseriesByInstrumentId[instrument.id] || [];
     const isShapeArray = instrument?.type === 'SAA';
+    const isIPI = instrument?.type === 'IPI';
     const len = timeseries.length;
 
     let firstTimeseries = null;
     if (len && len > 0) firstTimeseries = timeseries[0];
 
-    if (isShapeArray && !notifcationFired && !instrument?.opts?.initial_time) {
+    if ((isShapeArray || isIPI) && !notifcationFired && !instrument?.opts?.initial_time) {
       setNotificationFired(true);
       doNotificationFire({
         title: 'Missing Initial Time',
@@ -71,7 +77,7 @@ export default connect(
               size='small'
               variant='info'
               text='Set Initial Time'
-              handleClick={() => doModalOpen(SetInitialTimeModal, {}, 'lg')}
+              handleClick={() => doModalOpen(SetInitialTimeModal, { type: isShapeArray ? 'saa' : 'ipi'}, 'lg')}
             />
           </span>
         ),
@@ -178,7 +184,12 @@ export default connect(
         </section>
         {isShapeArray && (
           <section className='container-fluid my-4'>
-            <DepthBasedPlots />
+            <SaaDepthBasedPlots />
+          </section>
+        )}
+        {isIPI && (
+          <section className='container-fluid my-4'>
+            <IpiDepthBasedPlots />
           </section>
         )}
         <section className='container-fluid my-4'>

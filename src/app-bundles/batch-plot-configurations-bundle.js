@@ -36,7 +36,7 @@ export default createRestBundle({
     selectInstrumentsByBatchPlotConfigurationsGeoJSON: createSelector(
       'selectInstrumentsItems',
       'selectBatchPlotConfigurationsItems',
-      'selectInstrumentTimeseriesItemsByRoute',
+      'selectInstrumentTimeseriesItems',
       'selectBatchPlotConfigurationsActiveId',
       (instruments, batchPlotConfigurations, timeseries, activeId) => {
         const instrumentMap = {};

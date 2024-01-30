@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'redux-bundler-react';
+
 import TimelineList from './timeline-list';
+import Button from '../../app-components/button';
+import RoleFilter from '../../app-components/role-filter';
+import AssignToProjectsModal from './assignToProjectsModal';
 
 const stationDisplay = station => {
   if (!station) return 'N/A';
@@ -30,10 +34,14 @@ const offsetDisplay = (offset, descriptor) => {
 };
 
 export default connect(
+  'doModalOpen',
+  'doInstrumentsFetch',
   'selectInstrumentStatusItems',
   'selectInstrumentGroupsItemsObjectById',
   'selectProjectsByRoute',
   ({
+    doModalOpen,
+    doInstrumentsFetch,
     instrumentStatusItems: status,
     instrumentGroupsItemsObjectById: groups,
     projectsByRoute: project,
@@ -52,6 +60,10 @@ export default connect(
         if (a.date > b.date) return -1;
         return 0;
       });
+
+    const onClose = useCallback(() => {
+      doInstrumentsFetch();
+    }, [doInstrumentsFetch]);
 
     return (
       <div className='p-3'>
@@ -116,6 +128,20 @@ export default connect(
             })}
           </div>
         </div>
+        <RoleFilter allowRoles={[`${project.slug.toUpperCase()}.ADMIN`]}>
+          <hr />
+          <div className='row'>
+            <div className='col-12 d-flex justify-content-center'>
+              <Button
+                isOutline
+                size='small'
+                variant='info'
+                text='Assign Instrument to Another Project'
+                onClick={() => doModalOpen(AssignToProjectsModal, { instrument: item, callback: onClose }, 'lg')}
+              />
+            </div>
+          </div>
+        </RoleFilter>
       </div>
     );
   }

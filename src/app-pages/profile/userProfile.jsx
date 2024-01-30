@@ -7,7 +7,7 @@ import TabContainer from '../../app-components/tab';
 
 import './userProfile.css';
 
-const urlify = str => str.toLowerCase().split(' ').join('-');
+const urlify = str => str?.toLowerCase().split(' ').join('-');
 
 const buildProjectContent = (projects = []) => {
   if (!projects.length) return <p>No Projects!</p>;
@@ -19,32 +19,37 @@ const buildProjectContent = (projects = []) => {
   );
 };
 
-const buildAlertContent = (alerts = []) => {
+const buildAlertContent = (alerts = [], onClick = () => {}) => {
   if (!alerts.length) return <p>No alerts!</p>;
 
   return (
     <>
-      {alerts.map((alert, i) => {
-        const { project_name, instrument_name, name, body, read, create_date } = alert;
-        const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
-        const timeAgo = formatDistance(new Date(create_date), Date.now());
+      {alerts.map(alert => {
+        const { project_name, instruments, name, body, read, create_date } = alert;
 
-        return (
-          <div
-            key={i}
-            onClick={() => window.location.assign(url)}
-            className={`alert-container${read ? '' : ' unread'} pointer`}
-            title={`Go To ${instrument_name}`}
-          >
-            <span className={`list-group-item flex-column align-items-start${read && ' list-group-item-action'}`}>
-              <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-3'>{name} - {instrument_name}</h5>
-                <small>{timeAgo}</small>
-              </div>
-              <p className='mb-1'>{body}</p>
-            </span>
-          </div>
-        );
+        return instruments.map(instrument => {
+          const { instrument_name, instrument_id } = instrument;
+
+          const url = `/${urlify(project_name)}/instruments/${urlify(instrument_name)}`;
+          const timeAgo = formatDistance(new Date(create_date), Date.now());
+
+          return (
+            <div
+              key={instrument_id}
+              onClick={() => onClick(url)}
+              className={`alert-container${read ? '' : ' unread'} pointer`}
+              title={`Go To ${instrument_name}`}
+            >
+              <span className={`list-group-item flex-column align-items-start${read && ' list-group-item-action'}`}>
+                <div className='d-flex w-100 justify-content-between'>
+                  <h5 className='mb-3'>{name} - {instrument_name}</h5>
+                  <small>{timeAgo}</small>
+                </div>
+                <p className='mb-1'>{body}</p>
+              </span>
+            </div>
+          );
+        });
       })}
     </>
   );
@@ -53,15 +58,16 @@ const buildAlertContent = (alerts = []) => {
 const UserProfile = connect(
   'selectProfileAlerts',
   'selectAuthTokenPayload',
-  ({ profileAlerts: alerts, authTokenPayload: user }) => {
+  'doUpdateRelativeUrl',
+  ({ profileAlerts: alerts, authTokenPayload: user, doUpdateRelativeUrl }) => {
     const tabs = [
       {
         title: 'Projects',
-        content: buildProjectContent(),
+        content: buildProjectContent([], doUpdateRelativeUrl),
       },
       {
         title: 'Alerts',
-        content: buildAlertContent(alerts),
+        content: buildAlertContent(alerts, doUpdateRelativeUrl),
       }
     ];
 

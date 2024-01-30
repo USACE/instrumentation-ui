@@ -117,22 +117,13 @@ export default connect(
           projOptions[projDisplayProjection]
         );
 
-        // There's some nasty '', null, and NaN checking going on here for
-        // number types, not sure if there's a better way to do this,
-        // this is because '' and null both evaluate to 0 in Number()... so that's fun
-        // It works for now, it's fast and works.
-        // console.log(
-        //   `${station}, ${Number(station)}, ${station === null}, ${
-        //     station === null || station === ""
-        //   }`
-        // );
-
-        doInstrumentsSave(
-          Object.assign({}, item, {
+        const instrumentObject = {
+          ...item,
+          ...{
             name,
             project_id,
-            type_id,
-            status_id,
+            type_id: type_id ?? item.type_id,
+            status_id: status_id ?? item.status_id,
             status_time,
             opts,
             station:
@@ -151,7 +142,11 @@ export default connect(
               type: 'Point',
               coordinates: [lonLat[0], lonLat[1]],
             },
-          }),
+          }
+        };
+
+        doInstrumentsSave(
+          isEdit ? instrumentObject : [instrumentObject],
           doModalClose,
           true
         );
@@ -218,7 +213,10 @@ export default connect(
               <label>Type</label>
               <DomainSelect defaultValue={item?.type_id} onChange={(val) => setTypeId(val?.id)} domain='instrument_type' />
             </div>
-            {findDomainItem('instrument_type', 'SAA')?.id === type_id && (
+            {(
+              findDomainItem('instrument_type', 'SAA')?.id === type_id ||
+              findDomainItem('instrument_type', 'IPI')?.id === type_id
+            ) && (
               <div className='pl-4'>
                 <div className='form-group'>
                   <label>Bottom Elevation</label>
@@ -295,7 +293,8 @@ export default connect(
 
             <div className='form-group'>
               <label>Offset Descriptor</label>
-              <DomainSelect defaultValue={item?.status_id} onChange={(val) => setStatusId(val?.id)} domain='offset_descriptor' />
+              {/* TODO integrate with new domain */}
+              <DomainSelect defaultValue={''} onChange={(_val) => {}} domain='offset_descriptor' />
             </div>
 
             <div className='form-group'>

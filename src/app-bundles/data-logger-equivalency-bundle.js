@@ -23,8 +23,8 @@ export default {
   selectDataLoggerEquivalencyRaw: state => state.dataLoggerEquivalency,
   selectDataLoggerEquivalencyTable: state => state.dataLoggerEquivalency.table,
 
-  doFetchDataLoggerEquivalency: ({ dataLoggerId }) => ({ dispatch, apiGet }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  doFetchDataLoggerEquivalency: ({ dataLoggerId, tableId }) => ({ dispatch, apiGet }) => {
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     apiGet(uri, (err, body) => {
       if (err) {
@@ -39,18 +39,12 @@ export default {
     });
   },
 
-  doCreateDataLoggerEquivalency: ({ dataLoggerId, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
+  doCreateEquivalencyByTableName: ({ dataLoggerId, tableName, newRows }) => ({ store, apiPost }) => {
     const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
 
-    if (isDeleteChecked) {
-      unusedRows.forEach(el => {
-        const { id } = el;
-        store.doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id, refreshData: false });
-      });
-    }
-    
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_name: tableName,
       rows: newRows.map(row => ({
         field_name: row,
         display_name: row,
@@ -62,18 +56,49 @@ export default {
         // eslint-disable-next-line no-console
         console.log('todo', err);
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggersByProjectId();
+      }
+    });
+  },
+
+  doAutoMapDataLoggerEquivalency: ({ dataLoggerId, tableId, tableName, newRows = [], unusedRows = [], isDeleteChecked = false }) => ({ store, apiPost }) => {
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
+
+    if (isDeleteChecked) {
+      unusedRows.forEach(el => {
+        const { id } = el;
+        store.doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id, refreshData: false });
+      });
+    }
+
+    const payload = {
+      datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
+      datalogger_table_name: tableName,
+      rows: newRows.map(row => ({
+        field_name: row,
+        display_name: row,
+      })),
+    };
+
+    apiPost(uri, payload, (err, _body) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.log('todo', err);
+      } else {
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
       }
     });
   },
 
   doUpdateSingleDataLoggerEquivalency: (data) => ({ store, apiPut }) => {
-    const { dataLoggerId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+    const { dataLoggerId, tableId, id, fieldName, displayName, instrumentId, timeseriesId } = data;
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
     // const toastId = toast.loading('Updating Field Mapping...');
 
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
       rows: [
         {
           id,
@@ -91,18 +116,19 @@ export default {
         console.log('test err: ', JSON.stringify(err));
         // tUpdateError(toastId, 'Failed');
       } else {
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
         // tUpdateSuccess(toastId, 'Successfully updated Field Mapping!');
       }
     });
   },
 
   // For use in auto-assigning only.
-  doUpdateMultipleDataLoggerEquivalency: (dataLoggerId, rows, toastId) => ({ store, apiPut }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table`;
+  doUpdateMultipleDataLoggerEquivalency: (dataLoggerId, tableId, rows, toastId) => ({ store, apiPut }) => {
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table`;
 
     const payload = {
       datalogger_id: dataLoggerId,
+      datalogger_table_id: tableId,
       rows,
     };
 
@@ -113,13 +139,13 @@ export default {
         tUpdateError(toastId, 'Failed to assign timeseries to field names. Please try again later.');
       } else {
         tUpdateSuccess(toastId, 'Successfully assigned timeseries to field names!');
-        store.doFetchDataLoggerEquivalency({ dataLoggerId });
+        store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
       }
     });
   },
 
-  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, id, refreshData = true }) => ({ store, apiDelete }) => {
-    const uri = `/datalogger/${dataLoggerId}/equivalency_table/row?id=${id}`;
+  doDeleteDataLoggerEquivalencyRow: ({ dataLoggerId, tableId, id, refreshData = true }) => ({ store, apiDelete }) => {
+    const uri = `/datalogger/${dataLoggerId}/tables/${tableId}/equivalency_table/row/${id}`;
 
     apiDelete(uri, (err, _body) => {
       if (err) {
@@ -127,7 +153,7 @@ export default {
         console.log('todo', err);
       } else {
         if (refreshData) {
-          store.doFetchDataLoggerEquivalency({ dataLoggerId });
+          store.doFetchDataLoggerEquivalency({ dataLoggerId, tableId });
         }
       }
     });

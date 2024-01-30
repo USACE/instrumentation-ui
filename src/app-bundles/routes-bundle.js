@@ -1,5 +1,6 @@
 import { createRouteBundle } from 'redux-bundler';
 
+import AdminPage from '../app-pages/admin';
 import CollectionGroup from '../app-pages/collection-group';
 import InstrumentGroup from '../app-pages/instrument-group';
 import Help from '../app-pages/help/help';
@@ -11,19 +12,22 @@ import Profile from '../app-pages/profile/userProfile';
 import Project from '../app-pages/project';
 import SignUp from '../app-pages/signup/signup';
 
+const base = import.meta.env.VITE_URL_BASE_PATH ?? ''
+
 export default createRouteBundle(
   {
-    '': Home,
-    '/': Home,
-    '/help': Help,
-    '/logout': Logout,
-    '/signup': SignUp,
-    '/profile': Profile,
-    '/not-found': NotFound,
-    '/:projectSlug': Project,
-    '/:projectSlug/groups/:groupSlug': InstrumentGroup,
-    '/:projectSlug/instruments/:instrumentSlug': Instrument,
-    '/:projectSlug/collection-groups/:collectionGroupSlug': CollectionGroup,
+    [`${base}`]: Home,
+    [`${base}/`]: Home,
+    [`${base}/admin`]: AdminPage,
+    [`${base}/help`]: Help,
+    [`${base}/logout`]: Logout,
+    [`${base}/signup`]: SignUp,
+    [`${base}/profile`]: Profile,
+    [`${base}/not-found`]: NotFound,
+    [`${base}/:projectSlug`]: Project,
+    [`${base}/:projectSlug/groups/:groupSlug`]: InstrumentGroup,
+    [`${base}/:projectSlug/instruments/:instrumentSlug`]: Instrument,
+    [`${base}/:projectSlug/collection-groups/:collectionGroupSlug`]: CollectionGroup,
     '*': NotFound,
   }
 );

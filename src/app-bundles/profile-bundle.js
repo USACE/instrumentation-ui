@@ -73,7 +73,7 @@ export default createRestBundle({
     }),
     reactProfileExists: createSelector(
       'selectAuthIsLoggedIn',
-      'selectPathname',
+      'selectRelativePathname',
       'selectProfileIsLoading',
       'selectProfileActive',
       (isLoggedIn, path, profileIsLoading, profile) => {
@@ -81,7 +81,7 @@ export default createRestBundle({
           if (!profile) {
             if (path !== '/signup')
               return {
-                actionCreator: 'doUpdateUrl',
+                actionCreator: 'doUpdateRelativeUrl',
                 args: ['/signup'],
               };
           }
@@ -91,11 +91,11 @@ export default createRestBundle({
     reactProfileCreatedRedirect: createSelector(
       'selectProfileActive',
       'selectAuthIsLoggedIn',
-      'selectPathname',
+      'selectRelativePathname',
       (profile, isLoggedIn, path) => {
         if (path === '/signup' && (profile || !isLoggedIn))
           return {
-            actionCreator: 'doUpdateUrl',
+            actionCreator: 'doUpdateRelativeUrl',
             args: ['/'],
           };
       }

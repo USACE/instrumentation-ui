@@ -20,10 +20,10 @@ export default createRestBundle({
   urlParamSelectors: ['selectProjectsIdByRoute'],
   prefetch: (store) => {
     const hash = store.selectHash();
-    const url = store.selectUrlObject();
+    const pathname = store.selectRelativePathname();
     const whiteList = ['dashboard', 'explorer'];
 
-    return whiteList.includes(hash) || url.pathname.includes('/groups/');
+    return whiteList.includes(hash) || pathname.includes('/groups/');
   },
   addons: {
     selectInstrumentGroupsIdByRoute: createSelector(

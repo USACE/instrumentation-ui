@@ -30,7 +30,6 @@ const DataLoggerModal = connect(
     const [sn, setSN] = useState(initSn);
     const [name, setName] = useState(initName);
     const [modelId, setModelId] = useState(initModelId);
-    const [isSaaIpi, setIsSaaIpi] = useState(false);
 
     const saveDataLoggerDetails = () => {
       if (isEdit) {
@@ -43,9 +42,7 @@ const DataLoggerModal = connect(
 
     const isSaveDisabled = () => {
       if (!sn || !name || !modelId) return true;
-
-      if (!isSaaIpi) return false;
-      else return true;
+      else return false;
     };
 
     return (
@@ -82,18 +79,6 @@ const DataLoggerModal = connect(
                   domain='datalogger_model'
                 />
               </div>
-              {modelId ? (
-                <>
-                  <div className='form-group'>
-                    <input
-                      type='checkbox'
-                      checked={isSaaIpi}
-                      onChange={() => setIsSaaIpi(prev => !prev)}
-                    />
-                    &nbsp;- Data Logger is Used for Inclinometer Data (SAA or IPI)
-                  </div>
-                </>
-              ) : null}
             </>
           ) : (
             <small>

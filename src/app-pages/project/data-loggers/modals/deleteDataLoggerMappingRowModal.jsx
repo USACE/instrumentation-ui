@@ -9,6 +9,7 @@ const DeleteDataLoggerMappingRowModal = connect(
     doDeleteDataLoggerEquivalencyRow,
     dataLoggerId,
     id,
+    tableId,
   }) => (
     <Modal.ModalContent>
       <Modal.ModalHeader title='Confirm Data Logger Mapping Removal' />
@@ -18,7 +19,7 @@ const DeleteDataLoggerMappingRowModal = connect(
       <Modal.ModalFooter
         showCancelButton
         showSaveButton={false}
-        onDelete={() => doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id })}
+        onDelete={() => doDeleteDataLoggerEquivalencyRow({ dataLoggerId, id, tableId })}
       />
     </Modal.ModalContent>
   ),
