@@ -38,6 +38,7 @@ export default createRestBundle({
         };
       }
     ),
+
     selectProjectsItemsWithLinks: createSelector(
       'selectProjectsItems',
       (projects) =>
