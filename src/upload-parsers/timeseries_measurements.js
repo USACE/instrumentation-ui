@@ -30,12 +30,8 @@ const timeseriesMeasurementParser = {
       required: true,
       useFilterComponent: true,
       provider: state => {
-        const regex = new RegExp('/projects/(.*)/instruments');
-        const match = state.instruments._lastResource.match(regex);
-        const projectId = match && match.length >= 2 ? match[1] : '';
-
         return Object.keys(state.instrumentTimeseries)
-          .filter(key => (key.charAt(0) !== '_' && state.instrumentTimeseries[key].project_id === projectId))
+          .filter(key => key.charAt(0) !== '_')
           .map(key => ({
             value: key,
             text: `${state.instrumentTimeseries[key].instrument} - ${state.instrumentTimeseries[key].name}`,
