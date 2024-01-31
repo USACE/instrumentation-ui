@@ -7,12 +7,11 @@ const timeseriesMeasurementParser = {
   prePostFilter: (data) => (
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
-      const { timeseries_id, time, value, masked, validated, annotation, project_id } = current;
+      const { timeseries_id, time, value, masked, validated, annotation } = current;
 
       return ({
         ...accum,
         timeseries_id,
-        project_id,
         items: (accum['items'] || []).concat([{
           time: DateTime.fromISO(time, { zone: 'utc' }),
           value,
