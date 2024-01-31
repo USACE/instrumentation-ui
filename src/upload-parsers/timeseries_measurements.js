@@ -7,12 +7,11 @@ const timeseriesMeasurementParser = {
   prePostFilter: (data) => (
     /** this will work for single timeseries_id, needs to be updated to allow for multiple */
     data.reduce((accum, current) => {
-      const { timeseries_id, time, value, masked, validated, annotation, project_id } = current;
+      const { timeseries_id, time, value, masked, validated, annotation } = current;
 
       return ({
         ...accum,
         timeseries_id,
-        project_id,
         items: (accum['items'] || []).concat([{
           time: DateTime.fromISO(time, { zone: 'utc' }),
           value,
@@ -30,12 +29,8 @@ const timeseriesMeasurementParser = {
       required: true,
       useFilterComponent: true,
       provider: state => {
-        const regex = new RegExp('/projects/(.*)/instruments');
-        const match = state.instruments._lastResource.match(regex);
-        const projectId = match && match.length >= 2 ? match[1] : '';
-
         return Object.keys(state.instrumentTimeseries)
-          .filter(key => (key.charAt(0) !== '_' && state.instrumentTimeseries[key].project_id === projectId))
+          .filter(key => key.charAt(0) !== '_')
           .map(key => ({
             value: key,
             text: `${state.instrumentTimeseries[key].instrument} - ${state.instrumentTimeseries[key].name}`,
