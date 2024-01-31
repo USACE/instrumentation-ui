@@ -33,14 +33,12 @@ export default createRestBundle({
     doSaveFieldNamesToTimeseries: (newObject, instrumentId, dataLoggerId, tableId) => ({ dispatch, store, apiPost }) => {
       dispatch({ type: 'ASSIGN_FIELD_NAMES_TO_TIMESERIES_START' });
       const toastId = tLoading('Creating new timeseries...');
-      const { projectId } = store.selectProjectsIdByRoute();
       const { newTs, existingTs } = newObject;
 
       const uri = '/timeseries';
       const formData = [];
 
       newTs.forEach(item => formData.push({
-        project_id: projectId,
         instrument_id: instrumentId,
         name: item?.field_name,
       }));
