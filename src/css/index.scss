@@ -206,26 +206,3 @@ footer.modal-footer {
 .text-dark {
   color: #222 !important;
 }
-
-// TEMP STYLES FOR MIGRATION BANNER
-
-.moving-banner {
-  position: fixed;
-  top: 40px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-size: 16px;
-  width: 75vw;
-  height: auto;
-  padding: 15px 10px;
-  border-radius: 3px;
-  background-color: white;
-  color: black;
-  z-index: 999999;
-  box-shadow: 2px 2px 4px #222;
-
-  .banner-link {
-    color: #0a59a3;
-    cursor: pointer;
-  }
-}

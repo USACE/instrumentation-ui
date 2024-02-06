@@ -141,7 +141,7 @@ export default createRestBundle({
       }
     ),
     selectNonComputedTimeseriesItemsByRoute: createSelector(
-      'selectInstrumentTimeseriesItemsByRoute',
+      'selectInstrumentTimeseriesItems',
       (timeseries) => {
         if (!timeseries) return [];
 
