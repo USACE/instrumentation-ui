@@ -63,7 +63,7 @@
     "prettier": "^3.0.0",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.63.6",
-    "vite": "^4.4.3",
+    "vite": "^4.5.2",
     "vite-plugin-checker": "^0.6.1",
     "vite-plugin-svgr": "^3.2.0"
   },
@@ -79,8 +79,7 @@
     "lint": "eslint . --ext .js,.jsx",
     "lint: fix": "eslint . --ext .js,.jsx --fix",
     "clean-install": "rm -rf node_modules/ && rm -rf package-lock.json && npm i",
-    "deploy-develop": "aws s3 rm s3://cwbi-apps-develop/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-develop/midas --recursive",
-    "deploy-stable": "aws s3 rm s3://cwbi-apps-stable/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-stable/midas --recursive"
+    "deploy-develop": "aws s3 rm s3://cwbi-apps-develop/midas --recursive && aws s3 cp ./build/ s3://cwbi-apps-develop/midas --recursive"
   },
   "eslintConfig": {
     "extends": [
