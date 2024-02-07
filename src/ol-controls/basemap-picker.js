@@ -6,6 +6,14 @@ import './basemap-picker.css';
 
 const basemaps = [
   {
+    id: 'OpenStreetMap',
+    name: 'OpenStreetMap',
+    url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    maxZoom: 19,
+    attributions:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  },
+  {
     id: 'CartoDBPositron',
     name: 'CartoDB Positron',
     url:
@@ -22,14 +30,6 @@ const basemaps = [
     attributions:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributionss">CartoDB</a>',
     maxZoom: 19,
-  },
-  {
-    id: 'OpenStreetMap',
-    name: 'OpenStreetMap',
-    url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    maxZoom: 19,
-    attributions:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   },
   {
     id: 'MapBoxStreets',
@@ -121,7 +121,6 @@ class BasemapControl extends Control {
           (b) =>
             new XYZ({
               url: b.url,
-              crossOrigin: true,
               attributions: b.attributions,
               maxZoom: b.maxZoom,
             })
