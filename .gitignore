@@ -8,7 +8,7 @@
 # testing
 /coverage
 .eslintcache
-rollup-analyze.json
+rollup-analyze.*
 
 # production
 /build
