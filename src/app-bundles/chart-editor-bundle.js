@@ -243,7 +243,6 @@ const chartEditorBundle = {
     });
 
     store.doExploreDataLoad(idsToLoad, beforeString, afterString);
-    store.doInclinometerDataLoad(idsToLoad, beforeString, afterString);
   },
 
   selectChartEditorShowSettings: (state) => state.chartEditor.showSettings,

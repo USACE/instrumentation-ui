@@ -26,7 +26,7 @@ export default connect(
     ]);
 
     return (
-      <div style={{ position: 'absolute', left: 10, top: 10, right: 10 }}>
+      <div style={{ position: 'absolute', left: 7, top: 7 }}>
         <div className='btn-group'>
           <Button
             size='small'

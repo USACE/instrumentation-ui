@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import Panel from './panel';
-import PanelGroup from '../../app-components/panel-group';
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
 import MapTools from './map-tools';
@@ -21,13 +20,16 @@ export default connect(
     const [landscapeMode, setLandscapeMode] = useState(false);
     const mapRef = useRef();
 
+    console.log('test mapObject: ', mapsObject);
+
     const toggleLandscape = useCallback(
       (e) => {
         if (e.keyCode === 86 && e.shiftKey) {
           setLandscapeMode(!landscapeMode);
+          if (mapRef && mapRef.current) mapRef.current.updateSize();
         }
       },
-      [setLandscapeMode, landscapeMode]
+      [setLandscapeMode, landscapeMode, mapRef.current]
     );
 
     useWindowListener('keydown', toggleLandscape);
@@ -38,30 +40,32 @@ export default connect(
       hasDevBanner && 'with-banner',
     ]);
 
+    useEffect(() => {
+      if (mapRef && mapRef.current) mapRef.current.updateSize();
+    }, [mapRef.current]);
+
     return (
-      <div className={cls} key={Number(landscapeMode)}>
-        <PanelGroup
-          borderColor='#ccc'
-          spacing={2}
-          direction={landscapeMode ? 'column' : 'row'}
-          onUpdate={(_data) =>
-            mapRef && mapRef.current && mapRef.current.updateSize()
-          }
-        >
-          <Panel>
-            <Map
-              ref={mapRef}
-              mapKey={mapKey}
-              options={{ center: [-98.6, 39.8], zoom: 4 }}
-              doMapsInitialize={doMapsInitialize}
-              doMapsShutdown={doMapsShutdown}
-              mapsObject={mapsObject}
-            />
-            <MapTools />
-            <MapLegend />
+      <div className={cls}>
+        <PanelGroup direction={landscapeMode ? 'vertical' : 'horizontal'}>
+          <Panel defaultSize={50}>
+            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+              <Map
+                ref={mapRef}
+                mapKey={mapKey}
+                options={{ center: [-98.6, 39.8], zoom: 4 }}
+                doMapsInitialize={doMapsInitialize}
+                doMapsShutdown={doMapsShutdown}
+                mapsObject={mapsObject}
+              />
+              <MapTools />
+              <MapLegend />
+            </div>
           </Panel>
-          <Panel className='overflow-auto'>
-            <Visualizations />
+          <PanelResizeHandle style={{ border: '1px solid gray' }}/>
+          <Panel defaultSize={50}>
+            <div style={{ overflow: 'auto' }}>
+              <Visualizations />
+            </div>
           </Panel>
         </PanelGroup>
       </div>
