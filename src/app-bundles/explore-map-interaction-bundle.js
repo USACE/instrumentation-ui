@@ -2,6 +2,7 @@ import Select from 'ol/interaction/Select';
 import DragBox from 'ol/interaction/DragBox';
 import { defaults } from 'ol/interaction';
 import debounce from 'lodash.debounce';
+import { createIconStyle } from './map-helpers';
 
 const exploreMapInteractionBundle = {
   name: 'exploreMapInteractions',
@@ -21,14 +22,18 @@ const exploreMapInteractionBundle = {
         case 'EXPLOREMAPINTERACTIONS_RESET_START':
         case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
           return Object.assign({}, state, payload);
-        case 'MAPS_INITIALIZED':
-          if (Object.prototype.hasOwnProperty.call(payload, 'exploreMap')) {
-            return Object.assign({}, state, {
-              _shouldInitialize: true,
-            });
-          } else {
-            return state;
-          }
+        case 'EXPLOREMAP_ADD_DATA_FINISH':
+          // if (Object.prototype.hasOwnProperty.call(payload, 'exploreMap')) {
+          //   return Object.assign({}, state, {
+          //     _shouldInitialize: true,
+          //   });
+          // } else {
+          //   return state;
+          // }
+          return {
+            ...initialData,
+            _shouldInitialize: true,
+          };
         default:
           return state;
       }
@@ -43,10 +48,26 @@ const exploreMapInteractionBundle = {
       },
     });
 
+    const domains = store.selectDomainsItemsByGroup();
+    const instrumentTypes = domains['instrument_type'] || {};
+
     const mapKey = store.selectExploreMapKey();
     const map = store.selectMapsObject()[mapKey];
 
-    const select = new Select();
+    const blue = '#0000FF';
+
+    const select = new Select({
+      style: (feature, _r) => createIconStyle({
+        feature,
+        instrumentTypes,
+        imageOpts: {
+          status: 'selected',
+        },
+        textOpts: {
+          color: blue,
+        }
+      }),
+    });
     const handleSelectionChange = debounce(
       store.doExploreMapInteractionsIncrementVersion,
       200
@@ -119,6 +140,7 @@ const exploreMapInteractionBundle = {
   },
 
   doExploreMapInteractionsSelectByArea: (_e) => ({ store }) => {
+
     /**
      * Based on openlayers example from https://openlayers.org/en/latest/examples/box-selection.html
      */
@@ -142,7 +164,7 @@ const exploreMapInteractionBundle = {
     const oblique = rotation % (Math.PI / 2) !== 0;
     const candidateFeatures = oblique ? [] : selectedFeatures;
     const extent = dragBox.getGeometry().getExtent();
-    src.forEachFeatureIntersectingExtent(extent, function (feature) {
+    src.forEachFeatureIntersectingExtent(extent, (feature) => {
       candidateFeatures.push(feature);
     });
 
@@ -156,7 +178,7 @@ const exploreMapInteractionBundle = {
       const geometry = dragBox.getGeometry().clone();
       geometry.rotate(-rotation, anchor);
       const extent$1 = geometry.getExtent();
-      candidateFeatures.forEach(function (feature) {
+      candidateFeatures.forEach((feature) => {
         const geometry = feature.getGeometry().clone();
         geometry.rotate(-rotation, anchor);
         if (geometry.intersectsExtent(extent$1)) {

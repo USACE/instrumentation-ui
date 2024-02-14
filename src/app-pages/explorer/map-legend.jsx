@@ -10,7 +10,7 @@ import Card from '../../app-components/card';
 
 const STATUS_ORDER = ['Active', 'Lost', 'Inactive', 'Abandoned', 'Destroyed'];
 
-const displayInstrumentTypes = (types, instruments) => {
+const displayInstrumentTypes = (types = [], instruments = []) => {
   const currentTypes = types.filter(type => instruments.some(i => i.type_id === type.id));
 
   return currentTypes?.map(type => {

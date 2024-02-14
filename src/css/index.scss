@@ -155,7 +155,7 @@ footer.modal-footer {
     fill: white;
   }
   &.destroyed {
-    stroke: $error-color;
+    stroke: $inactive-color;
     stroke-width: 3;
     fill: white;
   }
