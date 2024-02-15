@@ -10,14 +10,14 @@ import Card from '../../app-components/card';
 
 const STATUS_ORDER = ['Active', 'Lost', 'Inactive', 'Abandoned', 'Destroyed'];
 
-const displayInstrumentTypes = (types = [], instruments = []) => {
+const displayInstrumentTypes = (types = [], instruments = [], onClick = () => {}) => {
   const currentTypes = types.filter(type => instruments.some(i => i.type_id === type.id));
 
   return currentTypes?.map(type => {
     const { type_id, value, description: icon } = type;
 
     return (
-      <p className='mb-1 ml-1' key={type_id}>
+      <p className='mb-1 ml-1 pointer' title={value} key={type_id} onClick={() => onClick(type)}>
         {icon && <Icon icon={`mdi:${icon}`} />}
         <span className='ml-2'>{value}</span>
       </p>
@@ -45,6 +45,20 @@ export default connect(
       };
     }).sort((a, b) => (a.order > b.order ? 1 : -1));
 
+    const toggleVisibleInstruments = (key, item) => {
+      if (key === 'status') {
+        const { value } = item;
+        // toggle instruemnts by status
+        console.log('test item (status): ', item);
+      } else if (key === 'type') {
+        const { type_id } = item;
+        // toggle instruments by type
+        console.log('test item (type):', item);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log('Invalid Type. Skipping Execution of `toggleVisibleInstruments()`');
+      }
+    };
 
     return (
       <div style={{ position: 'absolute', right: 7, top: 7 }}>
@@ -64,7 +78,7 @@ export default connect(
               <>
                 <hr />
                 {statuses?.map(x => (
-                  <p className='mb-2 ml-1' key={x.title}>
+                  <p className='mb-2 ml-1 pointer' title={x.title} key={x.title} onClick={() => toggleVisibleInstruments('status', x)}>
                     <svg width='15' height='15' className='mr-2'>
                       <circle
                         className={`legend-icon ${x.value}`}
@@ -79,7 +93,7 @@ export default connect(
                 {!!instrument_type?.length && (
                   <>
                     <hr />
-                    {displayInstrumentTypes(instrument_type, instruments)}
+                    {displayInstrumentTypes(instrument_type, instruments, (i) => toggleVisibleInstruments('type', i))}
                   </>
                 )}
               </>

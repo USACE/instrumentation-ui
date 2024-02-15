@@ -23,13 +23,6 @@ const exploreMapInteractionBundle = {
         case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
           return Object.assign({}, state, payload);
         case 'EXPLOREMAP_ADD_DATA_FINISH':
-          // if (Object.prototype.hasOwnProperty.call(payload, 'exploreMap')) {
-          //   return Object.assign({}, state, {
-          //     _shouldInitialize: true,
-          //   });
-          // } else {
-          //   return state;
-          // }
           return {
             ...initialData,
             _shouldInitialize: true,
@@ -66,7 +59,7 @@ const exploreMapInteractionBundle = {
         textOpts: {
           color: blue,
         }
-      }),
+      })
     });
     const handleSelectionChange = debounce(
       store.doExploreMapInteractionsIncrementVersion,

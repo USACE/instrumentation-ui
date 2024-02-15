@@ -20,8 +20,6 @@ export default connect(
     const [landscapeMode, setLandscapeMode] = useState(false);
     const mapRef = useRef();
 
-    console.log('test mapObject: ', mapsObject);
-
     const toggleLandscape = useCallback(
       (e) => {
         if (e.keyCode === 86 && e.shiftKey) {
@@ -62,10 +60,8 @@ export default connect(
             </div>
           </Panel>
           <PanelResizeHandle style={{ border: '1px solid gray' }}/>
-          <Panel defaultSize={50}>
-            <div style={{ overflow: 'auto' }}>
-              <Visualizations />
-            </div>
+          <Panel defaultSize={50} style={{ overflow: 'auto' }}>
+            <Visualizations />
           </Panel>
         </PanelGroup>
       </div>
