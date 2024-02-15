@@ -7,8 +7,6 @@ import { IconButton } from '@mui/material';
 import Card from '../../app-components/card';
 import { classArray } from '../../common/helpers/utils';
 
-// TODO: Ability to filter the instrumnets displayed on the map by selecting one (or many) types/statuses
-
 const STATUS_ORDER = ['Active', 'Lost', 'Inactive', 'Abandoned', 'Destroyed'];
 
 const getLegendItemClasses = (allItems = [], currentItem) => {
