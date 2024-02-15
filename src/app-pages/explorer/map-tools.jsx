@@ -24,7 +24,6 @@ export default connect(
         if (typeof doExploreMapInteractionsReset === 'function')
           doExploreMapInteractionsReset();
       }
-      console.log('test new version', exploreMapInteractionsVersion);
     }, [
       selectMode,
       doExploreMapInteractionsReset,

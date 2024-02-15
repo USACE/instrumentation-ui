@@ -75,7 +75,6 @@ const exploreMapInteractionBundle = {
     const collection = select.getFeatures();
     collection.on('add', handleSelectionChange);
     collection.on('remove', handleSelectionChange);
-    console.log('test map: ', map);
     map.addInteraction(select);
 
     const dragBox = new DragBox();
