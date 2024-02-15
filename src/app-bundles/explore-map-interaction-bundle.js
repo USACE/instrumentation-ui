@@ -22,9 +22,15 @@ const exploreMapInteractionBundle = {
         case 'EXPLOREMAPINTERACTIONS_RESET_START':
         case 'EXPLOREMAPINTERACTIONS_SELECT_UPDATED':
           return Object.assign({}, state, payload);
+        case 'EXPLOREMAP_ADD_DATA_START':
+          return {
+            ...state,
+            select: null,
+            dragBox: null,
+          };
         case 'EXPLOREMAP_ADD_DATA_FINISH':
           return {
-            ...initialData,
+            ...state,
             _shouldInitialize: true,
           };
         default:
@@ -44,6 +50,7 @@ const exploreMapInteractionBundle = {
     const domains = store.selectDomainsItemsByGroup();
     const instrumentTypes = domains['instrument_type'] || {};
 
+    const version = store.selectExploreMapInteractionsVersion();
     const mapKey = store.selectExploreMapKey();
     const map = store.selectMapsObject()[mapKey];
 
@@ -62,16 +69,17 @@ const exploreMapInteractionBundle = {
       })
     });
     const handleSelectionChange = debounce(
-      store.doExploreMapInteractionsIncrementVersion,
+      () => store.doExploreMapInteractionsIncrementVersion(),
       200
     );
     const collection = select.getFeatures();
     collection.on('add', handleSelectionChange);
     collection.on('remove', handleSelectionChange);
+    console.log('test map: ', map);
     map.addInteraction(select);
 
     const dragBox = new DragBox();
-    dragBox.on('boxend', store.doExploreMapInteractionsSelectByArea);
+    dragBox.on('boxend', () => store.doExploreMapInteractionsSelectByArea());
     dragBox.on('boxstart', () => {
       select.getFeatures().clear();
     });
@@ -81,6 +89,7 @@ const exploreMapInteractionBundle = {
       payload: {
         select,
         dragBox,
+        version: version + 1,
       },
     });
   },
@@ -132,8 +141,7 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  doExploreMapInteractionsSelectByArea: (_e) => ({ store }) => {
-
+  doExploreMapInteractionsSelectByArea: () => ({ store }) => {
     /**
      * Based on openlayers example from https://openlayers.org/en/latest/examples/box-selection.html
      */
@@ -181,8 +189,6 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  selectExploreMapInteractionsVersion: (state) => state.exploreMapInteractions.version,
-
   selectExploreMapSelectedInstruments: (state) => {
     const select = state.exploreMapInteractions.select;
     if (select) {
@@ -195,9 +201,9 @@ const exploreMapInteractionBundle = {
     }
   },
 
-  selectExploreMapInteractionsSelect: (state) => state.exploreMapInteractions.select,
-
-  selectExploreMapInteractionsDragBox: (state) => state.exploreMapInteractions.dragBox,
+  selectExploreMapInteractionsSelect: state => state.exploreMapInteractions.select,
+  selectExploreMapInteractionsDragBox: state => state.exploreMapInteractions.dragBox,
+  selectExploreMapInteractionsVersion: state => state.exploreMapInteractions.version,
 
   reactExploreMapInteractionsShouldInitialize: (state) => {
     if (state.exploreMapInteractions._shouldInitialize)

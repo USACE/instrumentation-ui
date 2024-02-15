@@ -8,7 +8,12 @@ import Button from '../../app-components/button';
 export default connect(
   'doExploreMapInteractionsReset',
   'doExploreMapInteractionsSelectMode',
-  ({ doExploreMapInteractionsReset, doExploreMapInteractionsSelectMode }) => {
+  'selectExploreMapInteractionsVersion',
+  ({
+    doExploreMapInteractionsReset,
+    doExploreMapInteractionsSelectMode,
+    exploreMapInteractionsVersion,
+  }) => {
     const [selectMode, setSelectMode] = useState(false);
 
     useEffect(() => {
@@ -19,10 +24,12 @@ export default connect(
         if (typeof doExploreMapInteractionsReset === 'function')
           doExploreMapInteractionsReset();
       }
+      console.log('test new version', exploreMapInteractionsVersion);
     }, [
       selectMode,
       doExploreMapInteractionsReset,
       doExploreMapInteractionsSelectMode,
+      exploreMapInteractionsVersion,
     ]);
 
     return (
