@@ -12,7 +12,6 @@
     "@iconify-json/mdi": "^1.1.64",
     "@iconify/react": "^4.1.1",
     "@iconify/utils": "^2.1.22",
-    "@mdi/js": "^7.4.47",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.2",
     "@tanstack/react-table": "^8.9.3",
