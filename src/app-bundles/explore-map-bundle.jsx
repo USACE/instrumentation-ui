@@ -17,6 +17,7 @@ const exploreMapBundle = {
       _instrumentsLoaded: false,
       _groupsLoaded: false,
       _domainsLoaded: false,
+      _filterUpdated: false,
     };
 
     return (state = initialData, { type, payload }) => {
@@ -40,6 +41,11 @@ const exploreMapBundle = {
           return {
             ...state,
             _domainsLoaded: true,
+          };
+        case 'EXPLORE_DATA_UPDATE_FILTERS_END':
+          return {
+            ...state,
+            _filterUpdated: true,
           };
         case 'MAPS_INITIALIZED':
           if (Object.prototype.hasOwnProperty.call(payload, initialData._mapKey)) {
@@ -93,6 +99,7 @@ const exploreMapBundle = {
       type: 'EXPLOREMAP_ADD_DATA_START',
       payload: {
         _mapLoaded: false,
+        _filterUpdated: false,
       },
     });
 
@@ -145,12 +152,12 @@ const exploreMapBundle = {
   },
 
   reactExploreMapShouldAddData: (state) => {
-    if (
+    if ((
       state.exploreMap._instrumentsLoaded &&
       state.exploreMap._groupsLoaded &&
       state.exploreMap._mapLoaded &&
-      state.exploreMap._domainsLoaded
-    )
+      state.exploreMap._domainsLoaded)
+    || state.exploreMap._filterUpdated)
       return { actionCreator: 'doExploreMapAddData' };
   },
 };

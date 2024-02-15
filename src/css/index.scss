@@ -1,7 +1,4 @@
-$inactive-color: grey;
-$success-color: #43ac6a;
-$warning-color: #d08002;
-$error-color: #f04124;
+@import './variables';
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -135,34 +132,6 @@ footer.modal-footer {
 
   &.lost {
     color: $warning-color;
-  }
-}
-
-.legend-icon {
-  &.active {
-    stroke: $success-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.inactive {
-    stroke: $inactive-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.abandoned {
-    stroke: $inactive-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.destroyed {
-    stroke: $inactive-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.lost {
-    stroke: $warning-color;
-    stroke-width: 3;
-    fill: white;
   }
 }
 

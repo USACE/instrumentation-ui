@@ -1,8 +1,46 @@
+@import '../../css/variables';
+
 .explorer-container {
   height: calc(100vh - 158px);
   border: 1px solid lightgray;
 
   &.with-banner {
     height: calc(100vh - 190px);
+  }
+}
+
+.active-item {
+  font-weight: 500;
+}
+
+.inactive-item {
+  color: #9a9a9a;
+}
+
+.legend-icon {
+  &.active {
+    stroke: $success-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.inactive {
+    stroke: $inactive-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.abandoned {
+    stroke: $inactive-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.destroyed {
+    stroke: $inactive-color;
+    stroke-width: 3;
+    fill: white;
+  }
+  &.lost {
+    stroke: $warning-color;
+    stroke-width: 3;
+    fill: white;
   }
 }

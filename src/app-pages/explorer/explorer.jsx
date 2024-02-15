@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { connect } from 'redux-bundler-react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { useDeepCompareEffect } from 'react-use';
 
 import Map from '../../app-components/classMap';
 import MapLegend from './map-legend';
@@ -11,14 +12,32 @@ import { classArray } from '../../common/helpers/utils';
 
 import './explorer.scss';
 
+const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER = 'true';
+
 export default connect(
   'doMapsInitialize',
   'doMapsShutdown',
+  'doSetExploreDataFilters',
   'selectExploreMapKey',
   'selectMapsObject',
-  ({ doMapsInitialize, doMapsShutdown, exploreMapKey: mapKey, mapsObject }) => {
+  ({
+    doMapsInitialize,
+    doMapsShutdown,
+    doSetExploreDataFilters,
+    exploreMapKey: mapKey,
+    mapsObject,
+  }) => {
     const [landscapeMode, setLandscapeMode] = useState(false);
+    const [legendFilters, setLegendFilters] = useState({
+      type: [],
+      status: [],
+    });
     const mapRef = useRef();
+
+    const cls = classArray([
+      'explorer-container',
+      hasDevBanner && 'with-banner',
+    ]);
 
     const toggleLandscape = useCallback(
       (e) => {
@@ -30,17 +49,15 @@ export default connect(
       [setLandscapeMode, landscapeMode, mapRef.current]
     );
 
-    useWindowListener('keydown', toggleLandscape);
-
-    const hasDevBanner = import.meta.env.VITE_DEVELOPMENT_BANNER = 'true';
-    const cls = classArray([
-      'explorer-container',
-      hasDevBanner && 'with-banner',
-    ]);
+    useDeepCompareEffect(() => {
+      doSetExploreDataFilters(legendFilters);
+    }, [legendFilters]);
 
     useEffect(() => {
       if (mapRef && mapRef.current) mapRef.current.updateSize();
     }, [mapRef.current]);
+
+    useWindowListener('keydown', toggleLandscape);
 
     return (
       <div className={cls}>
@@ -56,7 +73,7 @@ export default connect(
                 mapsObject={mapsObject}
               />
               <MapTools />
-              <MapLegend />
+              <MapLegend setLegendFilters={setLegendFilters} legendFilters={legendFilters} />
             </div>
           </Panel>
           <PanelResizeHandle style={{ border: '1px solid gray' }}/>

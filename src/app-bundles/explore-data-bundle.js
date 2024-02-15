@@ -9,6 +9,10 @@ const exploreDataBundle = {
     const initialData = {
       data: [],
       inclinometers: [],
+      filters: {
+        status: [],
+        type: [],
+      },
       _isLoading: false,
     };
 
@@ -32,6 +36,11 @@ const exploreDataBundle = {
             ...state,
             inclinometers: payload,
           };
+        case 'EXPLORE_DATA_UPDATE_FILTERS_START':
+          return {
+            ...state,
+            filters: payload,
+          };
         default:
           return state;
       }
@@ -40,6 +49,11 @@ const exploreDataBundle = {
 
   doExploreDataClear: () => ({ dispatch }) => {
     dispatch({ type: 'EXPLORE_DATA_CLEAR' });
+  },
+
+  doSetExploreDataFilters: (filters) => ({ dispatch }) => {
+    dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_START', payload: filters });
+    dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_END' });
   },
 
   doExploreDataLoad: (instrumentIds, before, after) => async ({ dispatch, store }) => {
@@ -88,6 +102,7 @@ const exploreDataBundle = {
 
   selectExploreData: (state) => state.exploreData,
   selectExploreDataLoading: state => state.exploreData._isLoading,
+  selectExploreDataFilters: state => state.exploreData.filters,
 
   selectExploreDataByInstrumentId: createSelector(
     'selectExploreData',

@@ -138,17 +138,27 @@ export default createRestBundle({
 
     selectInstrumentsItemsGeoJSON: createSelector(
       'selectInstrumentsItems',
-      (items) => ({
+      'selectExploreDataFilters',
+      (items, filters) => ({
         type: 'FeatureCollection',
         features: items.map((item) => {
+          const { geometry = {}, ...rest } = item || {};
+          const { type_id, status } = rest || {};
+          const { status: statusFilters, type: typeFilters } = filters;
+
           const feature = {
             type: 'Feature',
-            geometry: { ...item.geometry },
-            properties: { ...item },
+            geometry: { ...geometry },
+            properties: { ...rest },
           };
-          delete feature.properties.geometry;
-          return feature;
-        }),
+
+          const inStatusFilter = statusFilters.length ? statusFilters.includes(status) : true;
+          const inTypeFilter = typeFilters.length ? typeFilters.includes(type_id) : true;
+
+          return (inStatusFilter && inTypeFilter)
+            ? feature
+            : null;
+        }).filter(e => e),
       })
     ),
 

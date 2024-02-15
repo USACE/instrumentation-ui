@@ -5,25 +5,38 @@ import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
 import Card from '../../app-components/card';
+import { classArray } from '../../common/helpers/utils';
 
 // TODO: Ability to filter the instrumnets displayed on the map by selecting one (or many) types/statuses
 
 const STATUS_ORDER = ['Active', 'Lost', 'Inactive', 'Abandoned', 'Destroyed'];
 
-const displayInstrumentTypes = (types = [], instruments = [], onClick = () => {}) => {
-  const currentTypes = types.filter(type => instruments.some(i => i.type_id === type.id));
+const getLegendItemClasses = (allItems = [], currentItem) => {
+  const isEmpty = allItems.length === 0;
+  const contains = allItems.includes(currentItem);
 
-  return currentTypes?.map(type => {
-    const { type_id, value, description: icon } = type;
+  const classes = classArray([
+    'mb-2',
+    'ml-1',
+    'pointer',
+    !isEmpty && !contains ? 'inactive-item' : 'active-item',
+  ]);
+
+  return classes;
+};
+
+const displayInstrumentTypes = (legendTypes = [], currentTypes = [], onClick = () => {}) => (
+  currentTypes?.map(type => {
+    const { id, value, description: icon } = type;
 
     return (
-      <p className='mb-1 ml-1 pointer' title={value} key={type_id} onClick={() => onClick(type)}>
+      <p className={getLegendItemClasses(legendTypes, id)} title={value} key={id} onClick={() => onClick(type)}>
         {icon && <Icon icon={`mdi:${icon}`} />}
         <span className='ml-2'>{value}</span>
       </p>
     )
-  });
-};
+  })
+);
 
 export default connect(
   'selectDomainsItemsByGroup',
@@ -31,9 +44,12 @@ export default connect(
   ({
     domainsItemsByGroup: domains,
     instrumentsItems: instruments,
+    legendFilters = {},
+    setLegendFilters = () => {},
   }) => {
     const [isVisible, setIsVisible] = useState(true);
     const { status = [], instrument_type = [] } = domains || {};
+    const { status: legendStatus = [], type: legendType = [] } = legendFilters || {};
 
     const statuses = status.map(s => {
       const title = s.value[0].toUpperCase() + s.value.substr(1).toLowerCase();
@@ -45,15 +61,48 @@ export default connect(
       };
     }).sort((a, b) => (a.order > b.order ? 1 : -1));
 
-    const toggleVisibleInstruments = (key, item) => {
+    const currentTypes = instrument_type.filter(type => instruments.some(i => i.type_id === type.id));
+
+    const toggleVisibleInstruments = (key, item, maxLength) => {
       if (key === 'status') {
         const { value } = item;
-        // toggle instruemnts by status
-        console.log('test item (status): ', item);
+
+        setLegendFilters(prev => {
+          const found = prev['status'].findIndex(el => el === value);
+
+          if (found >= 0) {
+            const clone = [...prev['status']];
+            clone.splice(found, 1);
+            return {
+              ...prev,
+              status: clone.length  === maxLength - 1 ? [value] : clone,
+            };
+          } else {
+            return {
+              ...prev,
+              status: [...prev['status'], value],
+            };
+          };
+        });
       } else if (key === 'type') {
-        const { type_id } = item;
-        // toggle instruments by type
-        console.log('test item (type):', item);
+        const { id } = item;
+
+        setLegendFilters(prev => {
+          const found = prev['type'].findIndex(el => el === id);
+          if (found >= 0) {
+            const clone = [...prev['type']];
+            clone.splice(found, 1);
+            return {
+              ...prev,
+              type: clone.length === maxLength - 1 ? [id] : clone,
+            };
+          } else {
+            return {
+              ...prev,
+              type: [...prev['type'], id],
+            };
+          }
+        });
       } else {
         // eslint-disable-next-line no-console
         console.log('Invalid Type. Skipping Execution of `toggleVisibleInstruments()`');
@@ -77,23 +126,23 @@ export default connect(
             {isVisible && (
               <>
                 <hr />
-                {statuses?.map(x => (
-                  <p className='mb-2 ml-1 pointer' title={x.title} key={x.title} onClick={() => toggleVisibleInstruments('status', x)}>
+                {statuses?.map(s => (
+                  <p className={getLegendItemClasses(legendStatus, s.value)} title={s.title} key={s.title} onClick={() => toggleVisibleInstruments('status', s, statuses.length)}>
                     <svg width='15' height='15' className='mr-2'>
                       <circle
-                        className={`legend-icon ${x.value}`}
+                        className={`legend-icon ${s.value}`}
                         cx='8'
                         cy='8'
                         r='5'
                       />
                     </svg>
-                    {x.title}
+                    {s.title}
                   </p>
                 ))}
-                {!!instrument_type?.length && (
+                {!!currentTypes?.length && (
                   <>
                     <hr />
-                    {displayInstrumentTypes(instrument_type, instruments, (i) => toggleVisibleInstruments('type', i))}
+                    {displayInstrumentTypes(legendType, currentTypes, (i) => toggleVisibleInstruments('type', i, currentTypes.length))}
                   </>
                 )}
               </>
