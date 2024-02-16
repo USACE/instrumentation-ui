@@ -152,13 +152,14 @@ const exploreMapBundle = {
   },
 
   reactExploreMapShouldAddData: (state) => {
-    if ((
-      state.exploreMap._instrumentsLoaded &&
-      state.exploreMap._groupsLoaded &&
-      state.exploreMap._mapLoaded &&
-      state.exploreMap._domainsLoaded)
-    || state.exploreMap._filterUpdated)
-      return { actionCreator: 'doExploreMapAddData' };
+    if (
+      (
+        state.exploreMap._instrumentsLoaded &&
+        state.exploreMap._groupsLoaded &&
+        state.exploreMap._mapLoaded &&
+        state.exploreMap._domainsLoaded
+      ) || state.exploreMap._filterUpdated
+    ) return { actionCreator: 'doExploreMapAddData' };
   },
 };
 

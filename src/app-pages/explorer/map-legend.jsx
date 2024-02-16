@@ -108,7 +108,7 @@ export default connect(
     };
 
     return (
-      <div style={{ position: 'absolute', right: 7, top: 7 }}>
+      <div style={{ position: 'absolute', right: 7, top: 7, overflow: 'auto', maxHeight: '100%' }}>
         <Card style={{ opacity: 0.8 }}>
           <Card.Body>
             <span>

@@ -81,7 +81,7 @@ export const createIconStyle = ({ feature, instrumentTypes, imageOpts = {}, text
 };
 
 export const createNewExplorerLayer = (domains) => {
-  const instrumentTypes = domains['instrument_type'] || {};
+  const instrumentTypes = domains['instrument_type'] || [];
 
   if (!instrumentTypes?.length) return defaultLayer;
 
