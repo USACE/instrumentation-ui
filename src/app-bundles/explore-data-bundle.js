@@ -51,9 +51,13 @@ const exploreDataBundle = {
     dispatch({ type: 'EXPLORE_DATA_CLEAR' });
   },
 
-  doSetExploreDataFilters: (filters) => ({ dispatch }) => {
-    dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_START', payload: filters });
-    dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_END' });
+  doSetExploreDataFilters: (filters) => ({ dispatch, store }) => {
+    const isInstrumentLayerAdded = store.selectExploreMapDataHasAdded();
+
+    if (isInstrumentLayerAdded) {
+      dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_START', payload: filters });
+      dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_END' });
+    }
   },
 
   doExploreDataLoad: (instrumentIds, before, after) => async ({ dispatch, store }) => {

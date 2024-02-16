@@ -32,30 +32,6 @@ const basemaps = [
     maxZoom: 19,
   },
   {
-    id: 'MapBoxStreets',
-    name: 'MapBox Streets',
-    url:
-      'https://api.tiles.mapbox.com/v4/willbreitkreutzwork.p9ej01m9/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidXNhY2UiLCJhIjoiY2o1MDZscms4MDI4MjMycG1wa3puc212MCJ9.CW7edZMtlx5vFLNF5P-zTA',
-    attributions:
-      'Imagery from <a href="https://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  },
-  {
-    id: 'MapBoxAerial',
-    name: 'MapBox Aerial',
-    url:
-      'https://api.tiles.mapbox.com/v4/willbreitkreutzwork.pki0cla6/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidXNhY2UiLCJhIjoiY2o1MDZscms4MDI4MjMycG1wa3puc212MCJ9.CW7edZMtlx5vFLNF5P-zTA',
-    attributions:
-      'Imagery from <a href="https://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  },
-  {
-    id: 'MapBoxOutdoor',
-    name: 'MapBox Outdoor',
-    url:
-      'https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoidXNhY2UiLCJhIjoiY2o1MDZscms4MDI4MjMycG1wa3puc212MCJ9.CW7edZMtlx5vFLNF5P-zTA',
-    attributions:
-      'Imagery from <a href="https://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  },
-  {
     id: 'StamenToner',
     name: 'Stamen Toner',
     url: 'https://stamen-tiles-{a-c}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',

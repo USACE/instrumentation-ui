@@ -18,6 +18,7 @@ const exploreMapBundle = {
       _groupsLoaded: false,
       _domainsLoaded: false,
       _filterUpdated: false,
+      _hasAddedData: false,
     };
 
     return (state = initialData, { type, payload }) => {
@@ -139,12 +140,14 @@ const exploreMapBundle = {
       type: 'EXPLOREMAP_ADD_DATA_FINISH',
       payload: {
         layer: newLyr,
+        _hasAddedData: true,
       }
     });
   },
 
-  selectExploreMapKey: (state) => state.exploreMap._mapKey,
-  selectExploreMapLayer: (state) => state.exploreMap.layer,
+  selectExploreMapKey: state => state.exploreMap._mapKey,
+  selectExploreMapLayer: state => state.exploreMap.layer,
+  selectExploreMapDataHasAdded: state => state.exploreMap._hasAddedData,
 
   reactExploreMapShouldInitialize: (state) => {
     if (state.exploreMap._shouldInitialize)
@@ -153,12 +156,13 @@ const exploreMapBundle = {
 
   reactExploreMapShouldAddData: (state) => {
     if (
+      state.exploreMap._filterUpdated ||
       (
         state.exploreMap._instrumentsLoaded &&
         state.exploreMap._groupsLoaded &&
         state.exploreMap._mapLoaded &&
         state.exploreMap._domainsLoaded
-      ) || state.exploreMap._filterUpdated
+      )
     ) return { actionCreator: 'doExploreMapAddData' };
   },
 };
