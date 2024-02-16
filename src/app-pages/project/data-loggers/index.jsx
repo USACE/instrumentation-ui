@@ -22,6 +22,9 @@ const generateDataLoggerOptions = (dataLoggers = []) => (
   }))
 );
 
+
+// TODO: Move preparse filter to remove mapping button and Field Mapping Table! Add note to helper text that
+// "The preparse table is a read-only table and simply shows the most recent payload sent by the selected datalogger. This can be useful for debugging payloads."
 const generateEquivalencyOptions = (tables = []) => (
   tables.map(t => {
     if (t?.table_name === 'preparse') return null;

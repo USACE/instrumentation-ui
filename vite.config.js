@@ -15,8 +15,8 @@ export default ({ mode }) => {
       react(),
       svgrPlugin(),
       visualizer({
-        filename: 'rollup-analyze.json',
-        template: 'raw-data',
+        filename: 'rollup-analyze.html',
+        template: 'treemap',
         gzipSize: true,
         brotliSize: true,
       }),

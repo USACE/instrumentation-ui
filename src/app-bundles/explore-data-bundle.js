@@ -9,12 +9,23 @@ const exploreDataBundle = {
     const initialData = {
       data: [],
       inclinometers: [],
+      filters: {
+        status: [],
+        type: [],
+      },
+      _isLoading: false,
     };
 
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case 'EXPLORE_DATA_CLEAR':
-          return Object.assign({}, initialData);
+        case 'URL_UPDATED':
+          return { ...initialData };
+        case 'EXPLORE_DATA_LOADING':
+          return {
+            ...state,
+            _isLoading: payload,
+          };
         case 'EXPLORE_DATA_LOAD':
           return {
             ...state,
@@ -25,8 +36,11 @@ const exploreDataBundle = {
             ...state,
             inclinometers: payload,
           };
-        case 'URL_UPDATED':
-          return Object.assign({}, initialData);
+        case 'EXPLORE_DATA_UPDATE_FILTERS_START':
+          return {
+            ...state,
+            filters: payload,
+          };
         default:
           return state;
       }
@@ -34,18 +48,26 @@ const exploreDataBundle = {
   },
 
   doExploreDataClear: () => ({ dispatch }) => {
-    dispatch({
-      type: 'EXPLORE_DATA_CLEAR',
-    });
+    dispatch({ type: 'EXPLORE_DATA_CLEAR' });
   },
 
-  doExploreDataLoad: (instrumentIds, before, after) => ({ dispatch, store }) => {
+  doSetExploreDataFilters: (filters) => ({ dispatch, store }) => {
+    const isInstrumentLayerAdded = store.selectExploreMapDataHasAdded();
+
+    if (isInstrumentLayerAdded) {
+      dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_START', payload: filters });
+      dispatch({ type: 'EXPLORE_DATA_UPDATE_FILTERS_END' });
+    }
+  },
+
+  doExploreDataLoad: (instrumentIds, before, after) => async ({ dispatch, store }) => {
     store.doExploreDataClear();
+    dispatch({ type: 'EXPLORE_DATA_LOADING', payload: true });
 
     const apiRoot = store.selectApiRoot();
     const token = store.selectAuthTokenRaw();
 
-    fetch(`${apiRoot}/explorer?before=${before}&after=${after}`, {
+    await fetch(`${apiRoot}/explorer?before=${before}&after=${after}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -61,13 +83,8 @@ const exploreDataBundle = {
           payload: data,
         });
       });
-  },
 
-  doInclinometerDataLoad: (instrumentIds, before, after) => ({ dispatch, store }) => {
-    const apiRoot = store.selectApiRoot();
-    const token = store.selectAuthTokenRaw();
-
-    fetch(`${apiRoot}/inclinometer_explorer?before=${before}&after=${after}`, {
+    await fetch(`${apiRoot}/inclinometer_explorer?before=${before}&after=${after}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -83,9 +100,13 @@ const exploreDataBundle = {
           payload: data,
         });
       });
+    
+    dispatch({ type: 'EXPLORE_DATA_LOADING', payload: false });
   },
 
   selectExploreData: (state) => state.exploreData,
+  selectExploreDataLoading: state => state.exploreData._isLoading,
+  selectExploreDataFilters: state => state.exploreData.filters,
 
   selectExploreDataByInstrumentId: createSelector(
     'selectExploreData',

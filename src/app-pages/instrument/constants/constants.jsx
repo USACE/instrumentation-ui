@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import isEqual from 'lodash.isequal';
 import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { connect } from 'redux-bundler-react';
-import { isEqual } from 'lodash';
 import { Add } from '@mui/icons-material';
 
 import Button from '../../../app-components/button';

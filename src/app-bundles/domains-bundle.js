@@ -13,7 +13,7 @@ export default createRestBundle({
   postTemplate: '/domains',
   deleteTemplate: '/domains/{:item.id}',
   fetchActions: ['URL_UPDATED', 'AUTH_LOGGED_IN'],
-  forceFetchActions: [],
+  forceFetchActions: ['EXPLOREMAP_INITIALIZE_START'],
   addons: {
     selectDomainsItemsByGroup: createSelector('selectDomainsItems', (items) => {
       if (!items) return null;

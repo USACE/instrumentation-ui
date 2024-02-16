@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { connect } from 'redux-bundler-react';
+import { Icon } from '@iconify/react';
 import { subDays, differenceInDays, isSameDay } from 'date-fns';
 import { Settings as SettingsIcon } from '@mui/icons-material';
 
@@ -21,6 +22,7 @@ export default connect(
   'selectChartEditorLayout',
   'selectChartEditorCorrelationMinDate',
   'selectChartEditorCorrelationMaxDate',
+  'selectExploreDataLoading',
   ({
     doChartEditorSetShowSettings,
     doChartEditorSetLayout,
@@ -31,6 +33,7 @@ export default connect(
     chartEditorLayout: layout,
     chartEditorCorrelationMinDate: minDate,
     chartEditorCorrelationMaxDate: maxDate,
+    exploreDataLoading,
   }) => {
     const [from, setFrom] = useState(minDate);
     const [to, setTo] = useState(maxDate);
@@ -163,10 +166,22 @@ export default connect(
         </div>
         {showSettings ? (
           <Settings />
-        ) : chartType === 'timeseries' ? (
-          <VizTimeseries />
         ) : (
-          <VizCorrelation />
+          <>
+            {exploreDataLoading ? (
+              <div className='w-100 p-2 d-flex justify-content-center'>
+                <Icon icon='eos-icons:loading' fontSize={30} />
+              </div>
+            ) : (
+              <>
+                {chartType === 'timeseries' ? (
+                  <VizTimeseries />
+                ) : (
+                  <VizCorrelation />
+                )}
+              </>
+            )}
+          </> 
         )}
       </div>
     );
