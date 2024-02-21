@@ -42,7 +42,7 @@ export default connect(
               timeseriesSelected &&
               timeseriesSelected.name &&
               timeseriesSelected.instrument &&
-              `${timeseriesSelected.instrument}  |  ${timeseriesSelected.name}`
+              `${timeseriesSelected.instrument} | ${timeseriesSelected.name}`
             ) || 'Select a Timeseries'}
           >
             {timeseries.map((t, idx) => (

@@ -57,7 +57,7 @@ export default connect(
                   className='list-group-item list-group-item-action noselect'
                   onDoubleClick={() => insertParam(`[${ts.variable}]`)}
                 >
-                  {ts.slug}
+                  {ts.variable}
                 </li>
               ))}
             </ul>
