@@ -48,10 +48,10 @@ export default connect(
           visualized, you can choose a single data series, or alter the values
           using a combination of series and constants.
         </p>
-        Available parameters
-        <div className='row'>
+        <i className='ml-3'>Available parameters</i>
+        <div className='row mt-2'>
           <div className='col-3'>
-            <ul className='list-group'>
+            <ul className='list-group limit-item-list'>
               {sortedTimeseries.map((ts, i) => (
                 <li
                   key={i}
