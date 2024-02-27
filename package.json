@@ -1,6 +1,6 @@
 {
   "name": "hhd-ui",
-  "version": "0.15.4",
+  "version": "0.15.5",
   "private": true,
   "dependencies": {
     "@ag-grid-community/client-side-row-model": "^30.0.3",

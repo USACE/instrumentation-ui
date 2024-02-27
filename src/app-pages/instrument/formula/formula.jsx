@@ -19,6 +19,7 @@ export default connect(
     nonComputedTimeseriesItemsByRoute: timeseries,
   }) => {
     const [activeFormula, setActiveFormula] = useState(null);
+    const sortedTimeseries = timeseries.sort((a, b) =>  String(a.variable).localeCompare(b.variable));
 
     const createNewFormula = () => {
       doInstrumentFormulasSave({
@@ -47,17 +48,17 @@ export default connect(
           visualized, you can choose a single data series, or alter the values
           using a combination of series and constants.
         </p>
-        Available parameters
-        <div className='row'>
+        <i className='ml-3'>Available parameters</i>
+        <div className='row mt-2'>
           <div className='col-3'>
-            <ul className='list-group'>
-              {timeseries.map((ts, i) => (
+            <ul className='list-group limit-item-list'>
+              {sortedTimeseries.map((ts, i) => (
                 <li
                   key={i}
                   className='list-group-item list-group-item-action noselect'
                   onDoubleClick={() => insertParam(`[${ts.variable}]`)}
                 >
-                  {ts.slug}
+                  {ts.variable}
                 </li>
               ))}
             </ul>
