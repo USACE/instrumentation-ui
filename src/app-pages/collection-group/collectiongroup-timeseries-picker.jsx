@@ -47,7 +47,7 @@ export default connect(
           >
             {timeseries.map((t, idx) => (
               <Dropdown.Item key={idx} onClick={() => setTimeseriesSelected(t)}>
-                {`${t.instrument}  |  ${t.name}`}
+                {`${t.instrument} | ${t.name}`}
               </Dropdown.Item>
               
             ))}

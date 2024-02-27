@@ -19,6 +19,7 @@ export default connect(
     nonComputedTimeseriesItemsByRoute: timeseries,
   }) => {
     const [activeFormula, setActiveFormula] = useState(null);
+    const sortedTimeseries = timeseries.sort((a, b) =>  String(a.variable).localeCompare(b.variable));
 
     const createNewFormula = () => {
       doInstrumentFormulasSave({
@@ -51,7 +52,7 @@ export default connect(
         <div className='row'>
           <div className='col-3'>
             <ul className='list-group'>
-              {timeseries.map((ts, i) => (
+              {sortedTimeseries.map((ts, i) => (
                 <li
                   key={i}
                   className='list-group-item list-group-item-action noselect'
