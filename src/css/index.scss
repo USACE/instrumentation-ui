@@ -105,11 +105,11 @@ footer.modal-footer {
   }
 
   &.destroyed::before {
-    border-color: $error-color;
+    border-color: $inactive-color;
   }
 
   &.lost::before {
-    border-color: $warning-color;
+    border-color: $inactive-color;
   }
 }
 
@@ -127,11 +127,11 @@ footer.modal-footer {
   }
 
   &.destroyed {
-    color: $error-color;
+    color: $inactive-color;
   }
 
   &.lost {
-    color: $warning-color;
+    color: $inactive-color;
   }
 }
 
