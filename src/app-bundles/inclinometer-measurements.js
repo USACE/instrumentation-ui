@@ -7,8 +7,7 @@ export default createRestBundle({
   persist: false,
   routeParam: '',
 
-  // TODO: default before and after time periods should be implemented on
-  // the backend.
+  // TODO: default before and after time periods should be implemented on the backend.
   getTemplate: '/timeseries/:timeseriesId/inclinometer_measurements?before=2025-01-01T00:00:00.00Z&after=1900-01-01T00:00:00.00Z',
   putTemplate: '',
   postTemplate: '/timeseries/:timeseriesId/inclinometer_measurements',

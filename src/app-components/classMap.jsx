@@ -8,8 +8,12 @@ const Map = forwardRef(({
   mapsObject,
   mapKey,
   options,
+  isRelative = false,
 }, ref) => {
   const el = useRef(null);
+  const styles = isRelative
+    ? { position: 'relative', top: 0, left: 0, width: '100%', height: '100%' }
+    : { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 };
 
   const updateSize = debounce(() => {
     if (mapsObject[mapKey]) mapsObject[mapKey].updateSize();
@@ -44,12 +48,7 @@ const Map = forwardRef(({
     };
   }, [doMapsShutdown, mapKey]);
 
-  return (
-    <div
-      style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}
-      ref={el}
-    />
-  );
+  return <div style={styles} ref={el} />;
 });
 
 export default Map;

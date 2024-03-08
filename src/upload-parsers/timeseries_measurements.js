@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import { isNumeric } from '../common/helpers/utils';
 
+// TODO: Transition this to pass an array, instead of an object, to the timeseries_measurements endpoint.
 const timeseriesMeasurementParser = {
   name: 'Timeseries Measurement',
   url: '/projects/:projectId/timeseries_measurements',

@@ -1,11 +1,9 @@
 /* eslint-disable no-mixed-operators */
 import { createSelector } from 'redux-bundler';
+
 import olMap from 'ol/Map.js';
 import View from 'ol/View';
-
 import ScaleBar from 'ol/control/ScaleLine';
-// import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
-// import { OSM, Vector as VectorSource } from 'ol/source';
 import BasemapPicker from '../ol-controls/basemap-picker';
 
 import 'ol/ol.css';
@@ -25,10 +23,20 @@ const MapsBundle = {
     };
 
     return (state = initialData, { type, payload }) => {
+      const mapKeys = Object.keys(payload || {});
+      const clone = { ...state };
+
       switch (type) {
         case actions.MAPS_INITIALIZED:
-        case actions.MAPS_SHUTDOWN:
-          return Object.assign({}, state, payload);
+          return {
+            ...state,
+            ...payload,
+          }
+        case actions.MAPS_SHUTDOWN:    
+          if (mapKeys?.length) {
+            mapKeys.forEach(key => delete clone[key]);
+            return clone;
+          } else return state;
         default:
           return state;
       }

@@ -81,7 +81,8 @@ const BatchPlotChart = connect(
 
     /** Fetch the timeseries measurements in regards to date range */
     useEffect(() => {
-      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange, threshold })); // @TODO - allow slider fo threshold
+      // @TODO: new endpoint: fetch -> batchPlotMeasurements(plotConfigId);
+      timeseriesIds.forEach(id => doTimeseriesMeasurementsFetchById({ timeseriesId: id, dateRange, threshold }));
     }, [timeseriesIds, doInstrumentTimeseriesSetActiveId]);
 
     /** Extract specific measurements from the store that relate to our set timeseries */

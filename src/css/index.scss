@@ -1,7 +1,4 @@
-$inactive-color: grey;
-$success-color: #43ac6a;
-$warning-color: #d08002;
-$error-color: #f04124;
+@import './variables';
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -108,11 +105,11 @@ footer.modal-footer {
   }
 
   &.destroyed::before {
-    border-color: $error-color;
+    border-color: $inactive-color;
   }
 
   &.lost::before {
-    border-color: $warning-color;
+    border-color: $inactive-color;
   }
 }
 
@@ -130,39 +127,11 @@ footer.modal-footer {
   }
 
   &.destroyed {
-    color: $error-color;
+    color: $inactive-color;
   }
 
   &.lost {
-    color: $warning-color;
-  }
-}
-
-.legend-icon {
-  &.active {
-    stroke: $success-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.inactive {
-    stroke: $inactive-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.abandoned {
-    stroke: $inactive-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.destroyed {
-    stroke: $error-color;
-    stroke-width: 3;
-    fill: white;
-  }
-  &.lost {
-    stroke: $warning-color;
-    stroke-width: 3;
-    fill: white;
+    color: $inactive-color;
   }
 }
 
@@ -205,27 +174,4 @@ footer.modal-footer {
 
 .text-dark {
   color: #222 !important;
-}
-
-// TEMP STYLES FOR MIGRATION BANNER
-
-.moving-banner {
-  position: fixed;
-  top: 40px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-size: 16px;
-  width: 75vw;
-  height: auto;
-  padding: 15px 10px;
-  border-radius: 3px;
-  background-color: white;
-  color: black;
-  z-index: 999999;
-  box-shadow: 2px 2px 4px #222;
-
-  .banner-link {
-    color: #0a59a3;
-    cursor: pointer;
-  }
 }

@@ -8,7 +8,12 @@ import Button from '../../app-components/button';
 export default connect(
   'doExploreMapInteractionsReset',
   'doExploreMapInteractionsSelectMode',
-  ({ doExploreMapInteractionsReset, doExploreMapInteractionsSelectMode }) => {
+  'selectExploreMapInteractionsVersion',
+  ({
+    doExploreMapInteractionsReset,
+    doExploreMapInteractionsSelectMode,
+    exploreMapInteractionsVersion,
+  }) => {
     const [selectMode, setSelectMode] = useState(false);
 
     useEffect(() => {
@@ -23,10 +28,11 @@ export default connect(
       selectMode,
       doExploreMapInteractionsReset,
       doExploreMapInteractionsSelectMode,
+      exploreMapInteractionsVersion,
     ]);
 
     return (
-      <div style={{ position: 'absolute', left: 10, top: 10, right: 10 }}>
+      <div style={{ position: 'absolute', left: 7, top: 7 }}>
         <div className='btn-group'>
           <Button
             size='small'
