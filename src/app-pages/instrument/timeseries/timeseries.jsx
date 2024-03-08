@@ -143,8 +143,8 @@ export default connect(
         newValue.value = new Number(value);
 
         if (field === 'time') doTimeseriesMeasurementsDelete({ timeseriesId: activeTimeseries, date: oldValue });
-        if (field === 'validated') newValue.validated = validated === 'true';
-        if (field === 'masked') newValue.masked = masked === 'true';
+        if (field === 'validated') newValue.validated = validated === true;
+        if (field === 'masked') newValue.masked = masked === true;
 
         doTimeseriesMeasurementsSave({
           timeseries_id: activeTimeseries,
