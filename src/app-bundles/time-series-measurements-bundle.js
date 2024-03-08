@@ -75,7 +75,7 @@ export default createRestBundle({
       });
     },
 
-    doPostTimeseriesMeasurements: ({ measurements = []}) => ({ store, apiPost }) => {
+    doPostTimeseriesMeasurements: ({ measurements = [] }) => ({ store, apiPost }) => {
       const project = store['selectProjectsIdByRoute']();
       const { projectId } = project;
 
