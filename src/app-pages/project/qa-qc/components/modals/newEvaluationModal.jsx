@@ -39,11 +39,10 @@ const defaultFormState = {
   instruments: [],
   start_date: '',
   end_date: '',
-  alert_config_id: null,
-  submittal_id: '',
+  submittal_id: null,
 };
 
-const optionalFields = ['alert_config_id', 'submittal_id'];
+const optionalFields = ['submittal_id'];
 
 const NewEvaluationModal = connect(
   'doModalClose',
